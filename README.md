@@ -1,4 +1,5 @@
-# Open-Source Research Project in Python: A Template
+# ChatGraph: A framework for LLM self-diagnosis and refinement through conversation graph analysis
+
 
 [![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-3109/)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://pre-commit.com/)
@@ -10,14 +11,33 @@
 > [!NOTE]
 > This repo is continously updating with more tools. Any contribution is welcome.
 
-## ✨ Motivation
+## ✨ Overview
+```chat-graph``` is an innovative framework that models and analyzes Large Language Model (LLM) conversations as tree structures, enabling self-diagnosis and refinement of model responses. By treating conversations as navigable graphs, we can identify, analyze, and improve cases where LLMs may produce incorrect or hallucinated responses.
 
-To ensure high standards in engineering projects, we offer a standardized template specifically designed for open-source Python research projects. This template is an excellent choice if you:
+🌲 Conversation Graph Modeling: Maps LLM interactions as traversable graphs where:
 
-1. Want to facilitate seamless collaboration and extension of your project by other researchers.
-2. Aim to bridge communication gaps among collaborators effectively.
-3. Seek to make rapid iterations with assurance that small code modifications won’t disrupt the overall project.
-4. Wish to reduce the frequency of frustrating runtime errors during experiments.
+- Root node represents the system prompt
+- Edges represent user inputs
+- Nodes contain LLM responses
+- Branches capture different conversation paths
+
+🔍 Self-Diagnosis: Automatically identifies problematic responses through:
+
+- Runtime verification (for code-related tasks)
+- Pattern recognition in conversation chains
+- Probability-based truthfulness assessment
+
+🔄 Self-Refinement: Implements automated improvement through:
+
+- Knowledge sharing across conversation branches
+- Error correction using successful conversation patterns
+- Fine-tuning based on verified correct responses
+
+📊 Analysis Tools: Provides utilities for:
+
+- Visualizing conversation trees
+- Identifying problematic response patterns
+- Tracking refinement progress
 
 ## 🔨 Continuous Integration (CI) Workflow
 
