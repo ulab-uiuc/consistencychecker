@@ -1,0 +1,454 @@
+metrics:
+  L-1:
+  - 0.8968740140170616
+  - 0.9692567407627719
+  - 0.9318213844043216
+  - 0.9842093801980676
+  - 0.9604948666534465
+  - 0.9956457801208088
+  - 0.8886325492539261
+  - 0.932333988972702
+  - 0.9335725829448933
+  - 0.9986839265779274
+  - 0.9380882727795155
+  - 0.971124659681398
+  - 0.9762738433824582
+  - 0.9989311124138188
+  - 0.9104889403069358
+  - 0.9248706139910032
+  - 0.9529340065744849
+  - 0.9999999999999998
+  - 0.9500147651227369
+  - 0.9681305257963082
+  - 0.8925357903827807
+  - 0.9990435947375229
+  - 0.9189890297360737
+  - 0.9963218429686845
+  - 0.9085106223300724
+  - 0.9915927120015618
+  - 0.9413279658911078
+  - 0.9818240179556773
+  - 0.9383260779781858
+  - 0.9925627996379016
+  L-1 AVG: 0.9547805469191386
+  L-2:
+  - 0.8670907006132268
+  - 0.8963464935837787
+  - 0.9420600873815592
+  - 0.9690219530036978
+  - 0.8919120428576937
+  - 0.8930759634462253
+  - 0.920370458391822
+  - 0.9829809931828718
+  - 0.9424817536874458
+  - 0.9539254443000661
+  - 0.9731253759477877
+  - 0.9952998523157363
+  - 0.9648641302378947
+  - 0.8823960473903822
+  - 0.8882620697347896
+  - 0.932333988972702
+  - 0.945308980412441
+  - 0.9136264810882028
+  - 0.8920288457411257
+  - 0.997383747880261
+  - 0.9041776621555565
+  - 0.9353187213916156
+  - 0.9137592264992727
+  - 0.967576799646603
+  - 0.9445423801450921
+  - 0.9553700630051591
+  - 0.9384539934050783
+  - 0.9926717950049359
+  L-2 AVG: 0.9355630732651081
+  L-3:
+  - 0.9045743270962542
+  - 0.8715481099671804
+  - 0.8957984353422624
+  - 0.8937191321449945
+  - 0.9388094527205807
+  - 0.964006110750101
+  - 0.9633876559222834
+  - 0.9689689374895211
+  - 0.9385558430546955
+  - 0.8747424862732058
+  - 0.8658111417461035
+  - 0.8930759634462253
+  - 0.9393169553189084
+  - 0.9020516292432382
+  - 0.8730578204438569
+  - 0.9820878871781874
+  - 0.8957344615188387
+  - 0.943419603047952
+  - 0.9111411423548612
+  - 0.954281336678342
+  - 0.9428745651715984
+  - 0.9572378975383513
+  - 0.9366390276183767
+  - 0.9927764046098174
+  L-3 AVG: 0.9251506802781558
+  L-5: []
+  L-5 AVG: 0.0
+operations:
+- !!python/tuple
+  - replace all nouns with synonyms
+  - replace all synonyms with the original nouns
+- !!python/tuple
+  - convert to passive voice
+  - convert back to active voice
+root_content: Artificial intelligence enhances the efficiency of various industries
+  by automating tasks, analyzing data, and providing insights for better decision-making.
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id008 !!python/object:llmcheck.core.tree.Node
+    children:
+    - &id004 !!python/object:llmcheck.core.tree.Node
+      children:
+      - &id002 !!python/object:llmcheck.core.tree.Node
+        children:
+        - &id001 !!python/object:llmcheck.core.tree.Node
+          children:
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Information enhances the productivity of several sectors through
+              mechanization, examining data, and offering viewpoints for more informed
+              decision-making.
+            middle_state: Knowledge enhances the productivity of several sectors through
+              mechanization, scrutinizing statistics, and providing perspectives for
+              more knowledgeable choice-making.
+            operation: !!python/tuple
+            - replace all nouns with synonyms
+            - replace all synonyms with the original nouns
+            parent: *id001
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Automation facilitates the examination of data and offers viewpoints
+              for more informed decision-making, which in turn boosts the efficiency
+              of multiple industries through a deeper understanding.
+            middle_state: Automation, examining data, and offering viewpoints for
+              more informed decision-making are facilitated by understanding, thus
+              boosting the efficiency of multiple industries.
+            operation: !!python/tuple
+            - convert to passive voice
+            - convert back to active voice
+            parent: *id001
+          content: Understanding boosts the efficiency of multiple industries via
+            automation, examining data, and offering viewpoints for more informed
+            decision-making.
+          middle_state: Understanding boosts the efficiency of multiple industries
+            via automation, analyzing statistics, and providing perspectives for more
+            enlightened choice-making.
+          operation: !!python/tuple
+          - replace all nouns with synonyms
+          - replace all synonyms with the original nouns
+          parent: *id002
+        - &id003 !!python/object:llmcheck.core.tree.Node
+          children:
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Automation, examination of data, and provision of viewpoints
+              enhance comprehension to enable more informed choice-making.
+            middle_state: Automation, scrutiny of information, and furnishing of perspectives
+              boost understanding to empower more enlightened decision-taking.
+            operation: !!python/tuple
+            - replace all nouns with synonyms
+            - replace all synonyms with the original nouns
+            parent: *id003
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Mechanization, examination of data, and provision of viewpoints
+              elevate knowledge to enable more informed decision-making.
+            middle_state: Knowledge is elevated by mechanization, examination of data,
+              and provision of viewpoints to enable more informed decision-making.
+            operation: !!python/tuple
+            - convert to passive voice
+            - convert back to active voice
+            parent: *id003
+          content: Mechanization, examination of data, and provision of viewpoints
+            elevate knowledge to enable more informed decision-making.
+          middle_state: Knowledge is elevated by mechanization, examination of data,
+            and provision of viewpoints for more informed decision-making.
+          operation: !!python/tuple
+          - convert to passive voice
+          - convert back to active voice
+          parent: *id002
+        content: Knowledge elevates the productivity of various sectors through mechanization,
+          examining data, and giving viewpoints for more informed decision-making.
+        middle_state: Wisdom elevates the efficiency of various industries via automation,
+          analyzing statistics, and providing perspectives for more enlightened decision-making.
+        operation: !!python/tuple
+        - replace all nouns with synonyms
+        - replace all synonyms with the original nouns
+        parent: *id004
+      - &id006 !!python/object:llmcheck.core.tree.Node
+        children:
+        - &id005 !!python/object:llmcheck.core.tree.Node
+          children:
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Intelligence carries out equipment to boost the productivity
+              of several businesses, analyzing data, and conveys viewpoints for more
+              informed decision-making.
+            middle_state: Witfulness carries out machinery to boost the productivity
+              of numerous industries, analyzing statistics, and transmits perspectives
+              for more knowledgeable choice-making.
+            operation: !!python/tuple
+            - replace all nouns with synonyms
+            - replace all synonyms with the original nouns
+            parent: *id005
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Technology executes the operations of increasing the efficiency
+              of various sectors through intelligence, examining data, and conveying
+              viewpoints for more informed decision-making.
+            middle_state: Technology is executed by intelligence to increase the efficiency
+              of various sectors, with data examined, and viewpoints conveyed for
+              more informed decision-making.
+            operation: !!python/tuple
+            - convert to passive voice
+            - convert back to active voice
+            parent: *id005
+          content: Intelligence executes technology to increase the efficiency of
+            various sectors, examining data, and conveys viewpoints for more informed
+            decision-making.
+          middle_state: Cleverness executes automation to increase the efficiency
+            of various industries, scrutinizing statistics, and conveys perspectives
+            for more enlightened decision-making.
+          operation: !!python/tuple
+          - replace all nouns with synonyms
+          - replace all synonyms with the original nouns
+          parent: *id006
+        - &id007 !!python/object:llmcheck.core.tree.Node
+          children:
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Knowledge conducts automation to enhance the efficiency of multiple
+              industries, examines data, and presents viewpoints for more informed
+              decision-making.
+            middle_state: Wisdom conducts automation to enhance the efficiency of
+              multiple industries, scrutinizes statistics, and presents perspectives
+              for more enlightened choice-making.
+            operation: !!python/tuple
+            - replace all nouns with synonyms
+            - replace all synonyms with the original nouns
+            parent: *id007
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Intelligence carries out mechanization to boost the productivity
+              of numerous sectors, examines the numbers, and delivers viewpoints for
+              more informed decision-making.
+            middle_state: Mechanization is carried out by intelligence to boost the
+              productivity of numerous sectors, numbers are examined, and viewpoints
+              are delivered for more informed decision-making.
+            operation: !!python/tuple
+            - convert to passive voice
+            - convert back to active voice
+            parent: *id007
+          content: Intelligence carries out mechanization to boost the productivity
+            of numerous sectors, examines numbers, and delivers viewpoints for more
+            informed decision-making.
+          middle_state: Mechanization is carried out by intelligence to boost the
+            productivity of numerous sectors, examining numbers, and deliver viewpoints
+            for more informed decision-making.
+          operation: !!python/tuple
+          - convert to passive voice
+          - convert back to active voice
+          parent: *id006
+        content: Intelligence carries out mechanization to boost the productivity
+          of numerous sectors, examining numbers, and delivers viewpoints for more
+          informed decision-making.
+        middle_state: Mechanization is carried out by intelligence to boost the productivity
+          of numerous sectors, examining numbers, and deliver viewpoints for more
+          informed decision-making.
+        operation: !!python/tuple
+        - convert to passive voice
+        - convert back to active voice
+        parent: *id004
+      content: Intelligence boosts the productivity of numerous sectors through mechanization,
+        examining numbers, and delivering viewpoints for more informed decision-making.
+      middle_state: Synthetic intellect boosts the productivity of numerous sectors
+        through mechanization, examining statistics, and delivering perspectives for
+        more informed choice-making.
+      operation: !!python/tuple
+      - replace all nouns with synonyms
+      - replace all synonyms with the original nouns
+      parent: *id008
+    - &id012 !!python/object:llmcheck.core.tree.Node
+      children:
+      - &id010 !!python/object:llmcheck.core.tree.Node
+        children:
+        - &id009 !!python/object:llmcheck.core.tree.Node
+          children:
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Training, investigation, and sharing of knowledge improve machine
+              intelligence to achieve better decision-making in various industries.
+            middle_state: Process fine-tuning, examination of information, and dissemination
+              of wisdom enhance artificial cognition to perfect problem-solving across
+              diverse sectors.
+            operation: !!python/tuple
+            - replace all nouns with synonyms
+            - replace all synonyms with the original nouns
+            parent: *id009
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Process optimization, analysis of data, and communication of
+              knowledge improve artificial intelligence, enabling it to refine decision-making
+              across various industries.
+            middle_state: Artificial intelligence is improved by process optimization,
+              analysis of data, and communication of knowledge to refine decision-making
+              across various industries.
+            operation: !!python/tuple
+            - convert to passive voice
+            - convert back to active voice
+            parent: *id009
+          content: Process optimization, analysis of data, and communication of knowledge
+            improve artificial intelligence to refine decision-making across various
+            industries.
+          middle_state: Automation of processes, examination of information, and dissemination
+            of insight enhance machine learning to fine-tune problem-solving across
+            diverse sectors.
+          operation: !!python/tuple
+          - replace all nouns with synonyms
+          - replace all synonyms with the original nouns
+          parent: *id010
+        - &id011 !!python/object:llmcheck.core.tree.Node
+          children:
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Computing enhances the automation of processes, analysis of data,
+              and sharing of knowledge to improve decision-making across multiple
+              industries.
+            middle_state: Digital computing enhances the automation of processes,
+              examination of information, and dissemination of insight to improve
+              judgment-making across multiple sectors.
+            operation: !!python/tuple
+            - replace all nouns with synonyms
+            - replace all synonyms with the original nouns
+            parent: *id011
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Artificial intelligence boosts tasks through mechanization, analyzes
+              data, and provides knowledge to refine decision-making in various industries.
+            middle_state: Artificial intelligence is boosted by the mechanization
+              of tasks, analysis of data, and provision of knowledge to refine decision-making
+              in various industries.
+            operation: !!python/tuple
+            - convert to passive voice
+            - convert back to active voice
+            parent: *id011
+          content: Artificial intelligence boosts the mechanization of tasks, analysis
+            of data, and provision of knowledge to refine decision-making in various
+            industries.
+          middle_state: Mechanization of tasks, analysis of data, and provision of
+            knowledge are boosted by artificial intelligence to refine decision-making
+            in various industries.
+          operation: !!python/tuple
+          - convert to passive voice
+          - convert back to active voice
+          parent: *id010
+        content: Mechanization of tasks, analysis of data, and provision of knowledge
+          boost artificial intelligence to refine decision-making in various industries.
+        middle_state: Mechanization of chores, examination of statistics, and furnishing
+          of understandings boost machine cognition to refine choice-making in assorted
+          sectors.
+        operation: !!python/tuple
+        - replace all nouns with synonyms
+        - replace all synonyms with the original nouns
+        parent: *id012
+      - &id014 !!python/object:llmcheck.core.tree.Node
+        children:
+        - &id013 !!python/object:llmcheck.core.tree.Node
+          children:
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Automation of tasks, examination of data, and provision of understanding
+              are amplified through machine learning to enhance decision-making in
+              various industries.
+            middle_state: Automation of duties, scrutiny of information, and furnishing
+              of insight are amplified through machine learning to augment judgment-making
+              in diverse sectors.
+            operation: !!python/tuple
+            - replace all nouns with synonyms
+            - replace all synonyms with the original nouns
+            parent: *id013
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Artificial intelligence enhances the mechanization of tasks,
+              analysis of data, and provision of knowledge for improving decision-making
+              in various industries.
+            middle_state: Artificial intelligence is used to enhance mechanization
+              of tasks, analysis of data, and provision of knowledge for improving
+              decision-making in various industries.
+            operation: !!python/tuple
+            - convert to passive voice
+            - convert back to active voice
+            parent: *id013
+          content: Mechanization of tasks, analysis of data, and provision of knowledge
+            are enhanced through artificial intelligence to improve decision-making
+            in various industries.
+          middle_state: Mechanization of chores, examination of statistics, and furnishing
+            of understandings are enhanced through synthetic intellect to elevate
+            choice-making in diverse sectors.
+          operation: !!python/tuple
+          - replace all nouns with synonyms
+          - replace all synonyms with the original nouns
+          parent: *id014
+        - &id015 !!python/object:llmcheck.core.tree.Node
+          children:
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Modernization of tasks, examination of data, and provision of
+              instruction are amplified by artificial intelligence to enhance decision-making
+              across many fields.
+            middle_state: Modernization of chores, examination of information, and
+              furnishing of knowledge are amplified by machine learning to augment
+              problem-solving across numerous sectors.
+            operation: !!python/tuple
+            - replace all nouns with synonyms
+            - replace all synonyms with the original nouns
+            parent: *id015
+          - !!python/object:llmcheck.core.tree.Node
+            children: []
+            content: Automation of tasks, analysis of data, and provision of insights
+              enhance decision-making in various industries through the enhancement
+              by artificial intelligence.
+            middle_state: Automation of tasks, analysis of data, and provision of
+              insights are enhanced by artificial intelligence to improve decision-making
+              in various industries.
+            operation: !!python/tuple
+            - convert to passive voice
+            - convert back to active voice
+            parent: *id015
+          content: Automation of tasks, analysis of data, and provision of insights
+            are enhanced through artificial intelligence to improve decision-making
+            in various industries.
+          middle_state: Automation of tasks, analysis of data, and provision of insights
+            are improved by artificial intelligence to enhance decision-making in
+            various industries.
+          operation: !!python/tuple
+          - convert to passive voice
+          - convert back to active voice
+          parent: *id014
+        content: Automation of tasks, analysis of data, and provision of insights
+          are improved through artificial intelligence to enhance decision-making
+          in various industries.
+        middle_state: Automation of tasks, analysis of data, and provision of insights
+          are enhanced by artificial intelligence to improve decision-making in various
+          industries.
+        operation: !!python/tuple
+        - convert to passive voice
+        - convert back to active voice
+        parent: *id012
+      content: Automation of tasks, analysis of data, and provision of insights enhance
+        artificial intelligence to improve decision-making in various industries.
+      middle_state: Artificial intelligence is enhanced by automation of tasks, analysis
+        of data, and provision of insights to improve decision-making in various industries.
+      operation: !!python/tuple
+      - convert to passive voice
+      - convert back to active voice
+      parent: *id008
+    content: Artificial intelligence enhances the efficiency of various industries
+      by automating tasks, analyzing data, and providing insights for better decision-making.
+    middle_state: null
+    operation: null
+    parent: null
