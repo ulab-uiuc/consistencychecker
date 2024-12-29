@@ -3,7 +3,7 @@ import yaml
 from datetime import datetime
 from llmcheck.core.evaluator import LLMCheck
 
-def cli():
+def cli() -> None:
     parser = argparse.ArgumentParser(description="Run LLMCheck evaluations with YAML configurations.")
     parser.add_argument(
         "--config", type=str, required=True, 

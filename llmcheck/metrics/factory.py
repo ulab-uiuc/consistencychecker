@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Union
+from typing import Dict, Optional, Union, Any
 from pydantic import BaseModel
 from llmcheck.metrics.base import BaseSimilarityMetric
 from llmcheck.metrics.huggingface import HuggingFaceSimilarity
@@ -14,7 +14,7 @@ class SimilarityConfig(BaseModel):
 
 class SimilarityFactory:
     @staticmethod
-    def create_metric(config: Union[Dict, SimilarityConfig]) -> BaseSimilarityMetric:
+    def create_metric(config: Union[Dict[str, Any], SimilarityConfig]) -> BaseSimilarityMetric:
         if isinstance(config, dict):
             config = SimilarityConfig(**config)
             
@@ -26,7 +26,7 @@ class SimilarityFactory:
         elif config.type == "api":
             return APIBasedSimilarity(
                 model=config.model_name,
-                api_base=config.api_base
+                api_base=config.api_base if config.api_base else ""
             )
         else:
             raise ValueError(f"Unknown similarity metric type: {config.type}")

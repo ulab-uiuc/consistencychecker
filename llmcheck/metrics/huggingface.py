@@ -17,6 +17,7 @@ class HuggingFaceSimilarity(BaseSimilarityMetric):
         with torch.no_grad():
             outputs = self.model(**tokens)
             embeddings = outputs.last_hidden_state.mean(dim=1)
+            assert isinstance(embeddings, torch.Tensor)
         return embeddings
     
     def calculate_similarity(self, text1: str, text2: str) -> float:
@@ -24,7 +25,9 @@ class HuggingFaceSimilarity(BaseSimilarityMetric):
         similarity = torch.nn.functional.cosine_similarity(
             embeddings[0], embeddings[1], dim=0
         )
-        return similarity.item()
+        return_float = similarity.item()
+        assert isinstance(return_float, float)
+        return return_float
     
     def batch_similarity(self, texts1: List[str], texts2: List[str]) -> List[float]:
         if len(texts1) != len(texts2):
@@ -34,4 +37,6 @@ class HuggingFaceSimilarity(BaseSimilarityMetric):
         embeddings2 = self._get_embeddings(texts2)
         
         similarities = torch.nn.functional.cosine_similarity(embeddings1, embeddings2)
-        return similarities.tolist()
+        similarities_list = similarities.tolist()
+        assert isinstance(similarities_list, list)
+        return similarities_list

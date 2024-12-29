@@ -12,7 +12,7 @@ class APIBasedSimilarity(BaseSimilarityMetric):
             print(f"[INFO] Overriding API embedding model with set value: {model}")
         self.api_base = api_base
 
-    def _get_embedding(self, text: str) -> np.ndarray:
+    def _get_embedding(self, text: str) -> np.ndarray[float, np.dtype[np.float64]]:
         """Fetch the embedding vector for a given text using the specified model."""
         if self.api_base:
             response = litellm.embedding(
@@ -46,7 +46,9 @@ class APIBasedSimilarity(BaseSimilarityMetric):
             raise ValueError("Zero vector encountered in embeddings.")
         
         similarity = dot_product / (norm1 * norm2)
-        return similarity.item()
+        similarity_float = similarity.item()
+        assert isinstance(similarity_float, float)
+        return similarity_float
 
     def batch_similarity(self, texts1: List[str], texts2: List[str]) -> List[float]:
         """Calculate similarities for multiple pairs of texts."""

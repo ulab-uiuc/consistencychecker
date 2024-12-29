@@ -7,13 +7,13 @@ class Node:
     operation: Optional[tuple[str, str]] = None  # (transform, reverse)
     middle_state: Optional[str] = None  # Store the intermediate transformed state
     parent: Optional['Node'] = None
-    children: List['Node'] = None
+    children: List['Node'] = []
     
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.children is None:
             self.children = []
     
-    def add_child(self, content: str, middle_state: str, operation: tuple[str, str]):
+    def add_child(self, content: str, middle_state: str, operation: tuple[str, str]) -> 'Node':
         child = Node(
             content=content,
             operation=operation,
@@ -27,7 +27,7 @@ class EvaluationTree:
     def __init__(self, root_content: str):
         self.root = Node(content=root_content)
         
-    def add_child(self, parent: Node, content: str, middle_state: str, operation: tuple[str, str]):
+    def add_child(self, parent: Node, content: str, middle_state: str, operation: tuple[str, str]) -> Node:
         child = Node(
             content=content,
             operation=operation,

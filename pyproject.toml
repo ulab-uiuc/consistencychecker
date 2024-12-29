@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "python-project-template"
+name = "llmcheck"
 version = "0.0.1"
 description = "A template for python-based research project"
-authors = ["Haofei Yu <yuhaofei44@gmail.com>"]
+authors = ["Zhaochen Hong <timsanders256@gmail.com>"]
 license = "Apache 2.0 License"
 readme = "README.md"
 
@@ -12,12 +12,23 @@ python = ">=3.8, <3.12"
 mypy = "^1.8.0"
 beartype = "*"
 pydantic = "^2.8.2"
+litellm = "^1.49.7"
+numpy = "<2.0.0"
+transformers = "^4.45.1"
+torch = ">=2.2.0,<2.3.0"
 
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "*"
 nbmake = "*"
 types-setuptools = "*"
+types-tqdm = "*"
+types-PyYAML = "*"
+ruff = "*"
+
+
+[tool.poetry.scripts]
+llmcheck = "llmcheck.cli:cli"
 
 [tool.poetry.group.test.dependencies]
 pytest = "*"

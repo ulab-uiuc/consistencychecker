@@ -1,4 +1,4 @@
-from typing import Dict, Union, List, Tuple
+from typing import Dict, Union, List, Tuple, Any
 from dataclasses import dataclass
 import litellm
 from llmcheck.core.tree import EvaluationTree, Node
@@ -6,18 +6,11 @@ from llmcheck.core.operations import OperationGenerator
 from llmcheck.metrics.factory import SimilarityFactory, SimilarityConfig
 from tqdm import tqdm
 
-# @dataclass
-# class EvaluationMetrics:
-#     level_similarities: Dict[int, float]  # Level -> Average similarity
-#     parent_child_similarities: List[float]
-#     root_to_leaf_similarities: List[float]
-#     middle_state_similarities: List[Tuple[float, float]]  # (orig->middle, middle->final)
-
 class LLMCheck:
     def __init__(self,
                  evaluator_model: str,
                  target_model: str,
-                 similarity_config: Union[Dict, SimilarityConfig],
+                 similarity_config: Union[Dict[str, Any], SimilarityConfig],
                  evaluator_api_base: str = "",
                  target_api_base: str = "",
                  max_depth: int = 3,
@@ -47,9 +40,11 @@ class LLMCheck:
                 model=self.evaluator_model,
                 messages=[{"role": "user", "content": constraints}]
             )
-        return response.choices[0].message.content
+        response_str = response.choices[0].message.content
+        assert isinstance(response_str, str)
+        return response_str
         
-    def evaluate(self, constraints: str, distance: List[int], root: str = "", operations: List[Tuple[int, int]] = []) -> Dict:
+    def evaluate(self, constraints: str, distance: List[int], root: str = "", operations: List[Tuple[str, str]] = []) -> Dict[str, Any]:
         if root:
             root_content = root
             print(f"[INFO] Overriding root content with set value: {root_content}")
@@ -72,12 +67,11 @@ class LLMCheck:
         return {
             "tree": tree,
             "root_content": root_content,
-            "operations": operations,
-            # "tree_str": tree_str,
+            "operations": operations,\
             "metrics": metrics
         }
     
-    def _build_tree(self, node: Node, operations: List[Tuple[str, str]], depth: int):
+    def _build_tree(self, node: Node, operations: List[Tuple[str, str]], depth: int) -> None:
         if depth >= self.max_depth:
             return
             
@@ -131,9 +125,11 @@ class LLMCheck:
                     )}
                 ]
             )
-        return response.choices[0].message.content
-
-    def _str_tree(self, node, prefix="", is_last=True) -> str:
+        response_str = response.choices[0].message.content
+        assert isinstance(response_str, str)
+        return response_str
+    
+    def _str_tree(self, node: Node, prefix: str = "", is_last: bool = True) -> str:
         result = ""
         marker = "└─ " if is_last else "├─ "
         result += prefix + marker + f"Content: {node.content}\n"
@@ -148,7 +144,7 @@ class LLMCheck:
             result += self._str_tree(child, new_prefix, i == len(node.children) - 1)
         return result
 
-    def _gather_all_nodes(self, root):
+    def _gather_all_nodes(self, root: Node) -> List[Node]:
         result = []
         queue = [root]
         while queue:
@@ -157,9 +153,9 @@ class LLMCheck:
             queue.extend(current.children)
         return result
     
-    def _calculate_metrics(self, tree: EvaluationTree, distance: List[int] = [1, 2, 3]) -> Dict[str, float]:
+    def _calculate_metrics(self, tree: EvaluationTree, distance: List[int] = [1, 2, 3]) -> Dict[str, Any]:
 
-        metric_result = {}
+        metric_result: Dict[str, Any] = {}
         for dist in distance:
             node_pairs = []
             for start_node in self._gather_all_nodes(tree.root):
