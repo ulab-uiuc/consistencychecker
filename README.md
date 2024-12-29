@@ -1,6 +1,11 @@
-# LLMCheck
+![llmcheck](./llmcheck.png)
 
-🌳 Tree-based LLM self-consistency evaluation through transform-reverse operations.
+<h1 align="center">LLMCheck</h1>
+
+![Python Versions](https://img.shields.io/badge/Supported%20Python-3.8--3.11-blue)
+![Mypy Checked](https://img.shields.io/badge/Mypy-Checked-brightgreen)
+![isort Checked](https://img.shields.io/badge/isort-Checked-brightgreen)
+![ruff Checked](https://img.shields.io/badge/ruff-Checked-brightgreen)
 
 ## Introduction
 
@@ -11,8 +16,6 @@ LLMCheck is a Python package that evaluates Large Language Models (LLMs) through
 - 🤖 Support for both API-based (via LiteLLM) and local LLM evaluation
 - 🌲 Tree-based evaluation structure with customizable depth and branching
 - 📊 Multiple similarity metrics for consistency evaluation
-- 🛠️ Robust error handling and retry mechanisms
-- 📈 Rich visualization of evaluation results
 - 🧰 CLI tool for easy evaluation
 
 ## Usage
@@ -26,9 +29,19 @@ Simply use ```llmcheck``` as a cli tool. There are two parameters:
 
 The acceptable config file format is a little bit complicated but it is explained in ```config.yaml``` file. To avoid outputs writing on top of each other, we default the result file to be tagged with the current time.
 
+One example of the usage is:
+
+```bash
+llmcheck --config config.yaml --result result.yaml
+```
+
 ## LLM Options
 
-As we use`litellm` to connect to the LLM, you will have access to all the models that `litellm` supports.
+As we use`litellm` to connect to the LLM, you will have access to all the models that `litellm` supports. You should set API keys as environment variables. For example, to use OpenAI's GPT-4, you should set
+
+```bash
+export OPENAI_API_KEY=your_api_key
+```
 
 ## Ollama
 
