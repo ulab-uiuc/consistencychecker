@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Optional
+from dataclasses import field
 
 @dataclass
 class Node:
@@ -7,12 +8,12 @@ class Node:
     operation: Optional[tuple[str, str]] = None  # (transform, reverse)
     middle_state: Optional[str] = None  # Store the intermediate transformed state
     parent: Optional['Node'] = None
-    children: List['Node'] = []
-    
+    children: List['Node'] = field(default_factory=list)
+
     def __post_init__(self) -> None:
         if self.children is None:
             self.children = []
-    
+
     def add_child(self, content: str, middle_state: str, operation: tuple[str, str]) -> 'Node':
         child = Node(
             content=content,
@@ -26,7 +27,7 @@ class Node:
 class EvaluationTree:
     def __init__(self, root_content: str):
         self.root = Node(content=root_content)
-        
+
     def add_child(self, parent: Node, content: str, middle_state: str, operation: tuple[str, str]) -> Node:
         child = Node(
             content=content,

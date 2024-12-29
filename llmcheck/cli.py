@@ -1,12 +1,15 @@
 import argparse
-import yaml
 from datetime import datetime
+
+import yaml
+
 from llmcheck.core.evaluator import LLMCheck
+
 
 def cli() -> None:
     parser = argparse.ArgumentParser(description="Run LLMCheck evaluations with YAML configurations.")
     parser.add_argument(
-        "--config", type=str, required=True, 
+        "--config", type=str, required=True,
         help="Path to the YAML configuration file."
     )
     parser.add_argument(

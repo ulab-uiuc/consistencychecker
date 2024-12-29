@@ -17,7 +17,7 @@ similarity_config:
 #   model_name: "google-bert/bert-base-uncased"
 #   device: "cuda"
 
-# sadly however, ollama does not currently provide openai-like embedding apis; 
+# sadly however, ollama does not currently provide openai-like embedding apis;
 # or I will have the huggingface/torch access mode removed just use apis instead
 
 # max depth of the self-consistency tree

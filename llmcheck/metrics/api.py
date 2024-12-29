@@ -1,11 +1,14 @@
-from typing import List, Optional
-import numpy as np
+from typing import List
+
 import litellm
+import numpy as np
+
 from llmcheck.metrics.base import BaseSimilarityMetric
 
+
 class APIBasedSimilarity(BaseSimilarityMetric):
-    def __init__(self, 
-                 model: str = "text-embedding-ada-002", 
+    def __init__(self,
+                 model: str = "text-embedding-ada-002",
                  api_base: str = ""):
         self.model = model
         if api_base:
@@ -41,10 +44,10 @@ class APIBasedSimilarity(BaseSimilarityMetric):
         dot_product = np.dot(embedding1, embedding2)
         norm1 = np.linalg.norm(embedding1)
         norm2 = np.linalg.norm(embedding2)
-        
+
         if norm1 == 0 or norm2 == 0:
             raise ValueError("Zero vector encountered in embeddings.")
-        
+
         similarity = dot_product / (norm1 * norm2)
         similarity_float = similarity.item()
         assert isinstance(similarity_float, float)

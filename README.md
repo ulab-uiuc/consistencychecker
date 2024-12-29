@@ -15,6 +15,13 @@ LLMCheck is a Python package that evaluates Large Language Models (LLMs) through
 - 📈 Rich visualization of evaluation results
 - 🧰 CLI tool for easy evaluation
 
+## Usage
+
+Simply use ```llmcheck``` as a cli tool. There are two parameters:
+
+```
+```
+
 ## LLM Options
 
 As we use`litellm` to connect to the LLM, you will have access to all the models that `litellm` supports.

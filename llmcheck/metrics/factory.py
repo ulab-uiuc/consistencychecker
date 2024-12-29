@@ -1,8 +1,11 @@
-from typing import Dict, Optional, Union, Any
+from typing import Any, Dict, Optional, Union
+
 from pydantic import BaseModel
+
+from llmcheck.metrics.api import APIBasedSimilarity
 from llmcheck.metrics.base import BaseSimilarityMetric
 from llmcheck.metrics.huggingface import HuggingFaceSimilarity
-from llmcheck.metrics.api import APIBasedSimilarity
+
 
 class SimilarityConfig(BaseModel):
     type: str
@@ -17,7 +20,7 @@ class SimilarityFactory:
     def create_metric(config: Union[Dict[str, Any], SimilarityConfig]) -> BaseSimilarityMetric:
         if isinstance(config, dict):
             config = SimilarityConfig(**config)
-            
+
         if config.type == "huggingface":
             return HuggingFaceSimilarity(
                 model_name=config.model_name,
