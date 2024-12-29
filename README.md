@@ -20,7 +20,11 @@ LLMCheck is a Python package that evaluates Large Language Models (LLMs) through
 Simply use ```llmcheck``` as a cli tool. There are two parameters:
 
 ```
+--config: path to the config file, which is yaml format
+--result: path to the result file, which is also in yaml format
 ```
+
+The acceptable config file format is a little bit complicated but it is explained in ```config.yaml``` file. To avoid outputs writing on top of each other, we default the result file to be tagged with the current time.
 
 ## LLM Options
 

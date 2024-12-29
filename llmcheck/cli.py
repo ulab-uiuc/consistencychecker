@@ -13,7 +13,8 @@ def cli() -> None:
         help="Path to the YAML configuration file."
     )
     parser.add_argument(
-        "--result", type=str, required=False, default=f"results-{datetime.now().strftime('%Y-%m-%d-%H:%M:%S')}.yaml",
+        "--result", type=str, required=False,
+        default=f"results-{datetime.now().astimezone().strftime('%Y-%m-%d-%H:%M:%S')}.yaml",
         help="Path to the output file for the results."
     )
     args = parser.parse_args()
