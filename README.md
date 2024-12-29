@@ -20,7 +20,19 @@ LLMCheck is a Python package that evaluates Large Language Models (LLMs) through
 
 ## Usage
 
-Simply use ```llmcheck``` as a cli tool. There are two parameters:
+The dependencies are managed by `poetry`. First, install poetry by running:
+
+```bash
+pip install poetry
+```
+
+To install the dependencies, run:
+
+```bash
+poetry install
+```
+
+Then simply use ```llmcheck``` as a cli tool. There are two parameters:
 
 ```
 --config: path to the config file, which is yaml format
