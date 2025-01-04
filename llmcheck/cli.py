@@ -39,7 +39,8 @@ def cli() -> None:
         target_api_base=config.get("target").get("api_base"),
         similarity_config=similarity_config,
         max_depth=config.get("max_depth"),
-        n_operations=config.get("n_operations")
+        n_operations=config.get("n_operations"),
+        operation_format_enforce_prompt=config.get("operation_format_enforce_prompt", "")
     )
 
     # Run evaluation
@@ -53,7 +54,7 @@ def cli() -> None:
 
     # Save results to YAML file
     with open(args.result, "w") as file:
-        yaml.dump(results, file, default_flow_style=False)
+        yaml.dump(results, file, default_flow_style=False, sort_keys=False)
 
 
 if __name__ == "__main__":
