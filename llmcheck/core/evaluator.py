@@ -91,11 +91,23 @@ class LLMCheck:
                     continue
 
                 for transform, reverse in operations:
+                    current_node_dict = self._json_str_to_dict(current_node.content)
                     # Apply transform to get middle state
                     middle_state = self._apply_operation(current_node.content, transform, self.operation_format_enforce_prompt)
+                    middle_state_dict = self._json_str_to_dict(middle_state)
+                    middle_state_code = middle_state_dict["code"]
+                    middle_state_dict_updated = current_node_dict.copy()
+                    middle_state_dict_updated["code"] = middle_state_code
+                    middle_state_updated = self._dict_to_json_str(middle_state_dict_updated)
+                    middle_state= f"```json\n{middle_state_updated}\n```"
                     # Apply reverse to get final state
                     final_state = self._apply_operation(middle_state, reverse, self.operation_format_enforce_prompt)
-
+                    final_state_dict = self._json_str_to_dict(final_state)
+                    final_state_code = final_state_dict["code"]
+                    final_state_dict_updated = current_node_dict.copy()
+                    final_state_dict_updated["code"] = final_state_code
+                    final_state_updated = self._dict_to_json_str(final_state_dict_updated)
+                    final_state = f"```json\n{final_state_updated}\n```"
                     child = current_node.add_child(
                         content=final_state,
                         middle_state=middle_state,
@@ -159,6 +171,14 @@ class LLMCheck:
             queue.extend(current.children)
         return result
 
+    def _json_str_to_dict(self, json_str: str) -> Dict[str, Any]:
+        json_str = json_str.replace("```json\n", "").replace("```JSON\n", "").replace("```", "").strip("\n")
+        result_dict: Dict[str, Any] = eval(json_str)
+        return result_dict
+
+    def _dict_to_json_str(self, content_dict: Dict[str, Any]) -> str:
+        return str(content_dict)
+
     def _calculate_metrics(self, tree: EvaluationTree, distance: List[int] = [1, 2, 3]) -> Dict[str, Any]:
 
         metric_result: Dict[str, Any] = {}
@@ -179,11 +199,9 @@ class LLMCheck:
                 with tqdm(total=len(node_pairs), desc=f"L-{dist} AVG Similarity") as pbar:
                     for a, b in node_pairs:
                         # remove JSON code block and elicit JSON string
-                        a_content: str = a.content.replace("```json\n", "").replace("```", "").strip("\n")
-                        a_content_dict: Dict[str, Any] = eval(a_content)
+                        a_content_dict: Dict[str, Any] = self._json_str_to_dict(a.content)
                         a_vf: VerifiableFunction = VerifiableFunction(**a_content_dict)
-                        b_content: str = b.content.replace("```json\n", "").replace("```", "").strip("\n")
-                        b_content_dict: Dict[str, Any] = eval(b_content)
+                        b_content_dict: Dict[str, Any] = self._json_str_to_dict(b.content)
                         b_vf: VerifiableFunction = VerifiableFunction(**b_content_dict)
                         a_exec_results_str: str = f"{a_vf.exec()}"
                         b_exec_results_str: str = f"{b_vf.exec()}"
