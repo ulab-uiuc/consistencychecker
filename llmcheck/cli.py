@@ -53,7 +53,7 @@ def cli() -> None:
 
     # Save results to YAML file
     with open(args.result, "w") as file:
-        yaml.dump(results, file, default_flow_style=False)
+        yaml.dump(results, file, default_flow_style=False, sort_keys=False)
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from typing import List, Any
+from typing import Any, List
+
 
 @dataclass
 class VerifiableFunction:
@@ -7,7 +8,7 @@ class VerifiableFunction:
     programming_language: str
     inputs: List[dict[str, Any]] # kwargs for the function
     description: str  # New property to store the function description
-    
+
     def __str__(self) -> str:
         """Pretty print the function details"""
         return (
@@ -22,7 +23,7 @@ class VerifiableFunction:
         try:
             if self.programming_language != "python3":
                 raise ValueError(f"Unsupported language: {self.programming_language}")
-            
+
             # Prepare the code for execution
             exec_globals: dict[str, Any] = {}
             exec(self.code, exec_globals)
@@ -31,7 +32,7 @@ class VerifiableFunction:
             main_func = exec_globals.get("main")
             if not main_func:
                 raise ValueError("No 'main' function found in the provided code.")
-            
+
             # If we have multiple inputs (a list of dicts), we'll call the function with each one
             results = []
             for input_dict in self.inputs:
