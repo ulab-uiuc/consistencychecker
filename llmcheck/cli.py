@@ -29,6 +29,7 @@ def cli() -> None:
     root = config.get("root", "")
     operations = config.get("operations", [])
     distance = config.get("distance")
+    prompt_template = config.get("prompt_template")
 
     # Initialize LLMCheck
     checker = LLMCheck(
@@ -44,6 +45,7 @@ def cli() -> None:
     # Run evaluation
     results = checker.evaluate(
         constraints=constraints,
+        prompt_template=prompt_template,
         root=root,
         operations=[tuple(op) for op in operations],
         distance=distance

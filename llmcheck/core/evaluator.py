@@ -46,7 +46,7 @@ class LLMCheck:
         assert isinstance(response_str, str)
         return response_str
 
-    def evaluate(self, constraints: str, distance: List[int], root: str = "", operations: List[Tuple[str, str]] = []) -> Dict[str, Any]:
+    def evaluate(self, constraints: str, prompt_template: str, distance: List[int], root: str = "", operations: List[Tuple[str, str]] = []) -> Dict[str, Any]:
         if root:
             root_content = root
             print(f"[INFO] Overriding root content with set value: {root_content}")
@@ -58,7 +58,8 @@ class LLMCheck:
             operations = operations[:self.n_operations]
             print(f"[INFO] Overriding operations with set value: {operations}")
         else:
-            operations = self.op_generator.generate_operations(self.n_operations)
+            prompt = prompt_template.format(n_operations=self.n_operations, root=root_content)
+            operations = self.op_generator.generate_operations(prompt, self.n_operations)
 
         self._build_tree(tree.root, operations, 0)
 
