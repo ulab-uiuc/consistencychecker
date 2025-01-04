@@ -6,6 +6,7 @@ from tqdm import tqdm
 from llmcheck.core.operations import OperationGenerator
 from llmcheck.core.tree import EvaluationTree, Node
 from llmcheck.metrics.factory import SimilarityConfig, SimilarityFactory
+from llmcheck.nodes.verifiable_function import VerifiableFunction
 
 
 class LLMCheck:
@@ -16,7 +17,8 @@ class LLMCheck:
                  evaluator_api_base: str = "",
                  target_api_base: str = "",
                  max_depth: int = 3,
-                 n_operations: int = 3):
+                 n_operations: int = 3,
+                 operation_format_enforce_prompt: str = "") -> None:
         self.evaluator_model = evaluator_model
         self.target_model = target_model
         self.max_depth = max_depth
@@ -29,6 +31,7 @@ class LLMCheck:
         self.target_api_base = target_api_base
         self.op_generator = OperationGenerator(evaluator_model)
         self.similarity_metric = SimilarityFactory.create_metric(similarity_config)
+        self.operation_format_enforce_prompt = operation_format_enforce_prompt
 
     def generate_root_content(self, constraints: str) -> str:
         if self.evaluator_api_base:
@@ -89,9 +92,9 @@ class LLMCheck:
 
                 for transform, reverse in operations:
                     # Apply transform to get middle state
-                    middle_state = self._apply_operation(current_node.content, transform)
+                    middle_state = self._apply_operation(current_node.content, transform, self.operation_format_enforce_prompt)
                     # Apply reverse to get final state
-                    final_state = self._apply_operation(middle_state, reverse)
+                    final_state = self._apply_operation(middle_state, reverse, self.operation_format_enforce_prompt)
 
                     child = current_node.add_child(
                         content=final_state,
@@ -102,14 +105,14 @@ class LLMCheck:
                     nodes_to_process.append((child, current_depth + 1))
                     pbar.update(1)
 
-    def _apply_operation(self, content: str, operation: str) -> str:
+    def _apply_operation(self, content: str, operation: str, tail_prompt: str) -> str:
         if self.target_api_base:
             response = litellm.completion(
                 model=self.target_model,
                 messages=[
                     {"role": "user", "content": (
                         "Please apply the following operation to the text:\n"
-                        f"Operation: {operation}\n"
+                        f"Operation: {operation}\n{tail_prompt}\n"
                         f"Text: {content}\n"
                         f"Please do not include anything other than the transformed text."
                     )}
@@ -175,7 +178,16 @@ class LLMCheck:
                 similarities = []
                 with tqdm(total=len(node_pairs), desc=f"L-{dist} AVG Similarity") as pbar:
                     for a, b in node_pairs:
-                        similarities.append(self.similarity_metric.calculate_similarity(a.content, b.content))
+                        # remove JSON code block and elicit JSON string
+                        a_content: str = a.content.replace("```json\n", "").replace("```", "").strip("\n")
+                        a_content_dict: Dict[str, Any] = eval(a_content)
+                        a_vf: VerifiableFunction = VerifiableFunction(**a_content_dict)
+                        b_content: str = b.content.replace("```json\n", "").replace("```", "").strip("\n")
+                        b_content_dict: Dict[str, Any] = eval(b_content)
+                        b_vf: VerifiableFunction = VerifiableFunction(**b_content_dict)
+                        a_exec_results_str: str = f"{a_vf.exec()}"
+                        b_exec_results_str: str = f"{b_vf.exec()}"
+                        similarities.append(self.similarity_metric.calculate_similarity(a_exec_results_str, b_exec_results_str))
                         pbar.update(1)
                 metric_result[f"L-{dist} AVG"] = sum(similarities)/len(similarities)
                 metric_result[f"L-{dist}"] = similarities
