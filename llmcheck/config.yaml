@@ -51,10 +51,10 @@ constraints: |
 
 prompt_template: |
   Generate {n_operations} pairs of transform-reverse operations for testing language model consistency.
-  Please make sure that these operations should be fit to perform on the root text: "{root}".
+  Please make sure that these operations should be fit to perform on the root text: "{root_code}".
   Each operation should modify the text and its reverse should restore it.
   Format each line as: "transform operation | reverse operation"
-  Example: "translate what \"main\" function returns to Japanese, and output the same JSON once and do not provide anything else. | translate what the \"main\" function returns to English, and output the same JSON once and do not provide anything else."
+  Example: "translate what \"main\" function returns to Japanese, and do not provide anything else. | translate what the \"main\" function returns to English, and do not provide anything else."
   Please try out what I have suggested above and then come up with your own ideas. Please avoid overly simple operations like "add a period | remove a period" or "capitalize the first letter | lowercase the first letter".
   Please start each line without '- ', '1. ', 'a. ', 'i. ', etc. Keep it simple and clear. Just the operation and its reverse.
   Please make sure in the operation to highlight that the transformation is target to the \"main\" function in the \"code\" key of the JSON text.
@@ -71,21 +71,11 @@ prompt_template: |
 #   - ["remove all adjectives", "restore the eliminated adjectives"]
 
 # optional
-operation_format_enforce_prompt: |
-  For the sake of parsing, please enclose your JSON response within a code block,
-  e.g. "```json\n{...}\n```". Please make sure that the JSON response is valid.
-  Your response should contain these keys:
-  - "code": the code that defines the function
-  - "programming_language": the programming language used in the code.
-                            In this case, it should be "python3".
-  - "inputs": the inputs that tests its functionality. It is a list of
-              dictionaries for the kwargs of the function. As we do not
-              have any inputs, it should be a list with only element, an
-              empty dictionary.
-  - "description": a brief description of the function. For instance, if
-                   the code is a solution to a LeetCode problem, the description
-                   should be the problem statement.
-  Do NOT include anything else.
+operation_code_format_enforce_prompt: |
+  For the sake of parsing, please enclose your code within a code block,
+  e.g. f"```{programming_language}\n{code}\n```". Please make sure that the code is valid.
+  And programming_language is the language for the code. For python code, it should be "python3".
+  For JavaScript code, it should be "javascript", etc. Do NOT include anything else.
 
 # evaluation parameters
 # "1" stands for L-1 AVG Similarity: the average similarity between direct parent-child node pairs

@@ -18,7 +18,7 @@ class LLMCheck:
                  target_api_base: str = "",
                  max_depth: int = 3,
                  n_operations: int = 3,
-                 operation_format_enforce_prompt: str = "") -> None:
+                 operation_code_format_enforce_prompt: str = "") -> None:
         self.evaluator_model = evaluator_model
         self.target_model = target_model
         self.max_depth = max_depth
@@ -31,7 +31,7 @@ class LLMCheck:
         self.target_api_base = target_api_base
         self.op_generator = OperationGenerator(evaluator_model)
         self.similarity_metric = SimilarityFactory.create_metric(similarity_config)
-        self.operation_format_enforce_prompt = operation_format_enforce_prompt
+        self.operation_code_format_enforce_prompt = operation_code_format_enforce_prompt
 
     def generate_root_content(self, constraints: str) -> str:
         if self.evaluator_api_base:
@@ -92,20 +92,21 @@ class LLMCheck:
 
                 for transform, reverse in operations:
                     current_node_dict = self._json_str_to_dict(current_node.content)
+                    current_node_code = current_node_dict["code"]
                     # Apply transform to get middle state
-                    middle_state = self._apply_operation(current_node.content, transform, self.operation_format_enforce_prompt)
-                    middle_state_dict = self._json_str_to_dict(middle_state)
-                    middle_state_code = middle_state_dict["code"]
+                    middle_state_code = self._apply_operation(current_node_code, transform, self.operation_code_format_enforce_prompt)
+                    middle_state_code_programming_language = middle_state_code.split("\n")[0].strip('```').strip().lower()
                     middle_state_dict_updated = current_node_dict.copy()
                     middle_state_dict_updated["code"] = middle_state_code
+                    middle_state_dict_updated["programming_language"] = middle_state_code_programming_language
                     middle_state_updated = self._dict_to_json_str(middle_state_dict_updated)
                     middle_state= f"```json\n{middle_state_updated}\n```"
                     # Apply reverse to get final state
-                    final_state = self._apply_operation(middle_state, reverse, self.operation_format_enforce_prompt)
-                    final_state_dict = self._json_str_to_dict(final_state)
-                    final_state_code = final_state_dict["code"]
+                    final_state_code = self._apply_operation(middle_state, reverse, self.operation_code_format_enforce_prompt)
+                    final_state_code_programming_language = final_state_code.split("\n")[0].strip('```').strip().lower()
                     final_state_dict_updated = current_node_dict.copy()
                     final_state_dict_updated["code"] = final_state_code
+                    final_state_dict_updated["programming_language"] = final_state_code_programming_language
                     final_state_updated = self._dict_to_json_str(final_state_dict_updated)
                     final_state = f"```json\n{final_state_updated}\n```"
                     child = current_node.add_child(
