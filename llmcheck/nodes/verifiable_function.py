@@ -8,6 +8,7 @@ class VerifiableFunction:
     programming_language: str
     inputs: List[dict[str, Any]] # kwargs for the function
     description: str  # New property to store the function description
+    exec_results: List[List[Any]] = []  # Store the results of the function execution
 
     def __str__(self) -> str:
         """Pretty print the function details"""
@@ -20,6 +21,8 @@ class VerifiableFunction:
 
     def exec(self) -> List[Any]:  # Return the results as they are without conversion to str
         """Execute the function and return outputs"""
+        if self.exec_results:
+            return self.exec_results
         try:
             if self.programming_language != "python3":
                 raise ValueError(f"Unsupported language: {self.programming_language}")

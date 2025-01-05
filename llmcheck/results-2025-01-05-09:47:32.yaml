@@ -1,0 +1,226 @@
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id001 !!python/object:llmcheck.core.tree.Node
+    content: '```json
+
+      {''code'': "def main():\n    return ''Artificial intelligence is transforming
+      industries by enabling machines to learn, adapt, and make decisions.''", ''programming_language'':
+      ''python3'', ''inputs'': [{}], ''description'': ''This function returns a simple
+      sentence about artificial intelligence in 20 words.'', ''exec_results'': "[''Artificial
+      intelligence is transforming industries by enabling machines to learn, adapt,
+      and make decisions.'']"}
+
+      ```'
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id002 !!python/object:llmcheck.core.tree.Node
+      content: '```json
+
+        {''code'': "def main():\n    return ''The text discusses how artificial intelligence
+        is changing industries through machine learning, adaptation, and decision-making
+        capabilities.''", ''programming_language'': ''python3'', ''inputs'': [{}],
+        ''description'': ''This function returns a simple sentence about artificial
+        intelligence in 20 words.'', ''exec_results'': "[''The text discusses how
+        artificial intelligence is changing industries through machine learning, adaptation,
+        and decision-making capabilities.'']"}
+
+        ```'
+      operation: !!python/tuple
+      - Replace the return value in the \"main\" function with a summary of the text
+        provided.
+      - Replace the return value in the \"main\" function with the original text.
+      middle_state: '```json
+
+        {''code'': "def main():\n    return ''The text discusses how artificial intelligence
+        is changing industries through machine learning, adaptation, and decision-making
+        capabilities.''", ''programming_language'': ''python3'', ''inputs'': [{}],
+        ''description'': ''This function returns a simple sentence about artificial
+        intelligence in 20 words.'', ''exec_results'': "[''The text discusses how
+        artificial intelligence is changing industries through machine learning, adaptation,
+        and decision-making capabilities.'']"}
+
+        ```'
+      parent: *id001
+      children:
+      - !!python/object:llmcheck.core.tree.Node
+        content: '```json
+
+          {''code'': "def main():\n    return ''The text discusses the impact of artificial
+          intelligence on various industries by highlighting the roles of machine
+          learning, adaptation, and improved decision-making.''", ''programming_language'':
+          ''python3'', ''inputs'': [{}], ''description'': ''This function returns
+          a simple sentence about artificial intelligence in 20 words.'', ''exec_results'':
+          "[''The text discusses how artificial intelligence is changing industries
+          through machine learning, adaptation, and decision-making capabilities.'']"}
+
+          ```'
+        operation: !!python/tuple
+        - Replace the return value in the \"main\" function with a summary of the
+          text provided.
+        - Replace the return value in the \"main\" function with the original text.
+        middle_state: '```json
+
+          {''code'': "def main():\n    return ''The text discusses the impact of artificial
+          intelligence on various industries by highlighting the roles of machine
+          learning, adaptation, and improved decision-making.''", ''programming_language'':
+          ''python3'', ''inputs'': [{}], ''description'': ''This function returns
+          a simple sentence about artificial intelligence in 20 words.'', ''exec_results'':
+          "[''The text discusses how artificial intelligence is changing industries
+          through machine learning, adaptation, and decision-making capabilities.'']"}
+
+          ```'
+        parent: *id002
+        children: []
+      - !!python/object:llmcheck.core.tree.Node
+        content: '```json
+
+          {''code'': "def main():\n    return ''The text discusses how artificial
+          intelligence is changing industries through machine learning, adaptation,
+          and decision-making capabilities.''.split(''.'')[0] + ''.'' + '' The text
+          discusses how artificial intelligence is changing industries through machine
+          learning, adaptation, and decision-making capabilities.''", ''programming_language'':
+          ''python3'', ''inputs'': [{}], ''description'': ''This function returns
+          a simple sentence about artificial intelligence in 20 words.'', ''exec_results'':
+          "[''The text discusses how artificial intelligence is changing industries
+          through machine learning, adaptation, and decision-making capabilities.'']"}
+
+          ```'
+        operation: !!python/tuple
+        - Extract the first sentence from the return value of the \"main\" function
+          and return it.
+        - Combine the first sentence extracted from the return value of the \"main\"
+          function back with the remaining text.
+        middle_state: '```json
+
+          {''code'': "def main():\n    return ''The text discusses how artificial
+          intelligence is changing industries through machine learning, adaptation,
+          and decision-making capabilities.''.split(''.'')[0] + ''.''", ''programming_language'':
+          ''python3'', ''inputs'': [{}], ''description'': ''This function returns
+          a simple sentence about artificial intelligence in 20 words.'', ''exec_results'':
+          "[''The text discusses how artificial intelligence is changing industries
+          through machine learning, adaptation, and decision-making capabilities.'']"}
+
+          ```'
+        parent: *id002
+        children: []
+    - &id003 !!python/object:llmcheck.core.tree.Node
+      content: '```json
+
+        {''code'': "def main():\n    return ''Artificial intelligence is transforming
+        industries by enabling machines to learn, adapt, and make decisions. Artificial
+        intelligence is transforming industries by enabling machines to learn, adapt,
+        and make decisions.''", ''programming_language'': ''python3'', ''inputs'':
+        [{}], ''description'': ''This function returns a simple sentence about artificial
+        intelligence in 20 words.'', ''exec_results'': "[''Artificial intelligence
+        is transforming industries by enabling machines to learn, adapt, and make
+        decisions.'']"}
+
+        ```'
+      operation: !!python/tuple
+      - Extract the first sentence from the return value of the \"main\" function
+        and return it.
+      - Combine the first sentence extracted from the return value of the \"main\"
+        function back with the remaining text.
+      middle_state: '```json
+
+        {''code'': "def main():\n    return ''Artificial intelligence is transforming
+        industries by enabling machines to learn, adapt, and make decisions.''.split(''.'')[0]",
+        ''programming_language'': ''python3'', ''inputs'': [{}], ''description'':
+        ''This function returns a simple sentence about artificial intelligence in
+        20 words.'', ''exec_results'': "[''Artificial intelligence is transforming
+        industries by enabling machines to learn, adapt, and make decisions.'']"}
+
+        ```'
+      parent: *id001
+      children:
+      - !!python/object:llmcheck.core.tree.Node
+        content: '```json
+
+          {''code'': "def main():\n    return ''Artificial intelligence is transforming
+          industries by enabling machines to learn, adapt, and make decisions.''",
+          ''programming_language'': ''python3'', ''inputs'': [{}], ''description'':
+          ''This function returns a simple sentence about artificial intelligence
+          in 20 words.'', ''exec_results'': "[''Artificial intelligence is transforming
+          industries by enabling machines to learn, adapt, and make decisions.'']"}
+
+          ```'
+        operation: !!python/tuple
+        - Replace the return value in the \"main\" function with a summary of the
+          text provided.
+        - Replace the return value in the \"main\" function with the original text.
+        middle_state: '```json
+
+          {''code'': "def main():\n    return ''Artificial intelligence is transforming
+          industries by enabling machines to learn, adapt, and make decisions.''",
+          ''programming_language'': ''python3'', ''inputs'': [{}], ''description'':
+          ''This function returns a simple sentence about artificial intelligence
+          in 20 words.'', ''exec_results'': "[''Artificial intelligence is transforming
+          industries by enabling machines to learn, adapt, and make decisions.'']"}
+
+          ```'
+        parent: *id003
+        children: []
+      - !!python/object:llmcheck.core.tree.Node
+        content: '```json
+
+          {''code'': "Artificial intelligence is transforming industries by enabling
+          machines to learn, adapt, and make decisions.\ndef main():\n    return ''Artificial
+          intelligence is transforming industries by enabling machines to learn, adapt,
+          and make decisions.''", ''programming_language'': ''python3'', ''inputs'':
+          [{}], ''description'': ''This function returns a simple sentence about artificial
+          intelligence in 20 words.'', ''exec_results'': "[''Artificial intelligence
+          is transforming industries by enabling machines to learn, adapt, and make
+          decisions.'']"}
+
+          ```'
+        operation: !!python/tuple
+        - Extract the first sentence from the return value of the \"main\" function
+          and return it.
+        - Combine the first sentence extracted from the return value of the \"main\"
+          function back with the remaining text.
+        middle_state: '```json
+
+          {''code'': "def main():\n    return ''Artificial intelligence is transforming
+          industries by enabling machines to learn, adapt, and make decisions.''",
+          ''programming_language'': ''python3'', ''inputs'': [{}], ''description'':
+          ''This function returns a simple sentence about artificial intelligence
+          in 20 words.'', ''exec_results'': "[''Artificial intelligence is transforming
+          industries by enabling machines to learn, adapt, and make decisions.'']"}
+
+          ```'
+        parent: *id003
+        children: []
+root_content: "```json\n{\n  \"code\": \"def main():\\n    return 'Artificial intelligence\
+  \ is transforming industries by enabling machines to learn, adapt, and make decisions.'\"\
+  ,\n  \"programming_language\": \"python3\",\n  \"inputs\": [{}],\n  \"description\"\
+  : \"This function returns a simple sentence about artificial intelligence in 20\
+  \ words.\"\n}\n```"
+operations:
+- !!python/tuple
+  - Replace the return value in the \"main\" function with a summary of the text provided.
+  - Replace the return value in the \"main\" function with the original text.
+- !!python/tuple
+  - Extract the first sentence from the return value of the \"main\" function and
+    return it.
+  - Combine the first sentence extracted from the return value of the \"main\" function
+    back with the remaining text.
+metrics:
+  L-1 AVG: 0.9922826663592664
+  L-1:
+  - 0.9536959981555984
+  - 1.0000000000000002
+  - 1.0000000000000002
+  - 1.0000000000000002
+  - 1.0000000000000002
+  - 1.0000000000000002
+  L-2 AVG: 0.9768479990777992
+  L-2:
+  - 0.9536959981555984
+  - 0.9536959981555984
+  - 1.0000000000000002
+  - 1.0000000000000002
+  L-3 AVG: 0.0
+  L-3: []
+  L-5 AVG: 0.0
+  L-5: []
