@@ -61,7 +61,8 @@ class LLMCheck:
             operations = operations[:self.n_operations]
             print(f"[INFO] Overriding operations with set value: {operations}")
         else:
-            prompt = prompt_template.format(n_operations=self.n_operations, root=root_content)
+            root_code = self._json_str_to_dict(root_content)["code"]
+            prompt = prompt_template.format(n_operations=self.n_operations, root_code=root_code)
             operations = self.op_generator.generate_operations(prompt, self.n_operations)
 
         self._build_tree(tree.root, operations, 0)
@@ -73,7 +74,7 @@ class LLMCheck:
         return {
             "tree": tree,
             "root_content": root_content,
-            "operations": operations,\
+            "operations": operations,
             "metrics": metrics
         }
 
@@ -96,16 +97,20 @@ class LLMCheck:
                     # Apply transform to get middle state
                     middle_state_code = self._apply_operation(current_node_code, transform, self.operation_code_format_enforce_prompt)
                     middle_state_code_programming_language = middle_state_code.split("\n")[0].strip('```').strip().lower()
+                    # remove code block
+                    middle_state_code_content = middle_state_code.split("\n", 1)[1].rsplit("```", 1)[0].strip("\n")
                     middle_state_dict_updated = current_node_dict.copy()
-                    middle_state_dict_updated["code"] = middle_state_code
+                    middle_state_dict_updated["code"] = middle_state_code_content
                     middle_state_dict_updated["programming_language"] = middle_state_code_programming_language
                     middle_state_updated = self._dict_to_json_str(middle_state_dict_updated)
                     middle_state= f"```json\n{middle_state_updated}\n```"
                     # Apply reverse to get final state
-                    final_state_code = self._apply_operation(middle_state, reverse, self.operation_code_format_enforce_prompt)
+                    final_state_code = self._apply_operation(middle_state_code, reverse, self.operation_code_format_enforce_prompt)
                     final_state_code_programming_language = final_state_code.split("\n")[0].strip('```').strip().lower()
+                    # remove code block
+                    final_state_code_content = final_state_code.split("\n", 1)[1].rsplit("```", 1)[0].strip("\n")
                     final_state_dict_updated = current_node_dict.copy()
-                    final_state_dict_updated["code"] = final_state_code
+                    final_state_dict_updated["code"] = final_state_code_content
                     final_state_dict_updated["programming_language"] = final_state_code_programming_language
                     final_state_updated = self._dict_to_json_str(final_state_dict_updated)
                     final_state = f"```json\n{final_state_updated}\n```"
