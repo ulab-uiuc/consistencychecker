@@ -35,12 +35,14 @@ def cli() -> None:
     checker = LLMCheck(
         evaluator_model=config.get("evaluator").get("model_name"),
         evaluator_api_base=config.get("evaluator").get("api_base"),
+        evaluator_model_temperature=config.get("evaluator").get("temperature"),
         target_model=config.get("target").get("model_name"),
         target_api_base=config.get("target").get("api_base"),
+        target_model_temperature=config.get("target").get("temperature"),
         similarity_config=similarity_config,
         max_depth=config.get("max_depth"),
         n_operations=config.get("n_operations"),
-        operation_code_format_enforce_prompt=config.get("operation_code_format_enforce_prompt", "")
+        operation_code_format_enforce_prompt=config.get("operation_code_format_enforce_prompt")
     )
 
     # Run evaluation

@@ -1,13 +1,16 @@
 # these will feed into litellm
+
 # please specify api keys (if needed) with environment variables
 evaluator:
   model_name: "gpt-4o-mini"
   api_base: "https://api.openai.com/v1"
+  temperature: 0.6
 target:
   # model_name: "ollama/llama3.1:8b-instruct-q8_0"
   # api_base: "http://localhost:11434"
   model_name: "gpt-4o-mini"
   api_base: "https://api.openai.com/v1"
+  temperature: 0.6
 similarity_config:
   type: "api"
   model_name: "text-embedding-ada-002"

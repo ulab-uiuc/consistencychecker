@@ -14,42 +14,39 @@ class LLMCheck:
                  evaluator_model: str,
                  target_model: str,
                  similarity_config: Union[Dict[str, Any], SimilarityConfig],
-                 evaluator_api_base: str = "",
-                 target_api_base: str = "",
-                 max_depth: int = 3,
-                 n_operations: int = 3,
-                 operation_code_format_enforce_prompt: str = "") -> None:
+                 evaluator_model_temperature: float,
+                 target_model_temperature: float,
+                 evaluator_api_base: str,
+                 target_api_base: str,
+                 max_depth: int,
+                 n_operations: int,
+                 operation_code_format_enforce_prompt: str) -> None:
         self.evaluator_model = evaluator_model
         self.target_model = target_model
         self.max_depth = max_depth
         self.n_operations = n_operations
-        if evaluator_api_base:
-            print(f"[INFO] Overriding evaluator API base with set value: {evaluator_api_base}")
-        if target_api_base:
-            print(f"[INFO] Overriding target API base with set value: {target_api_base}")
+        print(f"[INFO] Evaluator API base: {evaluator_api_base}")
+        print(f"[INFO] Target API base: {target_api_base}")
         self.evaluator_api_base = evaluator_api_base
         self.target_api_base = target_api_base
-        self.op_generator = OperationGenerator(evaluator_model)
+        self.evaluator_model_temperature = evaluator_model_temperature
+        self.target_model_temperature = target_model_temperature
+        self.op_generator = OperationGenerator(evaluator_model, evaluator_model_temperature)
         self.similarity_metric = SimilarityFactory.create_metric(similarity_config)
         self.operation_code_format_enforce_prompt = operation_code_format_enforce_prompt
 
     def generate_root_content(self, constraints: str) -> str:
-        if self.evaluator_api_base:
-            response = litellm.completion(
-                model=self.evaluator_model,
-                messages=[{"role": "user", "content": constraints}],
-                api_base=self.evaluator_api_base
-            )
-        else:
-            response = litellm.completion(
-                model=self.evaluator_model,
-                messages=[{"role": "user", "content": constraints}]
-            )
+        response = litellm.completion(
+            model=self.evaluator_model,
+            messages=[{"role": "user", "content": constraints}],
+            api_base=self.evaluator_api_base,
+            temperature=self.evaluator_model_temperature
+        )
         response_str = response.choices[0].message.content
         assert isinstance(response_str, str)
         return response_str
 
-    def evaluate(self, constraints: str, prompt_template: str, distance: List[int], root: str = "", operations: List[Tuple[str, str]] = []) -> Dict[str, Any]:
+    def evaluate(self, constraints: str, prompt_template: str, distance: List[int], root: str, operations: List[Tuple[str, str]]) -> Dict[str, Any]:
         if root:
             root_content = root
             print(f"[INFO] Overriding root content with set value: {root_content}")
@@ -149,7 +146,8 @@ class LLMCheck:
                         f"Please do not include anything other than the transformed text."
                     )}
                 ],
-                api_base=self.target_api_base
+                api_base=self.target_api_base,
+                temperature=self.target_model_temperature
             )
         else:
             response = litellm.completion(
@@ -161,13 +159,14 @@ class LLMCheck:
                         f"Text: {content}\n"
                         f"Please do not include anything other than the transformed text."
                     )}
-                ]
+                ],
+                temperature=self.target_model_temperature
             )
         response_str = response.choices[0].message.content
         assert isinstance(response_str, str)
         return response_str
 
-    def _str_tree(self, node: Node, prefix: str = "", is_last: bool = True) -> str:
+    def _str_tree(self, node: Node, prefix: str, is_last: bool) -> str:
         result = ""
         marker = "└─ " if is_last else "├─ "
         result += prefix + marker + f"Content: {node.content}\n"
@@ -199,7 +198,7 @@ class LLMCheck:
     def _dict_to_json_str(self, content_dict: Dict[str, Any]) -> str:
         return str(content_dict)
 
-    def _calculate_metrics(self, tree: EvaluationTree, distance: List[int] = [1, 2, 3]) -> Dict[str, Any]:
+    def _calculate_metrics(self, tree: EvaluationTree, distance: List[int]) -> Dict[str, Any]:
 
         metric_result: Dict[str, Any] = {}
         for dist in distance:
