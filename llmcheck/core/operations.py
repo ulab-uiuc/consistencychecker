@@ -6,14 +6,14 @@ import litellm
 class OperationGenerator:
     def __init__(self, evaluator_model: str, evaluator_model_api_base: str, evaluator_model_temperature: float):
         self.model = evaluator_model
-        self.evaluator_api_base = evaluator_model_api_base
+        self.api_base = evaluator_model_api_base
         self.temperature = evaluator_model_temperature
 
     def generate_operations(self, prompt: str, n_operations: int) -> List[Tuple[str, str]]:
         response = litellm.completion(
             model=self.model,
             messages=[{"role": "user", "content": prompt}],
-            api_base=self.evaluator_api_base,
+            api_base=self.api_base,
             temperature=self.temperature,
         )
 
