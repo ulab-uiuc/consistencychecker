@@ -1,34 +1,13 @@
-from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import Any, Dict
 
+from llmcheck.nodes.node import Node
 
-@dataclass
-class Node:
-    content: str
-    operation: Optional[tuple[str, str]] = None  # (transform, reverse)
-    middle_state: Optional[str] = None  # Store the intermediate transformed state
-    parent: Optional['Node'] = None
-    children: List['Node'] = field(default_factory=list)
-
-    def __post_init__(self) -> None:
-        if self.children is None:
-            self.children = []
-
-    def add_child(self, content: str, middle_state: str, operation: tuple[str, str]) -> 'Node':
-        child = Node(
-            content=content,
-            operation=operation,
-            middle_state=middle_state,
-            parent=self
-        )
-        self.children.append(child)
-        return child
 
 class EvaluationTree:
-    def __init__(self, root_content: str):
+    def __init__(self, root_content: Dict[str, Any]):
         self.root = Node(content=root_content)
 
-    def add_child(self, parent: Node, content: str, middle_state: str, operation: tuple[str, str]) -> Node:
+    def add_child(self, parent: Node, content: Dict[str, Any], middle_state: Dict[str, Any], operation: tuple[str, str]) -> Node:
         child = Node(
             content=content,
             operation=operation,

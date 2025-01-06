@@ -4,8 +4,9 @@ import litellm
 from tqdm import tqdm
 
 from llmcheck.core.operations import OperationGenerator
-from llmcheck.core.tree import EvaluationTree, Node
+from llmcheck.core.tree import EvaluationTree
 from llmcheck.metrics.factory import SimilarityConfig, SimilarityFactory
+from llmcheck.nodes.node import Node
 from llmcheck.nodes.verifiable_function import VerifiableFunction
 
 
@@ -27,6 +28,7 @@ class LLMCheck:
         self.n_operations = n_operations
         print(f"[INFO] Evaluator API base: {evaluator_api_base}")
         print(f"[INFO] Target API base: {evaluatee_api_base}")
+        print(f"N operations: {n_operations}")
         self.evaluator_api_base = evaluator_api_base
         self.evaluatee_api_base = evaluatee_api_base
         self.evaluator_model_temperature = evaluator_model_temperature
@@ -35,7 +37,7 @@ class LLMCheck:
         self.similarity_metric = SimilarityFactory.create_metric(similarity_config)
         self.operation_code_format_enforce_prompt = operation_code_format_enforce_prompt
 
-    def generate_root_content(self, constraints: str) -> str:
+    def generate_root_content(self, constraints: str) -> Dict[str, Any]:
         response = litellm.completion(
             model=self.evaluator_model,
             messages=[{"role": "user", "content": constraints}],
@@ -43,10 +45,10 @@ class LLMCheck:
             temperature=self.evaluator_model_temperature
         )
         response_str = response.choices[0].message.content
-        assert isinstance(response_str, str)
-        return response_str
+        response_dict = self._json_str_to_dict(response_str)
+        return response_dict
 
-    def evaluate(self, constraints: str, prompt_template: str, distance: List[int], root: str, operations: List[Tuple[str, str]]) -> Dict[str, Any]:
+    def evaluate(self, constraints: str, prompt_template: str, distance: List[int], root: Dict[str, Any], operations: List[Tuple[str, str]]) -> Dict[str, Any]:
         if root:
             root_content = root
             print(f"[INFO] Overriding root content with set value: {root_content}")
@@ -58,7 +60,7 @@ class LLMCheck:
             operations = operations[:self.n_operations]
             print(f"[INFO] Overriding operations with set value: {operations}")
         else:
-            root_code = self._json_str_to_dict(root_content)["code"]
+            root_code = root_content["code"]
             prompt = prompt_template.format(n_operations=self.n_operations, root_code=root_code)
             operations = self.op_generator.generate_operations(prompt, self.n_operations)
 
@@ -84,6 +86,7 @@ class LLMCheck:
         }
 
     def _build_tree(self, node: Node, operations: List[Tuple[str, str]], depth: int) -> Node:
+        print(f"[INFO] Building tree with depth {self.max_depth} and {len(operations)} operations")
         if depth >= self.max_depth:
             raise ValueError(f"Depth {depth} exceeds the maximum depth {self.max_depth}")
 
@@ -95,9 +98,13 @@ class LLMCheck:
                 current_node, current_depth = nodes_to_process.pop(0)
                 if current_depth >= self.max_depth:
                     continue
+                if current_depth == 0: # root
+                    # execute the code
+                    root_vf: VerifiableFunction = VerifiableFunction(**current_node.content)
+                    current_node.content["exec_results"] = root_vf.exec()
 
                 for transform, reverse in operations:
-                    current_node_dict = self._json_str_to_dict(current_node.content)
+                    current_node_dict = current_node.content
                     current_node_code = current_node_dict["code"]
                     # Apply transform to get middle state
                     middle_state_code = self._apply_operation(current_node_code, transform, self.operation_code_format_enforce_prompt)
@@ -108,10 +115,8 @@ class LLMCheck:
                     middle_state_dict_updated["code"] = middle_state_code_content
                     middle_state_dict_updated["programming_language"] = middle_state_code_programming_language
                     middle_state_vf: VerifiableFunction = VerifiableFunction(**middle_state_dict_updated)
-                    middle_state_exec_results_str: str = f"{middle_state_vf.exec()}"
-                    middle_state_dict_updated["exec_results"] = middle_state_exec_results_str
-                    middle_state_updated = self._dict_to_json_str(middle_state_dict_updated)
-                    middle_state= f"```json\n{middle_state_updated}\n```"
+                    middle_state_dict_updated["exec_results"] = middle_state_vf.exec()
+                    middle_state = middle_state_dict_updated
                     # Apply reverse to get final state
                     final_state_code = self._apply_operation(middle_state_code, reverse, self.operation_code_format_enforce_prompt)
                     final_state_code_programming_language = final_state_code.split("\n")[0].strip('```').strip().lower()
@@ -121,17 +126,8 @@ class LLMCheck:
                     final_state_dict_updated["code"] = final_state_code_content
                     final_state_dict_updated["programming_language"] = final_state_code_programming_language
                     final_state_vf: VerifiableFunction = VerifiableFunction(**final_state_dict_updated)
-                    final_state_exec_results_str: str = f"{final_state_vf.exec()}"
-                    final_state_dict_updated["exec_results"] = final_state_exec_results_str
-                    final_state_updated = self._dict_to_json_str(final_state_dict_updated)
-                    final_state = f"```json\n{final_state_updated}\n```"
-                    if current_depth == 0: # root
-                        # execute the code
-                        root_vf: VerifiableFunction = VerifiableFunction(**current_node_dict)
-                        root_exec_results_str: str = f"{root_vf.exec()}"
-                        current_node_dict["exec_results"] = root_exec_results_str
-                        current_node_updated = self._dict_to_json_str(current_node_dict)
-                        current_node.content = f"```json\n{current_node_updated}\n```"
+                    final_state_dict_updated["exec_results"] = final_state_vf.exec()
+                    final_state = final_state_dict_updated
                     child = current_node.add_child(
                         content=final_state,
                         middle_state=middle_state,
@@ -226,10 +222,8 @@ class LLMCheck:
                 with tqdm(total=len(node_pairs), desc=f"L-{dist} AVG Similarity") as pbar:
                     for a, b in node_pairs:
                         # remove JSON code block and elicit JSON string
-                        a_content_dict: Dict[str, Any] = self._json_str_to_dict(a.content)
-                        b_content_dict: Dict[str, Any] = self._json_str_to_dict(b.content)
-                        a_exec_results_str: str = f"{a_content_dict['exec_results']}"
-                        b_exec_results_str: str = f"{b_content_dict['exec_results']}"
+                        a_exec_results_str: str = f"{a.content['exec_results']}"
+                        b_exec_results_str: str = f"{b.content['exec_results']}"
                         similarities.append(self.similarity_metric.calculate_similarity(a_exec_results_str, b_exec_results_str))
                         pbar.update(1)
                 metric_result[f"L-{dist} AVG"] = sum(similarities)/len(similarities)

@@ -26,7 +26,7 @@ def cli() -> None:
     # Extract parameters
     similarity_config = config.get("similarity_config")
     constraints = config.get("constraints")
-    root = config.get("root", "")
+    root = config.get("root", {})
     operations = config.get("operations", [])
     distance = config.get("distance")
     prompt_template = config.get("prompt_template")
@@ -56,7 +56,7 @@ def cli() -> None:
 
     # Save results to YAML file
     with open(args.result, "w") as file:
-        yaml.dump(results, file, default_flow_style=False, sort_keys=False)
+        yaml.dump(results, file, default_flow_style=None, sort_keys=False)
 
 
 if __name__ == "__main__":

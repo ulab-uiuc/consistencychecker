@@ -40,8 +40,12 @@ class VerifiableFunction:
             results = []
             for input_dict in self.inputs:
                 # Call the function with arguments unpacked from the dictionary
-                result = main_func(**input_dict)
-                results.append(result)  # Append result without converting to str
+                try:
+                    result = main_func(**input_dict)
+                    results.append(result)  # Append result without converting to str
+                except Exception as e:
+                    results.append(f"Error: {str(e)}")
+                    print(f"Error: {str(e)}")
 
             return results
         except Exception as e:

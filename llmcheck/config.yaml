@@ -10,16 +10,6 @@
 # LLM Configurations
 # Here it is plainly litellm style. You must leave out no fields.
 # As a example, here is OPENAI gpt-4o-mini as both evaluator and evaluatee:
-# evaluator:
-#   model_name: "gpt-4o-mini"
-#   api_base: "https://api.openai.com/v1"
-#   temperature: 0.6
-# evaluatee:
-#   model_name: "gpt-4o-mini"
-#   api_base: "https://api.openai.com/v1"
-#   temperature: 0.6
-
-# Here is a vllm setup:
 evaluator:
   model_name: "gpt-4o-mini"
   api_base: "https://api.openai.com/v1"
@@ -28,6 +18,16 @@ evaluatee:
   model_name: "gpt-4o-mini"
   api_base: "https://api.openai.com/v1"
   temperature: 0.6
+
+# Here is a vllm setup:
+# evaluator:
+#   model_name: "hosted_vllm/meta-llama/Llama-3.1-8B-Instruct"
+#   api_base: "http://localhost:8000/v1"
+#   temperature: 0.6
+# evaluatee:
+#   model_name: "hosted_vllm/meta-llama/Llama-3.1-8B-Instruct"
+#   api_base: "http://localhost:8000/v1"
+#   temperature: 0.6
 
 # Embedding Model Configurations
 ## Option 1. OpenAI API
@@ -60,30 +60,40 @@ n_operations: 2
 
 # constraint to generate root using evalutor model.
 constraints: |
-  Write a simple sentence about artificial intelligence in 20 words.
+  Write a LeetCode-Hard style problem.
   Please do this in a function way, e.g. provide a function called "main"
-  that returns the intended sentence as a string.
-  You will have to provide this in a JSON format, comprising of multiple
+  that returns the intended answer.
+  You will have to provide this in a one-lined JSON format, comprising of multiple
   keys and values:
-  - "code": the code that defines the function
+  - "description": a brief description of the question. It should be
+                  a string. As all LeetCode problems do, it should have
+                  a title, a description, example inputs and outputs,
+                  just like what you see in the LeetCode website.
+                  It is a string. Write it in markdown format.
+  - "code": the code that is the solution to the problem. It should be
+           a function called "main" that returns the intended answer.
+           It should be in `python3` language. Start without a code block.
+           Its "main" function takes in a list of parameters, as the input for
+           one test case.
+           It is a string.
   - "programming_language": the programming language used in the code.
                             In this case, it should be "python3".
+                            It is a string.
   - "inputs": the inputs that tests its functionality. It is a list of
-              dictionaries for the kwargs of the function. As we do not
-              have any inputs, it should be a list with only element, an
-              empty dictionary.
-  - "description": a brief description of the function. For instance, if
-                   the code is a solution to a LeetCode problem, the description
-                   should be the problem statement.
-  Your response should be in a JSON code block, e.g. "```json\n{...}\n```".
-  Please make sure that the JSON response is valid. Do NOT include anything else.
-
+              dictionaries for the kwargs of the function, the test case
+              for evaluating an solution, which will put into the "main" function
+              to obtain the output. You will need 20 test cases.
+  Please start right away without any explanation.
 prompt_template: |
   Generate {n_operations} pairs of transform-reverse operations for testing language model consistency.
-  Please make sure that these operations should be fit to perform on the root text: "{root_code}".
+  Please make sure that these operations should be fit to perform on the root code: "{root_code}".
   Each operation should modify the text and its reverse should restore it.
   Format each line as: "transform operation | reverse operation"
   Example: "translate what \"main\" function returns to Japanese, and do not provide anything else. | translate what the \"main\" function returns to English, and do not provide anything else."
+  Example: "use Object-Oriented Programming to implement the \"main\" function | remove all Object-Oriented Programming from the \"main\" function and use procedural programming instead"
+  As we all know, there are many ways to transform a piece of code, preserving its functionality, while implementing the same logic in a different way.
+  Your operations should be based on what the root code is like, and have transformations that asks the code to be implemented in a different, but valid and equivalent way.
+  It is a piece of LeetCode-Hard style problem, but you will not access the description, inputs, and outputs. You will only access the code, which is in `python3` language.
   Please try out what I have suggested above and then come up with your own ideas. Please avoid overly simple operations like "add a period | remove a period" or "capitalize the first letter | lowercase the first letter".
   Please start each line without '- ', '1. ', 'a. ', 'i. ', etc. Keep it simple and clear. Just the operation and its reverse.
   Please make sure in the operation to highlight that the transformation is evaluatee to the \"main\" function in the \"code\" key of the JSON text.
