@@ -12,25 +12,25 @@ from llmcheck.nodes.verifiable_function import VerifiableFunction
 class LLMCheck:
     def __init__(self,
                  evaluator_model: str,
-                 target_model: str,
+                 evaluatee_model: str,
                  similarity_config: Union[Dict[str, Any], SimilarityConfig],
                  evaluator_model_temperature: float,
-                 target_model_temperature: float,
+                 evaluatee_model_temperature: float,
                  evaluator_api_base: str,
-                 target_api_base: str,
+                 evaluatee_api_base: str,
                  max_depth: int,
                  n_operations: int,
                  operation_code_format_enforce_prompt: str) -> None:
         self.evaluator_model = evaluator_model
-        self.target_model = target_model
+        self.evaluatee_model = evaluatee_model
         self.max_depth = max_depth
         self.n_operations = n_operations
         print(f"[INFO] Evaluator API base: {evaluator_api_base}")
-        print(f"[INFO] Target API base: {target_api_base}")
+        print(f"[INFO] Target API base: {evaluatee_api_base}")
         self.evaluator_api_base = evaluator_api_base
-        self.target_api_base = target_api_base
+        self.evaluatee_api_base = evaluatee_api_base
         self.evaluator_model_temperature = evaluator_model_temperature
-        self.target_model_temperature = target_model_temperature
+        self.evaluatee_model_temperature = evaluatee_model_temperature
         self.op_generator = OperationGenerator(evaluator_model, evaluator_api_base, evaluator_model_temperature)
         self.similarity_metric = SimilarityFactory.create_metric(similarity_config)
         self.operation_code_format_enforce_prompt = operation_code_format_enforce_prompt
@@ -64,11 +64,19 @@ class LLMCheck:
 
         self._build_tree(tree.root, operations, 0)
 
-        # tree_str = self._str_tree(tree.root)
-
         metrics = self._calculate_metrics(tree, distance)
 
         return {
+            "evaluator_model": {
+                "model": self.evaluator_model,
+                "temperature": self.evaluator_model_temperature,
+                "api_base": self.evaluator_api_base
+            },
+            "evaluatee_model": {
+                "model": self.evaluatee_model,
+                "temperature": self.evaluatee_model_temperature,
+                "api_base": self.evaluatee_api_base
+            },
             "root_content": root_content,
             "operations": operations,
             "metrics": metrics,
@@ -135,9 +143,9 @@ class LLMCheck:
             return node
 
     def _apply_operation(self, content: str, operation: str, tail_prompt: str) -> str:
-        if self.target_api_base:
+        if self.evaluatee_api_base:
             response = litellm.completion(
-                model=self.target_model,
+                model=self.evaluatee_model,
                 messages=[
                     {"role": "user", "content": (
                         "Please apply the following operation to the text:\n"
@@ -146,12 +154,12 @@ class LLMCheck:
                         f"Please do not include anything other than the transformed text."
                     )}
                 ],
-                api_base=self.target_api_base,
-                temperature=self.target_model_temperature
+                api_base=self.evaluatee_api_base,
+                temperature=self.evaluatee_model_temperature
             )
         else:
             response = litellm.completion(
-                model=self.target_model,
+                model=self.evaluatee_model,
                 messages=[
                     {"role": "user", "content": (
                         "Please apply the following operation to the text:\n"
@@ -160,7 +168,7 @@ class LLMCheck:
                         f"Please do not include anything other than the transformed text."
                     )}
                 ],
-                temperature=self.target_model_temperature
+                temperature=self.evaluatee_model_temperature
             )
         response_str = response.choices[0].message.content
         assert isinstance(response_str, str)
