@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, List
 
 
@@ -8,7 +8,7 @@ class VerifiableFunction:
     programming_language: str
     inputs: List[dict[str, Any]] # kwargs for the function
     description: str  # New property to store the function description
-    exec_results: List[List[Any]] = []  # Store the results of the function execution
+    exec_results: List[Any] = field(default_factory=list)  # Store the results of the function execution
 
     def __str__(self) -> str:
         """Pretty print the function details"""

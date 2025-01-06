@@ -31,7 +31,7 @@ class LLMCheck:
         self.target_api_base = target_api_base
         self.evaluator_model_temperature = evaluator_model_temperature
         self.target_model_temperature = target_model_temperature
-        self.op_generator = OperationGenerator(evaluator_model, evaluator_model_temperature)
+        self.op_generator = OperationGenerator(evaluator_model, evaluator_api_base, evaluator_model_temperature)
         self.similarity_metric = SimilarityFactory.create_metric(similarity_config)
         self.operation_code_format_enforce_prompt = operation_code_format_enforce_prompt
 

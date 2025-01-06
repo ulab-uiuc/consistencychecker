@@ -57,11 +57,11 @@ export OPENAI_API_KEY=your_api_key
 
 ## vllm/Ollama
 
-You are recommended to use `vllm` or `ollama` to access modest-sized open-source LLMs. 
+You are recommended to use `vllm` or `ollama` to access modest-sized open-source LLMs.
 
 ### vllm
 
-Here is a simple example of how to use `vllm` to serve a model. The number of GPUs varies depending on the model size and your setup. The following command demonstrates how to serve a model on 4 GPUs. 
+Here is a simple example of how to use `vllm` to serve a model. The number of GPUs varies depending on the model size and your setup. The following command demonstrates how to serve a model on 4 GPUs.
 
 `GPU_MEMORY_UTILIZATION` is the fraction of GPU memory that the model will use. The `TENSOR_PARALLEL_SIZE` is the number of GPUs that will be used for tensor parallelism.
 
