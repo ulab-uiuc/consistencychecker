@@ -1,0 +1,555 @@
+evaluator_model: {model: hosted_vllm/meta-llama/Llama-3.1-8B-Instruct, temperature: 0.6,
+  api_base: 'http://localhost:8000/v1'}
+evaluatee_model: {model: hosted_vllm/meta-llama/Llama-3.1-8B-Instruct, temperature: 0.6,
+  api_base: 'http://localhost:8000/v1'}
+root_content: &id001
+  description: '# 132 Pattern
+
+    ## Problem Description
+
+    Given an array of n integers, find if there exists any triplet (i, j, k) such
+    that 0 <= i < j < k < n that the sum of the subarray from index i to j equals
+    the sum of the subarray from index j + 1 to k.
+
+
+    Return `0` if no such triplet exists and `1` if it does.
+
+    ## Example
+
+    Input: nums = [1,2,3,4,3]
+
+    Output: `1`
+
+    Input: nums = [1,2,3,3]
+
+    Output: `0`
+
+    '
+  code: "def main(nums):\n  n = len(nums)\n  pre_sum = [0] * (n + 1)\n  for i in range(n):\n\
+    \    pre_sum[i + 1] = pre_sum[i] + nums[i]\n  for i in range(n - 1):\n    for\
+    \ j in range(i + 1, n):\n      if pre_sum[i + 1] == pre_sum[j + 1] - pre_sum[i\
+    \ + 1]:\n        return 1\n  return 0\n"
+  programming_language: python3
+  inputs: &id002
+  - nums: [1, 2, 3, 4, 3]
+  - nums: [1, 2, 3, 3]
+  - nums: [0, 0, 0, 0]
+  - nums: [1, 1, 1, 1]
+  - nums: [1, 2, 3, 4, 5, 6]
+  - nums: [1, 2, 3, 4, 5, 6, 7]
+  - nums: [1, 1, 1, 1, 1, 1, 1]
+  - nums: [2, 2, 2, 2, 2, 2, 2]
+  - nums: [1, 2, 3, 4, 3, 4, 5]
+  - nums: [1, 2, 3, 4, 3, 4, 5, 6]
+  - nums: [-1, 1, 0, 3]
+  - nums: [0, 0, 0, 0, 0]
+  - nums: [1, 2, 3, 4, 5, 6, 7, 8]
+  - nums: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  - nums: [-1, -1, 1, 1]
+  - nums: [-1, -1, 1, 1, 1]
+  - nums: [1, 1, 1, 1, 1, 1, 1, 1]
+  - nums: [1, 1, 1, 1, 1, 1, 1, 1, 1]
+  - nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  exec_results: &id003 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+operations:
+- !!python/tuple ['1. "replace the ''for'' loop with a ''reduce'' function from the
+    ''functools'' module, and evaluate the transformation on the \"main\" function
+    in the \"code\" key of the JSON text', 'replace the ''reduce'' function with a
+    traditional ''for'' loop, and evaluate the transformation on the \"main\" function
+    in the \"code\" key of the JSON text"']
+- !!python/tuple ['2. "replace the ''pre_sum'' list with a ''numpy'' array, and evaluate
+    the transformation on the \"main\" function in the \"code\" key of the JSON text',
+  'replace the ''numpy'' array with a traditional Python list, and evaluate the transformation
+    on the \"main\" function in the \"code\" key of the JSON text"']
+metrics:
+  L-1 AVG: 1.0
+  L-1: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-2 AVG: 0.9999997869433793
+  L-2: [1.0, 0.9999991477735174, 1.0, 1.0]
+  L-3 AVG: 0.0
+  L-3: []
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '# 132 Pattern
+
+          ## Problem Description
+
+          Given an array of n integers, find if there exists any triplet (i, j, k)
+          such that 0 <= i < j < k < n that the sum of the subarray from index i to
+          j equals the sum of the subarray from index j + 1 to k.
+
+
+          Return `0` if no such triplet exists and `1` if it does.
+
+          ## Example
+
+          Input: nums = [1,2,3,4,3]
+
+          Output: `1`
+
+          Input: nums = [1,2,3,3]
+
+          Output: `0`
+
+          '
+        code: "import json\n\ndef main(nums):\n  n = len(nums)\n  pre_sum = [0] *\
+          \ (n + 1)\n  for i in range(n):\n    pre_sum[i + 1] = pre_sum[i] + nums[i]\n\
+          \  for i in range(n - 1):\n    for j in range(i + 1, n):\n      if pre_sum[i\
+          \ + 1] == pre_sum[j + 1] - pre_sum[i + 1]:\n        return 1\n  return 0"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['1. "replace the ''for'' loop with a ''reduce'' function
+          from the ''functools'' module, and evaluate the transformation on the \"main\"
+          function in the \"code\" key of the JSON text', 'replace the ''reduce''
+          function with a traditional ''for'' loop, and evaluate the transformation
+          on the \"main\" function in the \"code\" key of the JSON text"']
+      middle_state:
+        description: '# 132 Pattern
+
+          ## Problem Description
+
+          Given an array of n integers, find if there exists any triplet (i, j, k)
+          such that 0 <= i < j < k < n that the sum of the subarray from index i to
+          j equals the sum of the subarray from index j + 1 to k.
+
+
+          Return `0` if no such triplet exists and `1` if it does.
+
+          ## Example
+
+          Input: nums = [1,2,3,4,3]
+
+          Output: `1`
+
+          Input: nums = [1,2,3,3]
+
+          Output: `0`
+
+          '
+        code: "import functools\nimport json\n\ndef main(nums):\n  n = len(nums)\n\
+          \  pre_sum = [0] * (n + 1)\n  pre_sum = functools.reduce(lambda x, y: x\
+          \ + [x[-1] + y], nums, [0])\n  for i in range(n - 1):\n    for j in range(i\
+          \ + 1, n):\n      if pre_sum[i] == pre_sum[j] - pre_sum[i]:\n        return\
+          \ 1\n  return 0"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# 132 Pattern
+
+            ## Problem Description
+
+            Given an array of n integers, find if there exists any triplet (i, j,
+            k) such that 0 <= i < j < k < n that the sum of the subarray from index
+            i to j equals the sum of the subarray from index j + 1 to k.
+
+
+            Return `0` if no such triplet exists and `1` if it does.
+
+            ## Example
+
+            Input: nums = [1,2,3,4,3]
+
+            Output: `1`
+
+            Input: nums = [1,2,3,3]
+
+            Output: `0`
+
+            '
+          code: "import json\nimport functools\n\ndef main(nums):\n  n = len(nums)\n\
+            \  pre_sum = functools.reduce(lambda x, y: x + [x[-1] + y], nums, [0])\n\
+            \  return 1 if any(pre_sum[i] == sum(pre_sum[i + 1:j + 1]) for i in range(n\
+            \ - 1) for j in range(i + 1, n)) else 0"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['1. "replace the ''for'' loop with a ''reduce''
+            function from the ''functools'' module, and evaluate the transformation
+            on the \"main\" function in the \"code\" key of the JSON text', 'replace
+            the ''reduce'' function with a traditional ''for'' loop, and evaluate
+            the transformation on the \"main\" function in the \"code\" key of the
+            JSON text"']
+        middle_state:
+          description: '# 132 Pattern
+
+            ## Problem Description
+
+            Given an array of n integers, find if there exists any triplet (i, j,
+            k) such that 0 <= i < j < k < n that the sum of the subarray from index
+            i to j equals the sum of the subarray from index j + 1 to k.
+
+
+            Return `0` if no such triplet exists and `1` if it does.
+
+            ## Example
+
+            Input: nums = [1,2,3,4,3]
+
+            Output: `1`
+
+            Input: nums = [1,2,3,3]
+
+            Output: `0`
+
+            '
+          code: "import json\nimport functools\n\ndef main(nums):\n  n = len(nums)\n\
+            \  pre_sum = [0] * (n + 1)\n  pre_sum = functools.reduce(lambda x, y:\
+            \ x + [x[-1] + y], nums, [0])\n  for i in range(n - 1):\n    if pre_sum[i\
+            \ + 1] == sum(pre_sum[i + 1:j + 2]) for j in range(i + 1, n)]:\n     \
+            \ return 1\n  return 0\n```\n\nHowever, the above code still uses a \"\
+            for\" loop. To use the \"reduce\" function more effectively, we need to\
+            \ transform the logic of the code as follows:\n\n```python\nimport json\n\
+            import functools\n\ndef main(nums):\n  n = len(nums)\n  pre_sum = functools.reduce(lambda\
+            \ x, y: x + [x[-1] + y], nums, [0])\n  return 1 if any(pre_sum[i] == sum(pre_sum[i\
+            \ + 1:j + 1]) for i in range(n - 1) for j in range(i + 1, n)) else 0"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# 132 Pattern
+
+            ## Problem Description
+
+            Given an array of n integers, find if there exists any triplet (i, j,
+            k) such that 0 <= i < j < k < n that the sum of the subarray from index
+            i to j equals the sum of the subarray from index j + 1 to k.
+
+
+            Return `0` if no such triplet exists and `1` if it does.
+
+            ## Example
+
+            Input: nums = [1,2,3,4,3]
+
+            Output: `1`
+
+            Input: nums = [1,2,3,3]
+
+            Output: `0`
+
+            '
+          code: "import json\n\ndef main(nums):\n  n = len(nums)\n  pre_sum = [0]\
+            \ * (n + 1)\n  for i in range(n):\n    pre_sum[i + 1] = pre_sum[i] + nums[i]\n\
+            \  for i in range(n - 1):\n    for j in range(i + 1, n):\n      if pre_sum[i\
+            \ + 1] == pre_sum[j + 1] - pre_sum[i + 1]:\n        return 1\n  return\
+            \ 0"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['2. "replace the ''pre_sum'' list with a ''numpy''
+            array, and evaluate the transformation on the \"main\" function in the
+            \"code\" key of the JSON text', 'replace the ''numpy'' array with a traditional
+            Python list, and evaluate the transformation on the \"main\" function
+            in the \"code\" key of the JSON text"']
+        middle_state:
+          description: '# 132 Pattern
+
+            ## Problem Description
+
+            Given an array of n integers, find if there exists any triplet (i, j,
+            k) such that 0 <= i < j < k < n that the sum of the subarray from index
+            i to j equals the sum of the subarray from index j + 1 to k.
+
+
+            Return `0` if no such triplet exists and `1` if it does.
+
+            ## Example
+
+            Input: nums = [1,2,3,4,3]
+
+            Output: `1`
+
+            Input: nums = [1,2,3,3]
+
+            Output: `0`
+
+            '
+          code: "import json\nimport numpy as np\n\ndef main(nums):\n  n = len(nums)\n\
+            \  pre_sum = np.zeros(n + 1, dtype=np.int64)\n  for i in range(n):\n \
+            \   pre_sum[i + 1] = pre_sum[i] + nums[i]\n  for i in range(n - 1):\n\
+            \    for j in range(i + 1, n):\n      if pre_sum[i + 1] == pre_sum[j +\
+            \ 1] - pre_sum[i + 1]:\n        return 1\n  return 0"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+    - &id006 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '# 132 Pattern
+
+          ## Problem Description
+
+          Given an array of n integers, find if there exists any triplet (i, j, k)
+          such that 0 <= i < j < k < n that the sum of the subarray from index i to
+          j equals the sum of the subarray from index j + 1 to k.
+
+
+          Return `0` if no such triplet exists and `1` if it does.
+
+          ## Example
+
+          Input: nums = [1,2,3,4,3]
+
+          Output: `1`
+
+          Input: nums = [1,2,3,3]
+
+          Output: `0`
+
+          '
+        code: "import json\n\njson_text = '''\n{\n    \"code\": {\n        \"main\"\
+          : \"def main(nums):\\n  n = len(nums)\\n  pre_sum = [0] * (n + 1)\\n  for\
+          \ i in range(n):\\n    pre_sum[i + 1] = pre_sum[i] + nums[i]\\n  for i in\
+          \ range(n - 1):\\n    for j in range(i + 1, n):\\n      if pre_sum[i + 1]\
+          \ == pre_sum[j + 1] - pre_sum[i + 1]:\\n        return 1\\n  return 0\"\n\
+          \    }\n}\n'''\n\ndata = json.loads(json_text)\ncode = data['code']['main']\n\
+          \nexec(compile(code, '<string>', 'exec'))\n\ndef main(nums):\n    n = len(nums)\n\
+          \    pre_sum = [0] * (n + 1)\n    for i in range(n):\n        pre_sum[i\
+          \ + 1] = pre_sum[i] + nums[i]\n    for i in range(n - 1):\n        for j\
+          \ in range(i + 1, n):\n            if pre_sum[i + 1] == pre_sum[j + 1] -\
+          \ pre_sum[i + 1]:\n                return 1\n    return 0"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['2. "replace the ''pre_sum'' list with a ''numpy''
+          array, and evaluate the transformation on the \"main\" function in the \"code\"
+          key of the JSON text', 'replace the ''numpy'' array with a traditional Python
+          list, and evaluate the transformation on the \"main\" function in the \"code\"
+          key of the JSON text"']
+      middle_state:
+        description: '# 132 Pattern
+
+          ## Problem Description
+
+          Given an array of n integers, find if there exists any triplet (i, j, k)
+          such that 0 <= i < j < k < n that the sum of the subarray from index i to
+          j equals the sum of the subarray from index j + 1 to k.
+
+
+          Return `0` if no such triplet exists and `1` if it does.
+
+          ## Example
+
+          Input: nums = [1,2,3,4,3]
+
+          Output: `1`
+
+          Input: nums = [1,2,3,3]
+
+          Output: `0`
+
+          '
+        code: "import json\nimport numpy as np\n\njson_text = '''\n{\n    \"code\"\
+          : {\n        \"main\": \"def main(nums):\\n  n = len(nums)\\n  pre_sum =\
+          \ [0] * (n + 1)\\n  for i in range(n):\\n    pre_sum[i + 1] = pre_sum[i]\
+          \ + nums[i]\\n  for i in range(n - 1):\\n    for j in range(i + 1, n):\\\
+          n      if pre_sum[i + 1] == pre_sum[j + 1] - pre_sum[i + 1]:\\n        return\
+          \ 1\\n  return 0\"\n    }\n}\n'''\n\ndata = json.loads(json_text)\ncode\
+          \ = data['code']['main']\n\nexec(compile(code, '<string>', 'exec'))\n\n\
+          def main(nums):\n    n = len(nums)\n    pre_sum = np.zeros(n + 1)\n    for\
+          \ i in range(n):\n        pre_sum[i + 1] = pre_sum[i] + nums[i]\n    for\
+          \ i in range(n - 1):\n        for j in range(i + 1, n):\n            if\
+          \ pre_sum[i + 1] == pre_sum[j + 1] - pre_sum[i + 1]:\n                return\
+          \ 1\n    return 0"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# 132 Pattern
+
+            ## Problem Description
+
+            Given an array of n integers, find if there exists any triplet (i, j,
+            k) such that 0 <= i < j < k < n that the sum of the subarray from index
+            i to j equals the sum of the subarray from index j + 1 to k.
+
+
+            Return `0` if no such triplet exists and `1` if it does.
+
+            ## Example
+
+            Input: nums = [1,2,3,4,3]
+
+            Output: `1`
+
+            Input: nums = [1,2,3,3]
+
+            Output: `0`
+
+            '
+          code: "import json\n\njson_text = '''\n{\n    \"code\": {\n        \"main\"\
+            : \"def main(nums):\\n  pre_sum = [0]\\n  for num in nums:\\n    pre_sum.append(pre_sum[-1]\
+            \ + num)\\n  for i in range(len(nums) - 1):\\n    for j in range(i + 1,\
+            \ len(nums)):\\n      if pre_sum[i + 1] == pre_sum[j]:\\n        return\
+            \ 1\\n  return 0\"\n    }\n}\n'''\n\ndata = json.loads(json_text)\ncode\
+            \ = data['code']['main']\n\nexec(compile(code, '<string>', 'exec'))\n\n\
+            def main(nums):\n    pre_sum = [0]\n    for num in nums:\n        pre_sum.append(pre_sum[-1]\
+            \ + num)\n    for i in range(len(nums) - 1):\n        for j in range(i\
+            \ + 1, len(nums)):\n            if pre_sum[i + 1] == pre_sum[j]:\n   \
+            \             return 1\n    return 0"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['1. "replace the ''for'' loop with a ''reduce''
+            function from the ''functools'' module, and evaluate the transformation
+            on the \"main\" function in the \"code\" key of the JSON text', 'replace
+            the ''reduce'' function with a traditional ''for'' loop, and evaluate
+            the transformation on the \"main\" function in the \"code\" key of the
+            JSON text"']
+        middle_state:
+          description: '# 132 Pattern
+
+            ## Problem Description
+
+            Given an array of n integers, find if there exists any triplet (i, j,
+            k) such that 0 <= i < j < k < n that the sum of the subarray from index
+            i to j equals the sum of the subarray from index j + 1 to k.
+
+
+            Return `0` if no such triplet exists and `1` if it does.
+
+            ## Example
+
+            Input: nums = [1,2,3,4,3]
+
+            Output: `1`
+
+            Input: nums = [1,2,3,3]
+
+            Output: `0`
+
+            '
+          code: "import json\nimport functools\n\njson_text = '''\n{\n    \"code\"\
+            : {\n        \"main\": \"def main(nums):\\n  n = len(nums)\\n  pre_sum\
+            \ = [0] * (n + 1)\\n  pre_sum = functools.reduce(lambda x, y: x + y, nums)\\\
+            n  for i in range(n - 1):\\n    for j in range(i + 1, n):\\n      if pre_sum\
+            \ == pre_sum + nums[j] - pre_sum:\\n        return 1\\n  return 0\"\n\
+            \    }\n}\n'''\n\ndata = json.loads(json_text)\ncode = data['code']['main']\n\
+            \nexec(compile(code, '<string>', 'exec'))\n\ndef main(nums):\n    n =\
+            \ len(nums)\n    pre_sum = functools.reduce(lambda x, y: x + y, nums)\n\
+            \    for i in range(n - 1):\n        for j in range(i + 1, n):\n     \
+            \       if pre_sum == pre_sum + nums[j] - pre_sum:\n                return\
+            \ 1\n    return 0\n```\n\nHowever, a more accurate replacement would be\
+            \ to use the `functools.reduce` to calculate the prefix sum in a single\
+            \ operation, and then compare the prefix sum at index `i+1` with the prefix\
+            \ sum at index `j+1` minus the prefix sum at index `i+1`, which is equivalent\
+            \ to the value at index `j`. Here's how you can do it:\n\n```python\n\
+            import json\nimport functools\n\njson_text = '''\n{\n    \"code\": {\n\
+            \        \"main\": \"def main(nums):\\n  pre_sum = functools.reduce(lambda\
+            \ x, y: x + [y], nums, [0])\\n  for i in range(len(nums) - 1):\\n    for\
+            \ j in range(i + 1, len(nums)):\\n      if pre_sum[i + 1] == pre_sum[j]:\\\
+            n        return 1\\n  return 0\"\n    }\n}\n'''\n\ndata = json.loads(json_text)\n\
+            code = data['code']['main']\n\nexec(compile(code, '<string>', 'exec'))\n\
+            \ndef main(nums):\n    pre_sum = functools.reduce(lambda x, y: x + [y],\
+            \ nums, [0])\n    for i in range(len(nums) - 1):\n        for j in range(i\
+            \ + 1, len(nums)):\n            if pre_sum[i + 1] == pre_sum[j]:\n   \
+            \             return 1\n    return 0"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# 132 Pattern
+
+            ## Problem Description
+
+            Given an array of n integers, find if there exists any triplet (i, j,
+            k) such that 0 <= i < j < k < n that the sum of the subarray from index
+            i to j equals the sum of the subarray from index j + 1 to k.
+
+
+            Return `0` if no such triplet exists and `1` if it does.
+
+            ## Example
+
+            Input: nums = [1,2,3,4,3]
+
+            Output: `1`
+
+            Input: nums = [1,2,3,3]
+
+            Output: `0`
+
+            '
+          code: "import json\n\njson_text = '''\n{\n    \"code\": {\n        \"main\"\
+            : \"def main(nums):\\n  n = len(nums)\\n  pre_sum = [0] * (n + 1)\\n \
+            \ for i in range(n):\\n    pre_sum[i + 1] = pre_sum[i] + nums[i]\\n  for\
+            \ i in range(n - 1):\\n    for j in range(i + 1, n):\\n      if pre_sum[i\
+            \ + 1] == pre_sum[j + 1] - pre_sum[i + 1]:\\n        return 1\\n  return\
+            \ 0\"\n    }\n}\n'''\n\ndata = json.loads(json_text)\ncode = data['code']['main']\n\
+            \nexec(compile(code, '<string>', 'exec'))\n\ndef main(nums):\n    n =\
+            \ len(nums)\n    pre_sum = [0] * (n + 1)\n    for i in range(n):\n   \
+            \     pre_sum[i + 1] = pre_sum[i] + nums[i]\n    for i in range(n - 1):\n\
+            \        for j in range(i + 1, n):\n            if pre_sum[i + 1] == pre_sum[j\
+            \ + 1] - pre_sum[i + 1]:\n                return 1\n    return 0"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['2. "replace the ''pre_sum'' list with a ''numpy''
+            array, and evaluate the transformation on the \"main\" function in the
+            \"code\" key of the JSON text', 'replace the ''numpy'' array with a traditional
+            Python list, and evaluate the transformation on the \"main\" function
+            in the \"code\" key of the JSON text"']
+        middle_state:
+          description: '# 132 Pattern
+
+            ## Problem Description
+
+            Given an array of n integers, find if there exists any triplet (i, j,
+            k) such that 0 <= i < j < k < n that the sum of the subarray from index
+            i to j equals the sum of the subarray from index j + 1 to k.
+
+
+            Return `0` if no such triplet exists and `1` if it does.
+
+            ## Example
+
+            Input: nums = [1,2,3,4,3]
+
+            Output: `1`
+
+            Input: nums = [1,2,3,3]
+
+            Output: `0`
+
+            '
+          code: "import json\nimport numpy as np\n\njson_text = '''\n{\n    \"code\"\
+            : {\n        \"main\": \"def main(nums):\\n  n = len(nums)\\n  pre_sum\
+            \ = [0] * (n + 1)\\n  for i in range(n):\\n    pre_sum[i + 1] = pre_sum[i]\
+            \ + nums[i]\\n  for i in range(n - 1):\\n    for j in range(i + 1, n):\\\
+            n      if pre_sum[i + 1] == pre_sum[j + 1] - pre_sum[i + 1]:\\n      \
+            \  return 1\\n  return 0\"\n    }\n}\n'''\n\ndata = json.loads(json_text)\n\
+            code = data['code']['main']\n\nexec(compile(code, '<string>', 'exec'))\n\
+            \ndef main(nums):\n    n = len(nums)\n    pre_sum = np.zeros(n + 1, dtype=int)\n\
+            \    for i in range(n):\n        pre_sum[i + 1] = pre_sum[i] + nums[i]\n\
+            \    for i in range(n - 1):\n        for j in range(i + 1, n):\n     \
+            \       if pre_sum[i + 1] == pre_sum[j + 1] - pre_sum[i + 1]:\n      \
+            \          return 1\n    return 0"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []

@@ -1,6 +1,7 @@
 from typing import Any, Dict, List, Tuple, Union
 
 import litellm
+import yaml
 from tqdm import tqdm
 
 from llmcheck.core.operations import OperationGenerator
@@ -21,31 +22,35 @@ class LLMCheck:
                  evaluatee_api_base: str,
                  max_depth: int,
                  n_operations: int,
-                 operation_code_format_enforce_prompt: str) -> None:
+                 operation_code_format_enforce_prompt: str,
+                 llm_max_new_tokens: int) -> None:
+        if not llm_max_new_tokens:
+            raise ValueError("llm_max_new_tokens must be set.")
         self.evaluator_model = evaluator_model
         self.evaluatee_model = evaluatee_model
         self.max_depth = max_depth
         self.n_operations = n_operations
         print(f"[INFO] Evaluator API base: {evaluator_api_base}")
         print(f"[INFO] Target API base: {evaluatee_api_base}")
-        print(f"N operations: {n_operations}")
         self.evaluator_api_base = evaluator_api_base
         self.evaluatee_api_base = evaluatee_api_base
         self.evaluator_model_temperature = evaluator_model_temperature
         self.evaluatee_model_temperature = evaluatee_model_temperature
-        self.op_generator = OperationGenerator(evaluator_model, evaluator_api_base, evaluator_model_temperature)
+        self.op_generator = OperationGenerator(evaluator_model, evaluator_api_base, evaluator_model_temperature, llm_max_new_tokens)
         self.similarity_metric = SimilarityFactory.create_metric(similarity_config)
         self.operation_code_format_enforce_prompt = operation_code_format_enforce_prompt
+        self.llm_max_new_tokens = llm_max_new_tokens
 
     def generate_root_content(self, constraints: str) -> Dict[str, Any]:
         response = litellm.completion(
             model=self.evaluator_model,
             messages=[{"role": "user", "content": constraints}],
             api_base=self.evaluator_api_base,
-            temperature=self.evaluator_model_temperature
+            temperature=self.evaluator_model_temperature,
+            max_tokens=self.llm_max_new_tokens
         )
         response_str = response.choices[0].message.content
-        response_dict = self._json_str_to_dict(response_str)
+        response_dict = self._yaml_str_to_dict(response_str)
         return response_dict
 
     def evaluate(self, constraints: str, prompt_template: str, distance: List[int], root: Dict[str, Any], operations: List[Tuple[str, str]]) -> Dict[str, Any]:
@@ -151,7 +156,8 @@ class LLMCheck:
                     )}
                 ],
                 api_base=self.evaluatee_api_base,
-                temperature=self.evaluatee_model_temperature
+                temperature=self.evaluatee_model_temperature,
+                max_tokens=self.llm_max_new_tokens
             )
         else:
             response = litellm.completion(
@@ -164,7 +170,8 @@ class LLMCheck:
                         f"Please do not include anything other than the transformed text."
                     )}
                 ],
-                temperature=self.evaluatee_model_temperature
+                temperature=self.evaluatee_model_temperature,
+                max_tokens=self.llm_max_new_tokens
             )
         response_str = response.choices[0].message.content
         assert isinstance(response_str, str)
@@ -194,13 +201,10 @@ class LLMCheck:
             queue.extend(current.children)
         return result
 
-    def _json_str_to_dict(self, json_str: str) -> Dict[str, Any]:
-        json_str = json_str.replace("```json\n", "").replace("```JSON\n", "").replace("```", "").strip("\n")
-        result_dict: Dict[str, Any] = eval(json_str)
+    def _yaml_str_to_dict(self, yaml_str: str) -> Dict[str, Any]:
+        yaml_str_trimmed = yaml_str.strip("```yaml").strip("```yml").strip("```").strip("\n")
+        result_dict: Dict[str, Any] = yaml.safe_load(yaml_str_trimmed)
         return result_dict
-
-    def _dict_to_json_str(self, content_dict: Dict[str, Any]) -> str:
-        return str(content_dict)
 
     def _calculate_metrics(self, tree: EvaluationTree, distance: List[int]) -> Dict[str, Any]:
 

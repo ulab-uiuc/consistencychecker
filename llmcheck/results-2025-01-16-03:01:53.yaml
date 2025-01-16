@@ -1,0 +1,1901 @@
+evaluator_model: {model: hosted_vllm/meta-llama/Llama-3.1-70B-Instruct, temperature: 0.6,
+  api_base: 'http://localhost:8001/v1'}
+evaluatee_model: {model: hosted_vllm/meta-llama/Llama-3.1-8B-Instruct, temperature: 0.6,
+  api_base: 'http://localhost:8000/v1'}
+root_content: &id001
+  description: '# Minimum Window Substring with Multiple Constraints
+
+    Given a string `s`, a string `t`, and a list of constraints `constraints`, find
+    the minimum window substring of `s` that contains all characters in `t` and satisfies
+    all constraints.
+
+
+    The constraints are given as a list of tuples `(x, y, z)`, where `x` and `y` are
+    characters and `z` is a boolean value. If `z` is `True`, then `x` must appear
+    before `y` in the window substring. If `z` is `False`, then `y` must appear before
+    `x` in the window substring.
+
+
+    If there is no such window substring, return an empty string.
+
+
+    Example 1:
+
+    Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c", True)]
+
+    Output: "abc"
+
+
+    Example 2:
+
+    Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c", True)]
+
+    Output: ""
+
+    '
+  code: "def main(s, t, constraints):\n    from collections import defaultdict\n \
+    \   from itertools import permutations\n\n    def check_constraints(window, constraints):\n\
+    \        for x, y, z in constraints:\n            if z and window.index(x) > window.index(y):\n\
+    \                return False\n            if not z and window.index(y) > window.index(x):\n\
+    \                return False\n        return True\n\n    t_count = defaultdict(int)\n\
+    \    for char in t:\n        t_count[char] += 1\n\n    min_window = \"\"\n   \
+    \ for r in range(len(s)):\n        window_count = defaultdict(int)\n        for\
+    \ char in s[max(0, r - len(t) + 1):r + 1]:\n            window_count[char] +=\
+    \ 1\n        if all(window_count[char] >= t_count[char] for char in t):\n    \
+    \        window = list(permutations(s[max(0, r - len(t) + 1):r + 1]))\n      \
+    \      for chars in window:\n                if check_constraints(chars, constraints):\n\
+    \                    if not min_window or len(min_window) > len(chars):\n    \
+    \                    min_window = \"\".join(chars)\n    return min_window\n"
+  programming_language: python3
+  inputs: &id002
+  - s: abc
+    t: ac
+    constraints: [("a", b, True), ("b", c, True)]
+  - s: abc
+    t: ac
+    constraints: [("a", b, False), ("b", c, True)]
+  - s: abcdef
+    t: ace
+    constraints: [("a", b, True), ("c", d, True), ("e", f, True)]
+  - s: abcdef
+    t: ace
+    constraints: [("a", b, False), ("c", d, True), ("e", f, True)]
+  - s: abcdefgh
+    t: aceg
+    constraints: [("a", b, True), ("c", d, True), ("e", f, True), ("g", h, True)]
+  - s: abcdefgh
+    t: aceg
+    constraints: [("a", b, False), ("c", d, True), ("e", f, True), ("g", h, True)]
+  - s: abcdefghi
+    t: acegi
+    constraints: [("a", b, True), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True)]
+  - s: abcdefghi
+    t: acegi
+    constraints: [("a", b, False), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True)]
+  - s: abcdefghij
+    t: acegij
+    constraints: [("a", b, True), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True)]
+  - s: abcdefghij
+    t: acegij
+    constraints: [("a", b, False), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True)]
+  - s: abcdefghijk
+    t: acegijk
+    constraints: [("a", b, True), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True), ("k", l, True)]
+  - s: abcdefghijk
+    t: acegijk
+    constraints: [("a", b, False), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True), ("k", l, True)]
+  - s: abcdefghijkl
+    t: acegijkl
+    constraints: [("a", b, True), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True), ("k", l, True), ("l", m, True)]
+  - s: abcdefghijkl
+    t: acegijkl
+    constraints: [("a", b, False), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True), ("k", l, True), ("l", m, True)]
+  - s: abcdefghijklm
+    t: acegijklm
+    constraints: [("a", b, True), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True), ("k", l, True), ("l", m, True), ("m", n, True)]
+  - s: abcdefghijklm
+    t: acegijklm
+    constraints: [("a", b, False), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True), ("k", l, True), ("l", m, True), ("m", n, True)]
+  - s: abcdefghijklmnop
+    t: acegijklmno
+    constraints: [("a", b, True), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True), ("k", l, True), ("l", m, True), ("m", n, True),
+      ("n", o, True)]
+  - s: abcdefghijklmnop
+    t: acegijklmno
+    constraints: [("a", b, False), ("c", d, True), ("e", f, True), ("g", h, True),
+      ("i", j, True), ("j", k, True), ("k", l, True), ("l", m, True), ("m", n, True),
+      ("n", o, True)]
+  exec_results: &id003 ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+    '', '', '']
+operations:
+- !!python/tuple [Replace the explicit loop in the 'main' function with a recursive
+    approach using memoization to store intermediate results and avoid redundant computations,
+  'refactor the recursive function back into an iterative solution using a loop, preserving
+    the original logic and memoization.']
+- !!python/tuple ['Implement a dynamic programming table within the ''main'' function
+    to store and reuse results of expensive function calls, reducing the time complexity
+    by avoiding redundant computations', 'revert the dynamic programming table back
+    into a naive recursive solution, ensuring the original behavior and functionality
+    are preserved.']
+metrics:
+  L-1 AVG: 1.0
+  L-1: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-2 AVG: 1.0
+  L-2: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-3 AVG: 1.0
+  L-3: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '# Minimum Window Substring with Multiple Constraints
+
+          Given a string `s`, a string `t`, and a list of constraints `constraints`,
+          find the minimum window substring of `s` that contains all characters in
+          `t` and satisfies all constraints.
+
+
+          The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+          `y` are characters and `z` is a boolean value. If `z` is `True`, then `x`
+          must appear before `y` in the window substring. If `z` is `False`, then
+          `y` must appear before `x` in the window substring.
+
+
+          If there is no such window substring, return an empty string.
+
+
+          Example 1:
+
+          Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+          True)]
+
+          Output: "abc"
+
+
+          Example 2:
+
+          Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+          True)]
+
+          Output: ""
+
+          '
+        code: "def main(s, t, constraints):\n    from collections import defaultdict\n\
+          \    from functools import lru_cache\n\n    def check_constraints(window,\
+          \ constraints):\n        for x, y, z in constraints:\n            if z and\
+          \ window.index(x) > window.index(y):\n                return False\n   \
+          \         if not z and window.index(y) > window.index(x):\n            \
+          \    return False\n        return True\n\n    t_count = defaultdict(int)\n\
+          \    for char in t:\n        t_count[char] += 1\n\n    @lru_cache(maxsize=None)\n\
+          \    def get_permutations(s):\n        if not s:\n            return ['']\n\
+          \        result = []\n        for i, char in enumerate(s):\n           \
+          \ remaining_str = s[:i] + s[i+1:]\n            for p in get_permutations(remaining_str):\n\
+          \                result.append(char + p)\n        return result\n\n    min_window\
+          \ = \"\"\n    for r in range(len(s)):\n        window = s[max(0, r - len(t)\
+          \ + 1):r + 1]\n        window_count = defaultdict(int)\n        for char\
+          \ in window:\n            window_count[char] += 1\n        if not all(window_count[char]\
+          \ >= t_count[char] for char in t):\n            continue\n        window_permutations\
+          \ = get_permutations(window)\n        for chars in window_permutations:\n\
+          \            if check_constraints(chars, constraints):\n               \
+          \ if not min_window or len(min_window) > len(chars):\n                 \
+          \   min_window = chars\n    return min_window"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple [Replace the explicit loop in the 'main' function
+          with a recursive approach using memoization to store intermediate results
+          and avoid redundant computations, 'refactor the recursive function back
+          into an iterative solution using a loop, preserving the original logic and
+          memoization.']
+      middle_state:
+        description: '# Minimum Window Substring with Multiple Constraints
+
+          Given a string `s`, a string `t`, and a list of constraints `constraints`,
+          find the minimum window substring of `s` that contains all characters in
+          `t` and satisfies all constraints.
+
+
+          The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+          `y` are characters and `z` is a boolean value. If `z` is `True`, then `x`
+          must appear before `y` in the window substring. If `z` is `False`, then
+          `y` must appear before `x` in the window substring.
+
+
+          If there is no such window substring, return an empty string.
+
+
+          Example 1:
+
+          Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+          True)]
+
+          Output: "abc"
+
+
+          Example 2:
+
+          Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+          True)]
+
+          Output: ""
+
+          '
+        code: "def main(s, t, constraints):\n    from collections import defaultdict\n\
+          \    from functools import lru_cache\n\n    def check_constraints(window,\
+          \ constraints):\n        for x, y, z in constraints:\n            if z and\
+          \ window.index(x) > window.index(y):\n                return False\n   \
+          \         if not z and window.index(y) > window.index(x):\n            \
+          \    return False\n        return True\n\n    t_count = defaultdict(int)\n\
+          \    for char in t:\n        t_count[char] += 1\n\n    @lru_cache(maxsize=None)\n\
+          \    def get_permutations(s):\n        if not s:\n            return ['']\n\
+          \        result = []\n        for i, char in enumerate(s):\n           \
+          \ remaining_str = s[:i] + s[i+1:]\n            for p in get_permutations(remaining_str):\n\
+          \                result.append(char + p)\n        return result\n\n    @lru_cache(maxsize=None)\n\
+          \    def check_window(r):\n        window_count = defaultdict(int)\n   \
+          \     for char in s[max(0, r - len(t) + 1):r + 1]:\n            window_count[char]\
+          \ += 1\n        if not all(window_count[char] >= t_count[char] for char\
+          \ in t):\n            return \"\"\n        window = get_permutations(s[max(0,\
+          \ r - len(t) + 1):r + 1])\n        for chars in window:\n            if\
+          \ check_constraints(chars, constraints):\n                return chars\n\
+          \        return \"\"\n\n    min_window = \"\"\n    for r in range(len(s)):\n\
+          \        window = check_window(r)\n        if window:\n            if not\
+          \ min_window or len(min_window) > len(window):\n                min_window\
+          \ = window\n    return min_window"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - &id006 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# Minimum Window Substring with Multiple Constraints
+
+            Given a string `s`, a string `t`, and a list of constraints `constraints`,
+            find the minimum window substring of `s` that contains all characters
+            in `t` and satisfies all constraints.
+
+
+            The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+            `y` are characters and `z` is a boolean value. If `z` is `True`, then
+            `x` must appear before `y` in the window substring. If `z` is `False`,
+            then `y` must appear before `x` in the window substring.
+
+
+            If there is no such window substring, return an empty string.
+
+
+            Example 1:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+            True)]
+
+            Output: "abc"
+
+
+            Example 2:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+            True)]
+
+            Output: ""
+
+            '
+          code: "def main(s, t, constraints):\n    from collections import defaultdict\n\
+            \    from functools import lru_cache\n\n    def check_constraints(window,\
+            \ constraints):\n        for x, y, z in constraints:\n            if z\
+            \ and window.index(x) > window.index(y):\n                return False\n\
+            \            if not z and window.index(y) > window.index(x):\n       \
+            \         return False\n        return True\n\n    t_count = defaultdict(int)\n\
+            \    for char in t:\n        t_count[char] += 1\n\n    @lru_cache(maxsize=None)\n\
+            \    def get_permutations(s):\n        if not s:\n            return ['']\n\
+            \        result = []\n        for i, char in enumerate(s):\n         \
+            \   remaining_str = s[:i] + s[i+1:]\n            result.extend(char +\
+            \ p for p in get_permutations(remaining_str))\n        return result\n\
+            \n    def find_min_window(s, t, window_size):\n        min_window = \"\
+            \"\n        while window_size > 0:\n            window = s[:window_size]\n\
+            \            window_count = defaultdict(int)\n            for char in\
+            \ window:\n                window_count[char] += 1\n            if not\
+            \ all(window_count[char] >= t_count[char] for char in t):\n          \
+            \      window_size -= 1\n                continue\n            window_permutations\
+            \ = get_permutations(window)\n            for chars in window_permutations:\n\
+            \                if check_constraints(chars, constraints):\n         \
+            \           min_window = chars\n                    break\n          \
+            \  if min_window:\n                break\n            window_size -= 1\n\
+            \        return min_window\n\n    return find_min_window(s, t, len(t))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Replace the explicit loop in the 'main' function
+            with a recursive approach using memoization to store intermediate results
+            and avoid redundant computations, 'refactor the recursive function back
+            into an iterative solution using a loop, preserving the original logic
+            and memoization.']
+        middle_state:
+          description: '# Minimum Window Substring with Multiple Constraints
+
+            Given a string `s`, a string `t`, and a list of constraints `constraints`,
+            find the minimum window substring of `s` that contains all characters
+            in `t` and satisfies all constraints.
+
+
+            The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+            `y` are characters and `z` is a boolean value. If `z` is `True`, then
+            `x` must appear before `y` in the window substring. If `z` is `False`,
+            then `y` must appear before `x` in the window substring.
+
+
+            If there is no such window substring, return an empty string.
+
+
+            Example 1:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+            True)]
+
+            Output: "abc"
+
+
+            Example 2:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+            True)]
+
+            Output: ""
+
+            '
+          code: "def main(s, t, constraints):\n    from collections import defaultdict\n\
+            \    from functools import lru_cache\n\n    def check_constraints(window,\
+            \ constraints):\n        for x, y, z in constraints:\n            if z\
+            \ and window.index(x) > window.index(y):\n                return False\n\
+            \            if not z and window.index(y) > window.index(x):\n       \
+            \         return False\n        return True\n\n    t_count = defaultdict(int)\n\
+            \    for char in t:\n        t_count[char] += 1\n\n    @lru_cache(maxsize=None)\n\
+            \    def get_permutations(s):\n        if not s:\n            return ['']\n\
+            \        result = []\n        for i, char in enumerate(s):\n         \
+            \   remaining_str = s[:i] + s[i+1:]\n            result.extend(char +\
+            \ p for p in get_permutations(remaining_str))\n        return result\n\
+            \n    @lru_cache(maxsize=None)\n    def find_min_window(s, t, window_size):\n\
+            \        if not s or not t:\n            return \"\"\n        if window_size\
+            \ == 0:\n            return s\n        window = s[:window_size]\n    \
+            \    window_count = defaultdict(int)\n        for char in window:\n  \
+            \          window_count[char] += 1\n        if not all(window_count[char]\
+            \ >= t_count[char] for char in t):\n            return find_min_window(s[1:],\
+            \ t, window_size)\n        window_permutations = get_permutations(window)\n\
+            \        for chars in window_permutations:\n            if check_constraints(chars,\
+            \ constraints):\n                min_window = chars\n                break\n\
+            \        return min_window if min_window else find_min_window(s[1:], t,\
+            \ window_size)\n\n    return find_min_window(s, t, len(t))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    from collections import defaultdict\n\
+              \    from functools import lru_cache\n\n    def check_constraints(window,\
+              \ constraints):\n        for x, y, z in constraints:\n            if\
+              \ z and window.index(x) > window.index(y):\n                return False\n\
+              \            if not z and window.index(y) > window.index(x):\n     \
+              \           return False\n        return True\n\n    t_count = defaultdict(int)\n\
+              \    for char in t:\n        t_count[char] += 1\n\n    @lru_cache(maxsize=None)\n\
+              \    def get_permutations(s):\n        if not s:\n            return\
+              \ ['']\n        result = []\n        for i, char in enumerate(s):\n\
+              \            remaining_str = s[:i] + s[i+1:]\n            result.extend(char\
+              \ + p for p in get_permutations(remaining_str))\n        return result\n\
+              \n    def find_min_window(s, t, window_size):\n        @lru_cache(maxsize=None)\n\
+              \        def find_min_window_recursive(s, t, window_size, window_count):\n\
+              \            if window_size < 0:\n                return \"\"\n    \
+              \        if window_size == 0:\n                return \"\"\n       \
+              \     window = s[:window_size]\n            window_count = defaultdict(int)\n\
+              \            for char in window:\n                window_count[char]\
+              \ += 1\n            if not all(window_count[char] >= t_count[char] for\
+              \ char in t):\n                return find_min_window_recursive(s, t,\
+              \ window_size - 1, defaultdict(int))\n            # Initialize variables\
+              \ to store permutations and min window\n            window_permutations\
+              \ = get_permutations(window)\n            min_window = \"\"\n      \
+              \      for chars in window_permutations:\n                if check_constraints(chars,\
+              \ constraints) and (not min_window or len(chars) < len(min_window)):\n\
+              \                    min_window = chars\n            return find_min_window_recursive(s,\
+              \ t, window_size - 1, defaultdict(int))\n\n        return find_min_window_recursive(s,\
+              \ t, len(t), defaultdict(int))\n\n    return find_min_window(s, t, len(t))\n\
+              ```\n\nHowever, the above code is still recursive. To convert it to\
+              \ an iterative solution using a loop, we can use a stack to store the\
+              \ recursive call parameters. Here's the refactored code:\n\n```python\n\
+              def main(s, t, constraints):\n    from collections import defaultdict\n\
+              \n    def check_constraints(window, constraints):\n        for x, y,\
+              \ z in constraints:\n            if z and window.index(x) > window.index(y):\n\
+              \                return False\n            if not z and window.index(y)\
+              \ > window.index(x):\n                return False\n        return True\n\
+              \n    t_count = defaultdict(int)\n    for char in t:\n        t_count[char]\
+              \ += 1\n\n    @lru_cache(maxsize=None)\n    def get_permutations(s):\n\
+              \        if not s:\n            return ['']\n        result = []\n \
+              \       for i, char in enumerate(s):\n            remaining_str = s[:i]\
+              \ + s[i+1:]\n            result.extend(char + p for p in get_permutations(remaining_str))\n\
+              \        return result\n\n    def find_min_window(s, t, window_size):\n\
+              \        # Initialize variables\n        stack = [(len(t), defaultdict(int),\
+              \ [])]\n        min_window = \"\"\n\n        while stack:\n        \
+              \    window_size, window_count, window_permutations = stack.pop()\n\
+              \            if window_size < 0:\n                continue\n       \
+              \     if window_size == 0:\n                continue\n            window\
+              \ = s[:window_size]\n            window_count = defaultdict(int)\n \
+              \           for char in window:\n                window_count[char]\
+              \ += 1\n            if not all(window_count[char] >= t_count[char] for\
+              \ char in t):\n                continue\n            # Get permutations\
+              \ of the current window\n            window_permutations = get_permutations(window)\n\
+              \            for chars in window_permutations:\n                if check_constraints(chars,\
+              \ constraints) and (not min_window or len(chars) < len(min_window)):\n\
+              \                    min_window = chars\n                # Push the\
+              \ next recursive call parameters to the stack\n                stack.append((window_size\
+              \ - 1, defaultdict(int), window_permutations))\n        return min_window\n\
+              \n    return find_min_window(s, t, len(t))"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple [Replace the explicit loop in the 'main' function
+              with a recursive approach using memoization to store intermediate results
+              and avoid redundant computations, 'refactor the recursive function back
+              into an iterative solution using a loop, preserving the original logic
+              and memoization.']
+          middle_state:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    from collections import defaultdict\n\
+              \    from functools import lru_cache\n\n    def check_constraints(window,\
+              \ constraints):\n        for x, y, z in constraints:\n            if\
+              \ z and window.index(x) > window.index(y):\n                return False\n\
+              \            if not z and window.index(y) > window.index(x):\n     \
+              \           return False\n        return True\n\n    t_count = defaultdict(int)\n\
+              \    for char in t:\n        t_count[char] += 1\n\n    @lru_cache(maxsize=None)\n\
+              \    def get_permutations(s):\n        if not s:\n            return\
+              \ ['']\n        result = []\n        for i, char in enumerate(s):\n\
+              \            remaining_str = s[:i] + s[i+1:]\n            result.extend(char\
+              \ + p for p in get_permutations(remaining_str))\n        return result\n\
+              \n    def find_min_window(s, t, window_size):\n        @lru_cache(maxsize=None)\n\
+              \        def find_min_window_recursive(s, t, window_size, window_count,\
+              \ window_permutations):\n            if window_size < 0:\n         \
+              \       return \"\"\n            if window_size == 0:\n            \
+              \    return \"\"\n            window = s[:window_size]\n           \
+              \ window_count = defaultdict(int)\n            for char in window:\n\
+              \                window_count[char] += 1\n            if not all(window_count[char]\
+              \ >= t_count[char] for char in t):\n                return find_min_window_recursive(s,\
+              \ t, window_size - 1, window_count, window_permutations)\n         \
+              \   window_permutations = get_permutations(window)\n            for\
+              \ chars in window_permutations:\n                if check_constraints(chars,\
+              \ constraints):\n                    return chars\n            return\
+              \ find_min_window_recursive(s, t, window_size - 1, window_count, window_permutations)\n\
+              \n        return find_min_window_recursive(s, t, len(t), defaultdict(int),\
+              \ [])\n\n    return find_min_window(s, t, len(t))"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id006
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    def check_constraints(window,\
+              \ constraints):\n        for x, y, z in constraints:\n            if\
+              \ z and window.index(x) > window.index(y):\n                return False\n\
+              \            if not z and window.index(y) > window.index(x):\n     \
+              \           return False\n        return True\n\n    t_count = {}\n\
+              \    for char in t:\n        t_count[char] = t_count.get(char, 0) +\
+              \ 1\n\n    def get_permutations(s):\n        if not s:\n           \
+              \ return ['']\n        result = []\n        for i, char in enumerate(s):\n\
+              \            remaining_str = s[:i] + s[i+1:]\n            result.extend(char\
+              \ + p for p in get_permutations(remaining_str))\n        return result\n\
+              \n    def find_min_window(s, t, window_size):\n        min_window =\
+              \ \"\"\n        while window_size > 0:\n            window = s[:window_size]\n\
+              \            window_count = {}\n            for char in window:\n  \
+              \              window_count[char] = window_count.get(char, 0) + 1\n\
+              \            if not all(window_count.get(char, 0) >= t_count.get(char,\
+              \ 0) for char in t):\n                window_size -= 1\n           \
+              \     continue\n            window_permutations = get_permutations(window)\n\
+              \            for chars in window_permutations:\n                if check_constraints(chars,\
+              \ constraints):\n                    min_window = chars\n          \
+              \          break\n            if min_window:\n                break\n\
+              \            window_size -= 1\n        return min_window\n\n    return\
+              \ find_min_window(s, t, len(t))"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Implement a dynamic programming table within
+              the ''main'' function to store and reuse results of expensive function
+              calls, reducing the time complexity by avoiding redundant computations',
+            'revert the dynamic programming table back into a naive recursive solution,
+              ensuring the original behavior and functionality are preserved.']
+          middle_state:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    from collections import defaultdict\n\
+              \    memo = {}\n\n    def check_constraints(window, constraints):\n\
+              \        if id(window, frozenset(constraints)) in memo:\n          \
+              \  return memo[id(window, frozenset(constraints))]\n        for x, y,\
+              \ z in constraints:\n            if z and window.index(x) > window.index(y):\n\
+              \                return False\n            if not z and window.index(y)\
+              \ > window.index(x):\n                return False\n        memo[id(window,\
+              \ frozenset(constraints))] = True\n        return True\n\n    t_count\
+              \ = defaultdict(int)\n    for char in t:\n        t_count[char] += 1\n\
+              \n    def get_permutations(s, memo):\n        if not s or (id(s),) in\
+              \ memo:\n            return [''] if not s else memo[(id(s),)]\n    \
+              \    result = []\n        for i, char in enumerate(s):\n           \
+              \ remaining_str = s[:i] + s[i+1:]\n            result.extend(char +\
+              \ p for p in get_permutations(remaining_str, memo))\n        memo[(id(s),)]\
+              \ = result\n        return result\n\n    def find_min_window(s, t, window_size):\n\
+              \        min_window = \"\"\n        while window_size > 0:\n       \
+              \     window = s[:window_size]\n            window_count = defaultdict(int)\n\
+              \            for char in window:\n                window_count[char]\
+              \ += 1\n            if not all(window_count[char] >= t_count[char] for\
+              \ char in t):\n                window_size -= 1\n                continue\n\
+              \            window_permutations = get_permutations(window, memo)\n\
+              \            for chars in window_permutations:\n                if check_constraints(chars,\
+              \ constraints):\n                    min_window = chars\n          \
+              \          break\n            if min_window:\n                break\n\
+              \            window_size -= 1\n        return min_window\n\n    return\
+              \ find_min_window(s, t, len(t))"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id006
+          children: []
+      - &id007 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# Minimum Window Substring with Multiple Constraints
+
+            Given a string `s`, a string `t`, and a list of constraints `constraints`,
+            find the minimum window substring of `s` that contains all characters
+            in `t` and satisfies all constraints.
+
+
+            The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+            `y` are characters and `z` is a boolean value. If `z` is `True`, then
+            `x` must appear before `y` in the window substring. If `z` is `False`,
+            then `y` must appear before `x` in the window substring.
+
+
+            If there is no such window substring, return an empty string.
+
+
+            Example 1:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+            True)]
+
+            Output: "abc"
+
+
+            Example 2:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+            True)]
+
+            Output: ""
+
+            '
+          code: "def main(s, t, constraints):\n    def check_constraints(window, constraints):\n\
+            \        for x, y, z in constraints:\n            if z and window.index(x)\
+            \ > window.index(y):\n                return False\n            if not\
+            \ z and window.index(y) > window.index(x):\n                return False\n\
+            \        return True\n\n    t_count = {}\n    for char in t:\n       \
+            \ t_count[char] = t_count.get(char, 0) + 1\n\n    def get_permutations(s):\n\
+            \        if not s:\n            return [''], 0\n        result = []\n\
+            \        for i, char in enumerate(s):\n            remaining_str = s[:i]\
+            \ + s[i+1:]\n            p, _ = get_permutations(remaining_str)\n    \
+            \        for perm in p:\n                result.append(char + perm)\n\
+            \        return result\n\n    min_window = \"\"\n    for r in range(len(s)):\n\
+            \        window = s[max(0, r - len(t) + 1):r + 1]\n        if not all(window.count(char)\
+            \ >= t_count[char] for char in t):\n            continue\n        window_permutations\
+            \ = get_permutations(window)\n        for chars in window_permutations:\n\
+            \            if check_constraints(chars, constraints):\n             \
+            \   if not min_window or len(min_window) > len(chars):\n             \
+            \       min_window = chars\n    return min_window"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Implement a dynamic programming table within the
+            ''main'' function to store and reuse results of expensive function calls,
+            reducing the time complexity by avoiding redundant computations', 'revert
+            the dynamic programming table back into a naive recursive solution, ensuring
+            the original behavior and functionality are preserved.']
+        middle_state:
+          description: '# Minimum Window Substring with Multiple Constraints
+
+            Given a string `s`, a string `t`, and a list of constraints `constraints`,
+            find the minimum window substring of `s` that contains all characters
+            in `t` and satisfies all constraints.
+
+
+            The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+            `y` are characters and `z` is a boolean value. If `z` is `True`, then
+            `x` must appear before `y` in the window substring. If `z` is `False`,
+            then `y` must appear before `x` in the window substring.
+
+
+            If there is no such window substring, return an empty string.
+
+
+            Example 1:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+            True)]
+
+            Output: "abc"
+
+
+            Example 2:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+            True)]
+
+            Output: ""
+
+            '
+          code: "def main(s, t, constraints):\n    from collections import defaultdict\n\
+            \    from functools import lru_cache\n\n    def check_constraints(window,\
+            \ constraints):\n        for x, y, z in constraints:\n            if z\
+            \ and window.index(x) > window.index(y):\n                return False\n\
+            \            if not z and window.index(y) > window.index(x):\n       \
+            \         return False\n        return True\n\n    t_count = defaultdict(int)\n\
+            \    for char in t:\n        t_count[char] += 1\n\n    @lru_cache(maxsize=None)\n\
+            \    def get_permutations(s, dp):\n        if not s:\n            return\
+            \ [''], 0\n        if dp[s]:\n            return dp[s], len(dp[s])\n\n\
+            \        result = []\n        for i, char in enumerate(s):\n         \
+            \   remaining_str = s[:i] + s[i+1:]\n            p, _ = get_permutations(remaining_str,\
+            \ dp)\n            for perm in p:\n                result.append(char\
+            \ + perm)\n        dp[s] = result\n        return result, len(dp[s])\n\
+            \n    min_window = \"\"\n    dp = {}\n    for r in range(len(s)):\n  \
+            \      window = s[max(0, r - len(t) + 1):r + 1]\n        window_count\
+            \ = defaultdict(int)\n        for char in window:\n            window_count[char]\
+            \ += 1\n        if not all(window_count[char] >= t_count[char] for char\
+            \ in t):\n            continue\n        window_permutations, _ = get_permutations(window,\
+            \ dp)\n        for chars in window_permutations:\n            if check_constraints(chars,\
+            \ constraints):\n                if not min_window or len(min_window)\
+            \ > len(chars):\n                    min_window = chars\n    return min_window"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def check_constraints(window, constraints):\n    for x, y, z in\
+              \ constraints:\n        if z and window.index(x) > window.index(y):\n\
+              \            return False\n        if not z and window.index(y) > window.index(x):\n\
+              \            return False\n    return True\n\ndef get_permutations(s,\
+              \ memo={}):\n    if not s:\n        return [''], 0\n    if s in memo:\n\
+              \        return memo[s]\n    result = []\n    for i, char in enumerate(s):\n\
+              \        remaining_str = s[:i] + s[i+1:]\n        p, _ = get_permutations(remaining_str,\
+              \ memo)\n        for perm in p:\n            result.append(char + perm)\n\
+              \    memo[s] = result\n    return result\n\ndef main(s, t, constraints):\n\
+              \    t_count = {}\n    for char in t:\n        t_count[char] = t_count.get(char,\
+              \ 0) + 1\n\n    min_window = \"\"\n    for r in range(len(s)):\n   \
+              \     window = s[max(0, r - len(t) + 1):r + 1]\n        if not all(window.count(char)\
+              \ >= t_count[char] for char in t):\n            continue\n        window_permutations\
+              \ = [p for _ in range(len(window)) for char in [window[_]] for p in\
+              \ get_permutations(window[:_] + window[_+1:], memo)]\n        for chars\
+              \ in window_permutations:\n            if check_constraints(chars, constraints):\n\
+              \                if not min_window or len(min_window) > len(chars):\n\
+              \                    min_window = chars\n    return min_window"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple [Replace the explicit loop in the 'main' function
+              with a recursive approach using memoization to store intermediate results
+              and avoid redundant computations, 'refactor the recursive function back
+              into an iterative solution using a loop, preserving the original logic
+              and memoization.']
+          middle_state:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def check_constraints(window, constraints):\n    for x, y, z in\
+              \ constraints:\n        if z and window.index(x) > window.index(y):\n\
+              \            return False\n        if not z and window.index(y) > window.index(x):\n\
+              \            return False\n    return True\n\ndef get_permutations(s,\
+              \ memo={}):\n    if not s:\n        return [''], 0\n    if s in memo:\n\
+              \        return memo[s]\n    result = []\n    for i, char in enumerate(s):\n\
+              \        remaining_str = s[:i] + s[i+1:]\n        p, _ = get_permutations(remaining_str,\
+              \ memo)\n        for perm in p:\n            result.append(char + perm)\n\
+              \    memo[s] = result\n    return result\n\ndef main(s, t, constraints):\n\
+              \    def get_permutations_recursive(window):\n        if len(window)\
+              \ == len(t):\n            return [window], 0\n        permutations =\
+              \ []\n        for i, char in enumerate(window):\n            remaining_str\
+              \ = window[:i] + window[i+1:]\n            p, _ = get_permutations_recursive(remaining_str)\n\
+              \            for perm in p:\n                permutations.append(char\
+              \ + perm)\n        return permutations\n\n    t_count = {}\n    for\
+              \ char in t:\n        t_count[char] = t_count.get(char, 0) + 1\n\n \
+              \   min_window = \"\"\n    for r in range(len(s)):\n        window =\
+              \ s[max(0, r - len(t) + 1):r + 1]\n        if not all(window.count(char)\
+              \ >= t_count[char] for char in t):\n            continue\n        window_permutations\
+              \ = get_permutations_recursive(window)\n        for chars in window_permutations:\n\
+              \            if check_constraints(chars, constraints):\n           \
+              \     if not min_window or len(min_window) > len(chars):\n         \
+              \           min_window = chars\n    return min_window"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id007
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    def get_permutations(s):\n  \
+              \      if not s:\n            return [''], 0\n        result = []\n\
+              \        for i, char in enumerate(s):\n            remaining_str = s[:i]\
+              \ + s[i+1:]\n            p, _ = get_permutations(remaining_str)\n  \
+              \          for perm in p:\n                result.append(char + perm)\n\
+              \        return result\n\n    t_count = {}\n    for char in t:\n   \
+              \     t_count[char] = t_count.get(char, 0) + 1\n\n    min_window = \"\
+              \"\n    for r in range(len(s)):\n        window = s[max(0, r - len(t)\
+              \ + 1):r + 1]\n        if not all(window.count(char) >= t_count[char]\
+              \ for char in t):\n            continue\n        window_permutations\
+              \ = get_permutations(window)\n        for chars in window_permutations:\n\
+              \            is_valid = True\n            for x, y, z in constraints:\n\
+              \                if z and chars.index(x) > chars.index(y):\n       \
+              \             is_valid = False\n                    break\n        \
+              \        if not z and chars.index(y) > chars.index(x):\n           \
+              \         is_valid = False\n                    break\n            if\
+              \ is_valid and (not min_window or len(min_window) > len(chars)):\n \
+              \               min_window = chars\n    return min_window"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Implement a dynamic programming table within
+              the ''main'' function to store and reuse results of expensive function
+              calls, reducing the time complexity by avoiding redundant computations',
+            'revert the dynamic programming table back into a naive recursive solution,
+              ensuring the original behavior and functionality are preserved.']
+          middle_state:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    memo = {}\n    def check_constraints(window,\
+              \ constraints):\n        if id(window) in memo:\n            return\
+              \ memo[id(window)]\n        for x, y, z in constraints:\n          \
+              \  if z and window.index(x) > window.index(y):\n                memo[id(window)]\
+              \ = False\n                return False\n            if not z and window.index(y)\
+              \ > window.index(x):\n                memo[id(window)] = False\n   \
+              \             return False\n        memo[id(window)] = True\n      \
+              \  return True\n\n    t_count = {}\n    for char in t:\n        t_count[char]\
+              \ = t_count.get(char, 0) + 1\n\n    def get_permutations(s):\n     \
+              \   if not s:\n            return [''], 0\n        if id(s) in memo:\n\
+              \            return memo[id(s)]\n        result = []\n        for i,\
+              \ char in enumerate(s):\n            remaining_str = s[:i] + s[i+1:]\n\
+              \            p, _ = get_permutations(remaining_str)\n            for\
+              \ perm in p:\n                result.append(char + perm)\n        memo[id(s)]\
+              \ = result\n        return result\n\n    min_window = \"\"\n    for\
+              \ r in range(len(s)):\n        window = s[max(0, r - len(t) + 1):r +\
+              \ 1]\n        if not all(window.count(char) >= t_count[char] for char\
+              \ in t):\n            continue\n        window_permutations = get_permutations(window)\n\
+              \        for chars in window_permutations:\n            if check_constraints(chars,\
+              \ constraints):\n                if not min_window or len(min_window)\
+              \ > len(chars):\n                    min_window = chars\n    return\
+              \ min_window"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id007
+          children: []
+    - &id008 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '# Minimum Window Substring with Multiple Constraints
+
+          Given a string `s`, a string `t`, and a list of constraints `constraints`,
+          find the minimum window substring of `s` that contains all characters in
+          `t` and satisfies all constraints.
+
+
+          The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+          `y` are characters and `z` is a boolean value. If `z` is `True`, then `x`
+          must appear before `y` in the window substring. If `z` is `False`, then
+          `y` must appear before `x` in the window substring.
+
+
+          If there is no such window substring, return an empty string.
+
+
+          Example 1:
+
+          Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+          True)]
+
+          Output: "abc"
+
+
+          Example 2:
+
+          Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+          True)]
+
+          Output: ""
+
+          '
+        code: "def main(s, t, constraints):\n    from itertools import permutations\n\
+          \n    def check_constraints(window, constraints):\n        for x, y, z in\
+          \ constraints:\n            if z and window.index(x) > window.index(y):\n\
+          \                return False\n            elif not z and window.index(y)\
+          \ > window.index(x):\n                return False\n        return True\n\
+          \n    t_count = {}\n    for char in t:\n        t_count[char] = t_count.get(char,\
+          \ 0) + 1\n\n    min_window = \"\"\n    for r in range(len(s)):\n       \
+          \ window_count = {}\n        for char in s[max(0, r - len(t) + 1):r + 1]:\n\
+          \            window_count[char] = window_count.get(char, 0) + 1\n      \
+          \  if all(window_count.get(char, 0) >= t_count.get(char, 0) for char in\
+          \ t):\n            window = list(permutations(s[max(0, r - len(t) + 1):r\
+          \ + 1]))\n            for chars in window:\n                if check_constraints(chars,\
+          \ constraints):\n                    if not min_window or len(min_window)\
+          \ > len(chars):\n                        min_window = \"\".join(chars)\n\
+          \    return min_window"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Implement a dynamic programming table within the
+          ''main'' function to store and reuse results of expensive function calls,
+          reducing the time complexity by avoiding redundant computations', 'revert
+          the dynamic programming table back into a naive recursive solution, ensuring
+          the original behavior and functionality are preserved.']
+      middle_state:
+        description: '# Minimum Window Substring with Multiple Constraints
+
+          Given a string `s`, a string `t`, and a list of constraints `constraints`,
+          find the minimum window substring of `s` that contains all characters in
+          `t` and satisfies all constraints.
+
+
+          The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+          `y` are characters and `z` is a boolean value. If `z` is `True`, then `x`
+          must appear before `y` in the window substring. If `z` is `False`, then
+          `y` must appear before `x` in the window substring.
+
+
+          If there is no such window substring, return an empty string.
+
+
+          Example 1:
+
+          Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+          True)]
+
+          Output: "abc"
+
+
+          Example 2:
+
+          Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+          True)]
+
+          Output: ""
+
+          '
+        code: "def main(s, t, constraints):\n    from collections import defaultdict\n\
+          \    from itertools import permutations\n\n    memo = dict()  # Dynamic\
+          \ programming table to store results\n\n    def check_constraints(window,\
+          \ constraints):\n        if id(window), id(constraints) in memo:\n     \
+          \       return memo[id(window), id(constraints)]\n        for x, y, z in\
+          \ constraints:\n            if z and window.index(x) > window.index(y):\n\
+          \                result = False\n            elif not z and window.index(y)\
+          \ > window.index(x):\n                result = False\n            else:\n\
+          \                result = True\n        memo[id(window), id(constraints)]\
+          \ = result\n        return result\n\n    t_count = defaultdict(int)\n  \
+          \  for char in t:\n        t_count[char] += 1\n\n    min_window = \"\"\n\
+          \    for r in range(len(s)):\n        window_count = defaultdict(int)\n\
+          \        for char in s[max(0, r - len(t) + 1):r + 1]:\n            window_count[char]\
+          \ += 1\n        if all(window_count[char] >= t_count[char] for char in t):\n\
+          \            if id(s[max(0, r - len(t) + 1):r + 1]), id(constraints) in\
+          \ memo:\n                window = memo[id(s[max(0, r - len(t) + 1):r + 1]),\
+          \ id(constraints)]\n            else:\n                window = list(permutations(s[max(0,\
+          \ r - len(t) + 1):r + 1]))\n                memo[id(s[max(0, r - len(t)\
+          \ + 1):r + 1]), id(constraints)] = window\n            for chars in window:\n\
+          \                if check_constraints(chars, constraints):\n           \
+          \         if not min_window or len(min_window) > len(chars):\n         \
+          \               min_window = \"\".join(chars)\n    return min_window"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - &id009 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# Minimum Window Substring with Multiple Constraints
+
+            Given a string `s`, a string `t`, and a list of constraints `constraints`,
+            find the minimum window substring of `s` that contains all characters
+            in `t` and satisfies all constraints.
+
+
+            The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+            `y` are characters and `z` is a boolean value. If `z` is `True`, then
+            `x` must appear before `y` in the window substring. If `z` is `False`,
+            then `y` must appear before `x` in the window substring.
+
+
+            If there is no such window substring, return an empty string.
+
+
+            Example 1:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+            True)]
+
+            Output: "abc"
+
+
+            Example 2:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+            True)]
+
+            Output: ""
+
+            '
+          code: "def check_constraints(window, constraints):\n    for x, y, z in constraints:\n\
+            \        if z and window.index(x) > window.index(y):\n            return\
+            \ False\n        elif not z and window.index(y) > window.index(x):\n \
+            \           return False\n    return True\n\ndef find_min_window(s, t,\
+            \ constraints):\n    t_count = {}\n    for char in t:\n        t_count[char]\
+            \ = t_count.get(char, 0) + 1\n\n    memo = {}\n    min_window = \"\"\n\
+            \    for r in range(len(s)):\n        window = s[max(0, r - len(t) + 1):r\
+            \ + 1]\n        window_count = {}\n        for char in window:\n     \
+            \       window_count[char] = window_count.get(char, 0) + 1\n        while\
+            \ len(window) < len(t):\n            window += s[r + 1]\n            window_count[s[r\
+            \ + 1]] = window_count.get(s[r + 1], 0) + 1\n        while len(window)\
+            \ > len(t):\n            window = window[1:]\n            window_count[s[max(0,\
+            \ r - len(t))]] -= 1\n            if window_count[s[max(0, r - len(t))]]\
+            \ == 0:\n                del window_count[s[max(0, r - len(t))]]\n   \
+            \     if all(window_count.get(char, 0) >= t_count.get(char, 0) for char\
+            \ in t):\n            if check_constraints(window, constraints):\n   \
+            \             min_window = window\n                for chars in window:\n\
+            \                    new_window = \"\"\n                    for char in\
+            \ window:\n                        if char == chars:\n               \
+            \             new_window += char\n                    if check_constraints(new_window,\
+            \ constraints):\n                        if not min_window or len(min_window)\
+            \ > len(new_window):\n                            min_window = new_window\n\
+            \        memo[window] = min_window\n        if result := memo.get(window):\n\
+            \            if not min_window or len(min_window) > len(result):\n   \
+            \             min_window = result\n    return min_window"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Replace the explicit loop in the 'main' function
+            with a recursive approach using memoization to store intermediate results
+            and avoid redundant computations, 'refactor the recursive function back
+            into an iterative solution using a loop, preserving the original logic
+            and memoization.']
+        middle_state:
+          description: '# Minimum Window Substring with Multiple Constraints
+
+            Given a string `s`, a string `t`, and a list of constraints `constraints`,
+            find the minimum window substring of `s` that contains all characters
+            in `t` and satisfies all constraints.
+
+
+            The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+            `y` are characters and `z` is a boolean value. If `z` is `True`, then
+            `x` must appear before `y` in the window substring. If `z` is `False`,
+            then `y` must appear before `x` in the window substring.
+
+
+            If there is no such window substring, return an empty string.
+
+
+            Example 1:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+            True)]
+
+            Output: "abc"
+
+
+            Example 2:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+            True)]
+
+            Output: ""
+
+            '
+          code: "def check_constraints(window, constraints):\n    for x, y, z in constraints:\n\
+            \        if z and window.index(x) > window.index(y):\n            return\
+            \ False\n        elif not z and window.index(y) > window.index(x):\n \
+            \           return False\n    return True\n\ndef find_min_window(s, t,\
+            \ constraints):\n    t_count = {}\n    for char in t:\n        t_count[char]\
+            \ = t_count.get(char, 0) + 1\n\n    def find_min(window, constraints,\
+            \ memo):\n        if window in memo:\n            return memo[window]\n\
+            \        if all(window_count.get(char, 0) >= t_count.get(char, 0) for\
+            \ char in t):\n            if check_constraints(window, constraints):\n\
+            \                min_window = window\n                for chars in permutations(window):\n\
+            \                    if check_constraints(chars, constraints):\n     \
+            \                   if not min_window or len(min_window) > len(chars):\n\
+            \                            min_window = \"\".join(chars)\n         \
+            \       memo[window] = min_window\n                return min_window\n\
+            \        return None\n\n    min_window = \"\"\n    for r in range(len(s)):\n\
+            \        window = s[max(0, r - len(t) + 1):r + 1]\n        window_count\
+            \ = {}\n        for char in window:\n            window_count[char] =\
+            \ window_count.get(char, 0) + 1\n        result = find_min(window, constraints,\
+            \ {})\n        if result and (not min_window or len(min_window) > len(result)):\n\
+            \            min_window = result\n    return min_window"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id008
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def check_constraints(window, constraints):\n    for x, y, z in\
+              \ constraints:\n        if window.index(x) > window.index(y) and z:\n\
+              \            return False\n        elif window.index(y) > window.index(x)\
+              \ and not z:\n            return False\n    return True\n\ndef find_min_window(s,\
+              \ t, constraints):\n    t_count = {}\n    for char in t:\n        t_count[char]\
+              \ = t_count.get(char, 0) + 1\n\n    memo = {}\n    min_window = None\n\
+              \    for r in range(len(s)):\n        window = s[max(0, r - len(t) +\
+              \ 1):r + 1]\n        window_count = {}\n        for char in window:\n\
+              \            window_count[char] = window_count.get(char, 0) + 1\n  \
+              \      while len(window) < len(t):\n            window += s[r + 1]\n\
+              \            window_count[s[r + 1]] = window_count.get(s[r + 1], 0)\
+              \ + 1\n        while len(window) > len(t):\n            window = window[1:]\n\
+              \            window_count[s[max(0, r - len(t))]] -= 1\n            if\
+              \ window_count[s[max(0, r - len(t))]] == 0:\n                del window_count[s[max(0,\
+              \ r - len(t))]]\n        if all(window_count.get(char, 0) >= t_count.get(char,\
+              \ 0) for char in t):\n            if check_constraints(window, constraints):\n\
+              \                new_min_window = window\n                for chars\
+              \ in window:\n                    new_window = \"\"\n              \
+              \      for char in window:\n                        if char == chars:\n\
+              \                            new_window += char\n                  \
+              \  if check_constraints(new_window, constraints):\n                \
+              \        if not min_window or len(min_window) > len(new_window):\n \
+              \                           min_window = new_window\n    return min_window\
+              \ if min_window else None"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple [Replace the explicit loop in the 'main' function
+              with a recursive approach using memoization to store intermediate results
+              and avoid redundant computations, 'refactor the recursive function back
+              into an iterative solution using a loop, preserving the original logic
+              and memoization.']
+          middle_state:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def check_constraints(window, constraints):\n    def is_valid(window,\
+              \ x, y, z):\n        if z and window.index(x) > window.index(y):\n \
+              \           return False\n        elif not z and window.index(y) > window.index(x):\n\
+              \            return False\n        return True\n\n    for x, y, z in\
+              \ constraints:\n        if not is_valid(window, x, y, z):\n        \
+              \    return False\n    return True\n\ndef find_min_window(s, t, constraints):\n\
+              \    t_count = {}\n    for char in t:\n        t_count[char] = t_count.get(char,\
+              \ 0) + 1\n\n    memo = {}\n    def find_min_window_recursive(r):\n \
+              \       if r in memo:\n            return memo[r]\n        window =\
+              \ s[max(0, r - len(t) + 1):r + 1]\n        window_count = {}\n     \
+              \   for char in window:\n            window_count[char] = window_count.get(char,\
+              \ 0) + 1\n        while len(window) < len(t):\n            window +=\
+              \ s[r + 1]\n            window_count[s[r + 1]] = window_count.get(s[r\
+              \ + 1], 0) + 1\n        while len(window) > len(t):\n            window\
+              \ = window[1:]\n            window_count[s[max(0, r - len(t))]] -= 1\n\
+              \            if window_count[s[max(0, r - len(t))]] == 0:\n        \
+              \        del window_count[s[max(0, r - len(t))]]\n        if all(window_count.get(char,\
+              \ 0) >= t_count.get(char, 0) for char in t):\n            if check_constraints(window,\
+              \ constraints):\n                min_window = window\n             \
+              \   for chars in window:\n                    new_window = \"\"\n  \
+              \                  for char in window:\n                        if char\
+              \ == chars:\n                            new_window += char\n      \
+              \              if check_constraints(new_window, constraints):\n    \
+              \                    if not min_window or len(min_window) > len(new_window):\n\
+              \                            min_window = new_window\n        memo[r]\
+              \ = min_window if min_window else memo.get(r - 1) if r - 1 in memo else\
+              \ None\n        return memo[r]\n\n    return find_min_window_recursive(len(s))"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id009
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def find_min_window(s, t, constraints):\n    t_count = {}\n   \
+              \ for char in t:\n        t_count[char] = t_count.get(char, 0) + 1\n\
+              \n    memo = {}\n    min_window = \"\"\n    for r in range(len(s)):\n\
+              \        window = s[max(0, r - len(t) + 1):r + 1]\n        window_count\
+              \ = {}\n        for char in window:\n            window_count[char]\
+              \ = window_count.get(char, 0) + 1\n        while len(window) < len(t):\n\
+              \            window += s[r + 1]\n            window_count[s[r + 1]]\
+              \ = window_count.get(s[r + 1], 0) + 1\n        while len(window) > len(t):\n\
+              \            window = window[1:]\n            window_count[s[max(0,\
+              \ r - len(t))]] -= 1\n            if window_count[s[max(0, r - len(t))]]\
+              \ == 0:\n                del window_count[s[max(0, r - len(t))]]\n \
+              \       if all(window_count.get(char, 0) >= t_count.get(char, 0) for\
+              \ char in t):\n            if has_constraints(window, constraints):\n\
+              \                if not min_window or len(min_window) > len(window):\n\
+              \                    min_window = window\n                for chars\
+              \ in window:\n                    new_window = \"\"\n              \
+              \      for char in window:\n                        if char == chars:\n\
+              \                            new_window += char\n                  \
+              \  if has_constraints(new_window, constraints):\n                  \
+              \      if not min_window or len(min_window) > len(new_window):\n   \
+              \                         min_window = new_window\n    return min_window\n\
+              \ndef has_constraints(window, constraints):\n    for x, y, z in constraints:\n\
+              \        if z and window.index(x) > window.index(y):\n            return\
+              \ False\n        elif not z and window.index(y) > window.index(x):\n\
+              \            return False\n    return True"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Implement a dynamic programming table within
+              the ''main'' function to store and reuse results of expensive function
+              calls, reducing the time complexity by avoiding redundant computations',
+            'revert the dynamic programming table back into a naive recursive solution,
+              ensuring the original behavior and functionality are preserved.']
+          middle_state:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def check_constraints(window, constraints, dp):\n    if (window,\
+              \ constraints) in dp:\n        return dp[(window, constraints)]\n  \
+              \  for x, y, z in constraints:\n        if z and window.index(x) > window.index(y):\n\
+              \            dp[(window, constraints)] = False\n            return False\n\
+              \        elif not z and window.index(y) > window.index(x):\n       \
+              \     dp[(window, constraints)] = False\n            return False\n\
+              \    dp[(window, constraints)] = True\n    return True\n\ndef find_min_window(s,\
+              \ t, constraints):\n    t_count = {}\n    for char in t:\n        t_count[char]\
+              \ = t_count.get(char, 0) + 1\n\n    memo = {}\n    dp = {}\n    min_window\
+              \ = \"\"\n    for r in range(len(s)):\n        window = s[max(0, r -\
+              \ len(t) + 1):r + 1]\n        window_count = {}\n        for char in\
+              \ window:\n            window_count[char] = window_count.get(char, 0)\
+              \ + 1\n        while len(window) < len(t):\n            window += s[r\
+              \ + 1]\n            window_count[s[r + 1]] = window_count.get(s[r +\
+              \ 1], 0) + 1\n        while len(window) > len(t):\n            window\
+              \ = window[1:]\n            window_count[s[max(0, r - len(t))]] -= 1\n\
+              \            if window_count[s[max(0, r - len(t))]] == 0:\n        \
+              \        del window_count[s[max(0, r - len(t))]]\n        if all(window_count.get(char,\
+              \ 0) >= t_count.get(char, 0) for char in t):\n            if check_constraints(window,\
+              \ constraints, dp):\n                min_window = window\n         \
+              \       for chars in window:\n                    new_window = \"\"\n\
+              \                    for char in window:\n                        if\
+              \ char == chars:\n                            new_window += char\n \
+              \                   if check_constraints(new_window, constraints, dp):\n\
+              \                        if not min_window or len(min_window) > len(new_window):\n\
+              \                            min_window = new_window\n        if (window,\
+              \ constraints) in dp:\n            if not min_window or len(min_window)\
+              \ > len(dp[(window, constraints)]):\n                min_window = dp[(window,\
+              \ constraints)]\n        else:\n            memo[window] = min_window\n\
+              \            dp[(window, constraints)] = memo[window]\n    return min_window"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id009
+          children: []
+      - &id010 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# Minimum Window Substring with Multiple Constraints
+
+            Given a string `s`, a string `t`, and a list of constraints `constraints`,
+            find the minimum window substring of `s` that contains all characters
+            in `t` and satisfies all constraints.
+
+
+            The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+            `y` are characters and `z` is a boolean value. If `z` is `True`, then
+            `x` must appear before `y` in the window substring. If `z` is `False`,
+            then `y` must appear before `x` in the window substring.
+
+
+            If there is no such window substring, return an empty string.
+
+
+            Example 1:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+            True)]
+
+            Output: "abc"
+
+
+            Example 2:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+            True)]
+
+            Output: ""
+
+            '
+          code: "def main(s, t, constraints):\n    def check_constraints(window, constraints):\n\
+            \        for x, y, z in constraints:\n            if z and window.index(x)\
+            \ > window.index(y):\n                return False\n            elif not\
+            \ z and window.index(y) > window.index(x):\n                return False\n\
+            \        return True\n\n    def recursive_search(s, t, constraints, min_window,\
+            \ r):\n        if r == len(s):\n            return min_window\n      \
+            \  window_count = {}\n        for char in s[max(0, r - len(t) + 1):r +\
+            \ 1]:\n            window_count[char] = window_count.get(char, 0) + 1\n\
+            \        if all(window_count.get(char, 0) >= t_count.get(char, 0) for\
+            \ char in t):\n            window = list(permutations(s[max(0, r - len(t)\
+            \ + 1):r + 1]))\n            for chars in window:\n                if\
+            \ check_constraints(chars, constraints):\n                    if not min_window\
+            \ or len(min_window) > len(chars):\n                        min_window\
+            \ = \"\".join(chars)\n        return recursive_search(s, t, constraints,\
+            \ min_window, r + 1)\n\n    t_count = {}\n    for char in t:\n       \
+            \ t_count[char] = t_count.get(char, 0) + 1\n    return recursive_search(s,\
+            \ t, constraints, \"\", 0)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Implement a dynamic programming table within the
+            ''main'' function to store and reuse results of expensive function calls,
+            reducing the time complexity by avoiding redundant computations', 'revert
+            the dynamic programming table back into a naive recursive solution, ensuring
+            the original behavior and functionality are preserved.']
+        middle_state:
+          description: '# Minimum Window Substring with Multiple Constraints
+
+            Given a string `s`, a string `t`, and a list of constraints `constraints`,
+            find the minimum window substring of `s` that contains all characters
+            in `t` and satisfies all constraints.
+
+
+            The constraints are given as a list of tuples `(x, y, z)`, where `x` and
+            `y` are characters and `z` is a boolean value. If `z` is `True`, then
+            `x` must appear before `y` in the window substring. If `z` is `False`,
+            then `y` must appear before `x` in the window substring.
+
+
+            If there is no such window substring, return an empty string.
+
+
+            Example 1:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+            True)]
+
+            Output: "abc"
+
+
+            Example 2:
+
+            Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b", "c",
+            True)]
+
+            Output: ""
+
+            '
+          code: "def main(s, t, constraints):\n    from itertools import permutations\n\
+            \    from functools import lru_cache\n\n    @lru_cache(maxsize=None)\n\
+            \    def check_constraints(window, constraints):\n        for x, y, z\
+            \ in constraints:\n            if z and window.index(x) > window.index(y):\n\
+            \                return False\n            elif not z and window.index(y)\
+            \ > window.index(x):\n                return False\n        return True\n\
+            \n    t_count = {}\n    for char in t:\n        t_count[char] = t_count.get(char,\
+            \ 0) + 1\n\n    min_window = \"\"\n    for r in range(len(s)):\n     \
+            \   window_count = {}\n        for char in s[max(0, r - len(t) + 1):r\
+            \ + 1]:\n            window_count[char] = window_count.get(char, 0) +\
+            \ 1\n        if all(window_count.get(char, 0) >= t_count.get(char, 0)\
+            \ for char in t):\n            window = list(permutations(s[max(0, r -\
+            \ len(t) + 1):r + 1]))\n            for chars in window:\n           \
+            \     if check_constraints(chars, constraints):\n                    if\
+            \ not min_window or len(min_window) > len(chars):\n                  \
+            \      min_window = \"\".join(chars)\n    return min_window"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id008
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    memo = {}\n    def check_constraints(window,\
+              \ constraints):\n        if id(window) in memo:\n            return\
+              \ memo[id(window)]\n        for x, y, z in constraints:\n          \
+              \  if z and window.index(x) > window.index(y):\n                memo[id(window)]\
+              \ = False\n                return False\n            elif not z and\
+              \ window.index(y) > window.index(x):\n                memo[id(window)]\
+              \ = False\n                return False\n        memo[id(window)] =\
+              \ True\n        return True\n\n    def iterative_search(s, t, constraints,\
+              \ min_window, r):\n        while r < len(s):\n            window_count\
+              \ = {}\n            for char in s[max(0, r - len(t) + 1):r + 1]:\n \
+              \               window_count[char] = window_count.get(char, 0) + 1\n\
+              \            if all(window_count.get(char, 0) >= t_count.get(char, 0)\
+              \ for char in t):\n                window = set(permutations(s[max(0,\
+              \ r - len(t) + 1):r + 1]))\n                for chars in window:\n \
+              \                   if check_constraints(chars, constraints):\n    \
+              \                    if not min_window or len(min_window) > len(chars):\n\
+              \                            min_window = \"\".join(chars)\n       \
+              \     r += 1\n        return min_window\n\n    t_count = {}\n    for\
+              \ char in t:\n        t_count[char] = t_count.get(char, 0) + 1\n   \
+              \ return iterative_search(s, t, constraints, \"\", 0)"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple [Replace the explicit loop in the 'main' function
+              with a recursive approach using memoization to store intermediate results
+              and avoid redundant computations, 'refactor the recursive function back
+              into an iterative solution using a loop, preserving the original logic
+              and memoization.']
+          middle_state:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    memo = {}\n    def check_constraints(window,\
+              \ constraints):\n        if id(window) in memo:\n            return\
+              \ memo[id(window)]\n        for x, y, z in constraints:\n          \
+              \  if z and window.index(x) > window.index(y):\n                memo[id(window)]\
+              \ = False\n                return False\n            elif not z and\
+              \ window.index(y) > window.index(x):\n                memo[id(window)]\
+              \ = False\n                return False\n        memo[id(window)] =\
+              \ True\n        return True\n\n    def recursive_search(s, t, constraints,\
+              \ min_window, r):\n        if r == len(s):\n            return min_window\n\
+              \        if (s, r, t, constraints, min_window) in memo:\n          \
+              \  return memo[(s, r, t, constraints, min_window)]\n        window_count\
+              \ = {}\n        for char in s[max(0, r - len(t) + 1):r + 1]:\n     \
+              \       window_count[char] = window_count.get(char, 0) + 1\n       \
+              \ if all(window_count.get(char, 0) >= t_count.get(char, 0) for char\
+              \ in t):\n            window = set(permutations(s[max(0, r - len(t)\
+              \ + 1):r + 1]))\n            for chars in window:\n                if\
+              \ check_constraints(chars, constraints):\n                    if not\
+              \ min_window or len(min_window) > len(chars):\n                    \
+              \    min_window = \"\".join(chars)\n        memo[(s, r, t, constraints,\
+              \ min_window)] = recursive_search(s, t, constraints, min_window, r +\
+              \ 1)\n        return memo[(s, r, t, constraints, min_window)]\n\n  \
+              \  t_count = {}\n    for char in t:\n        t_count[char] = t_count.get(char,\
+              \ 0) + 1\n    return recursive_search(s, t, constraints, \"\", 0)"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id010
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    def check_constraints(window,\
+              \ constraints):\n        for x, y, z in constraints:\n            if\
+              \ z and window.index(x) > window.index(y):\n                return False\n\
+              \            elif not z and window.index(y) > window.index(x):\n   \
+              \             return False\n        return True\n\n    def recursive_search(s,\
+              \ t, constraints, min_window, r):\n        if r == len(s):\n       \
+              \     return min_window\n        window_count = {}\n        for char\
+              \ in s[max(0, r - len(t) + 1):r + 1]:\n            window_count[char]\
+              \ = window_count.get(char, 0) + 1\n        if all(window_count.get(char,\
+              \ 0) >= t_count.get(char, 0) for char in t):\n            window = [s[max(0,\
+              \ r - len(t) + 1):r + 1]]\n            for chars in window:\n      \
+              \          if check_constraints(chars, constraints):\n             \
+              \       if not min_window or len(min_window) > len(chars):\n       \
+              \                 min_window = \"\".join(chars)\n        return recursive_search(s,\
+              \ t, constraints, min_window, r + 1)\n\n    t_count = {}\n    for char\
+              \ in t:\n        t_count[char] = t_count.get(char, 0) + 1\n    return\
+              \ recursive_search(s, t, constraints, \"\", 0)"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Implement a dynamic programming table within
+              the ''main'' function to store and reuse results of expensive function
+              calls, reducing the time complexity by avoiding redundant computations',
+            'revert the dynamic programming table back into a naive recursive solution,
+              ensuring the original behavior and functionality are preserved.']
+          middle_state:
+            description: '# Minimum Window Substring with Multiple Constraints
+
+              Given a string `s`, a string `t`, and a list of constraints `constraints`,
+              find the minimum window substring of `s` that contains all characters
+              in `t` and satisfies all constraints.
+
+
+              The constraints are given as a list of tuples `(x, y, z)`, where `x`
+              and `y` are characters and `z` is a boolean value. If `z` is `True`,
+              then `x` must appear before `y` in the window substring. If `z` is `False`,
+              then `y` must appear before `x` in the window substring.
+
+
+              If there is no such window substring, return an empty string.
+
+
+              Example 1:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", True), ("b", "c",
+              True)]
+
+              Output: "abc"
+
+
+              Example 2:
+
+              Input: s = "abc", t = "ac", constraints = [("a", "b", False), ("b",
+              "c", True)]
+
+              Output: ""
+
+              '
+            code: "def main(s, t, constraints):\n    memo = {}\n\n    def check_constraints(window,\
+              \ constraints):\n        for x, y, z in constraints:\n            if\
+              \ z and window.index(x) > window.index(y):\n                return False\n\
+              \            elif not z and window.index(y) > window.index(x):\n   \
+              \             return False\n        return True\n\n    def recursive_search(s,\
+              \ t, constraints, min_window, r):\n        if r == len(s):\n       \
+              \     return min_window\n        key = (s, t, constraints, min_window,\
+              \ r)\n        if key in memo:\n            return memo[key]\n      \
+              \  window_count = {}\n        for char in s[max(0, r - len(t) + 1):r\
+              \ + 1]:\n            window_count[char] = window_count.get(char, 0)\
+              \ + 1\n        if all(window_count.get(char, 0) >= t_count.get(char,\
+              \ 0) for char in t):\n            window = list(permutations(s[max(0,\
+              \ r - len(t) + 1):r + 1]))\n            for chars in window:\n     \
+              \           if check_constraints(chars, constraints):\n            \
+              \        if not min_window or len(min_window) > len(chars):\n      \
+              \                  min_window = \"\".join(chars)\n        memo[key]\
+              \ = recursive_search(s, t, constraints, min_window, r + 1)\n       \
+              \ return memo[key]\n\n    t_count = {}\n    for char in t:\n       \
+              \ t_count[char] = t_count.get(char, 0) + 1\n    return recursive_search(s,\
+              \ t, constraints, \"\", 0)"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id010
+          children: []

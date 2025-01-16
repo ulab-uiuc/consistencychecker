@@ -1,0 +1,336 @@
+evaluator_model: {model: hosted_vllm/meta-llama/Llama-3.1-8B-Instruct, temperature: 0.6,
+  api_base: 'http://localhost:8000/v1'}
+evaluatee_model: {model: hosted_vllm/meta-llama/Llama-3.1-8B-Instruct, temperature: 0.6,
+  api_base: 'http://localhost:8000/v1'}
+root_content: &id001
+  description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven an integer\
+    \ array `nums` and an integer `k`, find the maximum sum of all subarrays of size\
+    \ `k` that have distinct elements.\n\n**Example 1:**\n  Input: `nums = [1,2,3,1,4,5,2,3,6],\
+    \ k = 3`\n  Output: `18`\n  Explanation: The maximum sum of distinct subarrays\
+    \ of size `k` is `[1,2,3] + [4,5,6] = 18`\n\n**Example 2:**\n  Input: `nums =\
+    \ [1,2,1,2,3], k = 2`\n  Output: `4`\n  Explanation: The maximum sum of distinct\
+    \ subarrays of size `k` is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\
+    \n**Constraints:**\n  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i] <= 105`\n"
+  code: "def main(nums, k):\n  max_sum = float('-inf')\n  for i in range(len(nums)\
+    \ - k + 1):\n    subarray = set()\n    subarray_sum = 0\n    for j in range(i,\
+    \ i + k):\n      if nums[j] in subarray:\n        break\n      subarray.add(nums[j])\n\
+    \      subarray_sum += nums[j]\n    else:\n      max_sum = max(max_sum, subarray_sum)\n\
+    \  return max_sum\n"
+  programming_language: python3
+  inputs: &id002
+  - nums: [1, 2, 3, 1, 4, 5, 2, 3, 6]
+    k: 3
+  - nums: [1, 2, 1, 2, 3]
+    k: 2
+  - nums: [1, 1, 1, 1, 1]
+    k: 1
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 3
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 6
+  - nums: [5, 5, 3, 7, 2, 8]
+    k: 3
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 2
+  - nums: [1, 1, 1, 1, 1, 1]
+    k: 6
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 1
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 5
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 4
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 3
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 2
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 6
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 5
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 4
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 3
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 2
+  - nums: [1, 2, 3, 4, 5, 6]
+    k: 1
+  exec_results: &id003 [11, 5, 1, 15, 21, 17, 11, -.inf, 6, 20, 18, 15, 11, 21, 20,
+    18, 15, 11, 6]
+operations:
+- !!python/tuple [1. Convert the "main" function to a generator and use itertools.groupby
+    to implement the sliding window logic, Convert the generator back to a for loop
+    and remove the itertools.groupby import statement]
+- !!python/tuple [2. Use a dictionary to store the maximum subarray sum for each prefix
+    of the input, Initialize the maximum subarray sum to negative infinity and remove
+    the dictionary initialization]
+metrics:
+  L-1 AVG: 0.9999998409060179
+  L-1: [1.0, 1.0, 0.9999990454361073, 1.0, 1.0, 1.0]
+  L-2 AVG: 1.0
+  L-2: [1.0, 1.0, 1.0, 1.0]
+  L-3 AVG: 0.0
+  L-3: []
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+          \ an integer array `nums` and an integer `k`, find the maximum sum of all\
+          \ subarrays of size `k` that have distinct elements.\n\n**Example 1:**\n\
+          \  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n  Explanation:\
+          \ The maximum sum of distinct subarrays of size `k` is `[1,2,3] + [4,5,6]\
+          \ = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k = 2`\n  Output:\
+          \ `4`\n  Explanation: The maximum sum of distinct subarrays of size `k`\
+          \ is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\n**Constraints:**\n\
+          \  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i] <= 105`\n"
+        code: "def main(nums, k):\n  max_sum = float('-inf')\n  for i in range(len(nums)\
+          \ - k + 1):\n    subarray_sum = 0\n    prev_nums = nums[:i]\n    for num\
+          \ in nums[i:i + k]:\n      if num in prev_nums and num in [num for num in\
+          \ nums if num in prev_nums]:\n        break\n      subarray_sum += num\n\
+          \    else:\n      max_sum = max(max_sum, subarray_sum)\n  return max_sum"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple [1. Convert the "main" function to a generator and
+          use itertools.groupby to implement the sliding window logic, Convert the
+          generator back to a for loop and remove the itertools.groupby import statement]
+      middle_state:
+        description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+          \ an integer array `nums` and an integer `k`, find the maximum sum of all\
+          \ subarrays of size `k` that have distinct elements.\n\n**Example 1:**\n\
+          \  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n  Explanation:\
+          \ The maximum sum of distinct subarrays of size `k` is `[1,2,3] + [4,5,6]\
+          \ = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k = 2`\n  Output:\
+          \ `4`\n  Explanation: The maximum sum of distinct subarrays of size `k`\
+          \ is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\n**Constraints:**\n\
+          \  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i] <= 105`\n"
+        code: "import itertools\n\ndef main(nums, k):\n  max_sum = float('-inf')\n\
+          \  for i in range(len(nums) - k + 1):\n    subarray_sum = 0\n    for num\
+          \ in itertools.islice(nums, i, i + k):\n      if num in (prev_num for prev_num\
+          \ in itertools.takewhile(lambda x: x < i, nums) if prev_num in itertools.groupby(nums,\
+          \ key=lambda x: x == num)[num][1]):\n        break\n      subarray_sum +=\
+          \ num\n    else:\n      max_sum = max(max_sum, subarray_sum)\n  return max_sum"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+            \ an integer array `nums` and an integer `k`, find the maximum sum of\
+            \ all subarrays of size `k` that have distinct elements.\n\n**Example\
+            \ 1:**\n  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n\
+            \  Explanation: The maximum sum of distinct subarrays of size `k` is `[1,2,3]\
+            \ + [4,5,6] = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k =\
+            \ 2`\n  Output: `4`\n  Explanation: The maximum sum of distinct subarrays\
+            \ of size `k` is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\
+            \n**Constraints:**\n  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i]\
+            \ <= 105`\n"
+          code: "def main(nums, k):\n  max_sum = float('-inf')\n  for i in range(len(nums)\
+            \ - k + 1):\n    subarray_sum = 0\n    nums_i_k = sorted(nums[i:i + k])\n\
+            \    prev_num = None\n    for num in nums_i_k:\n      if num in nums[:i]:\n\
+            \        subarray_sum += num\n      elif prev_num is not None and prev_num\
+            \ in nums[:i]:\n        break\n      prev_num = num\n    else:\n     \
+            \ max_sum = max(max_sum, subarray_sum)\n  return max_sum"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [1. Convert the "main" function to a generator and
+            use itertools.groupby to implement the sliding window logic, Convert the
+            generator back to a for loop and remove the itertools.groupby import statement]
+        middle_state:
+          description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+            \ an integer array `nums` and an integer `k`, find the maximum sum of\
+            \ all subarrays of size `k` that have distinct elements.\n\n**Example\
+            \ 1:**\n  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n\
+            \  Explanation: The maximum sum of distinct subarrays of size `k` is `[1,2,3]\
+            \ + [4,5,6] = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k =\
+            \ 2`\n  Output: `4`\n  Explanation: The maximum sum of distinct subarrays\
+            \ of size `k` is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\
+            \n**Constraints:**\n  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i]\
+            \ <= 105`\n"
+          code: "from itertools import groupby\n\ndef main(nums, k):\n  max_sum =\
+            \ float('-inf')\n  for i in range(len(nums) - k + 1):\n    subarray_sum\
+            \ = 0\n    group = groupby(sorted(nums[i:i + k]), key=lambda x: x in nums[:i])\n\
+            \    for key, group in group:\n      if key:\n        for num in group:\n\
+            \          subarray_sum += num[0]\n      else:\n        break\n    else:\n\
+            \      max_sum = max(max_sum, subarray_sum)\n  return max_sum"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+            \ an integer array `nums` and an integer `k`, find the maximum sum of\
+            \ all subarrays of size `k` that have distinct elements.\n\n**Example\
+            \ 1:**\n  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n\
+            \  Explanation: The maximum sum of distinct subarrays of size `k` is `[1,2,3]\
+            \ + [4,5,6] = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k =\
+            \ 2`\n  Output: `4`\n  Explanation: The maximum sum of distinct subarrays\
+            \ of size `k` is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\
+            \n**Constraints:**\n  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i]\
+            \ <= 105`\n"
+          code: "def main(nums, k):\n  max_sum = float('-inf')\n  for i in range(len(nums)):\n\
+            \    prefix_max_sum = max((i - 1 >= 0 and nums[i] + max_sum) or 0, nums[i])\n\
+            \    max_sum = max(max_sum, prefix_max_sum)\n  return max_sum"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [2. Use a dictionary to store the maximum subarray
+            sum for each prefix of the input, Initialize the maximum subarray sum
+            to negative infinity and remove the dictionary initialization]
+        middle_state:
+          description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+            \ an integer array `nums` and an integer `k`, find the maximum sum of\
+            \ all subarrays of size `k` that have distinct elements.\n\n**Example\
+            \ 1:**\n  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n\
+            \  Explanation: The maximum sum of distinct subarrays of size `k` is `[1,2,3]\
+            \ + [4,5,6] = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k =\
+            \ 2`\n  Output: `4`\n  Explanation: The maximum sum of distinct subarrays\
+            \ of size `k` is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\
+            \n**Constraints:**\n  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i]\
+            \ <= 105`\n"
+          code: "def main(nums, k):\n  prefix_max_sums = {}\n  max_sum = float('-inf')\n\
+            \  for i in range(len(nums)):\n    prefix_max_sum = max(prefix_max_sums.get(i\
+            \ - 1, 0), nums[i])\n    prefix_max_sums[i] = prefix_max_sum\n    max_sum\
+            \ = max(max_sum, prefix_max_sum)\n  return max_sum"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+    - &id006 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+          \ an integer array `nums` and an integer `k`, find the maximum sum of all\
+          \ subarrays of size `k` that have distinct elements.\n\n**Example 1:**\n\
+          \  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n  Explanation:\
+          \ The maximum sum of distinct subarrays of size `k` is `[1,2,3] + [4,5,6]\
+          \ = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k = 2`\n  Output:\
+          \ `4`\n  Explanation: The maximum sum of distinct subarrays of size `k`\
+          \ is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\n**Constraints:**\n\
+          \  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i] <= 105`\n"
+        code: "def main(nums, k):\n  max_sum = float('-inf')\n  current_sum = 0\n\
+          \  for i in range(len(nums)):\n    current_sum = max(nums[i], current_sum\
+          \ + nums[i])\n    max_sum = max(max_sum, current_sum)\n  return max_sum"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple [2. Use a dictionary to store the maximum subarray
+          sum for each prefix of the input, Initialize the maximum subarray sum to
+          negative infinity and remove the dictionary initialization]
+      middle_state:
+        description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+          \ an integer array `nums` and an integer `k`, find the maximum sum of all\
+          \ subarrays of size `k` that have distinct elements.\n\n**Example 1:**\n\
+          \  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n  Explanation:\
+          \ The maximum sum of distinct subarrays of size `k` is `[1,2,3] + [4,5,6]\
+          \ = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k = 2`\n  Output:\
+          \ `4`\n  Explanation: The maximum sum of distinct subarrays of size `k`\
+          \ is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\n**Constraints:**\n\
+          \  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i] <= 105`\n"
+        code: "def main(nums, k):\n  max_sum = float('-inf')\n  prefix_max_sums =\
+          \ {}\n  current_sum = 0\n  for i in range(len(nums)):\n    current_sum =\
+          \ max(nums[i], current_sum + nums[i])\n    prefix_max_sums[i] = current_sum\n\
+          \    max_sum = max(max_sum, current_sum)\n  return max_sum"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+            \ an integer array `nums` and an integer `k`, find the maximum sum of\
+            \ all subarrays of size `k` that have distinct elements.\n\n**Example\
+            \ 1:**\n  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n\
+            \  Explanation: The maximum sum of distinct subarrays of size `k` is `[1,2,3]\
+            \ + [4,5,6] = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k =\
+            \ 2`\n  Output: `4`\n  Explanation: The maximum sum of distinct subarrays\
+            \ of size `k` is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\
+            \n**Constraints:**\n  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i]\
+            \ <= 105`\n"
+          code: "def max_sum_subarray(nums, k):\n  max_sum = float('-inf')\n  for\
+            \ i in range(0, len(nums), k):\n    window_nums = nums[i:i+k]\n    window_sum\
+            \ = sum(window_nums)\n    max_sum = max(max_sum, window_sum)\n  return\
+            \ max_sum"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [1. Convert the "main" function to a generator and
+            use itertools.groupby to implement the sliding window logic, Convert the
+            generator back to a for loop and remove the itertools.groupby import statement]
+        middle_state:
+          description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+            \ an integer array `nums` and an integer `k`, find the maximum sum of\
+            \ all subarrays of size `k` that have distinct elements.\n\n**Example\
+            \ 1:**\n  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n\
+            \  Explanation: The maximum sum of distinct subarrays of size `k` is `[1,2,3]\
+            \ + [4,5,6] = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k =\
+            \ 2`\n  Output: `4`\n  Explanation: The maximum sum of distinct subarrays\
+            \ of size `k` is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\
+            \n**Constraints:**\n  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i]\
+            \ <= 105`\n"
+          code: "import itertools\n\ndef max_sum_subarray(nums, k):\n  max_sum = float('-inf')\n\
+            \  for window in itertools.groupby(enumerate(nums), key=lambda x: x[0]\
+            \ // k):\n    window_nums = [num for _, num in window[1]]\n    window_sum\
+            \ = sum(window_nums)\n    max_sum = max(max_sum, window_sum)\n  return\
+            \ max_sum"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+            \ an integer array `nums` and an integer `k`, find the maximum sum of\
+            \ all subarrays of size `k` that have distinct elements.\n\n**Example\
+            \ 1:**\n  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n\
+            \  Explanation: The maximum sum of distinct subarrays of size `k` is `[1,2,3]\
+            \ + [4,5,6] = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k =\
+            \ 2`\n  Output: `4`\n  Explanation: The maximum sum of distinct subarrays\
+            \ of size `k` is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\
+            \n**Constraints:**\n  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i]\
+            \ <= 105`\n"
+          code: "def main(nums, k):\n  max_sum = float('-inf')\n  current_sum = 0\n\
+            \  for i in range(len(nums)):\n    current_sum = max(nums[i], current_sum\
+            \ + nums[i])\n    max_sum = max(max_sum, current_sum)\n  return max_sum"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [2. Use a dictionary to store the maximum subarray
+            sum for each prefix of the input, Initialize the maximum subarray sum
+            to negative infinity and remove the dictionary initialization]
+        middle_state:
+          description: "**Maximum Sum of Distinct Subarrays of Size K**\n===\n\nGiven\
+            \ an integer array `nums` and an integer `k`, find the maximum sum of\
+            \ all subarrays of size `k` that have distinct elements.\n\n**Example\
+            \ 1:**\n  Input: `nums = [1,2,3,1,4,5,2,3,6], k = 3`\n  Output: `18`\n\
+            \  Explanation: The maximum sum of distinct subarrays of size `k` is `[1,2,3]\
+            \ + [4,5,6] = 18`\n\n**Example 2:**\n  Input: `nums = [1,2,1,2,3], k =\
+            \ 2`\n  Output: `4`\n  Explanation: The maximum sum of distinct subarrays\
+            \ of size `k` is `[1,2] = 3` and `[2,3] = 5`, the maximum sum is `5`\n\
+            \n**Constraints:**\n  * `1 <= k <= nums.length <= 105`\n  * `1 <= nums[i]\
+            \ <= 105`\n"
+          code: "def main(nums, k):\n  max_sums = {}\n  max_sum = float('-inf')\n\
+            \  current_sum = 0\n  for i in range(len(nums)):\n    current_sum = max(nums[i],\
+            \ current_sum + nums[i])\n    max_sum = max(max_sum, current_sum)\n  \
+            \  max_sums[i] = max_sum\n  return max_sums"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []

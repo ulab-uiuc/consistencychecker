@@ -1,0 +1,311 @@
+evaluator_model: {model: gpt-4o-mini, temperature: 0.6, api_base: 'https://api.openai.com/v1'}
+evaluatee_model: {model: gpt-4o-mini, temperature: 0.6, api_base: 'https://api.openai.com/v1'}
+root_content: &id001
+  description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`, return\
+    \ the maximum sum of non-adjacent elements. \nYou may not choose both adjacent\
+    \ elements in the array.\n\nFor example:\n- Input: `nums = [2, 7, 9, 3, 1]`\n\
+    - Output: `12` (You can choose 2, 9, and 1)\n\n- Input: `nums = [1, 2, 3, 1]`\n\
+    - Output: `4` (You can choose 1 and 3)\n\n- Input: `nums = [5, 1, 1, 5]`\n- Output:\
+    \ `10` (You can choose 5 and 5)\n\nThe function should be efficient enough to\
+    \ handle large input sizes, with a time complexity of O(n) and space complexity\
+    \ of O(1).\n"
+  code: "def main(nums):\n    if not nums:\n        return 0\n    elif len(nums) ==\
+    \ 1:\n        return nums[0]\n    \n    prev1, prev2 = 0, 0\n    \n    for num\
+    \ in nums:\n        temp = prev1\n        prev1 = max(prev2 + num, prev1)\n  \
+    \      prev2 = temp\n    \n    return prev1\n"
+  programming_language: python3
+  inputs: &id002
+  - nums: [2, 7, 9, 3, 1]
+  - nums: [1, 2, 3, 1]
+  - nums: [5, 1, 1, 5]
+  - nums: [10, 1, 2, 10, 3]
+  - nums: [1, 0, 3, 9, 2]
+  - nums: [3, 2, 5, 10, 7]
+  - nums: [1, 2, 3, 4, 5, 6]
+  - nums: [0, 0, 0, 0]
+  - nums: [7, 3, 4, 2, 8]
+  - nums: [1]
+  - nums: [2, 1]
+  - nums: [4, 5, 6, 7, 8]
+  - nums: [1, 1, 1, 1, 1]
+  - nums: [100, 1, 1, 1, 1]
+  - nums: [1, 2, 9, 4, 5]
+  - nums: [2, 4, 6, 2, 5]
+  - nums: [2, 1, 1, 2]
+  - nums: [3, 5, 10, 10, 1]
+  - nums: [1, 2, 3]
+  - nums: [1, 3, 1, 3, 1]
+  exec_results: &id003 [12, 4, 10, 20, 10, 15, 12, 0, 19, 1, 2, 18, 3, 102, 15, 13,
+    4, 15, 4, 6]
+operations:
+- !!python/tuple [Rewrite the \"main\" function using dynamic programming with a memoization
+    technique., Rewrite the \"main\" function to use an iterative approach without
+    memoization.]
+- !!python/tuple [Refactor the \"main\" function to use a class-based structure instead
+    of a standalone function., Refactor the class-based structure back to a standalone
+    function for the \"main\" function.]
+metrics:
+  L-1 AVG: 1.0
+  L-1: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-2 AVG: 0.9999996107051
+  L-2: [1.0, 0.9999984428204001, 1.0, 1.0]
+  L-3 AVG: 0.0
+  L-3: []
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+          \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+          \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums =\
+          \ [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n- Input:\
+          \ `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\n- Input:\
+          \ `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and 5)\n\nThe\
+          \ function should be efficient enough to handle large input sizes, with\
+          \ a time complexity of O(n) and space complexity of O(1).\n"
+        code: "def main(nums):\n    if not nums:\n        return 0\n    elif len(nums)\
+          \ == 1:\n        return nums[0]\n    \n    prev1, prev2 = 0, 0\n    \n \
+          \   for num in nums:\n        temp = prev1\n        prev1 = max(prev2 +\
+          \ num, prev1)\n        prev2 = temp\n    \n    return prev1"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple [Rewrite the \"main\" function using dynamic programming
+          with a memoization technique., Rewrite the \"main\" function to use an iterative
+          approach without memoization.]
+      middle_state:
+        description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+          \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+          \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums =\
+          \ [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n- Input:\
+          \ `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\n- Input:\
+          \ `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and 5)\n\nThe\
+          \ function should be efficient enough to handle large input sizes, with\
+          \ a time complexity of O(n) and space complexity of O(1).\n"
+        code: "def main(nums, memo=None):\n    if memo is None:\n        memo = {}\n\
+          \        \n    if not nums:\n        return 0\n    elif len(nums) == 1:\n\
+          \        return nums[0]\n    \n    if len(nums) in memo:\n        return\
+          \ memo[len(nums)]\n    \n    prev1, prev2 = 0, 0\n    \n    for num in nums:\n\
+          \        temp = prev1\n        prev1 = max(prev2 + num, prev1)\n       \
+          \ prev2 = temp\n    \n    memo[len(nums)] = prev1\n    return prev1"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+            \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+            \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums\
+            \ = [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n\
+            - Input: `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\
+            \n- Input: `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and\
+            \ 5)\n\nThe function should be efficient enough to handle large input\
+            \ sizes, with a time complexity of O(n) and space complexity of O(1).\n"
+          code: "def main(nums):\n    if not nums:\n        return 0\n    elif len(nums)\
+            \ == 1:\n        return nums[0]\n    \n    prev1, prev2 = 0, 0\n    \n\
+            \    for num in nums:\n        temp = prev1\n        prev1 = max(prev2\
+            \ + num, prev1)\n        prev2 = temp\n    \n    return prev1"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Rewrite the \"main\" function using dynamic programming
+            with a memoization technique., Rewrite the \"main\" function to use an
+            iterative approach without memoization.]
+        middle_state:
+          description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+            \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+            \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums\
+            \ = [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n\
+            - Input: `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\
+            \n- Input: `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and\
+            \ 5)\n\nThe function should be efficient enough to handle large input\
+            \ sizes, with a time complexity of O(n) and space complexity of O(1).\n"
+          code: "def main(nums, memo=None):\n    if memo is None:\n        memo =\
+            \ {}\n        \n    if not nums:\n        return 0\n    elif len(nums)\
+            \ == 1:\n        return nums[0]\n    \n    if len(nums) in memo:\n   \
+            \     return memo[len(nums)]\n    \n    prev1, prev2 = 0, 0\n    \n  \
+            \  for num in nums:\n        temp = prev1\n        prev1 = max(prev2 +\
+            \ num, prev1)\n        prev2 = temp\n    \n    memo[len(nums)] = prev1\n\
+            \    return prev1"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+            \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+            \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums\
+            \ = [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n\
+            - Input: `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\
+            \n- Input: `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and\
+            \ 5)\n\nThe function should be efficient enough to handle large input\
+            \ sizes, with a time complexity of O(n) and space complexity of O(1).\n"
+          code: "def process(nums):\n    if not nums:\n        return 0\n    elif\
+            \ len(nums) == 1:\n        return nums[0]\n\n    prev1, prev2 = 0, 0\n\
+            \n    for num in nums:\n        temp = prev1\n        prev1 = max(prev2\
+            \ + num, prev1)\n        prev2 = temp\n\n    return prev1\n\ndef main(nums):\n\
+            \    return process(nums)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Refactor the \"main\" function to use a class-based
+            structure instead of a standalone function., Refactor the class-based
+            structure back to a standalone function for the \"main\" function.]
+        middle_state:
+          description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+            \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+            \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums\
+            \ = [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n\
+            - Input: `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\
+            \n- Input: `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and\
+            \ 5)\n\nThe function should be efficient enough to handle large input\
+            \ sizes, with a time complexity of O(n) and space complexity of O(1).\n"
+          code: "class NumberProcessor:\n    def __init__(self, nums):\n        self.nums\
+            \ = nums\n\n    def process(self):\n        if not self.nums:\n      \
+            \      return 0\n        elif len(self.nums) == 1:\n            return\
+            \ self.nums[0]\n\n        prev1, prev2 = 0, 0\n\n        for num in self.nums:\n\
+            \            temp = prev1\n            prev1 = max(prev2 + num, prev1)\n\
+            \            prev2 = temp\n\n        return prev1\n\ndef main(nums):\n\
+            \    processor = NumberProcessor(nums)\n    return processor.process()"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+    - &id006 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+          \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+          \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums =\
+          \ [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n- Input:\
+          \ `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\n- Input:\
+          \ `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and 5)\n\nThe\
+          \ function should be efficient enough to handle large input sizes, with\
+          \ a time complexity of O(n) and space complexity of O(1).\n"
+        code: "def process_nums(nums):\n    if not nums:\n        return 0\n    elif\
+          \ len(nums) == 1:\n        return nums[0]\n\n    prev1, prev2 = 0, 0\n\n\
+          \    for num in nums:\n        temp = prev1\n        prev1 = max(prev2 +\
+          \ num, prev1)\n        prev2 = temp\n\n    return prev1\n\ndef main(nums):\n\
+          \    return process_nums(nums)"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple [Refactor the \"main\" function to use a class-based
+          structure instead of a standalone function., Refactor the class-based structure
+          back to a standalone function for the \"main\" function.]
+      middle_state:
+        description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+          \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+          \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums =\
+          \ [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n- Input:\
+          \ `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\n- Input:\
+          \ `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and 5)\n\nThe\
+          \ function should be efficient enough to handle large input sizes, with\
+          \ a time complexity of O(n) and space complexity of O(1).\n"
+        code: "class NumProcessor:\n    def __init__(self, nums):\n        self.nums\
+          \ = nums\n\n    def process(self):\n        if not self.nums:\n        \
+          \    return 0\n        elif len(self.nums) == 1:\n            return self.nums[0]\n\
+          \n        prev1, prev2 = 0, 0\n\n        for num in self.nums:\n       \
+          \     temp = prev1\n            prev1 = max(prev2 + num, prev1)\n      \
+          \      prev2 = temp\n\n        return prev1\n\ndef main(nums):\n    processor\
+          \ = NumProcessor(nums)\n    return processor.process()"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+            \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+            \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums\
+            \ = [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n\
+            - Input: `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\
+            \n- Input: `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and\
+            \ 5)\n\nThe function should be efficient enough to handle large input\
+            \ sizes, with a time complexity of O(n) and space complexity of O(1).\n"
+          code: "def process_nums(nums):\n    if not nums:\n        return 0\n   \
+            \ elif len(nums) == 1:\n        return nums[0]\n    \n    prev1, prev2\
+            \ = 0, 0\n\n    for num in nums:\n        temp = prev1\n        prev1\
+            \ = max(prev2 + num, prev1)\n        prev2 = temp\n\n    return prev1\n\
+            \ndef main(nums):\n    return process_nums(nums)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Rewrite the \"main\" function using dynamic programming
+            with a memoization technique., Rewrite the \"main\" function to use an
+            iterative approach without memoization.]
+        middle_state:
+          description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+            \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+            \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums\
+            \ = [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n\
+            - Input: `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\
+            \n- Input: `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and\
+            \ 5)\n\nThe function should be efficient enough to handle large input\
+            \ sizes, with a time complexity of O(n) and space complexity of O(1).\n"
+          code: "def process_nums(nums, memo):\n    if not nums:\n        return 0\n\
+            \    elif len(nums) == 1:\n        return nums[0]\n    \n    if len(nums)\
+            \ in memo:\n        return memo[len(nums)]\n\n    prev1, prev2 = 0, 0\n\
+            \n    for num in nums:\n        temp = prev1\n        prev1 = max(prev2\
+            \ + num, prev1)\n        prev2 = temp\n\n    memo[len(nums)] = prev1\n\
+            \    return prev1\n\ndef main(nums):\n    memo = {}\n    return process_nums(nums,\
+            \ memo)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+            \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+            \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums\
+            \ = [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n\
+            - Input: `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\
+            \n- Input: `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and\
+            \ 5)\n\nThe function should be efficient enough to handle large input\
+            \ sizes, with a time complexity of O(n) and space complexity of O(1).\n"
+          code: "def process_nums(nums):\n    if not nums:\n        return 0\n   \
+            \ elif len(nums) == 1:\n        return nums[0]\n\n    prev1, prev2 = 0,\
+            \ 0\n\n    for num in nums:\n        temp = prev1\n        prev1 = max(prev2\
+            \ + num, prev1)\n        prev2 = temp\n\n    return prev1\n\ndef main(nums):\n\
+            \    return process_nums(nums)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Refactor the \"main\" function to use a class-based
+            structure instead of a standalone function., Refactor the class-based
+            structure back to a standalone function for the \"main\" function.]
+        middle_state:
+          description: "## Maximum Non-Adjacent Sum\nGiven an integer array `nums`,\
+            \ return the maximum sum of non-adjacent elements. \nYou may not choose\
+            \ both adjacent elements in the array.\n\nFor example:\n- Input: `nums\
+            \ = [2, 7, 9, 3, 1]`\n- Output: `12` (You can choose 2, 9, and 1)\n\n\
+            - Input: `nums = [1, 2, 3, 1]`\n- Output: `4` (You can choose 1 and 3)\n\
+            \n- Input: `nums = [5, 1, 1, 5]`\n- Output: `10` (You can choose 5 and\
+            \ 5)\n\nThe function should be efficient enough to handle large input\
+            \ sizes, with a time complexity of O(n) and space complexity of O(1).\n"
+          code: "class NumProcessor:\n    def __init__(self, nums):\n        self.nums\
+            \ = nums\n\n    def process_nums(self):\n        if not self.nums:\n \
+            \           return 0\n        elif len(self.nums) == 1:\n            return\
+            \ self.nums[0]\n\n        prev1, prev2 = 0, 0\n\n        for num in self.nums:\n\
+            \            temp = prev1\n            prev1 = max(prev2 + num, prev1)\n\
+            \            prev2 = temp\n\n        return prev1\n\ndef main(nums):\n\
+            \    processor = NumProcessor(nums)\n    return processor.process_nums()"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []

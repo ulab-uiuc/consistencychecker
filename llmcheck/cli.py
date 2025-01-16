@@ -42,7 +42,8 @@ def cli() -> None:
         similarity_config=similarity_config,
         max_depth=config.get("max_depth"),
         n_operations=config.get("n_operations"),
-        operation_code_format_enforce_prompt=config.get("operation_code_format_enforce_prompt")
+        operation_code_format_enforce_prompt=config.get("operation_code_format_enforce_prompt"),
+        llm_max_new_tokens=config.get("llm_max_new_tokens"),
     )
 
     # Run evaluation

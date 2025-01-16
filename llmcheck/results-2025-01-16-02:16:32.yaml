@@ -1,0 +1,2426 @@
+evaluator_model: {model: hosted_vllm/meta-llama/Llama-3.1-70B-Instruct, temperature: 0.6,
+  api_base: 'http://localhost:8001/v1'}
+evaluatee_model: {model: hosted_vllm/meta-llama/Llama-3.1-8B-Instruct, temperature: 0.6,
+  api_base: 'http://localhost:8000/v1'}
+root_content: &id001
+  description: '# Minimum Time to Fill All Ponds
+
+    You are given a 2D array `heights` representing a landscape with ponds. Each cell
+    `heights[i][j]` represents the height of the land at that position. When it rains,
+    water fills the ponds, and you want to find the minimum time it takes to fill
+    all the ponds.
+
+
+    A pond is considered filled if the water level is at or above the height of the
+    land at that position. Water flows from higher positions to lower positions, and
+    it takes one unit of time to fill a pond.
+
+
+    You are also given a list of `sources` representing the positions of the water
+    sources. Each source is represented as a list `[i, j]`, where `i` is the row and
+    `j` is the column of the source.
+
+
+    The water from each source flows to the adjacent positions (up, down, left, right)
+    if the height of the land at the adjacent position is lower than the height of
+    the land at the source position.
+
+
+    Your task is to find the minimum time it takes to fill all the ponds.
+
+
+    # Example 1:
+
+    Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+    Output: 2
+
+
+    # Example 2:
+
+    Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+    Output: 3
+
+
+    # Constraints:
+
+    * 1 <= heights.length, heights[0].length <= 200
+
+    * 1 <= sources.length <= 200
+
+    * 0 <= sources[i][0] < heights.length
+
+    * 0 <= sources[i][1] < heights[0].length
+
+    '
+  code: "def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+    \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  queue = []\n  visited =\
+    \ set()\n  time = 0\n\n  for source in sources:\n    queue.append((source[0],\
+    \ source[1], 0))\n    visited.add((source[0], source[1]))\n\n  while queue:\n\
+    \    new_queue = []\n    for x, y, t in queue:\n      if t > time:\n        time\
+    \ = t\n      for dx, dy in directions:\n        nx, ny = x + dx, y + dy\n    \
+    \    if 0 <= nx < rows and 0 <= ny < cols and (nx, ny) not in visited:\n     \
+    \     if heights[nx][ny] <= heights[x][y]:\n            new_queue.append((nx,\
+    \ ny, t + 1))\n            visited.add((nx, ny))\n          elif heights[nx][ny]\
+    \ > heights[x][y]:\n            new_queue.append((nx, ny, t + (heights[nx][ny]\
+    \ - heights[x][y])))\n            visited.add((nx, ny))\n    queue = new_queue\n\
+    \n  for i in range(rows):\n    for j in range(cols):\n      if (i, j) not in visited:\n\
+    \        return -1\n\n  return time\n"
+  programming_language: python3
+  inputs: &id002
+  - heights:
+    - [1, 4, 5, 4]
+    - [1, 1, 1, 1]
+    - [1, 2, 3, 4]
+    sources:
+    - [0, 0]
+    - [1, 0]
+    - [2, 0]
+  - heights:
+    - [1, 4, 5, 4]
+    - [1, 1, 1, 1]
+    - [1, 2, 3, 4]
+    sources:
+    - [0, 1]
+    - [1, 1]
+    - [2, 1]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 1, 1, 1]
+    - [1, 1, 1, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 1, 1, 1]
+    - [1, 1, 1, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 1]
+    - [1, 0]
+    - [2, 3]
+    - [3, 2]
+  - heights:
+    - [1, 2, 3, 4]
+    - [5, 6, 7, 8]
+    - [9, 10, 11, 12]
+    - [13, 14, 15, 16]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [16, 15, 14, 13]
+    - [12, 11, 10, 9]
+    - [8, 7, 6, 5]
+    - [4, 3, 2, 1]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 2, 2, 1]
+    - [1, 2, 2, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 2, 2, 1]
+    - [1, 2, 2, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 1]
+    - [1, 0]
+    - [2, 3]
+    - [3, 2]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 3, 3, 1]
+    - [1, 3, 3, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 3, 3, 1]
+    - [1, 3, 3, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 1]
+    - [1, 0]
+    - [2, 3]
+    - [3, 2]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 4, 4, 1]
+    - [1, 4, 4, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 4, 4, 1]
+    - [1, 4, 4, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 1]
+    - [1, 0]
+    - [2, 3]
+    - [3, 2]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 5, 5, 1]
+    - [1, 5, 5, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 5, 5, 1]
+    - [1, 5, 5, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 1]
+    - [1, 0]
+    - [2, 3]
+    - [3, 2]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 6, 6, 1]
+    - [1, 6, 6, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 6, 6, 1]
+    - [1, 6, 6, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 1]
+    - [1, 0]
+    - [2, 3]
+    - [3, 2]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 7, 7, 1]
+    - [1, 7, 7, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 7, 7, 1]
+    - [1, 7, 7, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 1]
+    - [1, 0]
+    - [2, 3]
+    - [3, 2]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 8, 8, 1]
+    - [1, 8, 8, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 0]
+    - [1, 1]
+    - [2, 2]
+    - [3, 3]
+  - heights:
+    - [1, 1, 1, 1]
+    - [1, 8, 8, 1]
+    - [1, 8, 8, 1]
+    - [1, 1, 1, 1]
+    sources:
+    - [0, 1]
+    - [1, 0]
+    - [2, 3]
+    - [3, 2]
+  exec_results: &id003 [5, 2, 3, 2, 12, 3, 3, 2, 3, 3, 3, 4, 3, 5, 3, 6, 3, 7, 3,
+    8]
+operations:
+- !!python/tuple ['Utilize bit manipulation and bitwise operations within the ''main''
+    function in the ''code'' key to simulate queue and set data structures, replacing
+    explicit queue and set declarations', 'revert the ''main'' function to use explicit
+    queue and set data structures, ensuring behavior stays identical']
+- !!python/tuple ['Implement a Just-In-Time (JIT) compilation approach within the
+    ''main'' function in the ''code'' key using a library like Numba, dynamically
+    compiling performance-critical sections of the code', 'disable JIT compilation
+    and revert to pure Python execution, preserving the original logic and functionality']
+metrics:
+  L-1 AVG: 1.0
+  L-1: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-2 AVG: 0.9999998188604743
+  L-2: [1.0, 1.0, 1.0, 0.9999978263256909, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-3 AVG: 0.9999998541596588
+  L-3: [1.0, 0.9999988332772698, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '# Minimum Time to Fill All Ponds
+
+          You are given a 2D array `heights` representing a landscape with ponds.
+          Each cell `heights[i][j]` represents the height of the land at that position.
+          When it rains, water fills the ponds, and you want to find the minimum time
+          it takes to fill all the ponds.
+
+
+          A pond is considered filled if the water level is at or above the height
+          of the land at that position. Water flows from higher positions to lower
+          positions, and it takes one unit of time to fill a pond.
+
+
+          You are also given a list of `sources` representing the positions of the
+          water sources. Each source is represented as a list `[i, j]`, where `i`
+          is the row and `j` is the column of the source.
+
+
+          The water from each source flows to the adjacent positions (up, down, left,
+          right) if the height of the land at the adjacent position is lower than
+          the height of the land at the source position.
+
+
+          Your task is to find the minimum time it takes to fill all the ponds.
+
+
+          # Example 1:
+
+          Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+          Output: 2
+
+
+          # Example 2:
+
+          Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+          Output: 3
+
+
+          # Constraints:
+
+          * 1 <= heights.length, heights[0].length <= 200
+
+          * 1 <= sources.length <= 200
+
+          * 0 <= sources[i][0] < heights.length
+
+          * 0 <= sources[i][1] < heights[0].length
+
+          '
+        code: "from collections import deque\n\ndef main(heights, sources):\n  rows,\
+          \ cols = len(heights), len(heights[0])\n  directions = [(0, 1), (0, -1),\
+          \ (1, 0), (-1, 0)]\n  time = 0\n\n  queue = deque()\n  for source in sources:\n\
+          \    queue.append((source[0], source[1]))\n\n  visited = set()\n  for source\
+          \ in sources:\n    visited.add((source[0], source[1]))\n\n  while queue:\n\
+          \    for _ in range(len(queue)):\n      x, y = queue.popleft()\n      for\
+          \ dx, dy in directions:\n        nx, ny = x + dx, y + dy\n        if 0 <=\
+          \ nx < rows and 0 <= ny < cols and (nx, ny) not in visited:\n          if\
+          \ heights[nx][ny] <= heights[x][y]:\n            queue.append((nx, ny))\n\
+          \            visited.add((nx, ny))\n          elif heights[nx][ny] > heights[x][y]:\n\
+          \            queue.append((nx, ny))\n            visited.add((nx, ny))\n\
+          \            queue.appendleft((nx, ny))\n            for _ in range(len(queue)\
+          \ - 1):\n              queue.pop()\n    time += 1\n\n  return -1 if len(visited)\
+          \ == rows * cols else time"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Utilize bit manipulation and bitwise operations
+          within the ''main'' function in the ''code'' key to simulate queue and set
+          data structures, replacing explicit queue and set declarations', 'revert
+          the ''main'' function to use explicit queue and set data structures, ensuring
+          behavior stays identical']
+      middle_state:
+        description: '# Minimum Time to Fill All Ponds
+
+          You are given a 2D array `heights` representing a landscape with ponds.
+          Each cell `heights[i][j]` represents the height of the land at that position.
+          When it rains, water fills the ponds, and you want to find the minimum time
+          it takes to fill all the ponds.
+
+
+          A pond is considered filled if the water level is at or above the height
+          of the land at that position. Water flows from higher positions to lower
+          positions, and it takes one unit of time to fill a pond.
+
+
+          You are also given a list of `sources` representing the positions of the
+          water sources. Each source is represented as a list `[i, j]`, where `i`
+          is the row and `j` is the column of the source.
+
+
+          The water from each source flows to the adjacent positions (up, down, left,
+          right) if the height of the land at the adjacent position is lower than
+          the height of the land at the source position.
+
+
+          Your task is to find the minimum time it takes to fill all the ponds.
+
+
+          # Example 1:
+
+          Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+          Output: 2
+
+
+          # Example 2:
+
+          Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+          Output: 3
+
+
+          # Constraints:
+
+          * 1 <= heights.length, heights[0].length <= 200
+
+          * 1 <= sources.length <= 200
+
+          * 0 <= sources[i][0] < heights.length
+
+          * 0 <= sources[i][1] < heights[0].length
+
+          '
+        code: "def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+          \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  time = 0\n  visited\
+          \ = 1 << (rows * cols)\n\n  for source in sources:\n    mask = 1 << (source[0]\
+          \ * cols + source[1])\n    visited |= mask\n\n  while visited & visited\
+          \ - 1:\n    new_visited = visited\n    for x, y in [(i, j) for i in range(rows)\
+          \ for j in range(cols) if visited & (1 << (i * cols + j))]:\n      for dx,\
+          \ dy in directions:\n        nx, ny = x + dx, y + dy\n        if 0 <= nx\
+          \ < rows and 0 <= ny < cols and not (visited & (1 << (nx * cols + ny))):\n\
+          \          if heights[nx][ny] <= heights[x][y]:\n            new_visited\
+          \ |= 1 << (nx * cols + ny)\n          elif heights[nx][ny] > heights[x][y]:\n\
+          \            new_visited |= 1 << (nx * cols + ny) | ((1 << (nx * cols +\
+          \ ny)) - 1) & visited\n    visited = new_visited\n\n  return -1 if visited\
+          \ == (1 << (rows * cols)) else time"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - &id006 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# Minimum Time to Fill All Ponds
+
+            You are given a 2D array `heights` representing a landscape with ponds.
+            Each cell `heights[i][j]` represents the height of the land at that position.
+            When it rains, water fills the ponds, and you want to find the minimum
+            time it takes to fill all the ponds.
+
+
+            A pond is considered filled if the water level is at or above the height
+            of the land at that position. Water flows from higher positions to lower
+            positions, and it takes one unit of time to fill a pond.
+
+
+            You are also given a list of `sources` representing the positions of the
+            water sources. Each source is represented as a list `[i, j]`, where `i`
+            is the row and `j` is the column of the source.
+
+
+            The water from each source flows to the adjacent positions (up, down,
+            left, right) if the height of the land at the adjacent position is lower
+            than the height of the land at the source position.
+
+
+            Your task is to find the minimum time it takes to fill all the ponds.
+
+
+            # Example 1:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+            Output: 2
+
+
+            # Example 2:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+            Output: 3
+
+
+            # Constraints:
+
+            * 1 <= heights.length, heights[0].length <= 200
+
+            * 1 <= sources.length <= 200
+
+            * 0 <= sources[i][0] < heights.length
+
+            * 0 <= sources[i][1] < heights[0].length
+
+            '
+          code: "from collections import deque\nfrom typing import List, Tuple\n\n\
+            def main(heights: List[List[int]], sources: List[Tuple[int, int]]) ->\
+            \ int:\n  rows, cols = len(heights), len(heights[0])\n  directions = [(0,\
+            \ 1), (0, -1), (1, 0), (-1, 0)]\n  time = 0\n\n  visited = set()\n  for\
+            \ x, y in sources:\n    visited.add((y * rows + x))\n\n  queue = deque()\n\
+            \  for x, y in sources:\n    queue.append((y * rows + x))\n\n  while queue:\n\
+            \    mask = queue.popleft()\n    x = mask % rows\n    y = mask // rows\n\
+            \    for dx, dy in directions:\n      nx, ny = x + dx, y + dy\n      if\
+            \ 0 <= nx < rows and 0 <= ny < cols and (ny * rows + nx) not in visited:\n\
+            \        if heights[nx][ny] <= heights[x][y]:\n          visited.add(ny\
+            \ * rows + nx)\n          queue.append(ny * rows + nx)\n        elif heights[nx][ny]\
+            \ > heights[x][y]:\n          visited.add(ny * rows + nx)\n          queue.appendleft(ny\
+            \ * rows + nx)\n          for _ in range(len(queue) - 1):\n          \
+            \  queue.rotate(-1)\n            queue.popleft()\n  return -1 if len(visited)\
+            \ == rows * cols else time"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Utilize bit manipulation and bitwise operations
+            within the ''main'' function in the ''code'' key to simulate queue and
+            set data structures, replacing explicit queue and set declarations', 'revert
+            the ''main'' function to use explicit queue and set data structures, ensuring
+            behavior stays identical']
+        middle_state:
+          description: '# Minimum Time to Fill All Ponds
+
+            You are given a 2D array `heights` representing a landscape with ponds.
+            Each cell `heights[i][j]` represents the height of the land at that position.
+            When it rains, water fills the ponds, and you want to find the minimum
+            time it takes to fill all the ponds.
+
+
+            A pond is considered filled if the water level is at or above the height
+            of the land at that position. Water flows from higher positions to lower
+            positions, and it takes one unit of time to fill a pond.
+
+
+            You are also given a list of `sources` representing the positions of the
+            water sources. Each source is represented as a list `[i, j]`, where `i`
+            is the row and `j` is the column of the source.
+
+
+            The water from each source flows to the adjacent positions (up, down,
+            left, right) if the height of the land at the adjacent position is lower
+            than the height of the land at the source position.
+
+
+            Your task is to find the minimum time it takes to fill all the ponds.
+
+
+            # Example 1:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+            Output: 2
+
+
+            # Example 2:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+            Output: 3
+
+
+            # Constraints:
+
+            * 1 <= heights.length, heights[0].length <= 200
+
+            * 1 <= sources.length <= 200
+
+            * 0 <= sources[i][0] < heights.length
+
+            * 0 <= sources[i][1] < heights[0].length
+
+            '
+          code: "def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+            \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  time = 0\n\n  visited\
+            \ = 0\n  for x, y in sources:\n    visited |= (1 << (y * rows + x))\n\n\
+            \  queue = 0\n  for x, y in sources:\n    queue |= (1 << (y * rows + x))\n\
+            \n  while queue:\n    mask = queue & -queue\n    queue &= ~mask\n    x\
+            \ = (mask - 1).bit_length() % (rows * cols)\n    y = (mask - 1) // rows\n\
+            \    for dx, dy in directions:\n      nx, ny = x + dx, y + dy\n      if\
+            \ 0 <= nx < rows and 0 <= ny < cols and not (visited & (1 << (ny * rows\
+            \ + nx))):\n        if heights[nx][ny] <= heights[x][y]:\n          queue\
+            \ |= (1 << (ny * rows + nx))\n          visited |= (1 << (ny * rows +\
+            \ nx))\n        elif heights[nx][ny] > heights[x][y]:\n          queue\
+            \ |= (1 << (ny * rows + nx))\n          visited |= (1 << (ny * rows +\
+            \ nx))\n          queue |= mask\n          mask = queue & -queue\n   \
+            \       queue &= ~mask\n          x = (mask - 1).bit_length() % (rows\
+            \ * cols)\n          y = (mask - 1) // rows\n          for _ in range((queue\
+            \ & -queue).bit_length() - 1):\n            queue &= ~-queue\n    time\
+            \ += 1\n\n  return -1 if bin(visited).count('1') == rows * cols else time"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "from typing import List, Tuple\n\ndef main(heights: List[List[int]],\
+              \ sources: List[Tuple[int, int]]) -> int:\n  rows, cols = len(heights),\
+              \ len(heights[0])\n  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\
+              \  time = 0\n\n  visited = set()\n  for x, y in sources:\n    visited.add((y\
+              \ * rows + x))\n\n  queue = set()\n  for x, y in sources:\n    queue.add((y\
+              \ * rows + x))\n\n  while queue:\n    mask = next((i for i in queue\
+              \ if bin(i).count('1') == 1), None)\n    queue.remove(mask)\n    x =\
+              \ mask % rows\n    y = mask // rows\n    for dx, dy in directions:\n\
+              \      nx, ny = x + dx, y + dy\n      if 0 <= nx < rows and 0 <= ny\
+              \ < cols and (ny * rows + nx) not in visited:\n        if heights[nx][ny]\
+              \ <= heights[x][y]:\n          visited.add(ny * rows + nx)\n       \
+              \   queue.add(ny * rows + nx)\n        elif heights[nx][ny] > heights[x][y]:\n\
+              \          visited.add(ny * rows + nx)\n          queue.add(ny * rows\
+              \ + nx)\n          queue = {i if i != mask else (mask << 1) | (mask\
+              \ >> (cols * rows - 1)) for i in queue}\n  return -1 if len(visited)\
+              \ == rows * cols else time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Utilize bit manipulation and bitwise operations
+              within the ''main'' function in the ''code'' key to simulate queue and
+              set data structures, replacing explicit queue and set declarations',
+            'revert the ''main'' function to use explicit queue and set data structures,
+              ensuring behavior stays identical']
+          middle_state:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "def main(heights: List[List[int]], sources: List[Tuple[int, int]])\
+              \ -> int:\n  rows, cols = len(heights), len(heights[0])\n  directions\
+              \ = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  time = 0\n\n  visited = 0\n\
+              \  for x, y in sources:\n    visited |= 1 << (y * rows + x)\n\n  queue\
+              \ = 0\n  for x, y in sources:\n    queue |= 1 << (y * rows + x)\n\n\
+              \  while queue:\n    mask = queue & -queue\n    queue &= ~mask\n   \
+              \ x = mask % rows\n    y = mask // rows\n    for dx, dy in directions:\n\
+              \      nx, ny = x + dx, y + dy\n      if 0 <= nx < rows and 0 <= ny\
+              \ < cols and not (visited & (1 << (ny * rows + nx))):\n        if heights[nx][ny]\
+              \ <= heights[x][y]:\n          visited |= 1 << (ny * rows + nx)\n  \
+              \        queue |= 1 << (ny * rows + nx)\n        elif heights[nx][ny]\
+              \ > heights[x][y]:\n          visited |= 1 << (ny * rows + nx)\n   \
+              \       queue |= 1 << (ny * rows + nx)\n          queue = (queue <<\
+              \ 1) | (queue >> (cols * rows - 1))\n  return -1 if bin(visited).count('1')\
+              \ == rows * cols else time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id006
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "from collections import deque\nfrom typing import List, Tuple\n\
+              \ndef main(heights: List[List[int]], sources: List[Tuple[int, int]])\
+              \ -> int:\n  rows, cols = len(heights), len(heights[0])\n  directions\
+              \ = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  time = 0\n\n  visited = set()\n\
+              \  for x, y in sources:\n    visited.add((y * rows + x))\n\n  queue\
+              \ = deque()\n  for x, y in sources:\n    queue.append((y * rows + x))\n\
+              \n  while queue:\n    mask = queue.popleft()\n    x = mask % rows\n\
+              \    y = mask // rows\n    for dx, dy in directions:\n      nx, ny =\
+              \ x + dx, y + dy\n      if 0 <= nx < rows and 0 <= ny < cols and (ny\
+              \ * rows + nx) not in visited:\n        if heights[nx][ny] <= heights[x][y]:\n\
+              \          visited.add(ny * rows + nx)\n          queue.append(ny *\
+              \ rows + nx)\n        elif heights[nx][ny] > heights[x][y]:\n      \
+              \    visited.add(ny * rows + nx)\n          queue.appendleft(ny * rows\
+              \ + nx)\n          for _ in range(len(queue) - 1):\n            queue.rotate(-1)\n\
+              \            queue.popleft()\n  return -1 if len(visited) == rows *\
+              \ cols else time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Implement a Just-In-Time (JIT) compilation approach
+              within the ''main'' function in the ''code'' key using a library like
+              Numba, dynamically compiling performance-critical sections of the code',
+            'disable JIT compilation and revert to pure Python execution, preserving
+              the original logic and functionality']
+          middle_state:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "import numba\nfrom collections import deque\nfrom typing import\
+              \ List, Tuple\n\n@numba.jit(nopython=True)\ndef main(heights: List[List[int]],\
+              \ sources: List[Tuple[int, int]]) -> int:\n  rows, cols = len(heights),\
+              \ len(heights[0])\n  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\
+              \  time = 0\n\n  visited = set()\n  for x, y in sources:\n    visited.add((y\
+              \ * rows + x))\n\n  queue = deque()\n  for x, y in sources:\n    queue.append((y\
+              \ * rows + x))\n\n  while queue:\n    mask = queue.popleft()\n    x\
+              \ = mask % rows\n    y = mask // rows\n    for dx, dy in directions:\n\
+              \      nx, ny = x + dx, y + dy\n      if 0 <= nx < rows and 0 <= ny\
+              \ < cols and (ny * rows + nx) not in visited:\n        if heights[nx][ny]\
+              \ <= heights[x][y]:\n          visited.add(ny * rows + nx)\n       \
+              \   queue.append(ny * rows + nx)\n        elif heights[nx][ny] > heights[x][y]:\n\
+              \          visited.add(ny * rows + nx)\n          queue.appendleft(ny\
+              \ * rows + nx)\n          for _ in range(len(queue) - 1):\n        \
+              \    queue.rotate(-1)\n            queue.popleft()\n  return -1 if len(visited)\
+              \ == rows * cols else time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id006
+          children: []
+      - &id007 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# Minimum Time to Fill All Ponds
+
+            You are given a 2D array `heights` representing a landscape with ponds.
+            Each cell `heights[i][j]` represents the height of the land at that position.
+            When it rains, water fills the ponds, and you want to find the minimum
+            time it takes to fill all the ponds.
+
+
+            A pond is considered filled if the water level is at or above the height
+            of the land at that position. Water flows from higher positions to lower
+            positions, and it takes one unit of time to fill a pond.
+
+
+            You are also given a list of `sources` representing the positions of the
+            water sources. Each source is represented as a list `[i, j]`, where `i`
+            is the row and `j` is the column of the source.
+
+
+            The water from each source flows to the adjacent positions (up, down,
+            left, right) if the height of the land at the adjacent position is lower
+            than the height of the land at the source position.
+
+
+            Your task is to find the minimum time it takes to fill all the ponds.
+
+
+            # Example 1:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+            Output: 2
+
+
+            # Example 2:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+            Output: 3
+
+
+            # Constraints:
+
+            * 1 <= heights.length, heights[0].length <= 200
+
+            * 1 <= sources.length <= 200
+
+            * 0 <= sources[i][0] < heights.length
+
+            * 0 <= sources[i][1] < heights[0].length
+
+            '
+          code: "import collections\nimport numpy as np\n\ndef main(heights, sources):\n\
+            \  rows, cols = len(heights), len(heights[0])\n  directions = [(0, 1),\
+            \ (0, -1), (1, 0), (-1, 0)]\n  time = 0\n\n  def bfs(queue, visited, heights,\
+            \ directions):\n    while len(queue) > 0:\n      for i in range(len(queue)):\n\
+            \        x, y = queue[i]\n        queue.pop(i)\n        for dx, dy in\
+            \ directions:\n          nx, ny = x + dx, y + dy\n          if 0 <= nx\
+            \ < rows and 0 <= ny < cols and (nx, ny) not in visited:\n           \
+            \ if heights[nx, ny] <= heights[x, y]:\n              queue.append((nx,\
+            \ ny))\n              visited.add((nx, ny))\n            elif heights[nx,\
+            \ ny] > heights[x, y]:\n              queue.insert(0, (nx, ny))\n    \
+            \          queue = queue[1:]\n    return time + 1\n\n  queue = collections.deque()\n\
+            \  for source in sources:\n    queue.append((source[0], source[1]))\n\n\
+            \  visited = set()\n  for source in sources:\n    visited.add((source[0],\
+            \ source[1]))\n\n  while queue:\n    time = bfs(queue, visited, np.array(heights),\
+            \ directions)\n    queue.clear()\n    for x, y in visited:\n      queue.append((x,\
+            \ y))\n    visited.clear()\n    for x, y in sources:\n      visited.add((x,\
+            \ y))\n\n  return -1 if len(visited) == rows * cols else time"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Implement a Just-In-Time (JIT) compilation approach
+            within the ''main'' function in the ''code'' key using a library like
+            Numba, dynamically compiling performance-critical sections of the code',
+          'disable JIT compilation and revert to pure Python execution, preserving
+            the original logic and functionality']
+        middle_state:
+          description: '# Minimum Time to Fill All Ponds
+
+            You are given a 2D array `heights` representing a landscape with ponds.
+            Each cell `heights[i][j]` represents the height of the land at that position.
+            When it rains, water fills the ponds, and you want to find the minimum
+            time it takes to fill all the ponds.
+
+
+            A pond is considered filled if the water level is at or above the height
+            of the land at that position. Water flows from higher positions to lower
+            positions, and it takes one unit of time to fill a pond.
+
+
+            You are also given a list of `sources` representing the positions of the
+            water sources. Each source is represented as a list `[i, j]`, where `i`
+            is the row and `j` is the column of the source.
+
+
+            The water from each source flows to the adjacent positions (up, down,
+            left, right) if the height of the land at the adjacent position is lower
+            than the height of the land at the source position.
+
+
+            Your task is to find the minimum time it takes to fill all the ponds.
+
+
+            # Example 1:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+            Output: 2
+
+
+            # Example 2:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+            Output: 3
+
+
+            # Constraints:
+
+            * 1 <= heights.length, heights[0].length <= 200
+
+            * 1 <= sources.length <= 200
+
+            * 0 <= sources[i][0] < heights.length
+
+            * 0 <= sources[i][1] < heights[0].length
+
+            '
+          code: "import numba\nfrom collections import deque\nimport numpy as np\n\
+            \ndef main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+            \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  time = 0\n\n  @numba.jit(nopython=True,\
+            \ parallel=True)\n  def bfs(queue, visited, heights, directions):\n  \
+            \  while len(queue) > 0:\n      for i in range(len(queue)):\n        x,\
+            \ y = queue[i]\n        for dx, dy in directions:\n          nx, ny =\
+            \ x + dx, y + dy\n          if 0 <= nx < rows and 0 <= ny < cols and (nx,\
+            \ ny) not in visited:\n            if heights[nx, ny] <= heights[x, y]:\n\
+            \              queue.append((nx, ny))\n              visited.add((nx,\
+            \ ny))\n            elif heights[nx, ny] > heights[x, y]:\n          \
+            \    queue.append((nx, ny))\n              visited.add((nx, ny))\n   \
+            \           queue.insert(0, (nx, ny))\n              queue = queue[1:]\n\
+            \    return time + 1\n\n  queue = deque()\n  for source in sources:\n\
+            \    queue.append((source[0], source[1]))\n\n  visited = set()\n  for\
+            \ source in sources:\n    visited.add((source[0], source[1]))\n\n  while\
+            \ queue:\n    time = bfs(queue, visited, np.array(heights), directions)\n\
+            \    queue.clear()\n    for x, y in visited:\n      queue.append((x, y))\n\
+            \    visited.clear()\n    for x, y in sources:\n      visited.add((x,\
+            \ y))\n\n  return -1 if len(visited) == rows * cols else time"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "import numpy as np\n\ndef main(heights, sources):\n  rows, cols\
+              \ = len(heights), len(heights[0])\n  directions = [(0, 1), (0, -1),\
+              \ (1, 0), (-1, 0)]\n  time = 0\n\n  def bfs(queue, visited, heights):\n\
+              \    nonlocal time\n    while queue:\n      for i in range(len(queue)):\n\
+              \        x, y, _ = queue[i]\n        queue[i] = (x, y, 0)  # mark as\
+              \ visited\n      new_queue = []\n      for x, y, _ in queue:\n     \
+              \   if queue.index((x, y, 0)) & 1:  # if not marked as visited\n   \
+              \       continue\n        queue.pop(queue.index((x, y, 0)))\n      \
+              \  for dx, dy in directions:\n          nx, ny = x + dx, y + dy\n  \
+              \        if 0 <= nx < rows and 0 <= ny < cols and (nx, ny) not in visited:\n\
+              \            if heights[nx, ny] <= heights[x, y]:\n              new_queue.append((nx,\
+              \ ny, 0))\n              visited.add((nx, ny))\n            elif heights[nx,\
+              \ ny] > heights[x, y]:\n              new_queue.insert(0, (nx, ny, 1))\n\
+              \      queue = new_queue\n      time += 1\n    return time\n\n  queue\
+              \ = []\n  for source in sources:\n    queue.append((source[0], source[1],\
+              \ 0))  # mark as not visited\n\n  visited = set()\n  for source in sources:\n\
+              \    visited.add((source[0], source[1]))\n\n  while queue:\n    time\
+              \ = bfs(queue, visited, np.array(heights))\n    queue = [(x, y, 0) for\
+              \ x, y, _ in queue if _ == 0]  # filter out marked as visited\n    for\
+              \ x, y in sources:\n      queue.append((x, y, 0))\n    new_visited =\
+              \ set()\n    for x, y in visited:\n      if (x, y) in sources:\n   \
+              \     continue\n      new_visited.add((x, y))\n    visited = new_visited\n\
+              \n  return -1 if len(visited) == rows * cols else time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Utilize bit manipulation and bitwise operations
+              within the ''main'' function in the ''code'' key to simulate queue and
+              set data structures, replacing explicit queue and set declarations',
+            'revert the ''main'' function to use explicit queue and set data structures,
+              ensuring behavior stays identical']
+          middle_state:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+              \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  time = 0\n\n \
+              \ def bfs(queue, visited, heights, directions):\n    nonlocal time\n\
+              \    while queue:\n      for i in range(len(queue)):\n        x, y =\
+              \ queue[i]\n        queue[i] = (x, y, 0)  # mark as visited\n      for\
+              \ i in range(len(queue)):\n        x, y, _ = queue[i]\n        if queue[i]\
+              \ & 1:  # if not marked as visited\n          queue.pop(i)\n       \
+              \   for dx, dy in directions:\n            nx, ny = x + dx, y + dy\n\
+              \            if 0 <= nx < rows and 0 <= ny < cols and (nx, ny) not in\
+              \ visited:\n              if heights[nx, ny] <= heights[x, y]:\n   \
+              \             queue.append((nx, ny, 0))\n                visited.add((nx,\
+              \ ny))\n              elif heights[nx, ny] > heights[x, y]:\n      \
+              \          queue.insert(0, (nx, ny, 1))\n      time += 1\n    return\
+              \ time\n\n  queue = []\n  for source in sources:\n    queue.append((source[0],\
+              \ source[1], 0))  # mark as not visited\n\n  visited = set()\n  for\
+              \ source in sources:\n    visited.add((source[0], source[1]))\n\n  while\
+              \ queue:\n    time = bfs(queue, visited, np.array(heights), directions)\n\
+              \    queue = [x for x in queue if x[2] == 0]  # filter out marked as\
+              \ visited\n    for x, y in sources:\n      queue.append((x, y, 0))\n\
+              \    for x, y in visited:\n      visited.remove((x, y))\n\n  return\
+              \ -1 if len(visited) == rows * cols else time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id007
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "import collections\nimport numpy as np\n\ndef bfs(queue, visited,\
+              \ heights, directions):\n    while queue:\n        for i in range(len(queue)):\n\
+              \            x, y = queue[i]\n            queue[i] = (x, y)  # Replace\
+              \ pop with assignment\n        for i in range(len(queue) - 1, -1, -1):\n\
+              \            x, y = queue.pop(i)\n            for dx, dy in directions:\n\
+              \                nx, ny = x + dx, y + dy\n                if 0 <= nx\
+              \ < heights.shape[0] and 0 <= ny < heights.shape[1] and (nx, ny) not\
+              \ in visited:\n                    if heights[nx, ny] <= heights[x,\
+              \ y]:\n                        queue.append((nx, ny))\n            \
+              \            visited.add((nx, ny))\n                    elif heights[nx,\
+              \ ny] > heights[x, y]:\n                        queue.insert(0, (nx,\
+              \ ny))\n                        queue = queue[1:]\n    return len(visited)\n\
+              \ndef main(heights, sources):\n    rows, cols = len(heights), len(heights[0])\n\
+              \    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\n    queue =\
+              \ collections.deque()\n    for source in sources:\n        queue.append((source[0],\
+              \ source[1]))\n\n    visited = set()\n    for source in sources:\n \
+              \       visited.add((source[0], source[1]))\n\n    time = 0\n    while\
+              \ queue:\n        time = bfs(queue, visited, np.array(heights), directions)\n\
+              \        queue.clear()\n        for x, y in visited:\n            queue.append((x,\
+              \ y))\n        visited.clear()\n        for x, y in sources:\n     \
+              \       visited.add((x, y))\n\n    return -1 if len(visited) == rows\
+              \ * cols else time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Implement a Just-In-Time (JIT) compilation approach
+              within the ''main'' function in the ''code'' key using a library like
+              Numba, dynamically compiling performance-critical sections of the code',
+            'disable JIT compilation and revert to pure Python execution, preserving
+              the original logic and functionality']
+          middle_state:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "import numba as nb\nimport collections\nimport numpy as np\n\n\
+              @nb.jit(nopython=True)\ndef bfs(queue, visited, heights, directions):\n\
+              \    while len(queue) > 0:\n        for i in range(len(queue)):\n  \
+              \          x, y = queue[i]\n            queue[i] = (x, y)  # Replace\
+              \ pop with assignment\n        for i in range(len(queue)):\n       \
+              \     x, y = queue[i]\n            queue.pop(i)\n            for dx,\
+              \ dy in directions:\n                nx, ny = x + dx, y + dy\n     \
+              \           if 0 <= nx < heights.shape[0] and 0 <= ny < heights.shape[1]\
+              \ and (nx, ny) not in visited:\n                    if heights[nx, ny]\
+              \ <= heights[x, y]:\n                        queue.append((nx, ny))\n\
+              \                        visited.add((nx, ny))\n                   \
+              \ elif heights[nx, ny] > heights[x, y]:\n                        queue.insert(0,\
+              \ (nx, ny))\n                        queue = queue[1:]\n    return queue.size\
+              \ + 1\n\ndef main(heights, sources):\n    rows, cols = len(heights),\
+              \ len(heights[0])\n    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\
+              \n    queue = collections.deque()\n    for source in sources:\n    \
+              \    queue.append((source[0], source[1]))\n\n    visited = set()\n \
+              \   for source in sources:\n        visited.add((source[0], source[1]))\n\
+              \n    time = 0\n    while queue:\n        time = bfs(queue, visited,\
+              \ np.array(heights), directions)\n        queue.clear()\n        for\
+              \ x, y in visited:\n            queue.append((x, y))\n        visited.clear()\n\
+              \        for x, y in sources:\n            visited.add((x, y))\n\n \
+              \   return -1 if len(visited) == rows * cols else time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id007
+          children: []
+    - &id008 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '# Minimum Time to Fill All Ponds
+
+          You are given a 2D array `heights` representing a landscape with ponds.
+          Each cell `heights[i][j]` represents the height of the land at that position.
+          When it rains, water fills the ponds, and you want to find the minimum time
+          it takes to fill all the ponds.
+
+
+          A pond is considered filled if the water level is at or above the height
+          of the land at that position. Water flows from higher positions to lower
+          positions, and it takes one unit of time to fill a pond.
+
+
+          You are also given a list of `sources` representing the positions of the
+          water sources. Each source is represented as a list `[i, j]`, where `i`
+          is the row and `j` is the column of the source.
+
+
+          The water from each source flows to the adjacent positions (up, down, left,
+          right) if the height of the land at the adjacent position is lower than
+          the height of the land at the source position.
+
+
+          Your task is to find the minimum time it takes to fill all the ponds.
+
+
+          # Example 1:
+
+          Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+          Output: 2
+
+
+          # Example 2:
+
+          Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+          Output: 3
+
+
+          # Constraints:
+
+          * 1 <= heights.length, heights[0].length <= 200
+
+          * 1 <= sources.length <= 200
+
+          * 0 <= sources[i][0] < heights.length
+
+          * 0 <= sources[i][1] < heights[0].length
+
+          '
+        code: "import time\n\ndef main(heights, sources):\n  rows, cols = len(heights),\
+          \ len(heights[0])\n  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n \
+          \ visited = set()\n  time = 0\n\n  for source in sources:\n    x, y = source\n\
+          \    visited.add((x, y))\n\n  for i in range(rows):\n    for j in range(cols):\n\
+          \      if (i, j) not in visited:\n        return -1\n\n  for source in sources:\n\
+          \    x, y = source\n    queue = [(x, y, 0)]\n    visited.add((x, y))\n \
+          \   while queue:\n      new_queue = []\n      for x, y, t in queue:\n  \
+          \      if t > time:\n          time = t\n        for dx, dy in directions:\n\
+          \          nx, ny = x + dx, y + dy\n          if 0 <= nx < rows and 0 <=\
+          \ ny < cols and (nx, ny) not in visited:\n            if heights[nx][ny]\
+          \ <= heights[x][y]:\n              new_queue.append((nx, ny, t + 1))\n \
+          \             visited.add((nx, ny))\n            elif heights[nx][ny] >\
+          \ heights[x][y]:\n              new_queue.append((nx, ny, t + (heights[nx][ny]\
+          \ - heights[x][y])))\n              visited.add((nx, ny))\n      queue =\
+          \ new_queue\n\n  return time"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Implement a Just-In-Time (JIT) compilation approach
+          within the ''main'' function in the ''code'' key using a library like Numba,
+          dynamically compiling performance-critical sections of the code', 'disable
+          JIT compilation and revert to pure Python execution, preserving the original
+          logic and functionality']
+      middle_state:
+        description: '# Minimum Time to Fill All Ponds
+
+          You are given a 2D array `heights` representing a landscape with ponds.
+          Each cell `heights[i][j]` represents the height of the land at that position.
+          When it rains, water fills the ponds, and you want to find the minimum time
+          it takes to fill all the ponds.
+
+
+          A pond is considered filled if the water level is at or above the height
+          of the land at that position. Water flows from higher positions to lower
+          positions, and it takes one unit of time to fill a pond.
+
+
+          You are also given a list of `sources` representing the positions of the
+          water sources. Each source is represented as a list `[i, j]`, where `i`
+          is the row and `j` is the column of the source.
+
+
+          The water from each source flows to the adjacent positions (up, down, left,
+          right) if the height of the land at the adjacent position is lower than
+          the height of the land at the source position.
+
+
+          Your task is to find the minimum time it takes to fill all the ponds.
+
+
+          # Example 1:
+
+          Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+          Output: 2
+
+
+          # Example 2:
+
+          Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+          Output: 3
+
+
+          # Constraints:
+
+          * 1 <= heights.length, heights[0].length <= 200
+
+          * 1 <= sources.length <= 200
+
+          * 0 <= sources[i][0] < heights.length
+
+          * 0 <= sources[i][1] < heights[0].length
+
+          '
+        code: "import numba as nb\n\n@nb.jit(nopython=True, cache=True, parallel=True)\n\
+          def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+          \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  visited = set()\n\
+          \  time = 0\n\n  for source in sources:\n    x, y = source\n    visited.add((x,\
+          \ y))\n\n  for i in nb.prange(rows):\n    for j in nb.prange(cols):\n  \
+          \    if (i, j) not in visited:\n        return -1\n\n  for source in sources:\n\
+          \    x, y = source\n    queue = [(x, y, 0)]\n    visited.add((x, y))\n \
+          \   while queue:\n      new_queue = []\n      for x, y, t in queue:\n  \
+          \      if t > time:\n          time = t\n        for dx, dy in directions:\n\
+          \          nx, ny = x + dx, y + dy\n          if 0 <= nx < rows and 0 <=\
+          \ ny < cols and (nx, ny) not in visited:\n            if heights[nx][ny]\
+          \ <= heights[x][y]:\n              new_queue.append((nx, ny, t + 1))\n \
+          \             visited.add((nx, ny))\n            elif heights[nx][ny] >\
+          \ heights[x][y]:\n              new_queue.append((nx, ny, t + (heights[nx][ny]\
+          \ - heights[x][y])))\n              visited.add((nx, ny))\n      queue =\
+          \ new_queue\n\n  return time"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - &id009 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# Minimum Time to Fill All Ponds
+
+            You are given a 2D array `heights` representing a landscape with ponds.
+            Each cell `heights[i][j]` represents the height of the land at that position.
+            When it rains, water fills the ponds, and you want to find the minimum
+            time it takes to fill all the ponds.
+
+
+            A pond is considered filled if the water level is at or above the height
+            of the land at that position. Water flows from higher positions to lower
+            positions, and it takes one unit of time to fill a pond.
+
+
+            You are also given a list of `sources` representing the positions of the
+            water sources. Each source is represented as a list `[i, j]`, where `i`
+            is the row and `j` is the column of the source.
+
+
+            The water from each source flows to the adjacent positions (up, down,
+            left, right) if the height of the land at the adjacent position is lower
+            than the height of the land at the source position.
+
+
+            Your task is to find the minimum time it takes to fill all the ponds.
+
+
+            # Example 1:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+            Output: 2
+
+
+            # Example 2:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+            Output: 3
+
+
+            # Constraints:
+
+            * 1 <= heights.length, heights[0].length <= 200
+
+            * 1 <= sources.length <= 200
+
+            * 0 <= sources[i][0] < heights.length
+
+            * 0 <= sources[i][1] < heights[0].length
+
+            '
+          code: "def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+            \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  visited = set()\n\
+            \  time = 0\n\n  for source in sources:\n    x, y = source\n    visited.add((x,\
+            \ y))\n\n  for i in range(rows):\n    for j in range(cols):\n      if\
+            \ (i, j) not in visited:\n        return -1\n\n  for source in sources:\n\
+            \    x, y = source\n    queue = [(x, y, 0)]\n    visited.add((x, y))\n\
+            \    while queue:\n      new_queue = []\n      for x, y, t in queue:\n\
+            \        if t > time:\n          time = t\n        for dx, dy in directions:\n\
+            \          nx, ny = x + dx, y + dy\n          if 0 <= nx < rows and 0\
+            \ <= ny < cols and (nx, ny) not in visited:\n            if heights[nx][ny]\
+            \ <= heights[x][y]:\n              new_queue.append((nx, ny, t + 1))\n\
+            \              visited.add((nx, ny))\n            elif heights[nx][ny]\
+            \ > heights[x][y]:\n              new_queue.append((nx, ny, t + (heights[nx][ny]\
+            \ - heights[x][y])))\n              visited.add((nx, ny))\n      queue\
+            \ = new_queue\n\n  return time"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Utilize bit manipulation and bitwise operations
+            within the ''main'' function in the ''code'' key to simulate queue and
+            set data structures, replacing explicit queue and set declarations', 'revert
+            the ''main'' function to use explicit queue and set data structures, ensuring
+            behavior stays identical']
+        middle_state:
+          description: '# Minimum Time to Fill All Ponds
+
+            You are given a 2D array `heights` representing a landscape with ponds.
+            Each cell `heights[i][j]` represents the height of the land at that position.
+            When it rains, water fills the ponds, and you want to find the minimum
+            time it takes to fill all the ponds.
+
+
+            A pond is considered filled if the water level is at or above the height
+            of the land at that position. Water flows from higher positions to lower
+            positions, and it takes one unit of time to fill a pond.
+
+
+            You are also given a list of `sources` representing the positions of the
+            water sources. Each source is represented as a list `[i, j]`, where `i`
+            is the row and `j` is the column of the source.
+
+
+            The water from each source flows to the adjacent positions (up, down,
+            left, right) if the height of the land at the adjacent position is lower
+            than the height of the land at the source position.
+
+
+            Your task is to find the minimum time it takes to fill all the ponds.
+
+
+            # Example 1:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+            Output: 2
+
+
+            # Example 2:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+            Output: 3
+
+
+            # Constraints:
+
+            * 1 <= heights.length, heights[0].length <= 200
+
+            * 1 <= sources.length <= 200
+
+            * 0 <= sources[i][0] < heights.length
+
+            * 0 <= sources[i][1] < heights[0].length
+
+            '
+          code: "def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+            \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  visited = 0\n  time\
+            \ = 0\n\n  for source in sources:\n    x, y = source\n    visited |= 1\
+            \ << (x * cols + y)\n\n  for i in range(rows):\n    for j in range(cols):\n\
+            \      if not (visited & (1 << (i * cols + j))):\n        return -1\n\n\
+            \  for source in sources:\n    x, y = source\n    queue = [(x, y, 0)]\n\
+            \    visited |= 1 << (x * cols + y)\n    while queue:\n      new_queue\
+            \ = []\n      for x, y, t in queue:\n        if t > time:\n          time\
+            \ = t\n        for dx, dy in directions:\n          nx, ny = x + dx, y\
+            \ + dy\n          if 0 <= nx < rows and 0 <= ny < cols and not (visited\
+            \ & (1 << (nx * cols + ny))):\n            if heights[nx][ny] <= heights[x][y]:\n\
+            \              new_queue.append((nx, ny, t + 1))\n              visited\
+            \ |= 1 << (nx * cols + ny)\n            elif heights[nx][ny] > heights[x][y]:\n\
+            \              new_queue.append((nx, ny, t + (heights[nx][ny] - heights[x][y])))\n\
+            \              visited |= 1 << (nx * cols + ny)\n      queue = new_queue\n\
+            \n  return time"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id008
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+              \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  visited = set()\n\
+              \  queue = []\n\n  for source in sources:\n    x, y = source\n    visited.add((x,\
+              \ y))\n    queue.append((x, y))\n\n  while queue:\n    new_queue = []\n\
+              \    for x, y in queue:\n      if (x, y) not in visited:\n        time\
+              \ = max(time, heights[x][y])\n      for dx, dy in directions:\n    \
+              \    nx, ny = x + dx, y + dy\n        if 0 <= nx < rows and 0 <= ny\
+              \ < cols and (nx, ny) not in visited:\n          if heights[nx][ny]\
+              \ <= heights[x][y]:\n            new_queue.append((nx, ny))\n      \
+              \      visited.add((nx, ny))\n          elif heights[nx][ny] > heights[x][y]:\n\
+              \            new_queue.append((nx, ny, heights[nx][ny] - heights[x][y]))\n\
+              \            visited.add((nx, ny))\n    queue = new_queue\n\n  return\
+              \ time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Utilize bit manipulation and bitwise operations
+              within the ''main'' function in the ''code'' key to simulate queue and
+              set data structures, replacing explicit queue and set declarations',
+            'revert the ''main'' function to use explicit queue and set data structures,
+              ensuring behavior stays identical']
+          middle_state:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+              \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  visited = 0\n\
+              \  time = 0\n\n  for source in sources:\n    x, y = source\n    visited\
+              \ |= 1 << (x * cols + y)\n\n  for i in range(rows):\n    for j in range(cols):\n\
+              \      if not (visited & (1 << (i * cols + j))):\n        return -1\n\
+              \n  for source in sources:\n    x, y = source\n    queue = [x * cols\
+              \ + y]\n    visited |= 1 << (x * cols + y)\n    while queue:\n     \
+              \ new_queue = []\n      for node in queue:\n        if not (visited\
+              \ & (1 << node)):\n          time = max(time, node >> 8)\n        for\
+              \ dx, dy in directions:\n          nx, ny = x + dx, y + dy\n       \
+              \   if 0 <= nx < rows and 0 <= ny < cols and not (visited & (1 << (nx\
+              \ * cols + ny))):\n            if heights[nx][ny] <= heights[x][y]:\n\
+              \              new_queue.append((nx * cols + ny))\n              visited\
+              \ |= 1 << (nx * cols + ny)\n            elif heights[nx][ny] > heights[x][y]:\n\
+              \              new_queue.append((nx * cols + ny) + (heights[nx][ny]\
+              \ - heights[x][y]) << 8)\n              visited |= 1 << (nx * cols +\
+              \ ny)\n      queue = new_queue\n\n  return time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id009
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "def adjacent_cells(x, y, rows, cols):\n  directions = [(0, 1),\
+              \ (0, -1), (1, 0), (-1, 0)]\n  for dx, dy in directions:\n    nx, ny\
+              \ = x + dx, y + dy\n    if 0 <= nx < rows and 0 <= ny < cols:\n    \
+              \  yield nx, ny\n\ndef update_time(time, heights, x, y, nx, ny):\n \
+              \ if heights[nx][ny] > heights[x][y]:\n    return time + (heights[nx][ny]\
+              \ - heights[x][y])\n  return time + 1\n\ndef main(heights, sources):\n\
+              \  rows, cols = len(heights), len(heights[0])\n  visited = set()\n \
+              \ time = 0\n\n  for source in sources:\n    x, y = source\n    visited.add((x,\
+              \ y))\n\n  for i in range(rows):\n    for j in range(cols):\n      if\
+              \ (i, j) not in visited:\n        return -1\n\n  for source in sources:\n\
+              \    x, y = source\n    queue = [(x, y, 0)]\n    visited.add((x, y))\n\
+              \    while queue:\n      new_queue = []\n      for x, y, t in queue:\n\
+              \        if t > time:\n          time = t\n        for nx, ny in adjacent_cells(x,\
+              \ y, rows, cols):\n          if (nx, ny) not in visited:\n         \
+              \   new_queue.append((nx, ny, update_time(t, heights, x, y, nx, ny)))\n\
+              \            visited.add((nx, ny))\n      queue = new_queue\n\n  return\
+              \ time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Implement a Just-In-Time (JIT) compilation approach
+              within the ''main'' function in the ''code'' key using a library like
+              Numba, dynamically compiling performance-critical sections of the code',
+            'disable JIT compilation and revert to pure Python execution, preserving
+              the original logic and functionality']
+          middle_state:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "import numba as nb\n\n@nb.jit(nopython=True)\ndef adjacent_cells(x,\
+              \ y, rows, cols):\n  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\
+              \  for dx, dy in directions:\n    nx, ny = x + dx, y + dy\n    if 0\
+              \ <= nx < rows and 0 <= ny < cols:\n      yield nx, ny\n\n@nb.jit(nopython=True)\n\
+              def update_time(time, heights, x, y, nx, ny):\n  if heights[nx][ny]\
+              \ > heights[x][y]:\n    return time + (heights[nx][ny] - heights[x][y])\n\
+              \  return time + 1\n\ndef main(heights, sources):\n  rows, cols = len(heights),\
+              \ len(heights[0])\n  visited = nb.typed.List.set_empty()\n  time = 0\n\
+              \n  for source in sources:\n    x, y = source\n    visited.append((x,\
+              \ y))\n\n  for i in range(rows):\n    for j in range(cols):\n      if\
+              \ (i, j) not in visited:\n        return -1\n\n  for source in sources:\n\
+              \    x, y = source\n    queue = [(x, y, 0)]\n    visited.append((x,\
+              \ y))\n    while queue:\n      new_queue = []\n      for x, y, t in\
+              \ queue:\n        if t > time:\n          time = t\n        for nx,\
+              \ ny in adjacent_cells(x, y, rows, cols):\n          if (nx, ny) not\
+              \ in visited:\n            new_queue.append((nx, ny, update_time(t,\
+              \ heights, x, y, nx, ny)))\n            visited.append((nx, ny))\n \
+              \     queue = new_queue\n\n  return time"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id009
+          children: []
+      - &id010 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '# Minimum Time to Fill All Ponds
+
+            You are given a 2D array `heights` representing a landscape with ponds.
+            Each cell `heights[i][j]` represents the height of the land at that position.
+            When it rains, water fills the ponds, and you want to find the minimum
+            time it takes to fill all the ponds.
+
+
+            A pond is considered filled if the water level is at or above the height
+            of the land at that position. Water flows from higher positions to lower
+            positions, and it takes one unit of time to fill a pond.
+
+
+            You are also given a list of `sources` representing the positions of the
+            water sources. Each source is represented as a list `[i, j]`, where `i`
+            is the row and `j` is the column of the source.
+
+
+            The water from each source flows to the adjacent positions (up, down,
+            left, right) if the height of the land at the adjacent position is lower
+            than the height of the land at the source position.
+
+
+            Your task is to find the minimum time it takes to fill all the ponds.
+
+
+            # Example 1:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+            Output: 2
+
+
+            # Example 2:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+            Output: 3
+
+
+            # Constraints:
+
+            * 1 <= heights.length, heights[0].length <= 200
+
+            * 1 <= sources.length <= 200
+
+            * 0 <= sources[i][0] < heights.length
+
+            * 0 <= sources[i][1] < heights[0].length
+
+            '
+          code: "import time\n\ndef main(heights, sources):\n  rows, cols = len(heights),\
+            \ len(heights[0])\n  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\
+            \  visited = set()\n  time = 0\n\n  for source in sources:\n    x, y =\
+            \ source\n    visited.add((x, y))\n\n  for i in range(rows):\n    for\
+            \ j in range(cols):\n      if (i, j) not in visited:\n        return -1\n\
+            \n  for source in sources:\n    x, y = source\n    queue = [(x, y, 0)]\n\
+            \    visited.add((x, y))\n    while queue:\n      new_queue = []\n   \
+            \   for x, y, t in queue:\n        if t > time:\n          time = t\n\
+            \        for dx, dy in directions:\n          nx, ny = x + dx, y + dy\n\
+            \          if 0 <= nx < rows and 0 <= ny < cols and (nx, ny) not in visited:\n\
+            \            if heights[nx][ny] <= heights[x][y]:\n              new_queue.append((nx,\
+            \ ny, t + 1))\n              visited.add((nx, ny))\n            elif heights[nx][ny]\
+            \ > heights[x][y]:\n              new_queue.append((nx, ny, t + (heights[nx][ny]\
+            \ - heights[x][y])))\n              visited.add((nx, ny))\n      queue\
+            \ = new_queue\n\n  return time\n\nheights = [[1, 2, 2], [3, 5, 0], [2,\
+            \ 1, 1]]\nsources = [(0, 0), (0, 1)]\nprint(main(heights, sources))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Implement a Just-In-Time (JIT) compilation approach
+            within the ''main'' function in the ''code'' key using a library like
+            Numba, dynamically compiling performance-critical sections of the code',
+          'disable JIT compilation and revert to pure Python execution, preserving
+            the original logic and functionality']
+        middle_state:
+          description: '# Minimum Time to Fill All Ponds
+
+            You are given a 2D array `heights` representing a landscape with ponds.
+            Each cell `heights[i][j]` represents the height of the land at that position.
+            When it rains, water fills the ponds, and you want to find the minimum
+            time it takes to fill all the ponds.
+
+
+            A pond is considered filled if the water level is at or above the height
+            of the land at that position. Water flows from higher positions to lower
+            positions, and it takes one unit of time to fill a pond.
+
+
+            You are also given a list of `sources` representing the positions of the
+            water sources. Each source is represented as a list `[i, j]`, where `i`
+            is the row and `j` is the column of the source.
+
+
+            The water from each source flows to the adjacent positions (up, down,
+            left, right) if the height of the land at the adjacent position is lower
+            than the height of the land at the source position.
+
+
+            Your task is to find the minimum time it takes to fill all the ponds.
+
+
+            # Example 1:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+            Output: 2
+
+
+            # Example 2:
+
+            Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+            Output: 3
+
+
+            # Constraints:
+
+            * 1 <= heights.length, heights[0].length <= 200
+
+            * 1 <= sources.length <= 200
+
+            * 0 <= sources[i][0] < heights.length
+
+            * 0 <= sources[i][1] < heights[0].length
+
+            '
+          code: "import numba as nb\nimport time\n\n@nb.jit(nopython=True, cache=True)\n\
+            def main(heights, sources):\n  rows, cols = len(heights), len(heights[0])\n\
+            \  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  visited = nb.typed.List.empty_list(nb.types.Tuple(nb.types.int64,\
+            \ nb.types.int64))\n  time = 0\n\n  for source in sources:\n    x, y =\
+            \ source\n    visited.append((x, y))\n\n  for i in range(rows):\n    for\
+            \ j in range(cols):\n      if (i, j) not in visited:\n        return -1\n\
+            \n  for source in sources:\n    x, y = source\n    queue = [(x, y, 0)]\n\
+            \    visited.append((x, y))\n    while queue:\n      new_queue = nb.typed.List.empty_list(nb.types.Tuple(nb.types.int64,\
+            \ nb.types.int64, nb.types.int64))\n      for x, y, t in queue:\n    \
+            \    if t > time:\n          time = t\n        for dx, dy in directions:\n\
+            \          nx, ny = x + dx, y + dy\n          if 0 <= nx < rows and 0\
+            \ <= ny < cols and (nx, ny) not in visited:\n            if heights[nx][ny]\
+            \ <= heights[x][y]:\n              new_queue.append((nx, ny, t + 1))\n\
+            \              visited.append((nx, ny))\n            elif heights[nx][ny]\
+            \ > heights[x][y]:\n              new_queue.append((nx, ny, t + (heights[nx][ny]\
+            \ - heights[x][y])))\n              visited.append((nx, ny))\n      queue\
+            \ = new_queue\n\n  return time\n\ndef compiled_main(heights, sources):\n\
+            \  return main(heights, sources)\n\nimport time\n\ndef main(heights, sources):\n\
+            \  return compiled_main(heights, sources)\n\nheights = [[1, 2, 2], [3,\
+            \ 5, 0], [2, 1, 1]]\nsources = [(0, 0), (0, 1)]\nprint(main(heights, sources))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id008
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "import time\nimport heapq\n\ndef main(heights, sources):\n  rows,\
+              \ cols = len(heights), len(heights[0])\n  directions = [(0, 1), (0,\
+              \ -1), (1, 0), (-1, 0)]\n  visited = [0] * (rows * cols)\n  queue =\
+              \ []\n  time = 0\n  source_mask = [0] * (rows * cols)\n\n  for source\
+              \ in sources:\n    x, y = source\n    source_mask[x * cols + y] = 1\n\
+              \n  for i in range(rows * cols):\n    if not source_mask[i]:\n     \
+              \ return -1\n\n  for source in sources:\n    x, y = source\n    heapq.heappush(queue,\
+              \ (heights[x][y], x * cols + y))\n    while queue:\n      height, node\
+              \ = heapq.heappop(queue)\n      if height > (time >> 16) + (node % cols):\n\
+              \        time = height << 16\n      for dx, dy in directions:\n    \
+              \    nx, ny = x + dx, y + dy\n        if 0 <= nx < rows and 0 <= ny\
+              \ < cols and not source_mask[nx * cols + ny]:\n          heapq.heappush(queue,\
+              \ ((heights[nx][ny] if height < heights[nx][ny] else height) + (heights[nx][ny]\
+              \ - height if height < heights[nx][ny] else 0), nx * cols + ny))\n \
+              \         source_mask[nx * cols + ny] = 1\n          if heights[nx][ny]\
+              \ <= height:\n            heapq.heappush(queue, (heights[nx][ny], nx\
+              \ * cols + ny))\n\n  return time >> 16\n\nheights = [[1, 2, 2], [3,\
+              \ 5, 0], [2, 1, 1]]\nsources = [(0, 0), (0, 1)]\nprint(main(heights,\
+              \ sources))"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Utilize bit manipulation and bitwise operations
+              within the ''main'' function in the ''code'' key to simulate queue and
+              set data structures, replacing explicit queue and set declarations',
+            'revert the ''main'' function to use explicit queue and set data structures,
+              ensuring behavior stays identical']
+          middle_state:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "import time\n\ndef main(heights, sources):\n  rows, cols = len(heights),\
+              \ len(heights[0])\n  directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n\
+              \  visited = 0\n  time = 0\n  source_mask = 0\n\n  for source in sources:\n\
+              \    x, y = source\n    source_mask |= 1 << (x * cols + y)\n\n  for\
+              \ i in range(rows * cols):\n    if not (source_mask & (1 << i)):\n \
+              \     return -1\n\n  for source in sources:\n    x, y = source\n   \
+              \ queue = source_mask & (1 << (x * cols + y))\n    time = 0\n    while\
+              \ queue:\n      next_queue = 0\n      while queue:\n        x, y = (queue\
+              \ & -queue).bit_length() // cols, (queue & -queue).bit_length() % cols\n\
+              \        queue ^= 1 << (x * cols + y)\n        if time < (heights[x][y]\
+              \ << 16) + y:\n          time = (heights[x][y] << 16) + y\n        for\
+              \ dx, dy in directions:\n          nx, ny = x + dx, y + dy\n       \
+              \   if 0 <= nx < rows and 0 <= ny < cols and not (source_mask & (1 <<\
+              \ (nx * cols + ny))):\n            next_queue |= 1 << (nx * cols + ny)\n\
+              \            if heights[nx][ny] <= heights[x][y]:\n              queue\
+              \ |= 1 << (nx * cols + ny)\n            elif heights[nx][ny] > heights[x][y]:\n\
+              \              queue |= 1 << (nx * cols + ny)\n              time +=\
+              \ heights[nx][ny] - heights[x][y]\n      queue = next_queue\n\n  return\
+              \ time >> 16\n\nheights = [[1, 2, 2], [3, 5, 0], [2, 1, 1]]\nsources\
+              \ = [(0, 0), (0, 1)]\nprint(main(heights, sources))"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id010
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "import time\n\ndef get_max_time(heights, sources):\n  rows, cols\
+              \ = len(heights), len(heights[0])\n  directions = [(0, 1), (0, -1),\
+              \ (1, 0), (-1, 0)]\n  visited = set()\n  time = 0\n\n  for source in\
+              \ sources:\n    x, y = source\n    visited.add((x, y))\n\n  for i in\
+              \ range(rows):\n    for j in range(cols):\n      if (i, j) not in visited:\n\
+              \        return -1\n\n  def dfs(x, y):\n    nonlocal time\n    if heights[x][y]\
+              \ <= heights[source[0]][source[1]]:\n      time = max(time, dfs(x +\
+              \ dx, y + dy) + 1)\n    elif heights[x][y] > heights[source[0]][source[1]]:\n\
+              \      time = max(time, dfs(x + dx, y + dy) + (heights[x][y] - heights[source[0]][source[1]]))\n\
+              \    return time\n\n  for source in sources:\n    time = 0\n    visited\
+              \ = set()\n    visited.add((source[0], source[1]))\n    for dx, dy in\
+              \ directions:\n      dfs(source[0] + dx, source[1] + dy)\n\n  return\
+              \ time\n\nheights = [[1, 2, 2], [3, 5, 0], [2, 1, 1]]\nsources = [(0,\
+              \ 0), (0, 1)]\nprint(get_max_time(heights, sources))"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          operation: !!python/tuple ['Implement a Just-In-Time (JIT) compilation approach
+              within the ''main'' function in the ''code'' key using a library like
+              Numba, dynamically compiling performance-critical sections of the code',
+            'disable JIT compilation and revert to pure Python execution, preserving
+              the original logic and functionality']
+          middle_state:
+            description: '# Minimum Time to Fill All Ponds
+
+              You are given a 2D array `heights` representing a landscape with ponds.
+              Each cell `heights[i][j]` represents the height of the land at that
+              position. When it rains, water fills the ponds, and you want to find
+              the minimum time it takes to fill all the ponds.
+
+
+              A pond is considered filled if the water level is at or above the height
+              of the land at that position. Water flows from higher positions to lower
+              positions, and it takes one unit of time to fill a pond.
+
+
+              You are also given a list of `sources` representing the positions of
+              the water sources. Each source is represented as a list `[i, j]`, where
+              `i` is the row and `j` is the column of the source.
+
+
+              The water from each source flows to the adjacent positions (up, down,
+              left, right) if the height of the land at the adjacent position is lower
+              than the height of the land at the source position.
+
+
+              Your task is to find the minimum time it takes to fill all the ponds.
+
+
+              # Example 1:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,0],[1,0],[2,0]]
+
+              Output: 2
+
+
+              # Example 2:
+
+              Input: heights = [[1,4,5,4],[1,1,1,1],[1,2,3,4]], sources = [[0,1],[1,1],[2,1]]
+
+              Output: 3
+
+
+              # Constraints:
+
+              * 1 <= heights.length, heights[0].length <= 200
+
+              * 1 <= sources.length <= 200
+
+              * 0 <= sources[i][0] < heights.length
+
+              * 0 <= sources[i][1] < heights[0].length
+
+              '
+            code: "import numba\n\n@numba.jit(nopython=True)\ndef get_max_time(heights,\
+              \ sources):\n  rows, cols = len(heights), len(heights[0])\n  directions\
+              \ = [(0, 1), (0, -1), (1, 0), (-1, 0)]\n  visited = set()\n  time =\
+              \ 0\n\n  for source in sources:\n    x, y = source\n    visited.add((x,\
+              \ y))\n\n  for i in range(rows):\n    for j in range(cols):\n      if\
+              \ (i, j) not in visited:\n        return -1\n\n  for source in sources:\n\
+              \    x, y = source\n    queue = [(x, y, 0)]\n    visited.add((x, y))\n\
+              \    while queue:\n      new_queue = []\n      for x, y, t in queue:\n\
+              \        if t > time:\n          time = t\n        for dx, dy in directions:\n\
+              \          nx, ny = x + dx, y + dy\n          if 0 <= nx < rows and\
+              \ 0 <= ny < cols and (nx, ny) not in visited:\n            if heights[nx][ny]\
+              \ <= heights[x][y]:\n              new_queue.append((nx, ny, t + 1))\n\
+              \              visited.add((nx, ny))\n            elif heights[nx][ny]\
+              \ > heights[x][y]:\n              new_queue.append((nx, ny, t + (heights[nx][ny]\
+              \ - heights[x][y])))\n              visited.add((nx, ny))\n      queue\
+              \ = new_queue\n\n  return time\n\nheights = [[1, 2, 2], [3, 5, 0], [2,\
+              \ 1, 1]]\nsources = [(0, 0), (0, 1)]\nprint(get_max_time(heights, sources))"
+            programming_language: python3
+            inputs: *id002
+            exec_results: *id003
+          parent: *id010
+          children: []
