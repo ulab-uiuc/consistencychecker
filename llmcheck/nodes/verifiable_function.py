@@ -13,7 +13,7 @@ class VerifiableFunction:
     time_limit: float  # Time limit for function execution in seconds
     exec_results: List[Any] = field(default_factory=list)  # Store the results of the function execution
 
-    def __init__(self, code: str, programming_language: str, inputs: List[dict[str, Any]], description: str, exec_results: List[Any] = field(default_factory=list)) -> None:
+    def __init__(self, code: str, programming_language: str, inputs: List[dict[str, Any]], description: str, exec_results: List[Any] = field(default_factory=list), time_limit: float = 2.0) -> None:
         pattern = r'```(\w+)?'
         cleaned_code = re.sub(pattern, '', code).replace('```', '').strip()
         self.code = cleaned_code
@@ -21,7 +21,7 @@ class VerifiableFunction:
         self.inputs = inputs
         self.description = description
         self.exec_results = []
-        self.time_limit = 2.0
+        self.time_limit = time_limit
     def __str__(self) -> str:
         """Pretty print the function details"""
         return (

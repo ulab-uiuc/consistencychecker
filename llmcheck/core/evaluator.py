@@ -74,8 +74,7 @@ class LLMCheck:
                 else:
                     root_content = self.generate_root_content(constraints)
                 state = 'Root node generated'
-                root_content["time_limit"] = self.time_limit
-                root_vf: VerifiableFunction = VerifiableFunction(**root_content)
+                root_vf: VerifiableFunction = VerifiableFunction(**root_content, time_limit=self.time_limit)
                 state = 'Root node verified'
                 root_vf.exec(catch=False)
                 state = 'Root node executable'
@@ -135,8 +134,7 @@ class LLMCheck:
                     continue
                 if current_depth == 0: # root
                     # execute the code
-                    current_node.content["time_limit"] = self.time_limit
-                    root_vf: VerifiableFunction = VerifiableFunction(**current_node.content)
+                    root_vf: VerifiableFunction = VerifiableFunction(**current_node.content, time_limit=self.time_limit)
                     current_node.content["exec_results"] = root_vf.exec(catch=True)
 
                 for transform, reverse in operations:
@@ -152,8 +150,7 @@ class LLMCheck:
                     middle_state_dict_updated.pop("exec_results", None)
                     middle_state_dict_updated["code"] = middle_state_code_content
                     middle_state_dict_updated["programming_language"] = middle_state_code_programming_language
-                    middle_state_dict_updated["time_limit"] = self.time_limit
-                    middle_state_vf: VerifiableFunction = VerifiableFunction(**middle_state_dict_updated)
+                    middle_state_vf: VerifiableFunction = VerifiableFunction(**middle_state_dict_updated, time_limit=self.time_limit)
                     middle_state_dict_updated["exec_results"] = middle_state_vf.exec(catch=True)
                     middle_state = middle_state_dict_updated
                     # Apply reverse to get final state
@@ -166,8 +163,7 @@ class LLMCheck:
                     final_state_dict_updated.pop("exec_results", None)
                     final_state_dict_updated["code"] = final_state_code_content
                     final_state_dict_updated["programming_language"] = final_state_code_programming_language
-                    final_state_dict_updated["time_limit"] = self.time_limit
-                    final_state_vf: VerifiableFunction = VerifiableFunction(**final_state_dict_updated)
+                    final_state_vf: VerifiableFunction = VerifiableFunction(**final_state_dict_updated, time_limit=self.time_limit)
                     final_state_dict_updated["exec_results"] = final_state_vf.exec(catch=True)
                     final_state = final_state_dict_updated
                     child = current_node.add_child(
