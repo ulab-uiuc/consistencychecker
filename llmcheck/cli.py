@@ -45,6 +45,7 @@ def cli() -> None:
         operation_code_format_enforce_prompt=config.get("operation_code_format_enforce_prompt"),
         llm_max_new_tokens=config.get("llm_max_new_tokens"),
         retry_max=config.get("retry_max"),
+        time_limit=config.get("time_limit"),
     )
 
     # Run evaluation

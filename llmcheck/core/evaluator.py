@@ -24,7 +24,8 @@ class LLMCheck:
                  n_operations: int,
                  operation_code_format_enforce_prompt: str,
                  llm_max_new_tokens: int,
-                 retry_max: int = 16) -> None:
+                 retry_max: int,
+                 time_limit: int) -> None:
         if not llm_max_new_tokens:
             raise ValueError("llm_max_new_tokens must be set.")
         if not retry_max:
@@ -44,6 +45,7 @@ class LLMCheck:
         self.operation_code_format_enforce_prompt = operation_code_format_enforce_prompt
         self.llm_max_new_tokens = llm_max_new_tokens
         self.retry_max = retry_max
+        self.time_limit = time_limit
 
     def generate_root_content(self, constraints: str) -> Dict[str, Any]:
         response = litellm.completion(
@@ -72,6 +74,7 @@ class LLMCheck:
                 else:
                     root_content = self.generate_root_content(constraints)
                 state = 'Root node generated'
+                root_content["time_limit"] = self.time_limit
                 root_vf: VerifiableFunction = VerifiableFunction(**root_content)
                 state = 'Root node verified'
                 root_vf.exec(catch=False)
@@ -132,6 +135,7 @@ class LLMCheck:
                     continue
                 if current_depth == 0: # root
                     # execute the code
+                    current_node.content["time_limit"] = self.time_limit
                     root_vf: VerifiableFunction = VerifiableFunction(**current_node.content)
                     current_node.content["exec_results"] = root_vf.exec(catch=True)
 
@@ -144,8 +148,11 @@ class LLMCheck:
                     # remove code block
                     middle_state_code_content = middle_state_code.split("\n", 1)[1].rsplit("```", 1)[0].strip("\n")
                     middle_state_dict_updated = current_node_dict.copy()
+                    # drop exec_results
+                    middle_state_dict_updated.pop("exec_results", None)
                     middle_state_dict_updated["code"] = middle_state_code_content
                     middle_state_dict_updated["programming_language"] = middle_state_code_programming_language
+                    middle_state_dict_updated["time_limit"] = self.time_limit
                     middle_state_vf: VerifiableFunction = VerifiableFunction(**middle_state_dict_updated)
                     middle_state_dict_updated["exec_results"] = middle_state_vf.exec(catch=True)
                     middle_state = middle_state_dict_updated
@@ -155,8 +162,11 @@ class LLMCheck:
                     # remove code block
                     final_state_code_content = final_state_code.split("\n", 1)[1].rsplit("```", 1)[0].strip("\n")
                     final_state_dict_updated = current_node_dict.copy()
+                    # drop exec_results
+                    final_state_dict_updated.pop("exec_results", None)
                     final_state_dict_updated["code"] = final_state_code_content
                     final_state_dict_updated["programming_language"] = final_state_code_programming_language
+                    final_state_dict_updated["time_limit"] = self.time_limit
                     final_state_vf: VerifiableFunction = VerifiableFunction(**final_state_dict_updated)
                     final_state_dict_updated["exec_results"] = final_state_vf.exec(catch=True)
                     final_state = final_state_dict_updated

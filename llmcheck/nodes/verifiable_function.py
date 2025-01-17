@@ -1,4 +1,5 @@
 import re
+import signal
 from dataclasses import dataclass, field
 from typing import Any, List
 
@@ -9,7 +10,9 @@ class VerifiableFunction:
     programming_language: str
     inputs: List[dict[str, Any]] # kwargs for the function
     description: str  # New property to store the function description
+    time_limit: float  # Time limit for function execution in seconds
     exec_results: List[Any] = field(default_factory=list)  # Store the results of the function execution
+
     def __init__(self, code: str, programming_language: str, inputs: List[dict[str, Any]], description: str, exec_results: List[Any] = field(default_factory=list)) -> None:
         pattern = r'```(\w+)?'
         cleaned_code = re.sub(pattern, '', code).replace('```', '').strip()
@@ -18,6 +21,7 @@ class VerifiableFunction:
         self.inputs = inputs
         self.description = description
         self.exec_results = []
+        self.time_limit = 2.0
     def __str__(self) -> str:
         """Pretty print the function details"""
         return (
@@ -29,6 +33,8 @@ class VerifiableFunction:
 
     def exec(self, catch:bool=False) -> List[Any]:  # Return the results as they are without conversion to str
         """Execute the function and return outputs"""
+        if self.exec_results:
+            return self.exec_results
         try:
             if self.programming_language not in ["python", "python3", "py", "py3", "Python", "Python3"]: # just in case the LLM is bad at following instructions
                 if not catch:
@@ -36,6 +42,7 @@ class VerifiableFunction:
                 else:
                     results: List[Any] = []
                     print(f"[ERROR] Unsupported language: {self.programming_language}")
+                    self.exec_results = results
                     return results
 
             # Prepare the code for execution
@@ -48,27 +55,40 @@ class VerifiableFunction:
                 if not catch:
                     raise ValueError("No 'main' function found in the provided code.")
                 else:
-                    results = []
+                    self.exec_results = [None] * len(self.inputs)
                     print("[ERROR] No 'main' function found in the provided code.")
-                    return results
+                    return self.exec_results
             # If we have multiple inputs (a list of dicts), we'll call the function with each one
             results = []
             for input_dict in self.inputs:
                 # Call the function with arguments unpacked from the dictionary
+                def handler(signum: Any, frame: Any) -> None:
+                    raise TimeoutError("Time limit exceeded")
+
+                signal.signal(signal.SIGALRM, handler)
+
                 try:
+                    signal.alarm(int(self.time_limit))
                     result = main_func(**input_dict)
                     results.append(result)  # Append result without converting to str
+                except TimeoutError:
+                    print(f"[ERROR] Time Limit Exceeded ({self.time_limit}s)")
+                    results.append(None)
                 except Exception as e:
-                    results.append(f"Error: {str(e)}")
                     if catch:
                         print(f"Error: {str(e)}")
+                        results.append(None)
                     else:
-                        raise RuntimeError(f"Execution error: {str(e)}")
+                        raise RuntimeError(f"{str(e)}")
+                finally:
+                    signal.alarm(0)
 
+            self.exec_results = results
             return results
         except Exception as e:
             if catch:
                 print(f"Error: {str(e)}")
-                return []
+                self.exec_results = [None] * len(self.inputs)
+                return self.exec_results
             else:
                 raise RuntimeError(f"Execution error: {str(e)}")
