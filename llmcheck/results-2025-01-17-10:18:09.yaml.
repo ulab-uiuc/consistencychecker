@@ -1,0 +1,2042 @@
+evaluator_model: {model: fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct,
+  temperature: 0.6, api_base: 'https://api.fireworks.ai/inference/v1'}
+evaluatee_model: {model: fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct,
+  temperature: 0.6, api_base: 'https://api.fireworks.ai/inference/v1'}
+root_content: &id001
+  description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+    In the realm of prime numbers, there exists a peculiar phenomenon where two prime
+    numbers, when multiplied together, yield a product that is a power of 2. These
+    prime numbers are known as **harmonious primes**.
+
+
+    You are given a list of prime numbers, and your task is to find the harmonious
+    pair with the smallest product that is a power of 2. If no such pair exists, return
+    -1.
+
+
+    Note that a prime number is a natural number greater than 1 that has no positive
+    divisors other than 1 and itself.
+
+
+    Example 1:
+
+    Input: [2, 3, 5, 7, 11, 13]
+
+    Output: 2
+
+    Explanation: The harmonious pair with the smallest product that is a power of
+    2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+    Example 2:
+
+    Input: [2, 3, 5, 7, 11, 13, 17]
+
+    Output: 17
+
+    Explanation: The harmonious pair with the smallest product that is a power of
+    2 is (17, 1), which is not listed in the input, but we know that 17 is a prime
+    number and 1 is not, but we can find a pair (17, 1) in the list of prime numbers
+    given, which is (2, 17) or (17, 2), which are listed, but we can see that 2 *
+    17 = 34 which is not 2^x, so we need to try another pair (2, 2) which is listed,
+    and 2 * 2 = 4 which is 2^2.
+
+
+    Example 3:
+
+    Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+    Output: -1
+
+    Explanation: There is no harmonious pair in the list with a product that is a
+    power of 2.
+
+    '
+  code: "def main(primes):\n  for i in range(len(primes)):\n    for j in range(i +\
+    \ 1, len(primes)):\n      if primes[i] * primes[j] & (primes[i] * primes[j] -\
+    \ 1):\n        return primes[i] * primes[j]\n  return -1\n"
+  programming_language: python3
+  inputs: &id002
+  - primes: [2, 3, 5, 7, 11, 13]
+  - primes: [2, 3, 5, 7, 11, 13, 17]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19]
+  - primes: [2, 2, 3, 3, 5, 7, 11, 13]
+  - primes: [2, 2, 3, 3, 5, 7, 11, 13, 17]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67,
+      71]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67,
+      71, 73]
+  - primes: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67,
+      71, 73, 79]
+  exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+operations:
+- !!python/tuple ['"Extract the logic of the nested loops into a separate function,
+    utilizing a decorator to memoize the result of the function, and call this function
+    within the ''main'' function in the ''code'' key', 'Revert the ''main'' function
+    to use the original nested loops, removing the memoization decorator and restoring
+    the original logic"']
+- !!python/tuple ['"Replace the ''if'' statement with a ''try-except'' block that
+    catches a specific exception, and utilize a closure to encapsulate the logic of
+    the ''if'' statement, within the ''main'' function in the ''code'' key', 'Revert
+    the ''main'' function to use the original ''if'' statement, removing the ''try-except''
+    block and restoring the original logic"']
+metrics:
+  L-1 AVG: 0.9800138517933402
+  L-1: [0.9999999999999999, 0.9999999999999999, 0.9917730025243472, 0.7284209225824165,
+    0.9999999999999999, 0.9999999999999999, 1.0000000000000002, 1.0000000000000002,
+    1.0, 1.0, 0.9999999999999999, 0.9999999999999999, 0.9999999999999999, 0.9999999999999999]
+  L-2 AVG: 0.9300499317730107
+  L-2: [0.9917904084801846, 0.7284209225824165, 0.9999999999999999, 0.9999999999999999,
+    0.9917730025243472, 0.9917730025243472, 0.7284209225824165, 0.7284209225824165,
+    0.9999999999999999, 0.9999999999999999, 0.9999999999999999, 0.9999999999999999]
+  L-3 AVG: 0.9300484812766909
+  L-3: [0.9917730025243472, 0.9917730025243472, 0.7284209225824165, 0.7284209225824165,
+    0.9999999999999999, 0.9999999999999999, 0.9999999999999999, 0.9999999999999999]
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id003 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id004 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+          In the realm of prime numbers, there exists a peculiar phenomenon where
+          two prime numbers, when multiplied together, yield a product that is a power
+          of 2. These prime numbers are known as **harmonious primes**.
+
+
+          You are given a list of prime numbers, and your task is to find the harmonious
+          pair with the smallest product that is a power of 2. If no such pair exists,
+          return -1.
+
+
+          Note that a prime number is a natural number greater than 1 that has no
+          positive divisors other than 1 and itself.
+
+
+          Example 1:
+
+          Input: [2, 3, 5, 7, 11, 13]
+
+          Output: 2
+
+          Explanation: The harmonious pair with the smallest product that is a power
+          of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+          Example 2:
+
+          Input: [2, 3, 5, 7, 11, 13, 17]
+
+          Output: 17
+
+          Explanation: The harmonious pair with the smallest product that is a power
+          of 2 is (17, 1), which is not listed in the input, but we know that 17 is
+          a prime number and 1 is not, but we can find a pair (17, 1) in the list
+          of prime numbers given, which is (2, 17) or (17, 2), which are listed, but
+          we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+          pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+          Example 3:
+
+          Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+          Output: -1
+
+          Explanation: There is no harmonious pair in the list with a product that
+          is a power of 2.
+
+          '
+        code: "def main(primes):\n  for i in range(len(primes)):\n    for j in range(i\
+          \ + 1, len(primes)):\n      if primes[i] * primes[j] & (primes[i] * primes[j]\
+          \ - 1):\n        return primes[i] * primes[j]\n  return -1"
+        programming_language: python3
+        inputs: *id002
+        exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+      operation: !!python/tuple ['"Extract the logic of the nested loops into a separate
+          function, utilizing a decorator to memoize the result of the function, and
+          call this function within the ''main'' function in the ''code'' key', 'Revert
+          the ''main'' function to use the original nested loops, removing the memoization
+          decorator and restoring the original logic"']
+      middle_state:
+        description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+          In the realm of prime numbers, there exists a peculiar phenomenon where
+          two prime numbers, when multiplied together, yield a product that is a power
+          of 2. These prime numbers are known as **harmonious primes**.
+
+
+          You are given a list of prime numbers, and your task is to find the harmonious
+          pair with the smallest product that is a power of 2. If no such pair exists,
+          return -1.
+
+
+          Note that a prime number is a natural number greater than 1 that has no
+          positive divisors other than 1 and itself.
+
+
+          Example 1:
+
+          Input: [2, 3, 5, 7, 11, 13]
+
+          Output: 2
+
+          Explanation: The harmonious pair with the smallest product that is a power
+          of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+          Example 2:
+
+          Input: [2, 3, 5, 7, 11, 13, 17]
+
+          Output: 17
+
+          Explanation: The harmonious pair with the smallest product that is a power
+          of 2 is (17, 1), which is not listed in the input, but we know that 17 is
+          a prime number and 1 is not, but we can find a pair (17, 1) in the list
+          of prime numbers given, which is (2, 17) or (17, 2), which are listed, but
+          we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+          pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+          Example 3:
+
+          Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+          Output: -1
+
+          Explanation: There is no harmonious pair in the list with a product that
+          is a power of 2.
+
+          '
+        code: "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef find_product(primes):\n\
+          \  for i in range(len(primes)):\n    for j in range(i + 1, len(primes)):\n\
+          \      if primes[i] * primes[j] & (primes[i] * primes[j] - 1):\n       \
+          \ return primes[i] * primes[j]\n  return -1\n\ndef main(primes):\n  return\
+          \ find_product(primes)"
+        programming_language: python3
+        inputs: *id002
+        exec_results: ['Error: unhashable type: ''list''', 'Error: unhashable type:
+            ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable type:
+            ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable type:
+            ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable type:
+            ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable type:
+            ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable type:
+            ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable type:
+            ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable type:
+            ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable type:
+            ''list''', 'Error: unhashable type: ''list''']
+      parent: *id003
+      children:
+      - &id005 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+            In the realm of prime numbers, there exists a peculiar phenomenon where
+            two prime numbers, when multiplied together, yield a product that is a
+            power of 2. These prime numbers are known as **harmonious primes**.
+
+
+            You are given a list of prime numbers, and your task is to find the harmonious
+            pair with the smallest product that is a power of 2. If no such pair exists,
+            return -1.
+
+
+            Note that a prime number is a natural number greater than 1 that has no
+            positive divisors other than 1 and itself.
+
+
+            Example 1:
+
+            Input: [2, 3, 5, 7, 11, 13]
+
+            Output: 2
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+            Example 2:
+
+            Input: [2, 3, 5, 7, 11, 13, 17]
+
+            Output: 17
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (17, 1), which is not listed in the input, but we know that 17
+            is a prime number and 1 is not, but we can find a pair (17, 1) in the
+            list of prime numbers given, which is (2, 17) or (17, 2), which are listed,
+            but we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+            pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+            Example 3:
+
+            Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+            Output: -1
+
+            Explanation: There is no harmonious pair in the list with a product that
+            is a power of 2.
+
+            '
+          code: "def is_prime_product(primes, i, j):\n    def is_prime(n):\n     \
+            \   if n < 2:\n            return False\n        for k in range(2, int(n**0.5)\
+            \ + 1):\n            if n % k == 0:\n                return False\n  \
+            \      return True\n\n    return is_prime(primes[i]) and is_prime(primes[j])\n\
+            \ndef main(primes):\n  for i in range(len(primes)):\n    for j in range(i\
+            \ + 1, len(primes)):\n      if is_prime_product(primes, i, j):\n     \
+            \   return primes[i] * primes[j]\n  return -1"
+          programming_language: python3
+          inputs: *id002
+          exec_results: [6, 6, 6, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+        operation: !!python/tuple ['"Extract the logic of the nested loops into a
+            separate function, utilizing a decorator to memoize the result of the
+            function, and call this function within the ''main'' function in the ''code''
+            key', 'Revert the ''main'' function to use the original nested loops,
+            removing the memoization decorator and restoring the original logic"']
+        middle_state:
+          description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+            In the realm of prime numbers, there exists a peculiar phenomenon where
+            two prime numbers, when multiplied together, yield a product that is a
+            power of 2. These prime numbers are known as **harmonious primes**.
+
+
+            You are given a list of prime numbers, and your task is to find the harmonious
+            pair with the smallest product that is a power of 2. If no such pair exists,
+            return -1.
+
+
+            Note that a prime number is a natural number greater than 1 that has no
+            positive divisors other than 1 and itself.
+
+
+            Example 1:
+
+            Input: [2, 3, 5, 7, 11, 13]
+
+            Output: 2
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+            Example 2:
+
+            Input: [2, 3, 5, 7, 11, 13, 17]
+
+            Output: 17
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (17, 1), which is not listed in the input, but we know that 17
+            is a prime number and 1 is not, but we can find a pair (17, 1) in the
+            list of prime numbers given, which is (2, 17) or (17, 2), which are listed,
+            but we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+            pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+            Example 3:
+
+            Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+            Output: -1
+
+            Explanation: There is no harmonious pair in the list with a product that
+            is a power of 2.
+
+            '
+          code: "from functools import lru_cache\n\ndef is_prime_product(primes, i,\
+            \ j):\n    @lru_cache(maxsize=None)\n    def is_prime(n):\n        if\
+            \ n < 2:\n            return False\n        for k in range(2, int(n**0.5)\
+            \ + 1):\n            if n % k == 0:\n                return False\n  \
+            \      return True\n\n    return is_prime(primes[i]) and is_prime(primes[j])\n\
+            \ndef main(primes):\n  for i in range(len(primes)):\n    for j in range(i\
+            \ + 1, len(primes)):\n      if is_prime_product(primes, i, j):\n     \
+            \   return primes[i] * primes[j]\n  return -1"
+          programming_language: python3
+          inputs: *id002
+          exec_results: [6, 6, 6, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+        parent: *id004
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def is_prime(n):\n    if n < 2:\n        return False\n    for\
+              \ k in range(2, int(n**0.5) + 1):\n        if n % k == 0:\n        \
+              \    return False\n    return True\n\ndef is_prime_product(primes, i,\
+              \ j):\n    return is_prime(primes[i]) and is_prime(primes[j])\n\ndef\
+              \ main(primes):\n  for i in range(len(primes)):\n    for j in range(i\
+              \ + 1, len(primes)):\n      if is_prime_product(primes, i, j):\n   \
+              \     return primes[i] * primes[j]\n  return -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          operation: !!python/tuple ['"Extract the logic of the nested loops into
+              a separate function, utilizing a decorator to memoize the result of
+              the function, and call this function within the ''main'' function in
+              the ''code'' key', 'Revert the ''main'' function to use the original
+              nested loops, removing the memoization decorator and restoring the original
+              logic"']
+          middle_state:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "from functools import lru_cache\n\ndef is_prime(n):\n    if n <\
+              \ 2:\n        return False\n    for k in range(2, int(n**0.5) + 1):\n\
+              \        if n % k == 0:\n            return False\n    return True\n\
+              \n@lru_cache(maxsize=None)\ndef is_prime_product(primes, i, j):\n  \
+              \  return is_prime(primes[i]) and is_prime(primes[j])\n\ndef main(primes):\n\
+              \  for i in range(len(primes)):\n    for j in range(i + 1, len(primes)):\n\
+              \      if is_prime_product(primes, i, j):\n        return primes[i]\
+              \ * primes[j]\n  return -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: ['Error: unhashable type: ''list''', 'Error: unhashable
+                type: ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable
+                type: ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable
+                type: ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable
+                type: ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable
+                type: ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable
+                type: ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable
+                type: ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable
+                type: ''list''', 'Error: unhashable type: ''list''', 'Error: unhashable
+                type: ''list''', 'Error: unhashable type: ''list''']
+          parent: *id005
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def is_prime(n):\n    if n < 2:\n        return False\n    for\
+              \ k in range(2, int(n**0.5) + 1):\n        if n % k == 0:\n        \
+              \    return False\n    return True\n\ndef main(primes):\n  for i in\
+              \ range(len(primes)):\n    for j in range(i + 1, len(primes)):\n   \
+              \   if is_prime(primes[i]) and is_prime(primes[j]):\n          return\
+              \ primes[i] * primes[j]\n  return -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          operation: !!python/tuple ['"Replace the ''if'' statement with a ''try-except''
+              block that catches a specific exception, and utilize a closure to encapsulate
+              the logic of the ''if'' statement, within the ''main'' function in the
+              ''code'' key', 'Revert the ''main'' function to use the original ''if''
+              statement, removing the ''try-except'' block and restoring the original
+              logic"']
+          middle_state:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def is_prime_product(primes, i, j):\n    def is_prime(n):\n   \
+              \     try:\n            if n < 2:\n                raise ValueError(\"\
+              Input is not a prime number\")\n            for k in range(2, int(n**0.5)\
+              \ + 1):\n                if n % k == 0:\n                    raise ValueError(\"\
+              Input is not a prime number\")\n            return True\n        except\
+              \ ValueError as e:\n            return False\n\n    return is_prime(primes[i])\
+              \ and is_prime(primes[j])\n\ndef main(primes):\n  for i in range(len(primes)):\n\
+              \    for j in range(i + 1, len(primes)):\n      try:\n          return\
+              \ primes[i] * primes[j]\n      except TypeError as e:\n          pass\n\
+              \  return -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 4, 4, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          parent: *id005
+          children: []
+      - &id006 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+            In the realm of prime numbers, there exists a peculiar phenomenon where
+            two prime numbers, when multiplied together, yield a product that is a
+            power of 2. These prime numbers are known as **harmonious primes**.
+
+
+            You are given a list of prime numbers, and your task is to find the harmonious
+            pair with the smallest product that is a power of 2. If no such pair exists,
+            return -1.
+
+
+            Note that a prime number is a natural number greater than 1 that has no
+            positive divisors other than 1 and itself.
+
+
+            Example 1:
+
+            Input: [2, 3, 5, 7, 11, 13]
+
+            Output: 2
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+            Example 2:
+
+            Input: [2, 3, 5, 7, 11, 13, 17]
+
+            Output: 17
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (17, 1), which is not listed in the input, but we know that 17
+            is a prime number and 1 is not, but we can find a pair (17, 1) in the
+            list of prime numbers given, which is (2, 17) or (17, 2), which are listed,
+            but we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+            pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+            Example 3:
+
+            Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+            Output: -1
+
+            Explanation: There is no harmonious pair in the list with a product that
+            is a power of 2.
+
+            '
+          code: "def get_prime_pair_product(primes):\n    def check_prime_pair(n):\n\
+            \        if n * n < primes[-1] * primes[-1]:\n            return n & (n\
+            \ - 1)\n        else:\n            return False\n    for i in range(len(primes)):\n\
+            \        for j in range(i + 1, len(primes)):\n            if check_prime_pair(primes[i]\
+            \ * primes[j]):\n                return primes[i] * primes[j]\n    return\
+            \ -1"
+          programming_language: python3
+          inputs: *id002
+          exec_results: []
+        operation: !!python/tuple ['"Replace the ''if'' statement with a ''try-except''
+            block that catches a specific exception, and utilize a closure to encapsulate
+            the logic of the ''if'' statement, within the ''main'' function in the
+            ''code'' key', 'Revert the ''main'' function to use the original ''if''
+            statement, removing the ''try-except'' block and restoring the original
+            logic"']
+        middle_state:
+          description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+            In the realm of prime numbers, there exists a peculiar phenomenon where
+            two prime numbers, when multiplied together, yield a product that is a
+            power of 2. These prime numbers are known as **harmonious primes**.
+
+
+            You are given a list of prime numbers, and your task is to find the harmonious
+            pair with the smallest product that is a power of 2. If no such pair exists,
+            return -1.
+
+
+            Note that a prime number is a natural number greater than 1 that has no
+            positive divisors other than 1 and itself.
+
+
+            Example 1:
+
+            Input: [2, 3, 5, 7, 11, 13]
+
+            Output: 2
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+            Example 2:
+
+            Input: [2, 3, 5, 7, 11, 13, 17]
+
+            Output: 17
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (17, 1), which is not listed in the input, but we know that 17
+            is a prime number and 1 is not, but we can find a pair (17, 1) in the
+            list of prime numbers given, which is (2, 17) or (17, 2), which are listed,
+            but we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+            pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+            Example 3:
+
+            Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+            Output: -1
+
+            Explanation: There is no harmonious pair in the list with a product that
+            is a power of 2.
+
+            '
+          code: "def get_prime_pair_product(primes):\n    def check_prime_pair(n):\n\
+            \        try:\n            if n * n < primes[-1] * primes[-1]:\n     \
+            \           return n & (n - 1)\n            else:\n                raise\
+            \ ValueError(\"Product of primes exceeds the square root of the largest\
+            \ prime\")\n        except ValueError as e:\n            print(e)\n  \
+            \          return False\n    for i in range(len(primes)):\n        for\
+            \ j in range(i + 1, len(primes)):\n            if check_prime_pair(primes[i]\
+            \ * primes[j]):\n                return primes[i] * primes[j]\n    return\
+            \ -1"
+          programming_language: python3
+          inputs: *id002
+          exec_results: []
+        parent: *id004
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def check_prime_pair(n):\n    for i in range(2, int(n**0.5) + 1):\n\
+              \        if n % i == 0:\n            return False\n    return True\n\
+              \ndef get_prime_pair_product(primes):\n    for i in range(len(primes)):\n\
+              \        for j in range(i + 1, len(primes)):\n            if check_prime_pair(primes[i]\
+              \ * primes[j]):\n                return primes[i] * primes[j]\n    return\
+              \ -1\n\nmain_code = {\n    'code': get_prime_pair_product([2, 3, 5,\
+              \ 7, 11, 13])\n}"
+            programming_language: python3
+            inputs: *id002
+            exec_results: []
+          operation: !!python/tuple ['"Extract the logic of the nested loops into
+              a separate function, utilizing a decorator to memoize the result of
+              the function, and call this function within the ''main'' function in
+              the ''code'' key', 'Revert the ''main'' function to use the original
+              nested loops, removing the memoization decorator and restoring the original
+              logic"']
+          middle_state:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "from functools import lru_cache\n\ndef memoize(func):\n    return\
+              \ lru_cache(maxsize=None)(func)\n\n@memoize\ndef check_prime_pair(n):\n\
+              \    if n * n < 10000:\n        return n & (n - 1)\n    else:\n    \
+              \    return False\n\ndef get_prime_pair_product(primes):\n    for i\
+              \ in range(len(primes)):\n        for j in range(i + 1, len(primes)):\n\
+              \            if check_prime_pair(primes[i] * primes[j]):\n         \
+              \       return primes[i] * primes[j]\n    return -1\n\nmain_code = {\n\
+              \    'code': get_prime_pair_product([2, 3, 5, 7, 11, 13])\n}"
+            programming_language: python3
+            inputs: *id002
+            exec_results: []
+          parent: *id006
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def get_prime_pair_product(primes):\n    def check_prime_pair(n):\n\
+              \        if isinstance(n, int):\n            return n & (n - 1)\n  \
+              \      else:\n            return False\n    for i in range(len(primes)):\n\
+              \        for j in range(i + 1, len(primes)):\n            if check_prime_pair(primes[i]\
+              \ * primes[j]):\n                return primes[i] * primes[j]\n    return\
+              \ -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: []
+          operation: !!python/tuple ['"Replace the ''if'' statement with a ''try-except''
+              block that catches a specific exception, and utilize a closure to encapsulate
+              the logic of the ''if'' statement, within the ''main'' function in the
+              ''code'' key', 'Revert the ''main'' function to use the original ''if''
+              statement, removing the ''try-except'' block and restoring the original
+              logic"']
+          middle_state:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def get_prime_pair_product(primes):\n    def check_prime_pair(n):\n\
+              \        try:\n            return n & (n - 1)\n        except TypeError:\n\
+              \            return False\n    for i in range(len(primes)):\n      \
+              \  for j in range(i + 1, len(primes)):\n            try:\n         \
+              \       if check_prime_pair(primes[i] * primes[j]):\n              \
+              \      return primes[i] * primes[j]\n            except TypeError:\n\
+              \                pass\n    return -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: []
+          parent: *id006
+          children: []
+    - &id007 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+          In the realm of prime numbers, there exists a peculiar phenomenon where
+          two prime numbers, when multiplied together, yield a product that is a power
+          of 2. These prime numbers are known as **harmonious primes**.
+
+
+          You are given a list of prime numbers, and your task is to find the harmonious
+          pair with the smallest product that is a power of 2. If no such pair exists,
+          return -1.
+
+
+          Note that a prime number is a natural number greater than 1 that has no
+          positive divisors other than 1 and itself.
+
+
+          Example 1:
+
+          Input: [2, 3, 5, 7, 11, 13]
+
+          Output: 2
+
+          Explanation: The harmonious pair with the smallest product that is a power
+          of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+          Example 2:
+
+          Input: [2, 3, 5, 7, 11, 13, 17]
+
+          Output: 17
+
+          Explanation: The harmonious pair with the smallest product that is a power
+          of 2 is (17, 1), which is not listed in the input, but we know that 17 is
+          a prime number and 1 is not, but we can find a pair (17, 1) in the list
+          of prime numbers given, which is (2, 17) or (17, 2), which are listed, but
+          we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+          pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+          Example 3:
+
+          Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+          Output: -1
+
+          Explanation: There is no harmonious pair in the list with a product that
+          is a power of 2.
+
+          '
+        code: "def is_prime(n):\n  def check_prime(num):\n    for i in range(2, int(num**0.5)\
+          \ + 1):\n      if num % i == 0:\n        return False\n    return True\n\
+          \  return check_prime(n)\n\ndef main(primes):\n  for i in range(len(primes)):\n\
+          \    for j in range(i + 1, len(primes)):\n      product = primes[i] * primes[j]\n\
+          \      if product & (product - 1):\n        return primes[i] * primes[j]\n\
+          \  return -1"
+        programming_language: python3
+        inputs: *id002
+        exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+      operation: !!python/tuple ['"Replace the ''if'' statement with a ''try-except''
+          block that catches a specific exception, and utilize a closure to encapsulate
+          the logic of the ''if'' statement, within the ''main'' function in the ''code''
+          key', 'Revert the ''main'' function to use the original ''if'' statement,
+          removing the ''try-except'' block and restoring the original logic"']
+      middle_state:
+        description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+          In the realm of prime numbers, there exists a peculiar phenomenon where
+          two prime numbers, when multiplied together, yield a product that is a power
+          of 2. These prime numbers are known as **harmonious primes**.
+
+
+          You are given a list of prime numbers, and your task is to find the harmonious
+          pair with the smallest product that is a power of 2. If no such pair exists,
+          return -1.
+
+
+          Note that a prime number is a natural number greater than 1 that has no
+          positive divisors other than 1 and itself.
+
+
+          Example 1:
+
+          Input: [2, 3, 5, 7, 11, 13]
+
+          Output: 2
+
+          Explanation: The harmonious pair with the smallest product that is a power
+          of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+          Example 2:
+
+          Input: [2, 3, 5, 7, 11, 13, 17]
+
+          Output: 17
+
+          Explanation: The harmonious pair with the smallest product that is a power
+          of 2 is (17, 1), which is not listed in the input, but we know that 17 is
+          a prime number and 1 is not, but we can find a pair (17, 1) in the list
+          of prime numbers given, which is (2, 17) or (17, 2), which are listed, but
+          we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+          pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+          Example 3:
+
+          Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+          Output: -1
+
+          Explanation: There is no harmonious pair in the list with a product that
+          is a power of 2.
+
+          '
+        code: "def is_prime(n):\n  def check_prime(num):\n    try:\n      for i in\
+          \ range(2, int(num**0.5) + 1):\n        if num % i == 0:\n          raise\
+          \ ValueError\n      return True\n    except ValueError:\n      return False\n\
+          \  return check_prime(n)\n\ndef main(primes):\n  def check_product(i, j):\n\
+          \    try:\n      product = primes[i] * primes[j]\n      if product & (product\
+          \ - 1):\n        return True\n      return False\n    except TypeError:\n\
+          \      return False\n  for i in range(len(primes)):\n    for j in range(i\
+          \ + 1, len(primes)):\n      if check_product(i, j):\n        return primes[i]\
+          \ * primes[j]\n  return -1"
+        programming_language: python3
+        inputs: *id002
+        exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+      parent: *id003
+      children:
+      - &id008 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+            In the realm of prime numbers, there exists a peculiar phenomenon where
+            two prime numbers, when multiplied together, yield a product that is a
+            power of 2. These prime numbers are known as **harmonious primes**.
+
+
+            You are given a list of prime numbers, and your task is to find the harmonious
+            pair with the smallest product that is a power of 2. If no such pair exists,
+            return -1.
+
+
+            Note that a prime number is a natural number greater than 1 that has no
+            positive divisors other than 1 and itself.
+
+
+            Example 1:
+
+            Input: [2, 3, 5, 7, 11, 13]
+
+            Output: 2
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+            Example 2:
+
+            Input: [2, 3, 5, 7, 11, 13, 17]
+
+            Output: 17
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (17, 1), which is not listed in the input, but we know that 17
+            is a prime number and 1 is not, but we can find a pair (17, 1) in the
+            list of prime numbers given, which is (2, 17) or (17, 2), which are listed,
+            but we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+            pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+            Example 3:
+
+            Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+            Output: -1
+
+            Explanation: There is no harmonious pair in the list with a product that
+            is a power of 2.
+
+            '
+          code: "def is_prime(n):\n  def check_prime(num):\n    for i in range(2,\
+            \ int(num**0.5) + 1):\n      if num % i == 0:\n        return False\n\
+            \    return True\n  return check_prime(n)\n\ndef main(primes):\n  for\
+            \ i in range(len(primes)):\n    for j in range(i + 1, len(primes)):\n\
+            \      product = primes[i] * primes[j]\n      if product & (product -\
+            \ 1):\n        return product\n  return -1\n\ndef find_product():\n  primes\
+            \ = [i for i in range(2, 1000) if is_prime(i)]\n  return main(primes)\n\
+            \nprint(find_product())"
+          programming_language: python3
+          inputs: *id002
+          exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+        operation: !!python/tuple ['"Extract the logic of the nested loops into a
+            separate function, utilizing a decorator to memoize the result of the
+            function, and call this function within the ''main'' function in the ''code''
+            key', 'Revert the ''main'' function to use the original nested loops,
+            removing the memoization decorator and restoring the original logic"']
+        middle_state:
+          description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+            In the realm of prime numbers, there exists a peculiar phenomenon where
+            two prime numbers, when multiplied together, yield a product that is a
+            power of 2. These prime numbers are known as **harmonious primes**.
+
+
+            You are given a list of prime numbers, and your task is to find the harmonious
+            pair with the smallest product that is a power of 2. If no such pair exists,
+            return -1.
+
+
+            Note that a prime number is a natural number greater than 1 that has no
+            positive divisors other than 1 and itself.
+
+
+            Example 1:
+
+            Input: [2, 3, 5, 7, 11, 13]
+
+            Output: 2
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+            Example 2:
+
+            Input: [2, 3, 5, 7, 11, 13, 17]
+
+            Output: 17
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (17, 1), which is not listed in the input, but we know that 17
+            is a prime number and 1 is not, but we can find a pair (17, 1) in the
+            list of prime numbers given, which is (2, 17) or (17, 2), which are listed,
+            but we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+            pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+            Example 3:
+
+            Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+            Output: -1
+
+            Explanation: There is no harmonious pair in the list with a product that
+            is a power of 2.
+
+            '
+          code: "from functools import lru_cache\n\ndef is_prime(n):\n  @lru_cache(maxsize=None)\n\
+            \  def check_prime(num):\n    for i in range(2, int(num**0.5) + 1):\n\
+            \      if num % i == 0:\n        return False\n    return True\n  return\
+            \ check_prime(n)\n\ndef main(primes):\n  for i in range(len(primes)):\n\
+            \    for j in range(i + 1, len(primes)):\n      product = primes[i] *\
+            \ primes[j]\n      if product & (product - 1):\n        return product\n\
+            \  return -1\n\ndef find_product():\n  primes = [i for i in range(2, 1000)\
+            \ if is_prime(i)]\n  return main(primes)\n\nprint(find_product())"
+          programming_language: python3
+          inputs: *id002
+          exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+        parent: *id007
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def is_prime(n):\n  def check_prime(num):\n    for i in range(2,\
+              \ int(num**0.5) + 1):\n      if num % i == 0:\n        return False\n\
+              \    return True\n  return check_prime(n)\n\ndef main(primes):\n  for\
+              \ i in range(len(primes)):\n    for j in range(i + 1, len(primes)):\n\
+              \      product = primes[i] * primes[j]\n      if product & (product\
+              \ - 1):\n        return product\n  return -1\n\ndef find_product():\n\
+              \  primes = []\n  for i in range(2, 1000):\n    is_prime_candidate =\
+              \ True\n    for num in range(2, int(i**0.5) + 1):\n      if i % num\
+              \ == 0:\n        is_prime_candidate = False\n        break\n    if is_prime_candidate:\n\
+              \      primes.append(i)\n  return main(primes)\n\nprint(find_product())"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          operation: !!python/tuple ['"Extract the logic of the nested loops into
+              a separate function, utilizing a decorator to memoize the result of
+              the function, and call this function within the ''main'' function in
+              the ''code'' key', 'Revert the ''main'' function to use the original
+              nested loops, removing the memoization decorator and restoring the original
+              logic"']
+          middle_state:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "from functools import lru_cache\n\ndef is_prime(n):\n  def check_prime(num):\n\
+              \    for i in range(2, int(num**0.5) + 1):\n      if num % i == 0:\n\
+              \        return False\n    return True\n  return check_prime(n)\n\n\
+              @lru_cache(maxsize=None)\ndef check_prime(num):\n  for i in range(2,\
+              \ int(num**0.5) + 1):\n    if num % i == 0:\n      return False\n  return\
+              \ True\n\ndef main(primes):\n  for i in range(len(primes)):\n    for\
+              \ j in range(i + 1, len(primes)):\n      product = primes[i] * primes[j]\n\
+              \      if product & (product - 1):\n        return product\n  return\
+              \ -1\n\ndef find_product():\n  primes = [i for i in range(2, 1000) if\
+              \ check_prime(i)]\n  return main(primes)\n\nprint(find_product())"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          parent: *id008
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def is_prime(n):\n  def check_prime(num):\n    for i in range(2,\
+              \ int(num**0.5) + 1):\n      if num % i == 0:\n        return False\n\
+              \    return True\n  return check_prime(n)\n\ndef main(primes):\n  for\
+              \ i in range(len(primes)):\n    for j in range(i + 1, len(primes)):\n\
+              \      product = primes[i] * primes[j]\n      if product & (product\
+              \ - 1):\n        return product\n  return -1\n\ndef find_product():\n\
+              \  primes = [i for i in range(2, 1000) if is_prime(i)]\n  return main(primes)\n\
+              \nprint(find_product())"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          operation: !!python/tuple ['"Replace the ''if'' statement with a ''try-except''
+              block that catches a specific exception, and utilize a closure to encapsulate
+              the logic of the ''if'' statement, within the ''main'' function in the
+              ''code'' key', 'Revert the ''main'' function to use the original ''if''
+              statement, removing the ''try-except'' block and restoring the original
+              logic"']
+          middle_state:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def is_prime(n):\n  def check_prime(num):\n    for i in range(2,\
+              \ int(num**0.5) + 1):\n      try:\n        if num % i == 0:\n      \
+              \    return False\n      except TypeError:\n        return False\n \
+              \   return True\n  return check_prime(n)\n\ndef main(primes):\n  for\
+              \ i in range(len(primes)):\n    for j in range(i + 1, len(primes)):\n\
+              \      product = primes[i] * primes[j]\n      try:\n        if product\
+              \ & (product - 1):\n          return product\n      except TypeError:\n\
+              \        return -1\n  return -1\n\ndef find_product():\n  primes = [i\
+              \ for i in range(2, 1000) if is_prime(i)]\n  return main(primes)\n\n\
+              print(find_product())"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          parent: *id008
+          children: []
+      - &id009 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+            In the realm of prime numbers, there exists a peculiar phenomenon where
+            two prime numbers, when multiplied together, yield a product that is a
+            power of 2. These prime numbers are known as **harmonious primes**.
+
+
+            You are given a list of prime numbers, and your task is to find the harmonious
+            pair with the smallest product that is a power of 2. If no such pair exists,
+            return -1.
+
+
+            Note that a prime number is a natural number greater than 1 that has no
+            positive divisors other than 1 and itself.
+
+
+            Example 1:
+
+            Input: [2, 3, 5, 7, 11, 13]
+
+            Output: 2
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+            Example 2:
+
+            Input: [2, 3, 5, 7, 11, 13, 17]
+
+            Output: 17
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (17, 1), which is not listed in the input, but we know that 17
+            is a prime number and 1 is not, but we can find a pair (17, 1) in the
+            list of prime numbers given, which is (2, 17) or (17, 2), which are listed,
+            but we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+            pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+            Example 3:
+
+            Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+            Output: -1
+
+            Explanation: There is no harmonious pair in the list with a product that
+            is a power of 2.
+
+            '
+          code: "def is_prime(n):\n  def check_prime(num):\n    for i in range(2,\
+            \ int(num**0.5) + 1):\n      if num % i == 0:\n        return False\n\
+            \    return True\n  return check_prime(n)\n\ndef main(primes):\n  for\
+            \ i in range(len(primes)):\n    for j in range(i + 1, len(primes)):\n\
+            \      product = primes[i] * primes[j]\n      if product & (product -\
+            \ 1):\n        return primes[i] * primes[j]\n  return -1"
+          programming_language: python3
+          inputs: *id002
+          exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+        operation: !!python/tuple ['"Replace the ''if'' statement with a ''try-except''
+            block that catches a specific exception, and utilize a closure to encapsulate
+            the logic of the ''if'' statement, within the ''main'' function in the
+            ''code'' key', 'Revert the ''main'' function to use the original ''if''
+            statement, removing the ''try-except'' block and restoring the original
+            logic"']
+        middle_state:
+          description: '**The Harmonious Confluence of Prime Numbers and Binary Search**
+
+
+            In the realm of prime numbers, there exists a peculiar phenomenon where
+            two prime numbers, when multiplied together, yield a product that is a
+            power of 2. These prime numbers are known as **harmonious primes**.
+
+
+            You are given a list of prime numbers, and your task is to find the harmonious
+            pair with the smallest product that is a power of 2. If no such pair exists,
+            return -1.
+
+
+            Note that a prime number is a natural number greater than 1 that has no
+            positive divisors other than 1 and itself.
+
+
+            Example 1:
+
+            Input: [2, 3, 5, 7, 11, 13]
+
+            Output: 2
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+            Example 2:
+
+            Input: [2, 3, 5, 7, 11, 13, 17]
+
+            Output: 17
+
+            Explanation: The harmonious pair with the smallest product that is a power
+            of 2 is (17, 1), which is not listed in the input, but we know that 17
+            is a prime number and 1 is not, but we can find a pair (17, 1) in the
+            list of prime numbers given, which is (2, 17) or (17, 2), which are listed,
+            but we can see that 2 * 17 = 34 which is not 2^x, so we need to try another
+            pair (2, 2) which is listed, and 2 * 2 = 4 which is 2^2.
+
+
+            Example 3:
+
+            Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+            Output: -1
+
+            Explanation: There is no harmonious pair in the list with a product that
+            is a power of 2.
+
+            '
+          code: "def is_prime(n):\n  def check_prime(num):\n    for i in range(2,\
+            \ int(num**0.5) + 1):\n      try:\n        if num % i == 0:\n        \
+            \  return False\n      except TypeError:\n        return False\n    return\
+            \ True\n  return check_prime(n)\n\ndef main(primes):\n  for i in range(len(primes)):\n\
+            \    for j in range(i + 1, len(primes)):\n      product = primes[i] *\
+            \ primes[j]\n      try:\n        if product & (product - 1):\n       \
+            \   return primes[i] * primes[j]\n      except TypeError:\n        return\
+            \ -1\n  return -1"
+          programming_language: python3
+          inputs: *id002
+          exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+        parent: *id007
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def is_prime(n):\n  def check_prime(num):\n    def is_prime_helper(k):\n\
+              \      if k <= 1:\n        return False\n      for i in range(2, int(k**0.5)\
+              \ + 1):\n        if k % i == 0:\n          return False\n      return\
+              \ True\n    return is_prime_helper(n)\n  return check_prime(n)\n\ndef\
+              \ main(primes):\n  for i in range(len(primes)):\n    for j in range(i\
+              \ + 1, len(primes)):\n      product = primes[i] * primes[j]\n      if\
+              \ product & (product - 1):\n        return primes[i] * primes[j]\n \
+              \ return -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          operation: !!python/tuple ['"Extract the logic of the nested loops into
+              a separate function, utilizing a decorator to memoize the result of
+              the function, and call this function within the ''main'' function in
+              the ''code'' key', 'Revert the ''main'' function to use the original
+              nested loops, removing the memoization decorator and restoring the original
+              logic"']
+          middle_state:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "from functools import lru_cache\n\ndef is_prime(n):\n  def check_prime(num):\n\
+              \    @lru_cache(maxsize=None)\n    def is_prime_helper(k):\n      if\
+              \ k <= 1:\n        return False\n      for i in range(2, int(k**0.5)\
+              \ + 1):\n        if k % i == 0:\n          return False\n      return\
+              \ True\n    return is_prime_helper(n)\n  return check_prime(n)\n\ndef\
+              \ main(primes):\n  @lru_cache(maxsize=None)\n  def is_product_power_of_two(i,\
+              \ j):\n    product = primes[i] * primes[j]\n    if product & (product\
+              \ - 1):\n      return True\n    return False\n  for i in range(len(primes)):\n\
+              \    for j in range(i + 1, len(primes)):\n      if is_product_power_of_two(i,\
+              \ j):\n        return primes[i] * primes[j]\n  return -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          parent: *id009
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def is_prime(n):\n  def check_prime(num):\n    for i in range(2,\
+              \ int(num**0.5) + 1):\n      if num % i == 0:\n        return False\n\
+              \    return True\n  return check_prime(n)\n\ndef main(primes):\n  def\
+              \ find_non_powers_of_two():\n    for i in range(len(primes)):\n    \
+              \  for j in range(i + 1, len(primes)):\n        product = primes[i]\
+              \ * primes[j]\n        if product & (product - 1):\n          return\
+              \ product\n  return find_non_powers_of_two()"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          operation: !!python/tuple ['"Replace the ''if'' statement with a ''try-except''
+              block that catches a specific exception, and utilize a closure to encapsulate
+              the logic of the ''if'' statement, within the ''main'' function in the
+              ''code'' key', 'Revert the ''main'' function to use the original ''if''
+              statement, removing the ''try-except'' block and restoring the original
+              logic"']
+          middle_state:
+            description: '**The Harmonious Confluence of Prime Numbers and Binary
+              Search**
+
+
+              In the realm of prime numbers, there exists a peculiar phenomenon where
+              two prime numbers, when multiplied together, yield a product that is
+              a power of 2. These prime numbers are known as **harmonious primes**.
+
+
+              You are given a list of prime numbers, and your task is to find the
+              harmonious pair with the smallest product that is a power of 2. If no
+              such pair exists, return -1.
+
+
+              Note that a prime number is a natural number greater than 1 that has
+              no positive divisors other than 1 and itself.
+
+
+              Example 1:
+
+              Input: [2, 3, 5, 7, 11, 13]
+
+              Output: 2
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (2, 2), which has a product of 4, which is 2^2.
+
+
+              Example 2:
+
+              Input: [2, 3, 5, 7, 11, 13, 17]
+
+              Output: 17
+
+              Explanation: The harmonious pair with the smallest product that is a
+              power of 2 is (17, 1), which is not listed in the input, but we know
+              that 17 is a prime number and 1 is not, but we can find a pair (17,
+              1) in the list of prime numbers given, which is (2, 17) or (17, 2),
+              which are listed, but we can see that 2 * 17 = 34 which is not 2^x,
+              so we need to try another pair (2, 2) which is listed, and 2 * 2 = 4
+              which is 2^2.
+
+
+              Example 3:
+
+              Input: [2, 3, 5, 7, 11, 13, 17, 19]
+
+              Output: -1
+
+              Explanation: There is no harmonious pair in the list with a product
+              that is a power of 2.
+
+              '
+            code: "def is_prime(n):\n  def check_prime(num):\n    try:\n      for\
+              \ i in range(2, int(num**0.5) + 1):\n        if num % i == 0:\n    \
+              \      raise ValueError(\"Not a prime number\")\n      return True\n\
+              \    except ValueError as e:\n      return False\n  return check_prime(n)\n\
+              \ndef main(primes):\n  def find_non_powers_of_two():\n    for i in range(len(primes)):\n\
+              \      for j in range(i + 1, len(primes)):\n        product = primes[i]\
+              \ * primes[j]\n        try:\n          if product & (product - 1):\n\
+              \            return product\n        except TypeError:\n          return\
+              \ -1\n  return find_non_powers_of_two()"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+          parent: *id009
+          children: []

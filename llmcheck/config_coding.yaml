@@ -22,6 +22,9 @@
 # Here is the vllm new token limit:
 llm_max_new_tokens: 4096
 
+# Here is max retry limit for tree building
+retry_max: 16
+
 # Here is a vllm setup:
 evaluator:
   # model_name: "hosted_vllm/meta-llama/Llama-3.1-8B-Instruct"
@@ -76,7 +79,7 @@ n_operations: 2
 # constraint to generate root using evalutor model.
 constraints: |
   Write a LeetCode-Hard style problem. The problem must be super hard, that even
-  a graduate student in computer science will struggle to solve it. 
+  a graduate student in computer science will struggle to solve it.
   Do not attempt to generate long, nested dicts. But it will require a very long
   and complicated solution. The execution time should be very short.
   However, it does not need to be super long. It can be shorter, but it must be really hard.
@@ -86,7 +89,7 @@ constraints: |
   keys and values:
   - "description": a brief description of the question. It should be
                   a string. As all LeetCode problems do, it should have
-                  a title, a description, example inputs and outputs, 
+                  a title, a description, example inputs and outputs,
                   just like what you see in the LeetCode website.
                   It is a string. Write it in markdown format.
   - "code": the code that is the solution to the problem. It should be
@@ -99,8 +102,8 @@ constraints: |
                             In this case, it should be "python3".
                             It is a string.
   - "inputs": the inputs that tests its functionality. It is a list of
-              dictionaries for the kwargs of the function, the test case 
-              for evaluating an solution, which will put into the "main" function 
+              dictionaries for the kwargs of the function, the test case
+              for evaluating an solution, which will put into the "main" function
               to obtain the output. You will need 20 test cases. The keys
               should be parameters of the "main" function, not "args".or "kwargs"!
               If your "main" is "def main(a, b, c):", then the keys should be
@@ -122,7 +125,7 @@ constraints: |
 
   Please start right away without any explanation. Please DO NOT put it in a code block.
   Please follow all the instructions or it will crash.
-  You must have a "main" function in the code, or it will crash. 
+  You must have a "main" function in the code, or it will crash.
 prompt_template: |
   Generate {n_operations} pairs of transform-reverse operations for testing language model consistency.
   Please make sure that these operations should be fit to perform on the root code: "{root_code}".
@@ -139,7 +142,7 @@ prompt_template: |
   Please make sure in the operation to highlight that the transformation is evaluatee to the \"main\" function in the \"code\" key of the JSON text.
   PLEASE generate EXTREMELY HARD TRANSFORMATIONS that weaker LLMs will struggle with! That is, harder than the examples given above.
   These transformations may struggle and break the edge cases or main functionality.
-  
+
 operation_code_format_enforce_prompt: |
   For the sake of parsing, please enclose your code within a code block,
   e.g. f"```{programming_language}\n{code}\n```". Please make sure that the code is valid.

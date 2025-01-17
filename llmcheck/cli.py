@@ -1,6 +1,5 @@
 import argparse
 from datetime import datetime
-from pprint import pprint
 
 import yaml
 
@@ -45,6 +44,7 @@ def cli() -> None:
         n_operations=config.get("n_operations"),
         operation_code_format_enforce_prompt=config.get("operation_code_format_enforce_prompt"),
         llm_max_new_tokens=config.get("llm_max_new_tokens"),
+        retry_max=config.get("retry_max"),
     )
 
     # Run evaluation
@@ -57,7 +57,9 @@ def cli() -> None:
     )
 
     print("Results:")
-    pprint(results["metrics"])
+    for key in results["metrics"]:
+        if "AVG" in key:
+            print(f"    {key}: {results['metrics'][key]}")
 
     # Save results to YAML file
     with open(args.result, "w") as file:

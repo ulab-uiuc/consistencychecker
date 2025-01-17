@@ -23,9 +23,12 @@ class LLMCheck:
                  max_depth: int,
                  n_operations: int,
                  operation_code_format_enforce_prompt: str,
-                 llm_max_new_tokens: int) -> None:
+                 llm_max_new_tokens: int,
+                 retry_max: int = 16) -> None:
         if not llm_max_new_tokens:
             raise ValueError("llm_max_new_tokens must be set.")
+        if not retry_max:
+            raise ValueError("retry_max must be set.")
         self.evaluator_model = evaluator_model
         self.evaluatee_model = evaluatee_model
         self.max_depth = max_depth
@@ -40,6 +43,7 @@ class LLMCheck:
         self.similarity_metric = SimilarityFactory.create_metric(similarity_config)
         self.operation_code_format_enforce_prompt = operation_code_format_enforce_prompt
         self.llm_max_new_tokens = llm_max_new_tokens
+        self.retry_max = retry_max
 
     def generate_root_content(self, constraints: str) -> Dict[str, Any]:
         response = litellm.completion(
@@ -56,8 +60,9 @@ class LLMCheck:
     def evaluate(self, constraints: str, prompt_template: str, distance: List[int], root: Dict[str, Any], operations: List[Tuple[str, str]]) -> Dict[str, Any]:
         # test rood node
         retry: int = 0
-        retry_max: int = 16
+        retry_max: int = self.retry_max
         state: str = ''
+        print("[INFO] It is normal for errors and retries to occur when using LLM-generated YAML content and programs.")
         while retry <= retry_max:
             # if build vf and exec failed, make a new root
             try:
