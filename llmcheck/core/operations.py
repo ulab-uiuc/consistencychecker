@@ -4,13 +4,19 @@ import litellm
 
 
 class OperationGenerator:
-    def __init__(self, evaluator_model: str):
+    def __init__(self, evaluator_model: str, evaluator_model_api_base: str, evaluator_model_temperature: float, llm_max_new_tokens: int):
         self.model = evaluator_model
+        self.api_base = evaluator_model_api_base
+        self.temperature = evaluator_model_temperature
+        self.llm_max_new_tokens = llm_max_new_tokens
 
     def generate_operations(self, prompt: str, n_operations: int) -> List[Tuple[str, str]]:
         response = litellm.completion(
             model=self.model,
-            messages=[{"role": "user", "content": prompt}]
+            messages=[{"role": "user", "content": prompt}],
+            api_base=self.api_base,
+            temperature=self.temperature,
+            max_tokens=self.llm_max_new_tokens
         )
 
         operations = []
@@ -22,4 +28,5 @@ class OperationGenerator:
             operations.append((transform.strip(), reverse.strip()))
         if len(operations) < n_operations:
             raise ValueError(f"Could not generate {n_operations} operations. Only {len(operations)} operations were generated.")
-        return operations
+
+        return operations[:n_operations]

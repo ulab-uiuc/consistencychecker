@@ -8,8 +8,8 @@ from llmcheck.metrics.base import BaseSimilarityMetric
 
 class APIBasedSimilarity(BaseSimilarityMetric):
     def __init__(self,
-                 model: str = "text-embedding-ada-002",
-                 api_base: str = ""):
+                 model: str,
+                 api_base: str):
         self.model = model
         if api_base:
             print(f"[INFO] Overriding API embedding model with set value: {model}")
