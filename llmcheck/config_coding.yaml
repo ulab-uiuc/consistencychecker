@@ -25,17 +25,23 @@ llm_max_new_tokens: 4096
 # Here is a vllm setup:
 evaluator:
   # model_name: "hosted_vllm/meta-llama/Llama-3.1-8B-Instruct"
-  model_name: "ollama_chat/llama3.1:8b-instruct-fp16"
+  # model_name: "ollama_chat/llama3.1:8b-instruct-fp16"
   # model_name: "openai/gpt-4o-mini"
+  model_name: "fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct"
   # api_base: "http://localhost:8000/v1"
-  api_base: "http://localhost:11434"
+  # api_base: "http://localhost:11434"
   # api_base: "https://api.openai.com/v1"
+  api_base: "https://api.fireworks.ai/inference/v1"
   temperature: 0.6
 evaluatee:
   # model_name: "hosted_vllm/meta-llama/Llama-3.1-8B-Instruct"
-  model_name: "ollama_chat/llama3.1:8b-instruct-fp16"
+  # model_name: "ollama_chat/llama3.1:8b-instruct-fp16"
+  # model_name: "openai/gpt-4o-mini"
+  model_name: "fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct"
   # api_base: "http://localhost:8000/v1"
-  api_base: "http://localhost:11434"
+  # api_base: "http://localhost:11434"
+  # api_base: "https://api.openai.com/v1"
+  api_base: "https://api.fireworks.ai/inference/v1"
   temperature: 0.6
 
 # Embedding Model Configurations
@@ -52,7 +58,7 @@ similarity_config:
 
 # Experiment Configurations
 ## max depth of the self-consistency tree
-max_depth: 2
+max_depth: 3
 ## number of operations to be applied to the input.
 # if you provide more operations than this number, the evaluator will only consider the first n operations.
 n_operations: 2
@@ -69,16 +75,11 @@ n_operations: 2
 
 # constraint to generate root using evalutor model.
 constraints: |
-  Write a LeetCode-Hard style problem. The problem must be super hard, and very novel 
-  in concept and implementation. It should not be previously seen in any LeetCode problem.
-  The answer need to have 100-120 lines.  
-  Concepts the problem must include:
-  - Algorithmic Techniques: Require techniques such as dynamic programming (DP), backtracking, divide-and-conquer, or graph algorithms (e.g., shortest paths, flow networks).
-  - Concurrency and Asynchronous Computation: Introduce elements like multithreading, asynchronous I/O, or task scheduling.
-  - Mathematical Foundations: Leverage number theory (e.g., modular arithmetic, prime factorization), geometry (e.g., computational geometry), or probability/statistics.
-  - Recursive and Functional Programming: Include deep recursion, memoization, or higher-order functions.
-  - Edge Case Robustness: Test the solver’s ability to handle extreme edge cases, such as large inputs, high levels of recursion, or adversarial inputs designed to break naive solutions.
-
+  Write a LeetCode-Hard style problem. The problem must be super hard, that even
+  a graduate student in computer science will struggle to solve it. 
+  Do not attempt to generate long, nested dicts. But it will require a very long
+  and complicated solution. The execution time should be very short.
+  However, it does not need to be super long. It can be shorter, but it must be really hard.
   Please do this in a function way, e.g. provide a function called "main"
   that returns the intended answer.
   You will have to provide this in YAML format, comprising of multiple
@@ -103,8 +104,8 @@ constraints: |
               to obtain the output. You will need 20 test cases. The keys
               should be parameters of the "main" function, not "args".or "kwargs"!
               If your "main" is "def main(a, b, c):", then the keys should be
-              "a", "b", "c". It should consist of edge cases only that are super 
-              easy to fail.
+              "a", "b", "c". It should contain a lot of edge cases, but only
+              require short time to execute.
   Please use the "|" to write multi line strings:
   description: |
     ...
@@ -122,48 +123,22 @@ constraints: |
   Please start right away without any explanation. Please DO NOT put it in a code block.
   Please follow all the instructions or it will crash.
   You must have a "main" function in the code, or it will crash. 
-  Use correct identation or it will crash.
-  In "inputs" do not use [1] * 100 to write a list; use [1, 1, 1, 1, 1, 1, 1, 1, 1, 1] instead (e.g. write out each element).
 prompt_template: |
-  Generate {n_operations} pairs of **extremely difficult transform-reverse operations** for testing language model consistency.
-  Ensure that these operations are applicable to the **main function** in the `code` key of the root code: "{root_code}".
-  Each operation must significantly alter the implementation while preserving its functionality, and the reverse operation must restore the code to its original form. These transformations must test the model's ability to handle complex, nuanced changes and edge cases, **without relying on external libraries beyond Python's standard library**.
-
+  Generate {n_operations} pairs of transform-reverse operations for testing language model consistency.
+  Please make sure that these operations should be fit to perform on the root code: "{root_code}".
+  Each operation should modify the text and its reverse should restore it.
   Format each line as: "transform operation | reverse operation"
-
-  **Examples**:
-  - "Transform the recursion in the `main` function into an iterative approach using an explicit stack and state-tracking mechanisms | Revert the iterative implementation back to the original recursive logic."
-  - "Refactor the `main` function to handle computations via generators and lazy evaluation, minimizing memory usage for large datasets | Replace generators and lazy evaluation with direct, eager computation for simplicity."
-  - "Replace the nested loops in the `main` function with a divide-and-conquer strategy, ensuring equivalent results | Revert the divide-and-conquer approach back to nested loops."
-  - "Change the data structure used in the `main` function from a list to a dictionary with key-based lookups for optimization | Revert the dictionary back to a list while ensuring functionality remains intact."
-
-  **Instructions**:
-  1. Transformations must introduce **conceptual and implementation challenges**, such as:
-     - Switching between algorithmic paradigms (e.g., recursion ↔ iteration, greedy ↔ divide-and-conquer).
-     - Leveraging advanced concepts in Python's standard library (e.g., `collections`, `itertools`, `heapq`, `functools`).
-     - Rewriting code to handle edge cases explicitly or implicitly.
-     - Changing data structures or introducing intermediate transformations.
-     - Refactoring functions into alternative logic flows or modular components.
-  2. Each operation must test the model's ability to:
-     - Handle drastic code transformations without losing correctness.
-     - Preserve edge case functionality and maintain logical equivalence.
-     - Implement and reverse non-trivial changes reliably.
-  3. Avoid trivial or superficial operations, such as changes to formatting, comments, or variable names.
-
-  **Examples of Hard Transformations**:
-  - "Convert all iterations in the `main` function into functional programming constructs using `map`, `filter`, and `reduce` | Revert functional constructs back to explicit loops for clarity."
-  - "Refactor the `main` function to perform all data processing using priority queues implemented with `heapq` | Revert the priority queue-based implementation back to simpler structures like lists or dictionaries."
-  - "Replace any use of global state in the `main` function with explicitly passed parameters, ensuring the function is entirely stateless | Reintroduce the global state back into the function for simplicity."
-  - "Introduce memoization using Python's `functools.lru_cache` decorator to optimize recursive calls in the `main` function | Remove the memoization and revert to the original implementation without caching."
-  - "Implement the logic in the `main` function using state machines, explicitly modeling transitions for key operations | Revert the state machine representation back to direct control structures like loops and conditionals."
-
-  **Output Format**:
-  ```yaml
-  operations:
-    - "transform operation | reverse operation"
-    - "transform operation | reverse operation"
-    ...
-
+  Example: "split the 'main' function into multiple mini-functions, each only storing partial logic, with cryptic variable names that hide true purpose | merge all mini-functions back into one coherent 'main' function, restoring original descriptive variable names"
+  Example: "Utilize advanced concurrent data pipelines within the 'main' function in the 'code' key, splitting tasks via multiprocessing and merging results seamlessly | consolidate all concurrent pipelines back into a single, sequential 'main' function while preserving the original logic"
+  Example: "Replace standard control structures within the 'main' function in the 'code' key with complex generators and coroutines that lazily evaluate large datasets | revert the 'main' function to use basic loops and direct evaluations, ensuring behavior stays identical"
+  As we all know, there are many ways to transform a piece of code, preserving its functionality, while implementing the same logic in a different way.
+  Your operations should be based on what the root code is like, and have transformations that asks the code to be implemented in a different, but valid and equivalent way.
+  It is a piece of LeetCode-Hard style problem, but you will not access the description, inputs, and outputs. You will only access the code, which is in `python3` language.
+  Please try out what I have suggested above and then come up with your own ideas. Please avoid overly simple operations like "add a period | remove a period" or "capitalize the first letter | lowercase the first letter".
+  Please start each line without '- ', '1. ', 'a. ', 'i. ', etc. Keep it simple and clear. Just the operation and its reverse.
+  Please make sure in the operation to highlight that the transformation is evaluatee to the \"main\" function in the \"code\" key of the JSON text.
+  PLEASE generate EXTREMELY HARD TRANSFORMATIONS that weaker LLMs will struggle with! That is, harder than the examples given above.
+  These transformations may struggle and break the edge cases or main functionality.
   
 operation_code_format_enforce_prompt: |
   For the sake of parsing, please enclose your code within a code block,

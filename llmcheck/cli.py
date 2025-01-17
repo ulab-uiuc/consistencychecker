@@ -1,5 +1,6 @@
 import argparse
 from datetime import datetime
+from pprint import pprint
 
 import yaml
 
@@ -54,6 +55,9 @@ def cli() -> None:
         operations=[tuple(op) for op in operations],
         distance=distance
     )
+
+    print("Results:")
+    pprint(results["metrics"])
 
     # Save results to YAML file
     with open(args.result, "w") as file:

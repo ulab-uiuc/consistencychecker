@@ -54,37 +54,44 @@ class LLMCheck:
         return response_dict
 
     def evaluate(self, constraints: str, prompt_template: str, distance: List[int], root: Dict[str, Any], operations: List[Tuple[str, str]]) -> Dict[str, Any]:
-        if root:
-            root_content = root
-            print(f"[INFO] Overriding root content with set value: {root_content}")
-        else:
-            # test rood node
-            retry: int = 0
-            retry_max: int = 16
-            while retry <= retry_max:
-                # if build vf and exec failed, make a new root
-                try:
+        # test rood node
+        retry: int = 0
+        retry_max: int = 16
+        state: str = ''
+        while retry <= retry_max:
+            # if build vf and exec failed, make a new root
+            try:
+                if root:
+                    root_content = root
+                    print(f"[INFO] Overriding root content with set value: {root_content}")
+                else:
                     root_content = self.generate_root_content(constraints)
-                    root_vf: VerifiableFunction = VerifiableFunction(**root_content)
-                    root_vf.exec(catch=False)
-                    tree = EvaluationTree(root_content)
-                    break
-                except Exception as e:
-                    print(f"[ERROR] Root node failed: {e}")
-                    print(f"[INFO] Retry {retry + 1}/{retry_max}")
-                    retry += 1
+                state = 'Root node generated'
+                root_vf: VerifiableFunction = VerifiableFunction(**root_content)
+                state = 'Root node verified'
+                root_vf.exec(catch=False)
+                state = 'Root node executable'
+                tree = EvaluationTree(root_content)
+                state = 'Root node yaml valid'
 
-        tree = EvaluationTree(root_content)        
+                if len(operations) >= self.n_operations:
+                    operations = operations[:self.n_operations]
+                    print(f"[INFO] Overriding operations with set value: {operations}")
+                else:
+                    root_code = root_content["code"]
+                    prompt = prompt_template.format(n_operations=self.n_operations, root_code=root_code) ######
+                    operations = self.op_generator.generate_operations(prompt, self.n_operations)
+                state = 'Operations generated'
+                self._build_tree(tree.root, operations, 0)
+                state = 'Tree built'
+                break
 
-        if len(operations) >= self.n_operations:
-            operations = operations[:self.n_operations]
-            print(f"[INFO] Overriding operations with set value: {operations}")
-        else:
-            root_code = root_content["code"]
-            prompt = prompt_template.format(n_operations=self.n_operations, root_code=root_code) ######
-            operations = self.op_generator.generate_operations(prompt, self.n_operations)
+            except Exception as e:
+                print(f"[DEBUG] Goes as far as: {state}")
+                print(f"[ERROR] {e}")
+                print(f"[INFO] Retry {retry + 1}/{retry_max}")
+                retry += 1
 
-        self._build_tree(tree.root, operations, 0)
 
         metrics = self._calculate_metrics(tree, distance)
 
@@ -135,7 +142,7 @@ class LLMCheck:
                     middle_state_dict_updated["code"] = middle_state_code_content
                     middle_state_dict_updated["programming_language"] = middle_state_code_programming_language
                     middle_state_vf: VerifiableFunction = VerifiableFunction(**middle_state_dict_updated)
-                    middle_state_dict_updated["exec_results"] = middle_state_vf.exec()
+                    middle_state_dict_updated["exec_results"] = middle_state_vf.exec(catch=True)
                     middle_state = middle_state_dict_updated
                     # Apply reverse to get final state
                     final_state_code = self._apply_operation(middle_state_code, reverse, self.operation_code_format_enforce_prompt)
@@ -146,7 +153,7 @@ class LLMCheck:
                     final_state_dict_updated["code"] = final_state_code_content
                     final_state_dict_updated["programming_language"] = final_state_code_programming_language
                     final_state_vf: VerifiableFunction = VerifiableFunction(**final_state_dict_updated)
-                    final_state_dict_updated["exec_results"] = final_state_vf.exec()
+                    final_state_dict_updated["exec_results"] = final_state_vf.exec(catch=True)
                     final_state = final_state_dict_updated
                     child = current_node.add_child(
                         content=final_state,

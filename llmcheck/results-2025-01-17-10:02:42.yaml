@@ -1,0 +1,1000 @@
+evaluator_model: {model: fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct,
+  temperature: 0.6, api_base: 'https://api.fireworks.ai/inference/v1'}
+evaluatee_model: {model: fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct,
+  temperature: 0.6, api_base: 'https://api.fireworks.ai/inference/v1'}
+root_content: &id001
+  description: "# 3D Matrix Search\nYou are given a 3D matrix of integers and a target\
+    \ number. The matrix is a 3D array of size $n \\times m \\times p$ where each\
+    \ element is an integer. The target number is also an integer. Your task is to\
+    \ find the first occurrence of the target number in the matrix.\nYou can traverse\
+    \ the matrix in any order you want, but you must start from the top-left-front\
+    \ corner of the matrix and move right, then down, then back, and so on. You can\
+    \ only move in these four directions. If the target number is not in the matrix,\
+    \ return -1.\nFor example, if the matrix is like this:\n\n```\n[\n  [\n    [1,\
+    \ 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13,\
+    \ 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\nAnd the target number is 14, your\
+    \ function should return the coordinates of the first occurrence of 14 in the\
+    \ matrix, which is (1, 1, 1).\n\nBut if the target number is not in the matrix,\
+    \ your function should return -1.\n\nYou should assume that the matrix is not\
+    \ empty and all the elements in the matrix are unique.\n"
+  code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0][0]), len(matrix[0])\n\
+    \  visited = set()\n  stack = [(0, 0, 0)]\n  while stack:\n    x, y, z = stack.pop()\n\
+    \    if x < 0 or y < 0 or z < 0 or x >= n or y >= m or z >= p or (x, y, z) in\
+    \ visited:\n      continue\n    visited.add((x, y, z))\n    if matrix[x][y][z]\
+    \ == target:\n      return (x, y, z)\n    stack.append((x + 1, y, z))\n    stack.append((x,\
+    \ y + 1, z))\n    stack.append((x, y, z + 1))\n  return -1\n"
+  programming_language: python3
+  inputs: &id002
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 5}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 10}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 14}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 18}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 20}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 25}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 30}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 35}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 40}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 45}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 50}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 55}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 60}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 65}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 70}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 75}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 80}
+  - {matrix: '[[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]', target: 85}
+  exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+    -1]
+operations:
+- !!python/tuple [Transform operation, Reverse operation]
+- !!python/tuple ['Replace the while loop with a recursive function to traverse the
+    matrix, with the base case being when the stack is empty, and the recursive case
+    being when the current position is within bounds and not visited', 'Convert the
+    recursive function back to a while loop, using a stack to keep track of positions
+    to visit']
+metrics:
+  L-1 AVG: 0.9489543945895745
+  L-1: [0.9999999999999999, 0.9999999999999999, 0.7761370263150491, 0.9999999999999999,
+    0.9999999999999999, 0.8796324398255632, 1.0, 1.0, 0.7499617862952823, 0.8796324398255632,
+    0.9999999999999999, 0.999997831992583, 1.0, 1.0]
+  L-2 AVG: 0.8830824386229436
+  L-2: [0.7761370263150491, 0.9999999999999999, 0.9999999999999999, 0.8796324398255632,
+    0.7761370263150491, 0.7762236652476892, 0.7499617862952823, 0.8796324398255632,
+    0.9999999999999999, 0.9999999999999999, 0.8796324398255632, 0.8796324398255632]
+  L-3 AVG: 0.8676416448002587
+  L-3: [0.7761370263150491, 0.7761370263150491, 0.7499617862952823, 0.8796324398255632,
+    0.9999999999999999, 0.9999999999999999, 0.8796324398255632, 0.8796324398255632]
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id003 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id004 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "# 3D Matrix Search\nYou are given a 3D matrix of integers and\
+          \ a target number. The matrix is a 3D array of size $n \\times m \\times\
+          \ p$ where each element is an integer. The target number is also an integer.\
+          \ Your task is to find the first occurrence of the target number in the\
+          \ matrix.\nYou can traverse the matrix in any order you want, but you must\
+          \ start from the top-left-front corner of the matrix and move right, then\
+          \ down, then back, and so on. You can only move in these four directions.\
+          \ If the target number is not in the matrix, return -1.\nFor example, if\
+          \ the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n\
+          \    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13, 14, 15],\n    [16,\
+          \ 17, 18]\n  ]\n]\n```\n\nAnd the target number is 14, your function should\
+          \ return the coordinates of the first occurrence of 14 in the matrix, which\
+          \ is (1, 1, 1).\n\nBut if the target number is not in the matrix, your function\
+          \ should return -1.\n\nYou should assume that the matrix is not empty and\
+          \ all the elements in the matrix are unique.\n"
+        code: "def main(target, matrix):\n  p, m, n = len(matrix[0][0]), len(matrix[0]),\
+          \ len(matrix)\n  visited = set()\n  stack = [(0, 0, 0)]\n  while stack:\n\
+          \    z, y, x = stack.pop()\n    if z < 0 or x < 0 or y < 0 or z >= p or\
+          \ y >= m or x >= n or (z, y, x) in visited:\n      continue\n    visited.add((z,\
+          \ y, x))\n    if matrix[x][y][z] == target:\n      return (x, y, z)\n  \
+          \  stack.append((z + 1, y, x))\n    stack.append((z, y + 1, x))\n    stack.append((z,\
+          \ y, x + 1))\n  return -1"
+        programming_language: python
+        inputs: *id002
+        exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+          -1, -1, -1]
+      operation: !!python/tuple [Transform operation, Reverse operation]
+      middle_state:
+        description: "# 3D Matrix Search\nYou are given a 3D matrix of integers and\
+          \ a target number. The matrix is a 3D array of size $n \\times m \\times\
+          \ p$ where each element is an integer. The target number is also an integer.\
+          \ Your task is to find the first occurrence of the target number in the\
+          \ matrix.\nYou can traverse the matrix in any order you want, but you must\
+          \ start from the top-left-front corner of the matrix and move right, then\
+          \ down, then back, and so on. You can only move in these four directions.\
+          \ If the target number is not in the matrix, return -1.\nFor example, if\
+          \ the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n\
+          \    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13, 14, 15],\n    [16,\
+          \ 17, 18]\n  ]\n]\n```\n\nAnd the target number is 14, your function should\
+          \ return the coordinates of the first occurrence of 14 in the matrix, which\
+          \ is (1, 1, 1).\n\nBut if the target number is not in the matrix, your function\
+          \ should return -1.\n\nYou should assume that the matrix is not empty and\
+          \ all the elements in the matrix are unique.\n"
+        code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0][0]),\
+          \ len(matrix[0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while stack:\n\
+          \    x, y, z = stack.pop()\n    if x < 0 or y < 0 or z < 0 or x >= n or\
+          \ y >= m or z >= p or (x, y, z) in visited:\n      continue\n    visited.add((x,\
+          \ y, z))\n    if matrix[x][y][z] == target:\n      return (x, y, z)\n  \
+          \  stack.append((x + 1, y, z))\n    stack.append((x, y + 1, z))\n    stack.append((x,\
+          \ y, z + 1))\n  return -1"
+        programming_language: python
+        inputs: *id002
+        exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+          -1, -1, -1]
+      parent: *id003
+      children:
+      - &id005 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+            \ and a target number. The matrix is a 3D array of size $n \\times m \\\
+            times p$ where each element is an integer. The target number is also an\
+            \ integer. Your task is to find the first occurrence of the target number\
+            \ in the matrix.\nYou can traverse the matrix in any order you want, but\
+            \ you must start from the top-left-front corner of the matrix and move\
+            \ right, then down, then back, and so on. You can only move in these four\
+            \ directions. If the target number is not in the matrix, return -1.\n\
+            For example, if the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n\
+            \    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13,\
+            \ 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\nAnd the target number is\
+            \ 14, your function should return the coordinates of the first occurrence\
+            \ of 14 in the matrix, which is (1, 1, 1).\n\nBut if the target number\
+            \ is not in the matrix, your function should return -1.\n\nYou should\
+            \ assume that the matrix is not empty and all the elements in the matrix\
+            \ are unique.\n"
+          code: "def main(target, matrix):\n  n, m, p = len(matrix[0]), len(matrix),\
+            \ len(matrix[0][0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+            \ stack:\n    x, y, z = stack.pop()\n    if z < 0 or x < 0 or y < 0 or\
+            \ z >= p or y >= m or x >= n or (x, y, z) in visited:\n      continue\n\
+            \    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n     \
+            \ return (x, y, z)\n    stack.append((x, y, z + 1))\n    stack.append((x,\
+            \ y + 1, z))\n    stack.append((x + 1, y, z))\n  return -1"
+          programming_language: python
+          inputs: *id002
+          exec_results: ['Error: string index out of range', 'Error: string index
+              out of range', 'Error: string index out of range', 'Error: string index
+              out of range', 'Error: string index out of range', 'Error: string index
+              out of range', 'Error: string index out of range', 'Error: string index
+              out of range', 'Error: string index out of range', 'Error: string index
+              out of range', 'Error: string index out of range', 'Error: string index
+              out of range', 'Error: string index out of range', 'Error: string index
+              out of range', 'Error: string index out of range', 'Error: string index
+              out of range', 'Error: string index out of range', 'Error: string index
+              out of range']
+        operation: !!python/tuple [Transform operation, Reverse operation]
+        middle_state:
+          description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+            \ and a target number. The matrix is a 3D array of size $n \\times m \\\
+            times p$ where each element is an integer. The target number is also an\
+            \ integer. Your task is to find the first occurrence of the target number\
+            \ in the matrix.\nYou can traverse the matrix in any order you want, but\
+            \ you must start from the top-left-front corner of the matrix and move\
+            \ right, then down, then back, and so on. You can only move in these four\
+            \ directions. If the target number is not in the matrix, return -1.\n\
+            For example, if the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n\
+            \    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13,\
+            \ 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\nAnd the target number is\
+            \ 14, your function should return the coordinates of the first occurrence\
+            \ of 14 in the matrix, which is (1, 1, 1).\n\nBut if the target number\
+            \ is not in the matrix, your function should return -1.\n\nYou should\
+            \ assume that the matrix is not empty and all the elements in the matrix\
+            \ are unique.\n"
+          code: "def main(target, matrix):\n  p, m, n = len(matrix[0][0]), len(matrix[0]),\
+            \ len(matrix)\n  visited = set()\n  stack = [(0, 0, 0)]\n  while stack:\n\
+            \    z, y, x = stack.pop()\n    if z < 0 or x < 0 or y < 0 or z >= p or\
+            \ y >= m or x >= n or (z, y, x) in visited:\n      continue\n    visited.add((z,\
+            \ y, x))\n    if matrix[x][y][z] == target:\n      return (x, y, z)\n\
+            \    stack.append((z + 1, y, x))\n    stack.append((z, y + 1, x))\n  \
+            \  stack.append((z, y, x + 1))\n  return -1"
+          programming_language: python
+          inputs: *id002
+          exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1]
+        parent: *id004
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(target, matrix):\n  n, m, p = len(matrix[0]), len(matrix),\
+              \ len(matrix[0][0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+              \ stack:\n    x, y, z = stack.pop(0)\n    if (x, y, z) in visited or\
+              \ x < 0 or y < 0 or z < 0 or y >= m or x >= n or z >= p:\n      continue\n\
+              \    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n   \
+              \   return (x, y, z)\n    stack.append((x + 1, y, z))\n    stack.append((x,\
+              \ y + 1, z))\n    stack.append((x, y, z + 1))\n  return -1"
+            programming_language: python
+            inputs: *id002
+            exec_results: ['Error: string index out of range', 'Error: string index
+                out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range']
+          operation: !!python/tuple [Transform operation, Reverse operation]
+          middle_state:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(target, matrix):\n  n, m, p = len(matrix[0]), len(matrix),\
+              \ len(matrix[0][0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+              \ stack:\n    x, y, z = stack.pop(0)\n    if z < 0 or x < 0 or y < 0\
+              \ or z >= p or y >= m or x >= n or (x, y, z) in visited:\n      continue\n\
+              \    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n   \
+              \   return (x, y, z)\n    stack.append((x, y, z + 1))\n    stack.append((x,\
+              \ y + 1, z))\n    stack.append((x + 1, y, z))\n  return -1"
+            programming_language: python
+            inputs: *id002
+            exec_results: ['Error: string index out of range', 'Error: string index
+                out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range']
+          parent: *id005
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(target, matrix):\n  n, m, p = len(matrix[0]), len(matrix),\
+              \ len(matrix[0][0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+              \ stack:\n    x, y, z = stack.pop()\n    if z < 0 or x < 0 or y < 0\
+              \ or z >= p or y >= m or x >= n or (x, y, z) in visited:\n      continue\n\
+              \    if (x, y, z) in visited:\n      continue\n    visited.add((x, y,\
+              \ z))\n    if matrix[x][y][z] == target:\n      return (x, y, z)\n \
+              \   stack.append((x, y, z + 1))\n    stack.append((x, y + 1, z))\n \
+              \   stack.append((x + 1, y, z))\n  return None"
+            programming_language: python
+            inputs: *id002
+            exec_results: ['Error: string index out of range', 'Error: string index
+                out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range', 'Error: string index out of range', 'Error: string
+                index out of range']
+          operation: !!python/tuple ['Replace the while loop with a recursive function
+              to traverse the matrix, with the base case being when the stack is empty,
+              and the recursive case being when the current position is within bounds
+              and not visited', 'Convert the recursive function back to a while loop,
+              using a stack to keep track of positions to visit']
+          middle_state:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(target, matrix):\n  n, m, p = len(matrix[0]), len(matrix),\
+              \ len(matrix[0][0])\n  visited = set()\n  def dfs(x, y, z):\n    if\
+              \ z < 0 or x < 0 or y < 0 or z >= p or y >= m or x >= n or (x, y, z)\
+              \ in visited:\n      return -1\n    if (x, y, z) in visited:\n     \
+              \ return -1\n    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n\
+              \      return (x, y, z)\n    return dfs(x, y, z + 1) or dfs(x, y + 1,\
+              \ z) or dfs(x + 1, y, z)\n  return dfs(0, 0, 0)"
+            programming_language: python
+            inputs: *id002
+            exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+              -1, -1, -1, -1]
+          parent: *id005
+          children: []
+      - &id006 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+            \ and a target number. The matrix is a 3D array of size $n \\times m \\\
+            times p$ where each element is an integer. The target number is also an\
+            \ integer. Your task is to find the first occurrence of the target number\
+            \ in the matrix.\nYou can traverse the matrix in any order you want, but\
+            \ you must start from the top-left-front corner of the matrix and move\
+            \ right, then down, then back, and so on. You can only move in these four\
+            \ directions. If the target number is not in the matrix, return -1.\n\
+            For example, if the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n\
+            \    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13,\
+            \ 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\nAnd the target number is\
+            \ 14, your function should return the coordinates of the first occurrence\
+            \ of 14 in the matrix, which is (1, 1, 1).\n\nBut if the target number\
+            \ is not in the matrix, your function should return -1.\n\nYou should\
+            \ assume that the matrix is not empty and all the elements in the matrix\
+            \ are unique.\n"
+          code: "def main(target, matrix):\n  p, m, n = len(matrix[0][0]), len(matrix[0]),\
+            \ len(matrix)\n  visited = set()\n  stack = [(0, 0, 0)]\n  while stack:\n\
+            \    z, y, x = stack.pop()\n    if z < 0 or x < 0 or y < 0 or z >= p or\
+            \ y >= m or x >= n or (z, y, x) in visited:\n      continue\n    visited.add((z,\
+            \ y, x))\n    if matrix[x][y][z] == target:\n      return (x, y, z)\n\
+            \    stack.append((z + 1, y, x))\n    stack.append((z, y + 1, x))\n  \
+            \  stack.append((z, y, x + 1))\n  return -1"
+          programming_language: python
+          inputs: *id002
+          exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1]
+        operation: !!python/tuple ['Replace the while loop with a recursive function
+            to traverse the matrix, with the base case being when the stack is empty,
+            and the recursive case being when the current position is within bounds
+            and not visited', 'Convert the recursive function back to a while loop,
+            using a stack to keep track of positions to visit']
+        middle_state:
+          description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+            \ and a target number. The matrix is a 3D array of size $n \\times m \\\
+            times p$ where each element is an integer. The target number is also an\
+            \ integer. Your task is to find the first occurrence of the target number\
+            \ in the matrix.\nYou can traverse the matrix in any order you want, but\
+            \ you must start from the top-left-front corner of the matrix and move\
+            \ right, then down, then back, and so on. You can only move in these four\
+            \ directions. If the target number is not in the matrix, return -1.\n\
+            For example, if the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n\
+            \    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13,\
+            \ 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\nAnd the target number is\
+            \ 14, your function should return the coordinates of the first occurrence\
+            \ of 14 in the matrix, which is (1, 1, 1).\n\nBut if the target number\
+            \ is not in the matrix, your function should return -1.\n\nYou should\
+            \ assume that the matrix is not empty and all the elements in the matrix\
+            \ are unique.\n"
+          code: "def main(target, matrix):\n  p, m, n = len(matrix[0][0]), len(matrix[0]),\
+            \ len(matrix)\n  visited = set()\n  def helper(z, y, x):\n    if z < 0\
+            \ or x < 0 or y < 0 or z >= p or y >= m or x >= n or (z, y, x) in visited:\n\
+            \      return -1\n    if (z, y, x) in visited:\n      return -1\n    visited.add((z,\
+            \ y, x))\n    if matrix[x][y][z] == target:\n      return (x, y, z)\n\
+            \    result = helper(z + 1, y, x)\n    if result != -1:\n      return\
+            \ result\n    result = helper(z, y + 1, x)\n    if result != -1:\n   \
+            \   return result\n    result = helper(z, y, x + 1)\n    return result\n\
+            \  return helper(0, 0, 0)"
+          programming_language: python
+          inputs: *id002
+          exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1]
+        parent: *id004
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def transform_main(target, matrix):\n  p, m, n = len(matrix[0][0]),\
+              \ len(matrix), len(matrix[0])\n  visited = set()\n  stack = [(0, 0,\
+              \ 0)]\n  while stack:\n    x, y, z = stack.pop()\n    if z < 0 or x\
+              \ < 0 or y < 0 or z >= p or y >= m or x >= n or (z, y, x) in visited:\n\
+              \      continue\n    visited.add((z, y, x))\n    if matrix[x][y][z]\
+              \ == target:\n      return (x, y, z)\n    stack.append((z, y, x))\n\
+              \    stack.append((z, y + 1, x))\n    stack.append((z + 1, y, x))\n\
+              \  return -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: []
+          operation: !!python/tuple [Transform operation, Reverse operation]
+          middle_state:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def transform_main(target, matrix):\n  p, m, n = len(matrix[0][0]),\
+              \ len(matrix[0]), len(matrix)\n  visited = set()\n  stack = [(0, 0,\
+              \ 0)]\n  while stack:\n    z, y, x = stack.pop()\n    if z < 0 or x\
+              \ < 0 or y < 0 or z >= p or y >= m or x >= n or (z, y, x) in visited:\n\
+              \      continue\n    visited.add((z, y, x))\n    if matrix[x][y][z]\
+              \ == target:\n      return (x, y, z)\n    stack.append((z + 1, y, x))\n\
+              \    stack.append((z, y + 1, x))\n    stack.append((z, y, x + 1))\n\
+              \  return -1"
+            programming_language: python3
+            inputs: *id002
+            exec_results: []
+          parent: *id006
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(target, matrix):\n  p, m, n = len(matrix[0][0]), len(matrix[0]),\
+              \ len(matrix)\n  visited = set()\n  stack = [(0, 0, 0)]\n  while stack:\n\
+              \    z, y, x = stack.pop()\n    if z < 0 or x < 0 or y < 0 or z >= p\
+              \ or y >= m or x >= n or (z, y, x) in visited:\n      continue\n   \
+              \ if matrix[x][y][z] == target:\n      return (x, y, z)\n    visited.add((z,\
+              \ y, x))\n    stack.extend([(z + 1, y, x), (z, y + 1, x), (z, y, x +\
+              \ 1)])\n  return None"
+            programming_language: python
+            inputs: *id002
+            exec_results: [null, null, null, null, null, null, null, null, null, null,
+              null, null, null, null, null, null, null, null]
+          operation: !!python/tuple ['Replace the while loop with a recursive function
+              to traverse the matrix, with the base case being when the stack is empty,
+              and the recursive case being when the current position is within bounds
+              and not visited', 'Convert the recursive function back to a while loop,
+              using a stack to keep track of positions to visit']
+          middle_state:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(target, matrix):\n  p, m, n = len(matrix[0][0]), len(matrix[0]),\
+              \ len(matrix)\n  visited = set()\n  def dfs(z, y, x):\n    if z < 0\
+              \ or x < 0 or y < 0 or z >= p or y >= m or x >= n or (z, y, x) in visited:\n\
+              \      return -1\n    if matrix[x][y][z] == target:\n      return (x,\
+              \ y, z)\n    visited.add((z, y, x))\n    return dfs(z + 1, y, x) or\
+              \ dfs(z, y + 1, x) or dfs(z, y, x + 1)\n  return dfs(0, 0, 0)"
+            programming_language: python
+            inputs: *id002
+            exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+              -1, -1, -1, -1]
+          parent: *id006
+          children: []
+    - &id007 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "# 3D Matrix Search\nYou are given a 3D matrix of integers and\
+          \ a target number. The matrix is a 3D array of size $n \\times m \\times\
+          \ p$ where each element is an integer. The target number is also an integer.\
+          \ Your task is to find the first occurrence of the target number in the\
+          \ matrix.\nYou can traverse the matrix in any order you want, but you must\
+          \ start from the top-left-front corner of the matrix and move right, then\
+          \ down, then back, and so on. You can only move in these four directions.\
+          \ If the target number is not in the matrix, return -1.\nFor example, if\
+          \ the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n\
+          \    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13, 14, 15],\n    [16,\
+          \ 17, 18]\n  ]\n]\n```\n\nAnd the target number is 14, your function should\
+          \ return the coordinates of the first occurrence of 14 in the matrix, which\
+          \ is (1, 1, 1).\n\nBut if the target number is not in the matrix, your function\
+          \ should return -1.\n\nYou should assume that the matrix is not empty and\
+          \ all the elements in the matrix are unique.\n"
+        code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0][0]),\
+          \ len(matrix[0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while stack:\n\
+          \    x, y, z = stack.pop()\n    if x < 0 or y < 0 or z < 0 or x >= n or\
+          \ y >= m or z >= p or (x, y, z) in visited:\n      continue\n    visited.add((x,\
+          \ y, z))\n    if matrix[x][y][z] == target:\n      return (x, y, z)\n  \
+          \  stack.append((x + 1, y, z))\n    stack.append((x, y + 1, z))\n    stack.append((x,\
+          \ y, z + 1))\n  return -1"
+        programming_language: python
+        inputs: *id002
+        exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+          -1, -1, -1]
+      operation: !!python/tuple ['Replace the while loop with a recursive function
+          to traverse the matrix, with the base case being when the stack is empty,
+          and the recursive case being when the current position is within bounds
+          and not visited', 'Convert the recursive function back to a while loop,
+          using a stack to keep track of positions to visit']
+      middle_state:
+        description: "# 3D Matrix Search\nYou are given a 3D matrix of integers and\
+          \ a target number. The matrix is a 3D array of size $n \\times m \\times\
+          \ p$ where each element is an integer. The target number is also an integer.\
+          \ Your task is to find the first occurrence of the target number in the\
+          \ matrix.\nYou can traverse the matrix in any order you want, but you must\
+          \ start from the top-left-front corner of the matrix and move right, then\
+          \ down, then back, and so on. You can only move in these four directions.\
+          \ If the target number is not in the matrix, return -1.\nFor example, if\
+          \ the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n\
+          \    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13, 14, 15],\n    [16,\
+          \ 17, 18]\n  ]\n]\n```\n\nAnd the target number is 14, your function should\
+          \ return the coordinates of the first occurrence of 14 in the matrix, which\
+          \ is (1, 1, 1).\n\nBut if the target number is not in the matrix, your function\
+          \ should return -1.\n\nYou should assume that the matrix is not empty and\
+          \ all the elements in the matrix are unique.\n"
+        code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0][0]),\
+          \ len(matrix[0])\n  visited = set()\n  def traverse(x, y, z):\n    if x\
+          \ < 0 or y < 0 or z < 0 or x >= n or y >= m or z >= p or (x, y, z) in visited:\n\
+          \      return\n    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n\
+          \      return (x, y, z)\n    traverse(x + 1, y, z)\n    traverse(x, y +\
+          \ 1, z)\n    traverse(x, y, z + 1)\n  return traverse(0, 0, 0) or -1"
+        programming_language: python
+        inputs: *id002
+        exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+          -1, -1, -1]
+      parent: *id003
+      children:
+      - &id008 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+            \ and a target number. The matrix is a 3D array of size $n \\times m \\\
+            times p$ where each element is an integer. The target number is also an\
+            \ integer. Your task is to find the first occurrence of the target number\
+            \ in the matrix.\nYou can traverse the matrix in any order you want, but\
+            \ you must start from the top-left-front corner of the matrix and move\
+            \ right, then down, then back, and so on. You can only move in these four\
+            \ directions. If the target number is not in the matrix, return -1.\n\
+            For example, if the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n\
+            \    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13,\
+            \ 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\nAnd the target number is\
+            \ 14, your function should return the coordinates of the first occurrence\
+            \ of 14 in the matrix, which is (1, 1, 1).\n\nBut if the target number\
+            \ is not in the matrix, your function should return -1.\n\nYou should\
+            \ assume that the matrix is not empty and all the elements in the matrix\
+            \ are unique.\n"
+          code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0]),\
+            \ len(matrix[0][0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+            \ stack:\n    z, y, x = stack.pop()\n    if x < 0 or y < 0 or z < 0 or\
+            \ x >= n or y >= m or z >= p or (x, y, z) in visited:\n      continue\n\
+            \    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n     \
+            \ return (x, y, z)\n    stack.append((z + 1, y, x))\n    stack.append((z,\
+            \ y + 1, x))\n    stack.append((z, y, x + 1))\n  return -1"
+          programming_language: python
+          inputs: *id002
+          exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1]
+        operation: !!python/tuple [Transform operation, Reverse operation]
+        middle_state:
+          description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+            \ and a target number. The matrix is a 3D array of size $n \\times m \\\
+            times p$ where each element is an integer. The target number is also an\
+            \ integer. Your task is to find the first occurrence of the target number\
+            \ in the matrix.\nYou can traverse the matrix in any order you want, but\
+            \ you must start from the top-left-front corner of the matrix and move\
+            \ right, then down, then back, and so on. You can only move in these four\
+            \ directions. If the target number is not in the matrix, return -1.\n\
+            For example, if the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n\
+            \    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13,\
+            \ 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\nAnd the target number is\
+            \ 14, your function should return the coordinates of the first occurrence\
+            \ of 14 in the matrix, which is (1, 1, 1).\n\nBut if the target number\
+            \ is not in the matrix, your function should return -1.\n\nYou should\
+            \ assume that the matrix is not empty and all the elements in the matrix\
+            \ are unique.\n"
+          code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0]),\
+            \ len(matrix[0][0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+            \ stack:\n    x, y, z = stack.pop()\n    if x < 0 or y < 0 or z < 0 or\
+            \ x >= n or y >= m or z >= p or (x, y, z) in visited:\n      continue\n\
+            \    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n     \
+            \ return (x, y, z)\n    stack.append((x + 1, y, z))\n    stack.append((x,\
+            \ y + 1, z))\n    stack.append((x, y, z + 1))\n  return -1"
+          programming_language: python
+          inputs: *id002
+          exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1]
+        parent: *id007
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0]),\
+              \ len(matrix[0][0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+              \ stack:\n    x, y, z = stack.pop()\n    if x < 0 or y < 0 or z < 0\
+              \ or x >= n or y >= m or z >= p or (x, y, z) in visited:\n      continue\n\
+              \    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n   \
+              \   return (x, y, z)\n    stack.append((x, z + 1, y))\n    stack.append((x,\
+              \ z, y + 1))\n    stack.append((x, z, y))\n    stack.append((x, z -\
+              \ 1, y))\n    stack.append((x, z, y - 1))\n    stack.append((x - 1,\
+              \ z, y))\n  return -1"
+            programming_language: python
+            inputs: *id002
+            exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+              -1, -1, -1, -1]
+          operation: !!python/tuple [Transform operation, Reverse operation]
+          middle_state:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0]),\
+              \ len(matrix[0][0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+              \ stack:\n    z, y, x = stack.pop()\n    if x < 0 or y < 0 or z < 0\
+              \ or x >= n or y >= m or z >= p or (x, y, z) in visited:\n      continue\n\
+              \    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n   \
+              \   return (x, y, z)\n    stack.append((z + 1, y, x))\n    stack.append((z,\
+              \ y + 1, x))\n    stack.append((z, y, x + 1))\n    stack.append((z -\
+              \ 1, y, x))\n    stack.append((z, y - 1, x))\n    stack.append((z, y,\
+              \ x - 1))\n  return -1"
+            programming_language: python
+            inputs: *id002
+            exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+              -1, -1, -1, -1]
+          parent: *id008
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "```python\ndef main(matrix, target):\n  def traverse(matrix, target,\
+              \ x, y, z, visited):\n    while True:\n      if (x, y, z) in visited:\n\
+              \        return -1\n      if x < 0 or y < 0 or z < 0 or x >= len(matrix)\
+              \ or y >= len(matrix[0]) or z >= len(matrix[0][0]):\n        return\
+              \ -1\n      visited.add((x, y, z))\n      if matrix[x][y][z] == target:\n\
+              \        return (x, y, z)\n      stack = [(x, y, z + 1), (x, y + 1,\
+              \ z), (x + 1, y, z)]\n      for i in stack:\n        if i not in visited:\n\
+              \          x, y, z = i\n          break\n      else:\n        return\
+              \ -1\n  n, m, p = len(matrix), len(matrix[0]), len(matrix[0][0])\n \
+              \ visited = set()\n  return traverse(matrix, target, 0, 0, 0, visited)"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+              -1, -1, -1, -1]
+          operation: !!python/tuple ['Replace the while loop with a recursive function
+              to traverse the matrix, with the base case being when the stack is empty,
+              and the recursive case being when the current position is within bounds
+              and not visited', 'Convert the recursive function back to a while loop,
+              using a stack to keep track of positions to visit']
+          middle_state:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(matrix, target):\n  def traverse(x, y, z):\n    if (x,\
+              \ y, z) in visited:\n      return\n    if x < 0 or y < 0 or z < 0 or\
+              \ x >= len(matrix) or y >= len(matrix[0]) or z >= len(matrix[0][0]):\n\
+              \      return\n    visited.add((x, y, z))\n    if matrix[x][y][z] ==\
+              \ target:\n      return (x, y, z)\n    traverse(x, y, z + 1)\n    traverse(x,\
+              \ y + 1, z)\n    traverse(x + 1, y, z)\n  n, m, p = len(matrix), len(matrix[0]),\
+              \ len(matrix[0][0])\n  visited = set()\n  traverse(0, 0, 0)\n  return\
+              \ -1 if (0, 0, 0) not in visited else (0, 0, 0)"
+            programming_language: python
+            inputs: *id002
+            exec_results:
+            - &id009 !!python/tuple [0, 0, 0]
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+            - *id009
+          parent: *id008
+          children: []
+      - &id010 !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+            \ and a target number. The matrix is a 3D array of size $n \\times m \\\
+            times p$ where each element is an integer. The target number is also an\
+            \ integer. Your task is to find the first occurrence of the target number\
+            \ in the matrix.\nYou can traverse the matrix in any order you want, but\
+            \ you must start from the top-left-front corner of the matrix and move\
+            \ right, then down, then back, and so on. You can only move in these four\
+            \ directions. If the target number is not in the matrix, return -1.\n\
+            For example, if the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n\
+            \    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13,\
+            \ 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\nAnd the target number is\
+            \ 14, your function should return the coordinates of the first occurrence\
+            \ of 14 in the matrix, which is (1, 1, 1).\n\nBut if the target number\
+            \ is not in the matrix, your function should return -1.\n\nYou should\
+            \ assume that the matrix is not empty and all the elements in the matrix\
+            \ are unique.\n"
+          code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0][0]),\
+            \ len(matrix[0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while stack:\n\
+            \    x, y, z = stack.pop()\n    if x < 0 or y < 0 or z < 0 or x >= n or\
+            \ y >= m or z >= p or (x, y, z) in visited:\n      continue\n    visited.add((x,\
+            \ y, z))\n    if matrix[x][y][z] == target:\n      return (x, y, z)\n\
+            \    stack.extend([(x + 1, y, z), (x, y + 1, z), (x, y, z + 1)])\n  return\
+            \ None"
+          programming_language: python
+          inputs: *id002
+          exec_results: [null, null, null, null, null, null, null, null, null, null,
+            null, null, null, null, null, null, null, null]
+        operation: !!python/tuple ['Replace the while loop with a recursive function
+            to traverse the matrix, with the base case being when the stack is empty,
+            and the recursive case being when the current position is within bounds
+            and not visited', 'Convert the recursive function back to a while loop,
+            using a stack to keep track of positions to visit']
+        middle_state:
+          description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+            \ and a target number. The matrix is a 3D array of size $n \\times m \\\
+            times p$ where each element is an integer. The target number is also an\
+            \ integer. Your task is to find the first occurrence of the target number\
+            \ in the matrix.\nYou can traverse the matrix in any order you want, but\
+            \ you must start from the top-left-front corner of the matrix and move\
+            \ right, then down, then back, and so on. You can only move in these four\
+            \ directions. If the target number is not in the matrix, return -1.\n\
+            For example, if the matrix is like this:\n\n```\n[\n  [\n    [1, 2, 3],\n\
+            \    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n    [10, 11, 12],\n    [13,\
+            \ 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\nAnd the target number is\
+            \ 14, your function should return the coordinates of the first occurrence\
+            \ of 14 in the matrix, which is (1, 1, 1).\n\nBut if the target number\
+            \ is not in the matrix, your function should return -1.\n\nYou should\
+            \ assume that the matrix is not empty and all the elements in the matrix\
+            \ are unique.\n"
+          code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0][0]),\
+            \ len(matrix[0])\n  visited = set()\n  def dfs(x, y, z):\n    if x < 0\
+            \ or y < 0 or z < 0 or x >= n or y >= m or z >= p or (x, y, z) in visited:\n\
+            \      return -1\n    visited.add((x, y, z))\n    if matrix[x][y][z] ==\
+            \ target:\n      return (x, y, z)\n    result = dfs(x + 1, y, z)\n   \
+            \ if result == -1:\n      result = dfs(x, y + 1, z)\n    if result ==\
+            \ -1:\n      result = dfs(x, y, z + 1)\n    return result\n  return dfs(0,\
+            \ 0, 0)"
+          programming_language: python
+          inputs: *id002
+          exec_results: [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+            -1, -1, -1]
+        parent: *id007
+        children:
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(matrix, target):\n  n, m, p = len(matrix[0][0]), len(matrix[0]),\
+              \ len(matrix)\n  visited = set()\n  stack = [(0, 0, 0)]\n  while stack:\n\
+              \    x, y, z = stack.pop()\n    if x < 0 or y < 0 or z < 0 or x >= n\
+              \ or y >= m or z >= p or (x, y, z) in visited:\n      continue\n   \
+              \ visited.add((x, y, z))\n    if matrix[z][y][x] == target:\n      return\
+              \ (x, y, z)\n    stack.extend([(x + 1, y, z), (x, y + 1, z), (x, y,\
+              \ z + 1)])\n  return None\n\ndef transform_operation(matrix, target):\n\
+              \  return main(matrix, target)"
+            programming_language: python
+            inputs: *id002
+            exec_results: [null, null, null, null, null, null, null, null, null, null,
+              null, null, null, null, null, null, null, null]
+          operation: !!python/tuple [Transform operation, Reverse operation]
+          middle_state:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0][0]),\
+              \ len(matrix[0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+              \ stack:\n    x, y, z = stack.pop()\n    if x < 0 or y < 0 or z < 0\
+              \ or x >= n or y >= m or z >= p or (x, y, z) in visited:\n      continue\n\
+              \    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n   \
+              \   return (x, y, z)\n    stack.extend([(x + 1, y, z), (x, y + 1, z),\
+              \ (x, y, z + 1)])\n  return None\n\ndef transform_operation(matrix,\
+              \ target):\n  return main(matrix, target)"
+            programming_language: python
+            inputs: *id002
+            exec_results: [null, null, null, null, null, null, null, null, null, null,
+              null, null, null, null, null, null, null, null]
+          parent: *id010
+          children: []
+        - !!python/object:llmcheck.nodes.node.Node
+          content:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0][0]),\
+              \ len(matrix[0])\n  visited = set()\n  stack = [(0, 0, 0)]\n  while\
+              \ stack:\n    x, y, z = stack.pop()\n    if x < 0 or y < 0 or z < 0\
+              \ or x >= n or y >= m or z >= p or (x, y, z) in visited:\n      continue\n\
+              \    visited.add((x, y, z))\n    if matrix[x][y][z] == target:\n   \
+              \   return (x, y, z)\n    stack.extend([(x + 1, y, z), (x, y + 1, z),\
+              \ (x, y, z + 1)])\n  return None"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [null, null, null, null, null, null, null, null, null, null,
+              null, null, null, null, null, null, null, null]
+          operation: !!python/tuple ['Replace the while loop with a recursive function
+              to traverse the matrix, with the base case being when the stack is empty,
+              and the recursive case being when the current position is within bounds
+              and not visited', 'Convert the recursive function back to a while loop,
+              using a stack to keep track of positions to visit']
+          middle_state:
+            description: "# 3D Matrix Search\nYou are given a 3D matrix of integers\
+              \ and a target number. The matrix is a 3D array of size $n \\times m\
+              \ \\times p$ where each element is an integer. The target number is\
+              \ also an integer. Your task is to find the first occurrence of the\
+              \ target number in the matrix.\nYou can traverse the matrix in any order\
+              \ you want, but you must start from the top-left-front corner of the\
+              \ matrix and move right, then down, then back, and so on. You can only\
+              \ move in these four directions. If the target number is not in the\
+              \ matrix, return -1.\nFor example, if the matrix is like this:\n\n```\n\
+              [\n  [\n    [1, 2, 3],\n    [4, 5, 6],\n    [7, 8, 9]\n  ],\n  [\n \
+              \   [10, 11, 12],\n    [13, 14, 15],\n    [16, 17, 18]\n  ]\n]\n```\n\
+              \nAnd the target number is 14, your function should return the coordinates\
+              \ of the first occurrence of 14 in the matrix, which is (1, 1, 1).\n\
+              \nBut if the target number is not in the matrix, your function should\
+              \ return -1.\n\nYou should assume that the matrix is not empty and all\
+              \ the elements in the matrix are unique.\n"
+            code: "def main(matrix, target):\n  n, m, p = len(matrix), len(matrix[0][0]),\
+              \ len(matrix[0])\n  visited = set()\n  def helper(x, y, z):\n    if\
+              \ x < 0 or y < 0 or z < 0 or x >= n or y >= m or z >= p or (x, y, z)\
+              \ in visited:\n      return None\n    visited.add((x, y, z))\n    if\
+              \ matrix[x][y][z] == target:\n      return (x, y, z)\n    return helper(x\
+              \ + 1, y, z) or helper(x, y + 1, z) or helper(x, y, z + 1)\n  return\
+              \ helper(0, 0, 0)"
+            programming_language: python3
+            inputs: *id002
+            exec_results: [null, null, null, null, null, null, null, null, null, null,
+              null, null, null, null, null, null, null, null]
+          parent: *id010
+          children: []
