@@ -58,15 +58,30 @@ class LLMCheck:
             root_content = root
             print(f"[INFO] Overriding root content with set value: {root_content}")
         else:
-            root_content = self.generate_root_content(constraints)
-        tree = EvaluationTree(root_content)
+            # test rood node
+            retry: int = 0
+            retry_max: int = 16
+            while retry <= retry_max:
+                # if build vf and exec failed, make a new root
+                try:
+                    root_content = self.generate_root_content(constraints)
+                    root_vf: VerifiableFunction = VerifiableFunction(**root_content)
+                    root_vf.exec(catch=False)
+                    tree = EvaluationTree(root_content)
+                    break
+                except Exception as e:
+                    print(f"[ERROR] Root node failed: {e}")
+                    print(f"[INFO] Retry {retry + 1}/{retry_max}")
+                    retry += 1
+
+        tree = EvaluationTree(root_content)        
 
         if len(operations) >= self.n_operations:
             operations = operations[:self.n_operations]
             print(f"[INFO] Overriding operations with set value: {operations}")
         else:
             root_code = root_content["code"]
-            prompt = prompt_template.format(n_operations=self.n_operations, root_code=root_code)
+            prompt = prompt_template.format(n_operations=self.n_operations, root_code=root_code) ######
             operations = self.op_generator.generate_operations(prompt, self.n_operations)
 
         self._build_tree(tree.root, operations, 0)
@@ -106,7 +121,7 @@ class LLMCheck:
                 if current_depth == 0: # root
                     # execute the code
                     root_vf: VerifiableFunction = VerifiableFunction(**current_node.content)
-                    current_node.content["exec_results"] = root_vf.exec()
+                    current_node.content["exec_results"] = root_vf.exec(catch=True)
 
                 for transform, reverse in operations:
                     current_node_dict = current_node.content

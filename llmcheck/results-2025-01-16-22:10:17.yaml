@@ -1,0 +1,767 @@
+evaluator_model: {model: openai/gpt-4o-mini, temperature: 0.6, api_base: 'https://api.openai.com/v1'}
+evaluatee_model: {model: 'ollama_chat/llama3.1:8b-instruct-fp16', temperature: 0.6,
+  api_base: 'http://localhost:11434'}
+root_content: &id001
+  description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding and\
+    \ Factorization\n\n**Description:** \nYou are tasked with finding the shortest\
+    \ path in a multi-dimensional grid where each cell contains a positive integer.\
+    \ The challenge is to compute the path while simultaneously factoring the integers\
+    \ in the path using asynchronous computations. The grid is represented as a list\
+    \ of lists, where each sub-list is a row of the grid. \n\nThe path can only be\
+    \ traversed in the right or down directions, and you must also keep track of the\
+    \ prime factors of the numbers in the path. The output should return the total\
+    \ sum of the path values and a list of the unique prime factors encountered along\
+    \ the way.\n\nImplement a function `main(grid: List[List[int]]) -> Tuple[int,\
+    \ List[int]]` that computes this.\n\n**Example Input:**\n```\ngrid = [[2, 3],\n\
+    \        [5, 7]]\n```\n\n**Example Output:**\n```\n(12, [2, 3, 5, 7])\n```\n\n\
+    **Constraints:**\n- The grid will have dimensions up to 100x100.\n- Each integer\
+    \ in the grid will be between 1 and 10^6.\n"
+  code: "from typing import List, Tuple\nfrom concurrent.futures import ThreadPoolExecutor\n\
+    from collections import defaultdict\nimport math\n\ndef prime_factors(n: int)\
+    \ -> List[int]:\n    factors = set()\n    while n % 2 == 0:\n        factors.add(2)\n\
+    \        n //= 2\n    for i in range(3, int(math.sqrt(n)) + 1, 2):\n        while\
+    \ n % i == 0:\n            factors.add(i)\n            n //= i\n    if n > 2:\n\
+    \        factors.add(n)\n    return list(factors)\n\ndef async_prime_factorization(value:\
+    \ int) -> List[int]:\n    return prime_factors(value)\n\ndef main(grid: List[List[int]])\
+    \ -> Tuple[int, List[int]]:\n    if not grid or not grid[0]:\n        return 0,\
+    \ []\n\n    rows, cols = len(grid), len(grid[0])\n    dp = [[0] * cols for _ in\
+    \ range(rows)]\n    dp[0][0] = grid[0][0]\n\n    for i in range(1, rows):\n  \
+    \      dp[i][0] = dp[i - 1][0] + grid[i][0]\n    for j in range(1, cols):\n  \
+    \      dp[0][j] = dp[0][j - 1] + grid[0][j]\n\n    for i in range(1, rows):\n\
+    \        for j in range(1, cols):\n            dp[i][j] = min(dp[i - 1][j], dp[i][j\
+    \ - 1]) + grid[i][j]\n\n    total_sum = dp[rows - 1][cols - 1]\n    prime_factors_set\
+    \ = defaultdict(int)\n\n    with ThreadPoolExecutor() as executor:\n        futures\
+    \ = {executor.submit(async_prime_factorization, grid[i][j]): (i, j) \n       \
+    \            for i in range(rows) for j in range(cols)}\n        for future in\
+    \ futures:\n            factors = future.result()\n            for factor in factors:\n\
+    \                prime_factors_set[factor] += 1\n\n    unique_primes = sorted(prime_factors_set.keys())\n\
+    \    return total_sum, unique_primes\n"
+  programming_language: python3
+  inputs: &id002
+  - grid:
+    - [1]
+  - grid:
+    - [1, 2]
+    - [3, 4]
+  - grid:
+    - [2, 2, 2]
+    - [2, 2, 2]
+    - [2, 2, 2]
+  - grid:
+    - [3, 5]
+    - [7, 11]
+    - [13, 17]
+  - grid:
+    - [101, 103]
+    - [107, 109]
+  - grid:
+    - [1, 2, 3]
+    - [4, 5, 6]
+    - [7, 8, 9]
+  - grid:
+    - [999999, 999998]
+    - [999997, 999996]
+  - grid:
+    - [10, 20]
+    - [30, 40]
+    - [50, 60]
+  - grid:
+    - [1, 1]
+    - [1, 1]
+    - [1, 1]
+  - grid:
+    - [2, 4]
+    - [6, 8]
+    - [10, 12]
+  - grid:
+    - [5, 3]
+    - [2, 1]
+  - grid:
+    - [17, 15]
+    - [19, 21]
+  - grid:
+    - [30, 20, 10]
+    - [40, 50, 60]
+  - grid:
+    - [13, 17, 19]
+    - [23, 29, 31]
+  - grid:
+    - [2, 3, 5]
+    - [7, 11, 13]
+    - [17, 19, 23]
+  - grid:
+    - [100, 200]
+    - [300, 400]
+    - [500, 600]
+  - grid:
+    - [1000000, 999999]
+    - [999998, 999997]
+  - grid:
+    - [2, 5]
+    - [7, 9]
+    - [11, 13]
+  - grid:
+    - [4, 8, 12]
+    - [16, 20, 24]
+  - grid:
+    - [10, 15]
+    - [20, 25]
+    - [30, 35]
+  exec_results: &id003
+  - !!python/tuple
+    - 1
+    - []
+  - !!python/tuple
+    - 7
+    - [2, 3]
+  - !!python/tuple
+    - 10
+    - [2]
+  - !!python/tuple
+    - 36
+    - [3, 5, 7, 11, 13, 17]
+  - !!python/tuple
+    - 313
+    - [101, 103, 107, 109]
+  - !!python/tuple
+    - 21
+    - [2, 3, 5, 7]
+  - !!python/tuple
+    - 2999992
+    - [2, 3, 7, 11, 13, 31, 37, 127, 167, 499, 757, 1321]
+  - !!python/tuple
+    - 130
+    - [2, 3, 5]
+  - !!python/tuple
+    - 4
+    - []
+  - !!python/tuple
+    - 26
+    - [2, 3, 5]
+  - !!python/tuple
+    - 8
+    - [2, 3, 5]
+  - !!python/tuple
+    - 53
+    - [3, 5, 7, 17, 19]
+  - !!python/tuple
+    - 120
+    - [2, 3, 5]
+  - !!python/tuple
+    - 80
+    - [13, 17, 19, 23, 29, 31]
+  - !!python/tuple
+    - 46
+    - [2, 3, 5, 7, 11, 13, 17, 19, 23]
+  - !!python/tuple
+    - 1300
+    - [2, 3, 5]
+  - !!python/tuple
+    - 2999995
+    - [2, 3, 5, 7, 11, 13, 31, 37, 127, 757, 1321]
+  - !!python/tuple
+    - 29
+    - [2, 3, 5, 7, 11, 13]
+  - !!python/tuple
+    - 48
+    - [2, 3, 5]
+  - !!python/tuple
+    - 85
+    - [2, 3, 5, 7]
+operations:
+- !!python/tuple ['Refactor the ''main'' function in the ''code'' key to utilize a
+    single-pass algorithm that computes the total sum and unique prime factors simultaneously,
+    using a custom class to encapsulate state', Restore the original 'main' function
+    by separating the logic into distinct operations that calculate the total sum
+    and unique prime factors in separate passes.]
+- !!python/tuple ['Replace the use of a ThreadPoolExecutor in the ''main'' function
+    in the ''code'' key with an asynchronous event loop, employing asyncio to handle
+    concurrent prime factorization tasks', 'Revert the ''main'' function to use synchronous
+    execution with ThreadPoolExecutor, restoring the original threading logic for
+    prime factorization.']
+metrics:
+  L-1 AVG: 1.0
+  L-1: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-2 AVG: 1.0
+  L-2: [1.0, 1.0, 1.0, 1.0]
+  L-3 AVG: 0.0
+  L-3: []
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+          \ and Factorization\n\n**Description:** \nYou are tasked with finding the\
+          \ shortest path in a multi-dimensional grid where each cell contains a positive\
+          \ integer. The challenge is to compute the path while simultaneously factoring\
+          \ the integers in the path using asynchronous computations. The grid is\
+          \ represented as a list of lists, where each sub-list is a row of the grid.\
+          \ \n\nThe path can only be traversed in the right or down directions, and\
+          \ you must also keep track of the prime factors of the numbers in the path.\
+          \ The output should return the total sum of the path values and a list of\
+          \ the unique prime factors encountered along the way.\n\nImplement a function\
+          \ `main(grid: List[List[int]]) -> Tuple[int, List[int]]` that computes this.\n\
+          \n**Example Input:**\n```\ngrid = [[2, 3],\n        [5, 7]]\n```\n\n**Example\
+          \ Output:**\n```\n(12, [2, 3, 5, 7])\n```\n\n**Constraints:**\n- The grid\
+          \ will have dimensions up to 100x100.\n- Each integer in the grid will be\
+          \ between 1 and 10^6.\n"
+        code: "from typing import List, Tuple\nfrom collections import defaultdict\n\
+          import math\nfrom concurrent.futures import ThreadPoolExecutor\n\nclass\
+          \ PrimeFactors:\n    def __init__(self):\n        self.factors = set()\n\
+          \        self.n = 0\n\n    def update(self, n: int) -> None:\n        while\
+          \ n % 2 == 0:\n            self.factors.add(2)\n            n //= 2\n  \
+          \      for i in range(3, int(math.sqrt(n)) + 1, 2):\n            while n\
+          \ % i == 0:\n                self.factors.add(i)\n                n //=\
+          \ i\n        if n > 2:\n            self.factors.add(n)\n\ndef calculate_total_sum(grid:\
+          \ List[List[int]]) -> int:\n    \"\"\"Calculate the total sum of a grid.\"\
+          \"\"\n    rows, cols = len(grid), len(grid[0])\n    dp = [[0] * cols for\
+          \ _ in range(rows)]\n    dp[0][0] = grid[0][0]\n\n    for i in range(1,\
+          \ rows):\n        dp[i][0] = dp[i - 1][0] + grid[i][0]\n    for j in range(1,\
+          \ cols):\n        dp[0][j] = dp[0][j - 1] + grid[0][j]\n\n    for i in range(1,\
+          \ rows):\n        for j in range(1, cols):\n            dp[i][j] = min(dp[i\
+          \ - 1][j], dp[i][j - 1]) + grid[i][j]\n\n    return dp[rows - 1][cols -\
+          \ 1]\n\ndef calculate_prime_factors(grid: List[List[int]]) -> set:\n   \
+          \ \"\"\"Calculate the unique prime factors of a grid.\"\"\"\n    prime_factors_set\
+          \ = defaultdict(int)\n    for row in grid:\n        for num in row:\n  \
+          \          factors = PrimeFactors()\n            while num % 2 == 0:\n \
+          \               factors.factors.add(2)\n                num //= 2\n    \
+          \        for i in range(3, int(math.sqrt(num)) + 1, 2):\n              \
+          \  while num % i == 0:\n                    factors.factors.add(i)\n   \
+          \                 num //= i\n            if num > 2:\n                factors.factors.add(num)\n\
+          \            prime_factors_set.update(factors.factors)\n\n    return sorted(set(prime_factors_set.keys()))\n\
+          \ndef main(grid: List[List[int]]) -> Tuple[int, List[int]]:\n    total_sum\
+          \ = calculate_total_sum(grid)\n    unique_primes = calculate_prime_factors(grid)\n\
+          \    return total_sum, unique_primes"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Refactor the ''main'' function in the ''code'' key
+          to utilize a single-pass algorithm that computes the total sum and unique
+          prime factors simultaneously, using a custom class to encapsulate state',
+        Restore the original 'main' function by separating the logic into distinct
+          operations that calculate the total sum and unique prime factors in separate
+          passes.]
+      middle_state:
+        description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+          \ and Factorization\n\n**Description:** \nYou are tasked with finding the\
+          \ shortest path in a multi-dimensional grid where each cell contains a positive\
+          \ integer. The challenge is to compute the path while simultaneously factoring\
+          \ the integers in the path using asynchronous computations. The grid is\
+          \ represented as a list of lists, where each sub-list is a row of the grid.\
+          \ \n\nThe path can only be traversed in the right or down directions, and\
+          \ you must also keep track of the prime factors of the numbers in the path.\
+          \ The output should return the total sum of the path values and a list of\
+          \ the unique prime factors encountered along the way.\n\nImplement a function\
+          \ `main(grid: List[List[int]]) -> Tuple[int, List[int]]` that computes this.\n\
+          \n**Example Input:**\n```\ngrid = [[2, 3],\n        [5, 7]]\n```\n\n**Example\
+          \ Output:**\n```\n(12, [2, 3, 5, 7])\n```\n\n**Constraints:**\n- The grid\
+          \ will have dimensions up to 100x100.\n- Each integer in the grid will be\
+          \ between 1 and 10^6.\n"
+        code: "from typing import List, Tuple\nfrom collections import defaultdict\n\
+          \nclass PrimeFactors:\n    def __init__(self):\n        self.factors = set()\n\
+          \        self.n = 0\n\n    def update(self, n: int) -> None:\n        while\
+          \ n % 2 == 0:\n            self.factors.add(2)\n            n //= 2\n  \
+          \      for i in range(3, int(math.sqrt(n)) + 1, 2):\n            while n\
+          \ % i == 0:\n                self.factors.add(i)\n                n //=\
+          \ i\n        if n > 2:\n            self.factors.add(n)\n\ndef main(grid:\
+          \ List[List[int]]) -> Tuple[int, List[int]]:\n    if not grid or not grid[0]:\n\
+          \        return 0, []\n\n    rows, cols = len(grid), len(grid[0])\n    dp\
+          \ = [[0] * cols for _ in range(rows)]\n    dp[0][0] = grid[0][0]\n\n   \
+          \ for i in range(1, rows):\n        dp[i][0] = dp[i - 1][0] + grid[i][0]\n\
+          \    for j in range(1, cols):\n        dp[0][j] = dp[0][j - 1] + grid[0][j]\n\
+          \n    for i in range(1, rows):\n        for j in range(1, cols):\n     \
+          \       dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]\n\n    total_sum\
+          \ = dp[rows - 1][cols - 1]\n    prime_factors_set = defaultdict(int)\n\n\
+          \    factors = PrimeFactors()\n    with ThreadPoolExecutor() as executor:\n\
+          \        futures = {executor.submit(factors.update, grid[i][j]): (i, j)\
+          \ \n                   for i in range(rows) for j in range(cols)}\n    \
+          \    for future in futures:\n            future.result()\n\n    unique_primes\
+          \ = sorted(prime_factors_set.keys())\n    return total_sum, unique_primes"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+            \ and Factorization\n\n**Description:** \nYou are tasked with finding\
+            \ the shortest path in a multi-dimensional grid where each cell contains\
+            \ a positive integer. The challenge is to compute the path while simultaneously\
+            \ factoring the integers in the path using asynchronous computations.\
+            \ The grid is represented as a list of lists, where each sub-list is a\
+            \ row of the grid. \n\nThe path can only be traversed in the right or\
+            \ down directions, and you must also keep track of the prime factors of\
+            \ the numbers in the path. The output should return the total sum of the\
+            \ path values and a list of the unique prime factors encountered along\
+            \ the way.\n\nImplement a function `main(grid: List[List[int]]) -> Tuple[int,\
+            \ List[int]]` that computes this.\n\n**Example Input:**\n```\ngrid = [[2,\
+            \ 3],\n        [5, 7]]\n```\n\n**Example Output:**\n```\n(12, [2, 3, 5,\
+            \ 7])\n```\n\n**Constraints:**\n- The grid will have dimensions up to\
+            \ 100x100.\n- Each integer in the grid will be between 1 and 10^6.\n"
+          code: "from typing import List, Tuple\nimport math\n\nclass PrimeFactors:\n\
+            \    def __init__(self):\n        self.factors = set()\n\n    def calculate_prime_factors(self,\
+            \ n: int) -> None:\n        while n % 2 == 0:\n            self.factors.add(2)\n\
+            \            n //= 2\n        for i in range(3, int(math.sqrt(n)) + 1,\
+            \ 2):\n            while n % i == 0:\n                self.factors.add(i)\n\
+            \                n //= i\n        if n > 2:\n            self.factors.add(n)\n\
+            \n    def total_sum(self) -> int:\n        return sum(self.factors)\n\n\
+            class GridCalculator:\n    def __init__(self, grid: List[List[int]]):\n\
+            \        self.grid = grid\n        self.prime_factors = PrimeFactors()\n\
+            \n    def calculate_total_sum(self) -> int:\n        rows, cols = len(self.grid),\
+            \ len(self.grid[0])\n        total_sum = 0\n\n        for i in range(rows):\n\
+            \            num = 1\n            for j in range(cols):\n            \
+            \    num *= self.grid[i][j]\n                total_sum += num\n\n    \
+            \    return total_sum\n\n    def calculate_unique_prime_factors(self)\
+            \ -> set:\n        rows, cols = len(self.grid), len(self.grid[0])\n  \
+            \      self.prime_factors.calculate_prime_factors(1)\n\n        for i\
+            \ in range(rows):\n            num = 1\n            for j in range(cols):\n\
+            \                num *= self.grid[i][j]\n                self.prime_factors.calculate_prime_factors(num)\n\
+            \n        return sorted(set(self.prime_factors.factors))\n\ndef main(grid:\
+            \ List[List[int]]) -> Tuple[int, List[int]]:\n    calculator = GridCalculator(grid)\n\
+            \    total_sum = calculator.calculate_total_sum()\n    unique_primes =\
+            \ calculator.calculate_unique_prime_factors()\n    return total_sum, unique_primes"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Refactor the ''main'' function in the ''code''
+            key to utilize a single-pass algorithm that computes the total sum and
+            unique prime factors simultaneously, using a custom class to encapsulate
+            state', Restore the original 'main' function by separating the logic into
+            distinct operations that calculate the total sum and unique prime factors
+            in separate passes.]
+        middle_state:
+          description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+            \ and Factorization\n\n**Description:** \nYou are tasked with finding\
+            \ the shortest path in a multi-dimensional grid where each cell contains\
+            \ a positive integer. The challenge is to compute the path while simultaneously\
+            \ factoring the integers in the path using asynchronous computations.\
+            \ The grid is represented as a list of lists, where each sub-list is a\
+            \ row of the grid. \n\nThe path can only be traversed in the right or\
+            \ down directions, and you must also keep track of the prime factors of\
+            \ the numbers in the path. The output should return the total sum of the\
+            \ path values and a list of the unique prime factors encountered along\
+            \ the way.\n\nImplement a function `main(grid: List[List[int]]) -> Tuple[int,\
+            \ List[int]]` that computes this.\n\n**Example Input:**\n```\ngrid = [[2,\
+            \ 3],\n        [5, 7]]\n```\n\n**Example Output:**\n```\n(12, [2, 3, 5,\
+            \ 7])\n```\n\n**Constraints:**\n- The grid will have dimensions up to\
+            \ 100x100.\n- Each integer in the grid will be between 1 and 10^6.\n"
+          code: "from typing import List, Tuple\nimport math\n\nclass PrimeFactors:\n\
+            \    def __init__(self):\n        self.factors = set()\n        self.n\
+            \ = 0\n\n    def update(self, n: int) -> None:\n        while n % 2 ==\
+            \ 0:\n            self.factors.add(2)\n            n //= 2\n        for\
+            \ i in range(3, int(math.sqrt(n)) + 1, 2):\n            while n % i ==\
+            \ 0:\n                self.factors.add(i)\n                n //= i\n \
+            \       if n > 2:\n            self.factors.add(n)\n\n    def total_sum(self)\
+            \ -> int:\n        return sum(self.factors)\n\nclass GridCalculator:\n\
+            \    def __init__(self, grid: List[List[int]]):\n        self.grid = grid\n\
+            \        self.prime_factors = PrimeFactors()\n\n    def calculate_total_sum_and_prime_factors(self)\
+            \ -> Tuple[int, set]:\n        rows, cols = len(self.grid), len(self.grid[0])\n\
+            \        total_sum = 0\n\n        for i in range(rows):\n            num\
+            \ = 1\n            for j in range(cols):\n                num *= self.grid[i][j]\n\
+            \                while num % 2 == 0:\n                    self.prime_factors.factors.add(2)\n\
+            \                    num //= 2\n                for factor in range(3,\
+            \ int(math.sqrt(num)) + 1, 2):\n                    while num % factor\
+            \ == 0:\n                        self.prime_factors.factors.add(factor)\n\
+            \                        num //= factor\n                if num > 2:\n\
+            \                    self.prime_factors.factors.add(num)\n           \
+            \     total_sum += num\n\n        return total_sum, sorted(set(self.prime_factors.factors))\n\
+            \ndef main(grid: List[List[int]]) -> Tuple[int, List[int]]:\n    calculator\
+            \ = GridCalculator(grid)\n    total_sum, unique_primes = calculator.calculate_total_sum_and_prime_factors()\n\
+            \    return total_sum, unique_primes"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+            \ and Factorization\n\n**Description:** \nYou are tasked with finding\
+            \ the shortest path in a multi-dimensional grid where each cell contains\
+            \ a positive integer. The challenge is to compute the path while simultaneously\
+            \ factoring the integers in the path using asynchronous computations.\
+            \ The grid is represented as a list of lists, where each sub-list is a\
+            \ row of the grid. \n\nThe path can only be traversed in the right or\
+            \ down directions, and you must also keep track of the prime factors of\
+            \ the numbers in the path. The output should return the total sum of the\
+            \ path values and a list of the unique prime factors encountered along\
+            \ the way.\n\nImplement a function `main(grid: List[List[int]]) -> Tuple[int,\
+            \ List[int]]` that computes this.\n\n**Example Input:**\n```\ngrid = [[2,\
+            \ 3],\n        [5, 7]]\n```\n\n**Example Output:**\n```\n(12, [2, 3, 5,\
+            \ 7])\n```\n\n**Constraints:**\n- The grid will have dimensions up to\
+            \ 100x100.\n- Each integer in the grid will be between 1 and 10^6.\n"
+          code: "from typing import List, Tuple\nimport math\nfrom concurrent.futures\
+            \ import ThreadPoolExecutor\nfrom collections import defaultdict\n\nclass\
+            \ PrimeFactors:\n    def __init__(self):\n        self.factors = set()\n\
+            \        self.n = 0\n\n    def update(self, n: int) -> None:\n       \
+            \ while n % 2 == 0:\n            self.factors.add(2)\n            n //=\
+            \ 2\n        for i in range(3, int(math.sqrt(n)) + 1, 2):\n          \
+            \  while n % i == 0:\n                self.factors.add(i)\n          \
+            \      n //= i\n        if n > 2:\n            self.factors.add(n)\n\n\
+            def calculate_prime_factors(num: int) -> set:\n    \"\"\"Calculate the\
+            \ unique prime factors of a number.\"\"\"\n    prime_factors_set = defaultdict(int)\n\
+            \    factors = PrimeFactors()\n    factors.update(num)\n    return sorted(set(factors.factors))\n\
+            \ndef main(grid: List[List[int]]) -> Tuple[int, List[int]]:\n    with\
+            \ ThreadPoolExecutor() as executor:\n        tasks = []\n        for row\
+            \ in grid:\n            for num in row:\n                task = executor.submit(calculate_prime_factors,\
+            \ num)\n                tasks.append(task)\n        unique_primes = set()\n\
+            \        for task in tasks:\n            prime_factors_set = task.result()\n\
+            \            unique_primes.update(prime_factors_set)\n\n    total_sum\
+            \ = calculate_total_sum(grid)\n    return total_sum, sorted(unique_primes)\n\
+            \ndef calculate_total_sum(grid: List[List[int]]) -> int:\n    \"\"\"Calculate\
+            \ the total sum of a grid.\"\"\"\n    rows, cols = len(grid), len(grid[0])\n\
+            \    dp = [[0] * cols for _ in range(rows)]\n    dp[0][0] = grid[0][0]\n\
+            \n    for i in range(1, rows):\n        dp[i][0] = dp[i - 1][0] + grid[i][0]\n\
+            \    for j in range(1, cols):\n        dp[0][j] = dp[0][j - 1] + grid[0][j]\n\
+            \n    for i in range(1, rows):\n        for j in range(1, cols):\n   \
+            \         dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]\n\n\
+            \    return dp[rows - 1][cols - 1]"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Replace the use of a ThreadPoolExecutor in the
+            ''main'' function in the ''code'' key with an asynchronous event loop,
+            employing asyncio to handle concurrent prime factorization tasks', 'Revert
+            the ''main'' function to use synchronous execution with ThreadPoolExecutor,
+            restoring the original threading logic for prime factorization.']
+        middle_state:
+          description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+            \ and Factorization\n\n**Description:** \nYou are tasked with finding\
+            \ the shortest path in a multi-dimensional grid where each cell contains\
+            \ a positive integer. The challenge is to compute the path while simultaneously\
+            \ factoring the integers in the path using asynchronous computations.\
+            \ The grid is represented as a list of lists, where each sub-list is a\
+            \ row of the grid. \n\nThe path can only be traversed in the right or\
+            \ down directions, and you must also keep track of the prime factors of\
+            \ the numbers in the path. The output should return the total sum of the\
+            \ path values and a list of the unique prime factors encountered along\
+            \ the way.\n\nImplement a function `main(grid: List[List[int]]) -> Tuple[int,\
+            \ List[int]]` that computes this.\n\n**Example Input:**\n```\ngrid = [[2,\
+            \ 3],\n        [5, 7]]\n```\n\n**Example Output:**\n```\n(12, [2, 3, 5,\
+            \ 7])\n```\n\n**Constraints:**\n- The grid will have dimensions up to\
+            \ 100x100.\n- Each integer in the grid will be between 1 and 10^6.\n"
+          code: "from typing import List, Tuple\nimport math\nimport asyncio\nfrom\
+            \ collections import defaultdict\n\nclass PrimeFactors:\n    def __init__(self):\n\
+            \        self.factors = set()\n        self.n = 0\n\n    async def update(self,\
+            \ n: int) -> None:\n        while n % 2 == 0:\n            self.factors.add(2)\n\
+            \            n //= 2\n        for i in range(3, int(math.sqrt(n)) + 1,\
+            \ 2):\n            while n % i == 0:\n                self.factors.add(i)\n\
+            \                n //= i\n        if n > 2:\n            self.factors.add(n)\n\
+            \nasync def calculate_prime_factors(num: int) -> set:\n    \"\"\"Calculate\
+            \ the unique prime factors of a number.\"\"\"\n    prime_factors_set =\
+            \ defaultdict(int)\n    factors = PrimeFactors()\n    await factors.update(num)\n\
+            \    return sorted(set(factors.factors))\n\nasync def main(grid: List[List[int]])\
+            \ -> Tuple[int, List[int]]:\n    tasks = []\n    for row in grid:\n  \
+            \      for num in row:\n            task = asyncio.create_task(calculate_prime_factors(num))\n\
+            \            tasks.append(task)\n    unique_primes = set()\n    for task\
+            \ in asyncio.as_completed(tasks):\n        prime_factors_set = await task\n\
+            \        unique_primes.update(prime_factors_set)\n\n    total_sum = calculate_total_sum(grid)\n\
+            \    return total_sum, sorted(unique_primes)\n\ndef calculate_total_sum(grid:\
+            \ List[List[int]]) -> int:\n    \"\"\"Calculate the total sum of a grid.\"\
+            \"\"\n    rows, cols = len(grid), len(grid[0])\n    dp = [[0] * cols for\
+            \ _ in range(rows)]\n    dp[0][0] = grid[0][0]\n\n    for i in range(1,\
+            \ rows):\n        dp[i][0] = dp[i - 1][0] + grid[i][0]\n    for j in range(1,\
+            \ cols):\n        dp[0][j] = dp[0][j - 1] + grid[0][j]\n\n    for i in\
+            \ range(1, rows):\n        for j in range(1, cols):\n            dp[i][j]\
+            \ = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]\n\n    return dp[rows\
+            \ - 1][cols - 1]"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+    - &id006 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+          \ and Factorization\n\n**Description:** \nYou are tasked with finding the\
+          \ shortest path in a multi-dimensional grid where each cell contains a positive\
+          \ integer. The challenge is to compute the path while simultaneously factoring\
+          \ the integers in the path using asynchronous computations. The grid is\
+          \ represented as a list of lists, where each sub-list is a row of the grid.\
+          \ \n\nThe path can only be traversed in the right or down directions, and\
+          \ you must also keep track of the prime factors of the numbers in the path.\
+          \ The output should return the total sum of the path values and a list of\
+          \ the unique prime factors encountered along the way.\n\nImplement a function\
+          \ `main(grid: List[List[int]]) -> Tuple[int, List[int]]` that computes this.\n\
+          \n**Example Input:**\n```\ngrid = [[2, 3],\n        [5, 7]]\n```\n\n**Example\
+          \ Output:**\n```\n(12, [2, 3, 5, 7])\n```\n\n**Constraints:**\n- The grid\
+          \ will have dimensions up to 100x100.\n- Each integer in the grid will be\
+          \ between 1 and 10^6.\n"
+        code: "import concurrent.futures\nfrom typing import List, Tuple\nfrom collections\
+          \ import defaultdict\nimport math\n\ndef prime_factors(n: int) -> List[int]:\n\
+          \    factors = set()\n    while n % 2 == 0:\n        factors.add(2)\n  \
+          \      n //= 2\n    for i in range(3, int(math.sqrt(n)) + 1, 2):\n     \
+          \   while n % i == 0:\n            factors.add(i)\n            n //= i\n\
+          \    if n > 2:\n        factors.add(n)\n    return list(factors)\n\ndef\
+          \ main(grid: List[List[int]]) -> Tuple[int, List[int]]:\n    with concurrent.futures.ThreadPoolExecutor()\
+          \ as executor:\n        futures = {executor.submit(prime_factors, grid[i][j]):\
+          \ (i, j) for i in range(len(grid)) for j in range(len(grid[0]))}\n     \
+          \   prime_factors_set = defaultdict(int)\n        for future in concurrent.futures.as_completed(futures):\n\
+          \            i, j = futures[future]\n            try:\n                factors\
+          \ = future.result()\n                for factor in factors:\n          \
+          \          prime_factors_set[factor] += 1\n            except Exception\
+          \ as e:\n                print(f\"Error: {e}\")\n\n    if not grid or not\
+          \ grid[0]:\n        return 0, []\n\n    rows, cols = len(grid), len(grid[0])\n\
+          \    dp = [[0] * cols for _ in range(rows)]\n    dp[0][0] = grid[0][0]\n\
+          \n    for i in range(1, rows):\n        dp[i][0] = dp[i - 1][0] + grid[i][0]\n\
+          \    for j in range(1, cols):\n        dp[0][j] = dp[0][j - 1] + grid[0][j]\n\
+          \n    for i in range(1, rows):\n        for j in range(1, cols):\n     \
+          \       dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]\n\n    total_sum\
+          \ = dp[rows - 1][cols - 1]\n    unique_primes = sorted(prime_factors_set.keys())\n\
+          \    return total_sum, unique_primes\n\ngrid = [[3, 8], [4, 7]]\nresult\
+          \ = main(grid)\nprint(result) if result else print(\"Result is None\")"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Replace the use of a ThreadPoolExecutor in the ''main''
+          function in the ''code'' key with an asynchronous event loop, employing
+          asyncio to handle concurrent prime factorization tasks', 'Revert the ''main''
+          function to use synchronous execution with ThreadPoolExecutor, restoring
+          the original threading logic for prime factorization.']
+      middle_state:
+        description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+          \ and Factorization\n\n**Description:** \nYou are tasked with finding the\
+          \ shortest path in a multi-dimensional grid where each cell contains a positive\
+          \ integer. The challenge is to compute the path while simultaneously factoring\
+          \ the integers in the path using asynchronous computations. The grid is\
+          \ represented as a list of lists, where each sub-list is a row of the grid.\
+          \ \n\nThe path can only be traversed in the right or down directions, and\
+          \ you must also keep track of the prime factors of the numbers in the path.\
+          \ The output should return the total sum of the path values and a list of\
+          \ the unique prime factors encountered along the way.\n\nImplement a function\
+          \ `main(grid: List[List[int]]) -> Tuple[int, List[int]]` that computes this.\n\
+          \n**Example Input:**\n```\ngrid = [[2, 3],\n        [5, 7]]\n```\n\n**Example\
+          \ Output:**\n```\n(12, [2, 3, 5, 7])\n```\n\n**Constraints:**\n- The grid\
+          \ will have dimensions up to 100x100.\n- Each integer in the grid will be\
+          \ between 1 and 10^6.\n"
+        code: "import asyncio\nfrom typing import List, Tuple\nfrom collections import\
+          \ defaultdict\n\ndef prime_factors(n: int) -> List[int]:\n    factors =\
+          \ set()\n    while n % 2 == 0:\n        factors.add(2)\n        n //= 2\n\
+          \    for i in range(3, int(math.sqrt(n)) + 1, 2):\n        while n % i ==\
+          \ 0:\n            factors.add(i)\n            n //= i\n    if n > 2:\n \
+          \       factors.add(n)\n    return list(factors)\n\nasync def async_prime_factorization(value:\
+          \ int) -> List[int]:\n    return prime_factors(value)\n\nasync def main(grid:\
+          \ List[List[int]]) -> Tuple[int, List[int]]:\n    if not grid or not grid[0]:\n\
+          \        return 0, []\n\n    rows, cols = len(grid), len(grid[0])\n    dp\
+          \ = [[0] * cols for _ in range(rows)]\n    dp[0][0] = grid[0][0]\n\n   \
+          \ for i in range(1, rows):\n        dp[i][0] = dp[i - 1][0] + grid[i][0]\n\
+          \    for j in range(1, cols):\n        dp[0][j] = dp[0][j - 1] + grid[0][j]\n\
+          \n    for i in range(1, rows):\n        for j in range(1, cols):\n     \
+          \       dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]\n\n    total_sum\
+          \ = dp[rows - 1][cols - 1]\n    prime_factors_set = defaultdict(int)\n\n\
+          \    tasks = [asyncio.create_task(async_prime_factorization(grid[i][j]))\
+          \ for i in range(rows) for j in range(cols)]\n    for task in asyncio.as_completed(tasks):\n\
+          \        factors = await task\n        for factor in factors:\n        \
+          \    prime_factors_set[factor] += 1\n\n    unique_primes = sorted(prime_factors_set.keys())\n\
+          \    return total_sum, unique_primes\n\nasync def run_main(grid: List[List[int]])\
+          \ -> Tuple[int, List[int]]:\n    try:\n        result = await main(grid)\n\
+          \        return result\n    except Exception as e:\n        print(f\"Error:\
+          \ {e}\")\n        return None\n\ngrid = [[3, 8], [4, 7]]\nloop = asyncio.get_event_loop()\n\
+          result = loop.run_until_complete(run_main(grid))\nprint(result) if result\
+          \ else print(\"Result is None\")"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+            \ and Factorization\n\n**Description:** \nYou are tasked with finding\
+            \ the shortest path in a multi-dimensional grid where each cell contains\
+            \ a positive integer. The challenge is to compute the path while simultaneously\
+            \ factoring the integers in the path using asynchronous computations.\
+            \ The grid is represented as a list of lists, where each sub-list is a\
+            \ row of the grid. \n\nThe path can only be traversed in the right or\
+            \ down directions, and you must also keep track of the prime factors of\
+            \ the numbers in the path. The output should return the total sum of the\
+            \ path values and a list of the unique prime factors encountered along\
+            \ the way.\n\nImplement a function `main(grid: List[List[int]]) -> Tuple[int,\
+            \ List[int]]` that computes this.\n\n**Example Input:**\n```\ngrid = [[2,\
+            \ 3],\n        [5, 7]]\n```\n\n**Example Output:**\n```\n(12, [2, 3, 5,\
+            \ 7])\n```\n\n**Constraints:**\n- The grid will have dimensions up to\
+            \ 100x100.\n- Each integer in the grid will be between 1 and 10^6.\n"
+          code: "import concurrent.futures\nfrom typing import List, Tuple\nfrom collections\
+            \ import defaultdict\n\nclass PrimeFactors:\n    def __init__(self):\n\
+            \        self.prime_factors_set = defaultdict(int)\n\n    def get_prime_factors(self,\
+            \ n: int) -> None:\n        while n % 2 == 0:\n            self.prime_factors_set[2]\
+            \ += 1\n            n //= 2\n        for i in range(3, int(n ** 0.5) +\
+            \ 1, 2):\n            while n % i == 0:\n                self.prime_factors_set[i]\
+            \ += 1\n                n //= i\n        if n > 2:\n            self.prime_factors_set[n]\
+            \ += 1\n\n    def get_total_prime_factors(self) -> List[Tuple[int, int]]:\n\
+            \        return list(self.prime_factors_set.items())\n\ndef get_prime_factors(grid:\
+            \ List[List[int]]) -> Tuple[Dict[int, int], List[Tuple[int, int]]]:\n\
+            \    prime_factors = PrimeFactors()\n    with concurrent.futures.ThreadPoolExecutor()\
+            \ as executor:\n        futures = {executor.submit(prime_factors.get_prime_factors,\
+            \ grid[i][j]): (i, j) for i in range(len(grid)) for j in range(len(grid[0]))}\n\
+            \n    return prime_factors.prime_factors_set\n\ndef get_total_sum(grid:\
+            \ List[List[int]]) -> int:\n    return sum(sum(row) for row in grid)\n\
+            \ndef get_unique_primes(prime_factors: Dict[int, int]) -> List[int]:\n\
+            \    return sorted([prime for prime, count in prime_factors.items() if\
+            \ count > 0])\n\ndef main(grid: List[List[int]]) -> Tuple[int, List[int]]:\n\
+            \    total_sum = get_total_sum(grid)\n    prime_factors_dict = get_prime_factors(grid)\n\
+            \    unique_primes = get_unique_primes(prime_factors_dict)\n\n    rows,\
+            \ cols = len(grid), len(grid[0])\n    dp = [[0] * cols for _ in range(rows)]\n\
+            \    dp[0][0] = grid[0][0]\n\n    for i in range(1, rows):\n        dp[i][0]\
+            \ = dp[i - 1][0] + grid[i][0]\n    for j in range(1, cols):\n        dp[0][j]\
+            \ = dp[0][j - 1] + grid[0][j]\n\n    for i in range(1, rows):\n      \
+            \  for j in range(1, cols):\n            dp[i][j] = min(dp[i - 1][j],\
+            \ dp[i][j - 1]) + grid[i][j]\n\n    return total_sum, unique_primes\n\n\
+            grid = [[3, 8], [4, 7]]\nresult = main(grid)\nprint(result) if result\
+            \ else print(\"Result is None\")"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Refactor the ''main'' function in the ''code''
+            key to utilize a single-pass algorithm that computes the total sum and
+            unique prime factors simultaneously, using a custom class to encapsulate
+            state', Restore the original 'main' function by separating the logic into
+            distinct operations that calculate the total sum and unique prime factors
+            in separate passes.]
+        middle_state:
+          description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+            \ and Factorization\n\n**Description:** \nYou are tasked with finding\
+            \ the shortest path in a multi-dimensional grid where each cell contains\
+            \ a positive integer. The challenge is to compute the path while simultaneously\
+            \ factoring the integers in the path using asynchronous computations.\
+            \ The grid is represented as a list of lists, where each sub-list is a\
+            \ row of the grid. \n\nThe path can only be traversed in the right or\
+            \ down directions, and you must also keep track of the prime factors of\
+            \ the numbers in the path. The output should return the total sum of the\
+            \ path values and a list of the unique prime factors encountered along\
+            \ the way.\n\nImplement a function `main(grid: List[List[int]]) -> Tuple[int,\
+            \ List[int]]` that computes this.\n\n**Example Input:**\n```\ngrid = [[2,\
+            \ 3],\n        [5, 7]]\n```\n\n**Example Output:**\n```\n(12, [2, 3, 5,\
+            \ 7])\n```\n\n**Constraints:**\n- The grid will have dimensions up to\
+            \ 100x100.\n- Each integer in the grid will be between 1 and 10^6.\n"
+          code: "import concurrent.futures\nfrom typing import List, Tuple\n\nclass\
+            \ PrimeFactors:\n    def __init__(self):\n        self.prime_factors_set\
+            \ = defaultdict(int)\n\n    def process_number(self, n: int) -> None:\n\
+            \        while n % 2 == 0:\n            self.prime_factors_set[2] += 1\n\
+            \            n //= 2\n        for i in range(3, int(n ** 0.5) + 1, 2):\n\
+            \            while n % i == 0:\n                self.prime_factors_set[i]\
+            \ += 1\n                n //= i\n        if n > 2:\n            self.prime_factors_set[n]\
+            \ += 1\n\ndef main(grid: List[List[int]]) -> Tuple[int, List[int]]:\n\
+            \    prime_factors = PrimeFactors()\n    with concurrent.futures.ThreadPoolExecutor()\
+            \ as executor:\n        futures = {executor.submit(prime_factors.process_number,\
+            \ grid[i][j]): (i, j) for i in range(len(grid)) for j in range(len(grid[0]))}\n\
+            \n    if not grid or not grid[0]:\n        return 0, []\n\n    rows, cols\
+            \ = len(grid), len(grid[0])\n    total_sum = sum(sum(row) for row in grid)\n\
+            \    unique_primes = sorted([prime for prime, count in prime_factors.prime_factors_set.items()\
+            \ if count > 0])\n\n    dp = [[0] * cols for _ in range(rows)]\n    dp[0][0]\
+            \ = grid[0][0]\n\n    for i in range(1, rows):\n        dp[i][0] = dp[i\
+            \ - 1][0] + grid[i][0]\n    for j in range(1, cols):\n        dp[0][j]\
+            \ = dp[0][j - 1] + grid[0][j]\n\n    for i in range(1, rows):\n      \
+            \  for j in range(1, cols):\n            dp[i][j] = min(dp[i - 1][j],\
+            \ dp[i][j - 1]) + grid[i][j]\n\n    return total_sum, unique_primes\n\n\
+            grid = [[3, 8], [4, 7]]\nresult = main(grid)\nprint(result) if result\
+            \ else print(\"Result is None\")"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+            \ and Factorization\n\n**Description:** \nYou are tasked with finding\
+            \ the shortest path in a multi-dimensional grid where each cell contains\
+            \ a positive integer. The challenge is to compute the path while simultaneously\
+            \ factoring the integers in the path using asynchronous computations.\
+            \ The grid is represented as a list of lists, where each sub-list is a\
+            \ row of the grid. \n\nThe path can only be traversed in the right or\
+            \ down directions, and you must also keep track of the prime factors of\
+            \ the numbers in the path. The output should return the total sum of the\
+            \ path values and a list of the unique prime factors encountered along\
+            \ the way.\n\nImplement a function `main(grid: List[List[int]]) -> Tuple[int,\
+            \ List[int]]` that computes this.\n\n**Example Input:**\n```\ngrid = [[2,\
+            \ 3],\n        [5, 7]]\n```\n\n**Example Output:**\n```\n(12, [2, 3, 5,\
+            \ 7])\n```\n\n**Constraints:**\n- The grid will have dimensions up to\
+            \ 100x100.\n- Each integer in the grid will be between 1 and 10^6.\n"
+          code: "import concurrent.futures\nfrom typing import List, Tuple\nfrom collections\
+            \ import defaultdict\nimport math\n\ndef prime_factors(n: int) -> List[int]:\n\
+            \    factors = set()\n    while n % 2 == 0:\n        factors.add(2)\n\
+            \        n //= 2\n    for i in range(3, int(math.sqrt(n)) + 1, 2):\n \
+            \       while n % i == 0:\n            factors.add(i)\n            n //=\
+            \ i\n    if n > 2:\n        factors.add(n)\n    return list(factors)\n\
+            \ndef main(grid: List[List[int]]) -> Tuple[int, List[int]]:\n    with\
+            \ concurrent.futures.ThreadPoolExecutor() as executor:\n        tasks\
+            \ = []\n        prime_factors_set = defaultdict(int)\n        for i in\
+            \ range(len(grid)):\n            for j in range(len(grid[0])):\n     \
+            \           task = executor.submit(prime_factors, grid[i][j])\n      \
+            \          tasks.append((task, (i, j)))\n\n        results = [future.result()\
+            \ for future, _ in tasks]\n        for factors, (_, _) in zip(results,\
+            \ tasks):\n            for factor in factors:\n                prime_factors_set[factor]\
+            \ += 1\n\n    if not grid or not grid[0]:\n        return 0, []\n\n  \
+            \  rows, cols = len(grid), len(grid[0])\n    dp = [[0] * cols for _ in\
+            \ range(rows)]\n    dp[0][0] = grid[0][0]\n\n    for i in range(1, rows):\n\
+            \        dp[i][0] = dp[i - 1][0] + grid[i][0]\n    for j in range(1, cols):\n\
+            \        dp[0][j] = dp[0][j - 1] + grid[0][j]\n\n    for i in range(1,\
+            \ rows):\n        for j in range(1, cols):\n            dp[i][j] = min(dp[i\
+            \ - 1][j], dp[i][j - 1]) + grid[i][j]\n\n    total_sum = dp[rows - 1][cols\
+            \ - 1]\n    unique_primes = sorted(prime_factors_set.keys())\n    return\
+            \ total_sum, unique_primes\n\ndef main_wrapper():\n    grid = [[3, 8],\
+            \ [4, 7]]\n    result = main(grid)\n    print(result) if result else print(\"\
+            Result is None\")\n\nif __name__ == \"__main__\":\n    main_wrapper()"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Replace the use of a ThreadPoolExecutor in the
+            ''main'' function in the ''code'' key with an asynchronous event loop,
+            employing asyncio to handle concurrent prime factorization tasks', 'Revert
+            the ''main'' function to use synchronous execution with ThreadPoolExecutor,
+            restoring the original threading logic for prime factorization.']
+        middle_state:
+          description: "**Problem Title:** Asynchronous Multi-Dimensional Pathfinding\
+            \ and Factorization\n\n**Description:** \nYou are tasked with finding\
+            \ the shortest path in a multi-dimensional grid where each cell contains\
+            \ a positive integer. The challenge is to compute the path while simultaneously\
+            \ factoring the integers in the path using asynchronous computations.\
+            \ The grid is represented as a list of lists, where each sub-list is a\
+            \ row of the grid. \n\nThe path can only be traversed in the right or\
+            \ down directions, and you must also keep track of the prime factors of\
+            \ the numbers in the path. The output should return the total sum of the\
+            \ path values and a list of the unique prime factors encountered along\
+            \ the way.\n\nImplement a function `main(grid: List[List[int]]) -> Tuple[int,\
+            \ List[int]]` that computes this.\n\n**Example Input:**\n```\ngrid = [[2,\
+            \ 3],\n        [5, 7]]\n```\n\n**Example Output:**\n```\n(12, [2, 3, 5,\
+            \ 7])\n```\n\n**Constraints:**\n- The grid will have dimensions up to\
+            \ 100x100.\n- Each integer in the grid will be between 1 and 10^6.\n"
+          code: "import asyncio\nfrom typing import List, Tuple\nfrom collections\
+            \ import defaultdict\nimport math\n\nasync def prime_factors(n: int) ->\
+            \ List[int]:\n    factors = set()\n    while n % 2 == 0:\n        factors.add(2)\n\
+            \        n //= 2\n    for i in range(3, int(math.sqrt(n)) + 1, 2):\n \
+            \       while n % i == 0:\n            factors.add(i)\n            n //=\
+            \ i\n    if n > 2:\n        factors.add(n)\n    return list(factors)\n\
+            \nasync def main(grid: List[List[int]]) -> Tuple[int, List[int]]:\n  \
+            \  tasks = []\n    prime_factors_set = defaultdict(int)\n    for i in\
+            \ range(len(grid)):\n        for j in range(len(grid[0])):\n         \
+            \   task = asyncio.create_task(prime_factors(grid[i][j]))\n          \
+            \  tasks.append((task, (i, j)))\n\n    results = await asyncio.gather(*tasks)\n\
+            \    for future, (i, j) in results:\n        try:\n            factors\
+            \ = future.result()\n            for factor in factors:\n            \
+            \    prime_factors_set[factor] += 1\n        except Exception as e:\n\
+            \            print(f\"Error: {e}\")\n\n    if not grid or not grid[0]:\n\
+            \        return 0, []\n\n    rows, cols = len(grid), len(grid[0])\n  \
+            \  dp = [[0] * cols for _ in range(rows)]\n    dp[0][0] = grid[0][0]\n\
+            \n    for i in range(1, rows):\n        dp[i][0] = dp[i - 1][0] + grid[i][0]\n\
+            \    for j in range(1, cols):\n        dp[0][j] = dp[0][j - 1] + grid[0][j]\n\
+            \n    for i in range(1, rows):\n        for j in range(1, cols):\n   \
+            \         dp[i][j] = min(dp[i - 1][j], dp[i][j - 1]) + grid[i][j]\n\n\
+            \    total_sum = dp[rows - 1][cols - 1]\n    unique_primes = sorted(prime_factors_set.keys())\n\
+            \    return total_sum, unique_primes\n\nasync def main_wrapper():\n  \
+            \  grid = [[3, 8], [4, 7]]\n    result = await main(grid)\n    print(result)\
+            \ if result else print(\"Result is None\")\n\nasyncio.run(main_wrapper())"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []

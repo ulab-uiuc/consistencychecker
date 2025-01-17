@@ -1,0 +1,531 @@
+evaluator_model: {model: 'ollama_chat/llama3.1:8b-instruct-fp16', temperature: 0.6,
+  api_base: 'http://localhost:11434'}
+evaluatee_model: {model: 'ollama_chat/llama3.1:8b-instruct-fp16', temperature: 0.6,
+  api_base: 'http://localhost:11434'}
+root_content: &id001
+  description: '**Fractal Tree Construction**
+
+    Given an integer `n` representing the height of a fractal tree, and a list of
+    `m` integers representing the possible branch lengths at each level, construct
+    the corresponding fractal tree as a string.
+
+    The tree is constructed by recursively adding branches to the right and left sides
+    of the trunk. At each level, the length of the branches is chosen randomly from
+    the given list.
+
+    The resulting string should represent the constructed fractal tree, with each
+    character representing a branch or a space.
+
+    '
+  code: "import random\n\ndef main(n, m, branch_lengths):\n    if n == 0:\n      \
+    \  return \"\"\n    else:\n        tree = \"\"\n        for _ in range(2 * n):\n\
+    \            tree += \" \"\n        for i in range(n):\n            branch_length\
+    \ = random.choice(branch_lengths)\n            tree = tree[:i * (branch_length\
+    \ + 1)] + \"*\" + tree[i * (branch_length + 1):]\n            tree = tree[:len(tree)\
+    \ // 2] + \"+\" + tree[len(tree) // 2:]\n        return tree\n"
+  programming_language: python3
+  inputs: &id002
+  - n: 5
+    m: 3
+    branch_lengths: [2, 4, 6]
+  - n: 10
+    m: 2
+    branch_lengths: [1, 3]
+  - n: 0
+    m: 5
+    branch_lengths: [7, 9, 11, 13, 15]
+  - n: 20
+    m: 4
+    branch_lengths: [5, 10, 15, 20]
+  - n: 1
+    m: 2
+    branch_lengths: [3, 6]
+  - n: 3
+    m: 1
+    branch_lengths: [8]
+  - n: 7
+    m: 4
+    branch_lengths: [2, 5, 12, 18]
+  - n: 15
+    m: 3
+    branch_lengths: [9, 14, 21]
+  - n: 25
+    m: 2
+    branch_lengths: [11, 16]
+  - n: 35
+    m: 5
+    branch_lengths: [13, 17, 19, 23, 29]
+  - n: 45
+    m: 4
+    branch_lengths: [7, 12, 18, 24]
+  - n: 55
+    m: 3
+    branch_lengths: [15, 20, 25]
+  - n: 65
+    m: 2
+    branch_lengths: [19, 26]
+  - n: 75
+    m: 5
+    branch_lengths: [21, 22, 24, 28, 32]
+  - n: 85
+    m: 4
+    branch_lengths: [23, 27, 31, 37]
+  - n: 95
+    m: 3
+    branch_lengths: [25, 30, 35]
+  - n: 105
+    m: 2
+    branch_lengths: [29, 36]
+  - n: 115
+    m: 5
+    branch_lengths: [31, 33, 34, 38, 42]
+  - n: 125
+    m: 4
+    branch_lengths: [33, 37, 41, 47]
+  exec_results: &id003 ['*    **+++++     * *', '* * *   *   * ***+*+++++++++ *          ',
+    '', '*                   ++++++++++++++++++++*         *            *****************',
+    '*+  ', '*  +++    **', '*  *    +++++++        *****', '*              *+++++++++++++++  *              ************',
+    '*           *             +++++++++++++++++++++++++      **          *          ********************',
+    '*                       *           +++++++++++++++++++++++++++++++++++          *    *             *         ******************************',
+    '*                  *            *      **        +++++++++++++++++++++++++++++++++++++++++++++              *      *     *                     *************************************',
+    '*               *                         *              +++++++++++++++++++++++++++++++++++++++++++++++++++++++   *              *
+      *            *              *            ***********************************************',
+    '*                   *                   *                   *       +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++                                    *                         *     ***********************************************************',
+    '*                     *                     *                                +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++       *                           *                   *        *               ********************************************************************',
+    '*                                     *                 *                              +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++                     *   *  *                                             *               ******************************************************************************',
+    '*                         *                                   *                                  +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++        *              *                             *                         *                    ****************************************************************************************',
+    '*                             *                                           *               *                 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++        *                            *                                                                      ***************************************************************************************************',
+    '*                                      *                                      *                                      +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++         *         *                  *                                                             *           *        ***********************************************************************************************************',
+    '*                                 *                                         *                                     *             +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++                                                            *                *                *                                  **********************************************************************************************************************']
+operations:
+- !!python/tuple ['Transform the ''main'' function to use a recursive descent parser
+    instead of a simple iterative approach, utilizing the ''branch_lengths'' list
+    as input parameters', 'Rewrite the ''main'' function to use a stack-based iterative
+    approach, reconstituting the original logic and variable names.']
+- !!python/tuple ['Utilize a domain-specific language (DSL) framework within the ''code''
+    key to define an abstract syntax tree (AST) for the tree construction process,
+    leveraging the ''branch_lengths'' list as input parameters', 'Reimplement the
+    DSL framework with a procedural implementation, translating the AST back into
+    a sequential program that matches the original logic and behavior.']
+metrics:
+  L-1 AVG: 0.9999992914826973
+  L-1: [1.0, 1.0, 0.9999993036070619, 0.9999982061663883, 0.9999982391227332, 1.0]
+  L-2 AVG: 0.9999998259017655
+  L-2: [0.9999993036070619, 1.0, 1.0, 1.0]
+  L-3 AVG: 0.0
+  L-3: []
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '**Fractal Tree Construction**
+
+          Given an integer `n` representing the height of a fractal tree, and a list
+          of `m` integers representing the possible branch lengths at each level,
+          construct the corresponding fractal tree as a string.
+
+          The tree is constructed by recursively adding branches to the right and
+          left sides of the trunk. At each level, the length of the branches is chosen
+          randomly from the given list.
+
+          The resulting string should represent the constructed fractal tree, with
+          each character representing a branch or a space.
+
+          '
+        code: "import random\nimport string\n\ndef main(branch_lengths):\n    stack\
+          \ = []\n    n = 10\n    while n > 0:\n        for _ in range(2 * n):\n \
+          \           stack.append(\" \")\n        for i in range(n):\n          \
+          \  branch_length = random.choice(branch_lengths)\n            stack.extend([\"\
+          *\", \"+\"])\n            stack.extend([\" \"]*branch_length)\n        n\
+          \ -= 1\n\n    return \"\".join(stack)\n\nprint(main([5, 3]))"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Transform the ''main'' function to use a recursive
+          descent parser instead of a simple iterative approach, utilizing the ''branch_lengths''
+          list as input parameters', 'Rewrite the ''main'' function to use a stack-based
+          iterative approach, reconstituting the original logic and variable names.']
+      middle_state:
+        description: '**Fractal Tree Construction**
+
+          Given an integer `n` representing the height of a fractal tree, and a list
+          of `m` integers representing the possible branch lengths at each level,
+          construct the corresponding fractal tree as a string.
+
+          The tree is constructed by recursively adding branches to the right and
+          left sides of the trunk. At each level, the length of the branches is chosen
+          randomly from the given list.
+
+          The resulting string should represent the constructed fractal tree, with
+          each character representing a branch or a space.
+
+          '
+        code: "import random\nimport string\n\ndef main(branch_lengths):\n    def\
+          \ parse_tree(n, tree=\"\"):\n        if n == 0:\n            return \"\"\
+          \n        else:\n            for _ in range(2 * n):\n                tree\
+          \ += \" \"\n            for i in range(n):\n                branch_length\
+          \ = random.choice(branch_lengths)\n                tree = tree[:i * (branch_length\
+          \ + 1)] + \"*\" + tree[i * (branch_length + 1):]\n                tree =\
+          \ tree[:len(tree) // 2] + \"+\" + tree[len(tree) // 2:]\n            return\
+          \ parse_tree(n-1, tree)\n\n    return parse_tree(n=10, tree=\"\")\n\nprint(main([5,\
+          \ 3]))"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '**Fractal Tree Construction**
+
+            Given an integer `n` representing the height of a fractal tree, and a
+            list of `m` integers representing the possible branch lengths at each
+            level, construct the corresponding fractal tree as a string.
+
+            The tree is constructed by recursively adding branches to the right and
+            left sides of the trunk. At each level, the length of the branches is
+            chosen randomly from the given list.
+
+            The resulting string should represent the constructed fractal tree, with
+            each character representing a branch or a space.
+
+            '
+          code: "function parseBranchLengths(branchLengths) {\n    if (branchLengths.length\
+            \ === 0) {\n        throw new SyntaxError(\"Expected branch lengths\"\
+            );\n    }\n}\n\nfunction parseStarPlus() {\n    return [\"*\", \"+\"];\n\
+            }\n\nfunction parseSpace(n, stack) {\n    if (n <= 0) {\n        throw\
+            \ new SyntaxError(\"Expected positive space length\");\n    }\n    for\
+            \ (let i = 0; i < n; i++) {\n        stack.push(\" \");\n    }\n}\n\n\
+            function main(branchLengths) {\n    let stack = [];\n    let n = 10;\n\
+            \    while (n > 0) {\n        parseSpace(2 * n, stack);\n        const\
+            \ branchLength = random.choice(branchLengths);\n        stack.push(\"\
+            *\");\n        stack.push(\"+\");\n        parseSpace(branchLength, stack);\n\
+            \        n -= 1;\n    }\n    return stack.join(\"\");\n}\n\nconsole.log(main([5,\
+            \ 3]));"
+          programming_language: javascript
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Transform the ''main'' function to use a recursive
+            descent parser instead of a simple iterative approach, utilizing the ''branch_lengths''
+            list as input parameters', 'Rewrite the ''main'' function to use a stack-based
+            iterative approach, reconstituting the original logic and variable names.']
+        middle_state:
+          description: '**Fractal Tree Construction**
+
+            Given an integer `n` representing the height of a fractal tree, and a
+            list of `m` integers representing the possible branch lengths at each
+            level, construct the corresponding fractal tree as a string.
+
+            The tree is constructed by recursively adding branches to the right and
+            left sides of the trunk. At each level, the length of the branches is
+            chosen randomly from the given list.
+
+            The resulting string should represent the constructed fractal tree, with
+            each character representing a branch or a space.
+
+            '
+          code: "import random\nimport string\n\ndef parse_branch_lengths(branch_lengths):\n\
+            \    if len(branch_lengths) == 0:\n        raise SyntaxError(\"Expected\
+            \ branch lengths\")\n\ndef parse_star_plus():\n    return [\"*\", \"+\"\
+            ]\n\ndef parse_space(n):\n    if n <= 0:\n        raise SyntaxError(\"\
+            Expected positive space length\")\n    return [\" \"]*n\n\ndef main(branch_lengths):\n\
+            \    stack = []\n    n = 10\n    while n > 0:\n        for _ in range(2\
+            \ * n):\n            stack.append(\" \")\n        branch_length = random.choice(branch_lengths)\n\
+            \        stack.extend(parse_star_plus())\n        stack.extend(parse_space(branch_length))\n\
+            \        n -= 1\n\n    return \"\".join(stack)\n\nprint(main([5, 3]))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '**Fractal Tree Construction**
+
+            Given an integer `n` representing the height of a fractal tree, and a
+            list of `m` integers representing the possible branch lengths at each
+            level, construct the corresponding fractal tree as a string.
+
+            The tree is constructed by recursively adding branches to the right and
+            left sides of the trunk. At each level, the length of the branches is
+            chosen randomly from the given list.
+
+            The resulting string should represent the constructed fractal tree, with
+            each character representing a branch or a space.
+
+            '
+          code: "import random\n\ndef construct_sequential_program(branch_lengths):\n\
+            \    program = []\n    n = 10\n    while n > 0:\n        for _ in range(2\
+            \ * n):\n            program.append('print(\" \")')\n        for i in\
+            \ range(n):\n            branch_length = random.choice(branch_lengths)\n\
+            \            program.extend([\n                f\"for _ in range({branch_length}):\"\
+            ,\n                \"    print('*', end='')\",\n                \"print('+',\
+            \ end='')\",\n                \"print()\",\n            ])\n        n\
+            \ -= 1\n\n    return \"\\n\".join(program)\n\nprint(construct_sequential_program([5,\
+            \ 3]))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Utilize a domain-specific language (DSL) framework
+            within the ''code'' key to define an abstract syntax tree (AST) for the
+            tree construction process, leveraging the ''branch_lengths'' list as input
+            parameters', 'Reimplement the DSL framework with a procedural implementation,
+            translating the AST back into a sequential program that matches the original
+            logic and behavior.']
+        middle_state:
+          description: '**Fractal Tree Construction**
+
+            Given an integer `n` representing the height of a fractal tree, and a
+            list of `m` integers representing the possible branch lengths at each
+            level, construct the corresponding fractal tree as a string.
+
+            The tree is constructed by recursively adding branches to the right and
+            left sides of the trunk. At each level, the length of the branches is
+            chosen randomly from the given list.
+
+            The resulting string should represent the constructed fractal tree, with
+            each character representing a branch or a space.
+
+            '
+          code: "from enum import Enum\nimport random\n\nclass TreeNode(Enum):\n \
+            \   SPACE = 0\n    STAR = 1\n    PLUS = 2\n\nclass AST:\n    def __init__(self):\n\
+            \        self.tree = []\n\n    def add_space(self, count):\n        for\
+            \ _ in range(count):\n            self.tree.append(TreeNode.SPACE)\n\n\
+            \    def add_star_plus(self):\n        self.tree.extend([TreeNode.STAR,\
+            \ TreeNode.PLUS])\n\n    def add_branch(self, length):\n        self.add_star_plus()\n\
+            \        self.add_space(length)\n\ndef construct_tree(branch_lengths):\n\
+            \    ast = AST()\n    n = 10\n    while n > 0:\n        for _ in range(2\
+            \ * n):\n            ast.add_space(1)\n        for i in range(n):\n  \
+            \          branch_length = random.choice(branch_lengths)\n           \
+            \ ast.add_branch(branch_length)\n        n -= 1\n\n    return ast.tree\n\
+            \nprint(construct_tree([5, 3]))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+    - &id006 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: '**Fractal Tree Construction**
+
+          Given an integer `n` representing the height of a fractal tree, and a list
+          of `m` integers representing the possible branch lengths at each level,
+          construct the corresponding fractal tree as a string.
+
+          The tree is constructed by recursively adding branches to the right and
+          left sides of the trunk. At each level, the length of the branches is chosen
+          randomly from the given list.
+
+          The resulting string should represent the constructed fractal tree, with
+          each character representing a branch or a space.
+
+          '
+        code: "import random\n\ndef main(n, m, branch_lengths):\n    if n == 0:\n\
+          \        return \"leaf\"\n    \n    tree = []\n    for _ in range(2 * n):\n\
+          \        tree.append(\"space\")\n        \n    for i in range(n):\n    \
+          \    branch_length = random.choice(branch_lengths)\n        node = \"*\"\
+          \n        index = len(tree) - 1 - (i * (branch_length + 1))\n        if\
+          \ index >= 0:\n            tree[index] = f\"({tree[index]} {node} (branch))\"\
+          \n        else:\n            tree.insert(index, node)\n            \n  \
+          \  root_node = f\"+ ({' '.join(tree[:-n])})\"\n    return root_node"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Utilize a domain-specific language (DSL) framework
+          within the ''code'' key to define an abstract syntax tree (AST) for the
+          tree construction process, leveraging the ''branch_lengths'' list as input
+          parameters', 'Reimplement the DSL framework with a procedural implementation,
+          translating the AST back into a sequential program that matches the original
+          logic and behavior.']
+      middle_state:
+        description: '**Fractal Tree Construction**
+
+          Given an integer `n` representing the height of a fractal tree, and a list
+          of `m` integers representing the possible branch lengths at each level,
+          construct the corresponding fractal tree as a string.
+
+          The tree is constructed by recursively adding branches to the right and
+          left sides of the trunk. At each level, the length of the branches is chosen
+          randomly from the given list.
+
+          The resulting string should represent the constructed fractal tree, with
+          each character representing a branch or a space.
+
+          '
+        code: "import random\nfrom dataclasses import dataclass\n\n@dataclass\nclass\
+          \ ASTNode:\n    value: str\n    children: list\n\ndef main(n, m, branch_lengths):\n\
+          \    if n == 0:\n        return ASTNode(\"leaf\", [])\n    \n    tree =\
+          \ []\n    for _ in range(2 * n):\n        tree.append(ASTNode(\"space\"\
+          , []))\n        \n    for i in range(n):\n        branch_length = random.choice(branch_lengths)\n\
+          \        node = ASTNode(\"*\", [ASTNode(\"branch\", [])])\n        index\
+          \ = len(tree) - 1 - (i * (branch_length + 1))\n        if index >= 0:\n\
+          \            tree[index].children.append(node)\n        else:\n        \
+          \    tree.insert(index, node)\n            \n    root_node = ASTNode(\"\
+          +\", tree[:-n])\n    return root_node"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '**Fractal Tree Construction**
+
+            Given an integer `n` representing the height of a fractal tree, and a
+            list of `m` integers representing the possible branch lengths at each
+            level, construct the corresponding fractal tree as a string.
+
+            The tree is constructed by recursively adding branches to the right and
+            left sides of the trunk. At each level, the length of the branches is
+            chosen randomly from the given list.
+
+            The resulting string should represent the constructed fractal tree, with
+            each character representing a branch or a space.
+
+            '
+          code: "import random\n\nstack = []\n\ndef parse_factor(branch_factors):\n\
+            \    if len(stack) == 0 or stack.pop() != \"leaf\":\n        raise Exception(\"\
+            Unexpected input\")\n    return f\"({random.choice(branch_factors)})\"\
+            \n\ndef parse_expression(factor, branch_lengths):\n    global stack\n\
+            \    \n    while len(stack) > 0 and stack[-1] in [\"leaf\", \"+\"]:\n\
+            \        if stack[-1] == \"leaf\":\n            stack.pop()\n        else:\n\
+            \            right = stack.pop()\n            operator = stack.pop()\n\
+            \            left = stack.pop()\n            stack.append(f\"({left} {operator}\
+            \ {right})\")\n    \n    while len(stack) > 0 and \"(\" in stack[-1]:\n\
+            \        factor = stack.pop()\n        if factor == \"(\":\n         \
+            \   stack.append(factor)\n        else:\n            break\n    \n   \
+            \ stack.append(\"*\")\n    stack.append(parse_factor(branch_lengths))\n\
+            \    stack.append(\"(\")\n    stack.append(f\"branch\")\n    stack.append(\"\
+            )\")\n    \ndef parse_tree(n, m, branch_factors):\n    global stack\n\
+            \    \n    for _ in range(2 * n):\n        stack.append(\"space\")\n \
+            \       \n    for i in range(n):\n        factor = parse_factor(branch_factors)\n\
+            \        while len(stack) > 0 and stack[-1] == \"space\":\n          \
+            \  stack.pop()\n        if len(stack) > 0 and isinstance(stack[-1], int):\n\
+            \            stack[-1] += branch_factors[i]\n        else:\n         \
+            \   stack.append(branch_factors[i])\n        \n    while len(stack) >\
+            \ 0 and \"(\" in stack[-1]:\n        factor = stack.pop()\n        if\
+            \ factor == \"(\":\n            stack.append(factor)\n        else:\n\
+            \            break\n    \n    root_node = \"+\"\n    while len(stack)\
+            \ > 0 and \"(\" in stack[-1]:\n        root_node = f\"({root_node} {stack.pop()})\"\
+            \n    \n    return root_node\n\ndef main(n, m, branch_lengths):\n    global\
+            \ stack\n    stack = []\n    return parse_tree(n, m, branch_lengths)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Transform the ''main'' function to use a recursive
+            descent parser instead of a simple iterative approach, utilizing the ''branch_lengths''
+            list as input parameters', 'Rewrite the ''main'' function to use a stack-based
+            iterative approach, reconstituting the original logic and variable names.']
+        middle_state:
+          description: '**Fractal Tree Construction**
+
+            Given an integer `n` representing the height of a fractal tree, and a
+            list of `m` integers representing the possible branch lengths at each
+            level, construct the corresponding fractal tree as a string.
+
+            The tree is constructed by recursively adding branches to the right and
+            left sides of the trunk. At each level, the length of the branches is
+            chosen randomly from the given list.
+
+            The resulting string should represent the constructed fractal tree, with
+            each character representing a branch or a space.
+
+            '
+          code: "import random\n\ndef parse_factor(branch_lengths):\n    if branch_lengths\
+            \ is None or not branch_factors:\n        raise Exception(\"Unexpected\
+            \ input\")\n    return f\"({random.choice(branch_lengths)})\"\n\ndef parse_expression(factor,\
+            \ branch_lengths):\n    if factor == \"leaf\":\n        return f\"leaf\"\
+            \n    elif \"(\" in factor and \")\" in factor:\n        return factor\n\
+            \    else:\n        return f\"* ({parse_factor(branch_lengths)} {factor}\
+            \ (branch))\"\n\ndef parse_tree(n, m, branch_lengths):\n    if n == 0:\n\
+            \        return \"leaf\"\n    \n    tree = []\n    for _ in range(2 *\
+            \ n):\n        tree.append(\"space\")\n        \n    for i in range(n):\n\
+            \        factor = parse_factor(branch_lengths)\n        index = len(tree)\
+            \ - 1 - (i * (branch_lengths[i] + 1))\n        if index >= 0:\n      \
+            \      tree[index] = f\"({tree[index]} {factor} (branch))\"\n        else:\n\
+            \            tree.insert(index, factor)\n            \n    root_node =\
+            \ f\"+ ({' '.join(tree[:-n])})\"\n    return root_node\n\ndef main(n,\
+            \ m, branch_lengths):\n    return parse_tree(n, m, branch_lengths)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: '**Fractal Tree Construction**
+
+            Given an integer `n` representing the height of a fractal tree, and a
+            list of `m` integers representing the possible branch lengths at each
+            level, construct the corresponding fractal tree as a string.
+
+            The tree is constructed by recursively adding branches to the right and
+            left sides of the trunk. At each level, the length of the branches is
+            chosen randomly from the given list.
+
+            The resulting string should represent the constructed fractal tree, with
+            each character representing a branch or a space.
+
+            '
+          code: "class NodeType {\n  static SPACE = \"space\";\n  static NODE = \"\
+            *\";\n}\n\nfunction Node(type, children = null, branchLength = 0) {\n\
+            \  return { type, children, branchLength };\n}\n\nfunction main(n, m,\
+            \ branchLengths) {\n  if (n === 0) {\n    return { type: NodeType.NODE\
+            \ };\n  }\n\n  let tree = [];\n  \n  for (let i = 0; i < 2 * n; i++) {\n\
+            \    tree.push({ type: NodeType.SPACE });\n  }\n  \n  for (let i = 0;\
+            \ i < n; i++) {\n    const branchLength = branchLengths[Math.floor(Math.random()\
+            \ * branchLengths.length)];\n    const node = { type: NodeType.NODE, children:\
+            \ [tree[2 * n - 1 - (i * (branchLength + 1))]] };\n    \n    if (tree[2\
+            \ * n - 1 - (i * (branchLength + 1))] !== null) {\n      tree[2 * n -\
+            \ 1 - (i * (branchLength + 1))].children.push(node);\n    } else {\n \
+            \     tree.splice(2 * n - 1 - (i * (branchLength + 1)), 0, node);\n  \
+            \  }\n  }\n  \n  return { type: NodeType.NODE, children: tree.slice(-n)\
+            \ };"
+          programming_language: javascript
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Utilize a domain-specific language (DSL) framework
+            within the ''code'' key to define an abstract syntax tree (AST) for the
+            tree construction process, leveraging the ''branch_lengths'' list as input
+            parameters', 'Reimplement the DSL framework with a procedural implementation,
+            translating the AST back into a sequential program that matches the original
+            logic and behavior.']
+        middle_state:
+          description: '**Fractal Tree Construction**
+
+            Given an integer `n` representing the height of a fractal tree, and a
+            list of `m` integers representing the possible branch lengths at each
+            level, construct the corresponding fractal tree as a string.
+
+            The tree is constructed by recursively adding branches to the right and
+            left sides of the trunk. At each level, the length of the branches is
+            chosen randomly from the given list.
+
+            The resulting string should represent the constructed fractal tree, with
+            each character representing a branch or a space.
+
+            '
+          code: "from dataclasses import dataclass\nfrom enum import Enum\nfrom typing\
+            \ import List\n\nclass NodeType(Enum):\n    SPACE = \"space\"\n    NODE\
+            \ = \"*\"\n\n@dataclass\nclass Node:\n    type: NodeType\n    children:\
+            \ List[\"Node\"] = None\n    branch_length: int = 0\n\ndef main(n, m,\
+            \ branch_lengths):\n    if n == 0:\n        return Node(NodeType.NODE)\n\
+            \n    tree = [Node(NodeType.SPACE) for _ in range(2 * n)]\n    \n    for\
+            \ i in range(n):\n        branch_length = random.choice(branch_lengths)\n\
+            \        node = Node(NodeType.NODE, children=[tree[-1 - (i * (branch_length\
+            \ + 1))]])\n        if tree[-1 - (i * (branch_length + 1))] is not None:\n\
+            \            tree[-1 - (i * (branch_length + 1))].children.append(node)\n\
+            \        else:\n            tree.insert(-1 - (i * (branch_length + 1)),\
+            \ node)\n            \n    return Node(NodeType.NODE, children=tree[:-n])"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []

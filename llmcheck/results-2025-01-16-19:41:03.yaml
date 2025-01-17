@@ -1,0 +1,582 @@
+evaluator_model: {model: 'ollama_chat/llama3.1:8b-instruct-fp16', temperature: 0.6,
+  api_base: 'http://localhost:11434'}
+evaluatee_model: {model: 'ollama_chat/llama3.1:8b-instruct-fp16', temperature: 0.6,
+  api_base: 'http://localhost:11434'}
+root_content: &id001
+  description: "# Fractal Forest Problem\n## Description\nYou are given a 2D grid\
+    \ representing a forest with trees of varying heights. Each cell in the grid contains\
+    \ a tree, and the height of each tree is represented by an integer value between\
+    \ 1 and 10 (inclusive). The goal is to find the maximum number of contiguous trees\
+    \ that form a fractal pattern.\n\nA fractal pattern is defined as a set of connected\
+    \ trees where each tree has at least one neighbor with a different height. Two\
+    \ trees are considered neighbors if they share an edge in the grid.\n\n## Example\n\
+    Input:\n  ```\n  [\n    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n  ```\n\
+    Output: 12\n\nThe maximum fractal pattern is formed by the trees with heights\
+    \ 3, 5, 6, 2, and 7.\n\n## Constraints\n- The grid will always contain at least\
+    \ one tree.\n- The height of each tree will be between 1 and 10 (inclusive).\n\
+    - The grid will not contain any cycles.\n"
+  code: "def main(grid):\n    def dfs(i, j):\n        if i < 0 or i >= len(grid) or\
+    \ j < 0 or j >= len(grid[0]) or visited[i][j]:\n            return 0\n       \
+    \ \n        h = grid[i][j]\n        neighbors = []\n        for x in range(max(0,\
+    \ i-1), min(len(grid), i+2)):\n            for y in range(max(0, j-1), min(len(grid[0]),\
+    \ j+2)):\n                if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+    \        \n        visited[i][j] = True\n        max_len = 1\n        for neighbor\
+    \ in neighbors:\n            if abs(h - neighbor) > 0:\n                max_len\
+    \ += dfs(i, j)\n        \n        return max_len\n    \n    rows, cols = len(grid),\
+    \ len(grid[0])\n    visited = [[False]*cols for _ in range(rows)]\n    \n    max_fractal\
+    \ = 0\n    for i in range(rows):\n        for j in range(cols):\n            if\
+    \ not visited[i][j]:\n                max_fractal = max(max_fractal, dfs(i, j))\n\
+    \    \n    return max_fractal\n"
+  programming_language: python3
+  inputs: &id002
+  - grid:
+    - [1, 2, 3]
+    - [4, 5, 6]
+    - [7, 8, 9]
+  - grid:
+    - [10, 20, 30]
+    - [40, 50, 60]
+    - [70, 80, 90]
+  - grid:
+    - [1, 2, 1]
+    - [2, 3, 2]
+    - [1, 2, 1]
+  - grid:
+    - [10, 20, 30, 40]
+    - [50, 60, 70, 80]
+    - [90, 100, 110, 120]
+    - [130, 140, 150, 160]
+  - grid:
+    - [1, 2, 3, 4, 5]
+    - [6, 7, 8, 9, 10]
+    - [11, 12, 13, 14, 15]
+    - [16, 17, 18, 19, 20]
+    - [21, 22, 23, 24, 25]
+  - grid:
+    - [1, 2, 3, 4, 5]
+    - [6, 7, 8, 9, 10]
+    - [11, 12, 13, 14, 15]
+    - [16, 17, 18, 19, 20]
+  - grid:
+    - [1, 2, 3, 4, 5, 6]
+    - [7, 8, 9, 10, 11, 12]
+    - [13, 14, 15, 16, 17, 18]
+    - [19, 20, 21, 22, 23, 24]
+  - grid:
+    - [1, 2, 3, 4, 5, 6]
+    - [7, 8, 9, 10, 11, 12]
+    - [13, 14, 15, 16, 17, 18]
+  - grid:
+    - [1, 2, 3, 4, 5, 6, 7, 8]
+    - [9, 10, 11, 12, 13, 14, 15, 16]
+    - [17, 18, 19, 20, 21, 22, 23, 24]
+    - [25, 26, 27, 28, 29, 30, 31, 32]
+  - grid:
+    - [1, 2, 3, 4, 5, 6, 7, 8]
+    - [9, 10, 11, 12, 13, 14, 15, 16]
+    - [17, 18, 19, 20, 21, 22, 23, 24]
+  - grid:
+    - [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    - [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+    - [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36]
+  - grid:
+    - [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    - [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+  - grid:
+    - [1, 2, 3]
+    - [4, 5, 6]
+    - [7, 8, 9]
+    - [10, 11, 12]
+    - [13, 14, 15]
+  - grid:
+    - [10, 20, 30, 40, 50, 60]
+    - [70, 80, 90, 100, 110, 120]
+    - [130, 140, 150, 160, 170, 180]
+    - [190, 200, 210, 220, 230, 240]
+    - [250, 260, 270, 280, 290, 300]
+  - grid:
+    - [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+      22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+  exec_results: &id003 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+operations:
+- !!python/tuple [Transform operation, Reverse operation]
+- !!python/tuple ['Replace recursive DFS calls in `dfs` function with memoization
+    using a nested dictionary to store intermediate results, utilizing advanced caching
+    techniques to reduce redundant computations', Revert the `dfs` function back to
+    its original implementation using recursive calls and remove the memoization dictionary]
+metrics:
+  L-1 AVG: 1.0
+  L-1: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-2 AVG: 0.9999996637384233
+  L-2: [1.0, 0.9999986549536932, 1.0, 1.0]
+  L-3 AVG: 0.0
+  L-3: []
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "# Fractal Forest Problem\n## Description\nYou are given a 2D\
+          \ grid representing a forest with trees of varying heights. Each cell in\
+          \ the grid contains a tree, and the height of each tree is represented by\
+          \ an integer value between 1 and 10 (inclusive). The goal is to find the\
+          \ maximum number of contiguous trees that form a fractal pattern.\n\nA fractal\
+          \ pattern is defined as a set of connected trees where each tree has at\
+          \ least one neighbor with a different height. Two trees are considered neighbors\
+          \ if they share an edge in the grid.\n\n## Example\nInput:\n  ```\n  [\n\
+          \    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n  ```\nOutput: 12\n\
+          \nThe maximum fractal pattern is formed by the trees with heights 3, 5,\
+          \ 6, 2, and 7.\n\n## Constraints\n- The grid will always contain at least\
+          \ one tree.\n- The height of each tree will be between 1 and 10 (inclusive).\n\
+          - The grid will not contain any cycles.\n"
+        code: "def transform(grid):\n    rows, cols = len(grid), len(grid[0])\n  \
+          \  visited = [[False]*cols for _ in range(rows)]\n    \n    def dfs(i, j):\n\
+          \        if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]) or visited[i][j]:\n\
+          \            return (0, 0)\n        \n        h = grid[i][j]\n        neighbors\
+          \ = []\n        for x in range(max(0, i-1), min(len(grid), i+2)):\n    \
+          \        for y in range(max(0, j-1), min(len(grid[0]), j+2)):\n        \
+          \        if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+          \        \n        visited[i][j] = True\n        max_len = 1\n        sum_val\
+          \ = h\n        for neighbor in neighbors:\n            if abs(h - neighbor)\
+          \ > 0:\n                new_len, new_sum = dfs(i, j)\n                max_len\
+          \ += new_len\n                sum_val += new_sum\n        \n        return\
+          \ (max_len, sum_val)\n    \n    max_fractal = (0, 0)\n    for i in range(rows):\n\
+          \        for j in range(cols):\n            if not visited[i][j]:\n    \
+          \            fractal = dfs(i, j)\n                max_fractal = (max(max_fractal[0],\
+          \ fractal[0]), \n                               max(max_fractal[1], fractal[1]))\n\
+          \    \n    return (max_fractal[0], max_fractal[1])"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple [Transform operation, Reverse operation]
+      middle_state:
+        description: "# Fractal Forest Problem\n## Description\nYou are given a 2D\
+          \ grid representing a forest with trees of varying heights. Each cell in\
+          \ the grid contains a tree, and the height of each tree is represented by\
+          \ an integer value between 1 and 10 (inclusive). The goal is to find the\
+          \ maximum number of contiguous trees that form a fractal pattern.\n\nA fractal\
+          \ pattern is defined as a set of connected trees where each tree has at\
+          \ least one neighbor with a different height. Two trees are considered neighbors\
+          \ if they share an edge in the grid.\n\n## Example\nInput:\n  ```\n  [\n\
+          \    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n  ```\nOutput: 12\n\
+          \nThe maximum fractal pattern is formed by the trees with heights 3, 5,\
+          \ 6, 2, and 7.\n\n## Constraints\n- The grid will always contain at least\
+          \ one tree.\n- The height of each tree will be between 1 and 10 (inclusive).\n\
+          - The grid will not contain any cycles.\n"
+        code: "def transform(grid):\n    def dfs(i, j):\n        if i < 0 or i >=\
+          \ len(grid) or j < 0 or j >= len(grid[0]) or visited[i][j]:\n          \
+          \  return (0, 0)\n        \n        h = grid[i][j]\n        neighbors =\
+          \ []\n        for x in range(max(0, i-1), min(len(grid), i+2)):\n      \
+          \      for y in range(max(0, j-1), min(len(grid[0]), j+2)):\n          \
+          \      if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+          \        \n        visited[i][j] = True\n        max_len = 1\n        sum_val\
+          \ = h\n        for neighbor in neighbors:\n            if abs(h - neighbor)\
+          \ > 0:\n                new_len, new_sum = dfs(i, j)\n                max_len\
+          \ += new_len\n                sum_val += new_sum\n        \n        return\
+          \ (max_len, sum_val)\n    \n    rows, cols = len(grid), len(grid[0])\n \
+          \   visited = [[False]*cols for _ in range(rows)]\n    \n    max_fractal\
+          \ = (0, 0)\n    for i in range(rows):\n        for j in range(cols):\n \
+          \           if not visited[i][j]:\n                fractal = dfs(i, j)\n\
+          \                max_fractal = (max(max_fractal[0], fractal[0]), \n    \
+          \                           max(max_fractal[1], fractal[1]))\n    \n   \
+          \ return (max_fractal[0], max_fractal[1])"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# Fractal Forest Problem\n## Description\nYou are given a\
+            \ 2D grid representing a forest with trees of varying heights. Each cell\
+            \ in the grid contains a tree, and the height of each tree is represented\
+            \ by an integer value between 1 and 10 (inclusive). The goal is to find\
+            \ the maximum number of contiguous trees that form a fractal pattern.\n\
+            \nA fractal pattern is defined as a set of connected trees where each\
+            \ tree has at least one neighbor with a different height. Two trees are\
+            \ considered neighbors if they share an edge in the grid.\n\n## Example\n\
+            Input:\n  ```\n  [\n    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n\
+            \  ```\nOutput: 12\n\nThe maximum fractal pattern is formed by the trees\
+            \ with heights 3, 5, 6, 2, and 7.\n\n## Constraints\n- The grid will always\
+            \ contain at least one tree.\n- The height of each tree will be between\
+            \ 1 and 10 (inclusive).\n- The grid will not contain any cycles.\n"
+          code: "def transform(grid):\n    rows, cols = len(grid), len(grid[0])\n\
+            \    visited = [[False]*cols for _ in range(rows)]\n    \n    def dfs(i,\
+            \ j):\n        if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0])\
+            \ or visited[i][j]:\n            return (0, 0)\n        \n        h =\
+            \ grid[i][j]\n        neighbors = []\n        for x in range(max(0, i-1),\
+            \ min(len(grid), i+2)):\n            for y in range(max(0, j-1), min(len(grid[0]),\
+            \ j+2)):\n                if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+            \        \n        visited[i][j] = True\n        max_len = 1\n       \
+            \ sum_val = h\n        for neighbor in neighbors:\n            if abs(h\
+            \ - neighbor) > 0:\n                new_len, new_sum = dfs(i, j)\n   \
+            \             max_len += new_len\n                sum_val += new_sum\n\
+            \        \n        return (max_len, sum_val)\n    \n    max_fractal =\
+            \ (0, 0)\n    for i in range(rows):\n        for j in range(cols):\n \
+            \           if not visited[i][j]:\n                fractal = dfs(i, j)\n\
+            \                max_fractal = (max(max_fractal[0], fractal[0]), \n  \
+            \                             max(max_fractal[1], fractal[1]))\n    \n\
+            \    return max(max_fractal)\n\ndef reverse_transform(grid):\n    rows,\
+            \ cols = len(grid), len(grid[0])\n    visited = [[False]*cols for _ in\
+            \ range(rows)]\n    \n    def dfs(i, j):\n        if i < 0 or i >= len(grid)\
+            \ or j < 0 or j >= len(grid[0]) or visited[i][j]:\n            return\
+            \ (0, 0)\n        \n        h = grid[i][j]\n        neighbors = []\n \
+            \       for x in range(max(0, i-1), min(len(grid), i+2)):\n          \
+            \  for y in range(max(0, j-1), min(len(grid[0]), j+2)):\n            \
+            \    if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+            \        \n        visited[i][j] = True\n        max_len = 1\n       \
+            \ sum_val = h\n        for neighbor in neighbors:\n            if abs(h\
+            \ - neighbor) > 0:\n                new_len, new_sum = dfs(i, j)\n   \
+            \             max_len += new_len\n                sum_val += new_sum\n\
+            \        \n        return (max_len, sum_val)\n    \n    max_fractal =\
+            \ (0, 0)\n    for i in range(rows):\n        for j in range(cols):\n \
+            \           if not visited[i][j]:\n                fractal = dfs(i, j)\n\
+            \                max_fractal = (max(max_fractal[0], fractal[0]), \n  \
+            \                             max(max_fractal[1], fractal[1]))\n    \n\
+            \    result = [[0]*cols for _ in range(rows)]\n    max_len, max_sum =\
+            \ max_fractal\n    count = 0\n    for i in range(rows):\n        for j\
+            \ in range(cols):\n            if (max_len - dfs(i, j)[0]) + (max_sum\
+            \ - dfs(i, j)[1]) > 0:\n                result[i][j] = dfs(i, j)[1]\n\
+            \    \n    return result\n\nprint(reverse_transform([[10,20,30],[40,50,60],[70,80,90]]))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Transform operation, Reverse operation]
+        middle_state:
+          description: "# Fractal Forest Problem\n## Description\nYou are given a\
+            \ 2D grid representing a forest with trees of varying heights. Each cell\
+            \ in the grid contains a tree, and the height of each tree is represented\
+            \ by an integer value between 1 and 10 (inclusive). The goal is to find\
+            \ the maximum number of contiguous trees that form a fractal pattern.\n\
+            \nA fractal pattern is defined as a set of connected trees where each\
+            \ tree has at least one neighbor with a different height. Two trees are\
+            \ considered neighbors if they share an edge in the grid.\n\n## Example\n\
+            Input:\n  ```\n  [\n    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n\
+            \  ```\nOutput: 12\n\nThe maximum fractal pattern is formed by the trees\
+            \ with heights 3, 5, 6, 2, and 7.\n\n## Constraints\n- The grid will always\
+            \ contain at least one tree.\n- The height of each tree will be between\
+            \ 1 and 10 (inclusive).\n- The grid will not contain any cycles.\n"
+          code: "def transform(grid):\n    rows, cols = len(grid), len(grid[0])\n\
+            \    visited = [[False]*cols for _ in range(rows)]\n    \n    def dfs(i,\
+            \ j):\n        if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0])\
+            \ or visited[i][j]:\n            return (0, 0)\n        \n        h =\
+            \ grid[i][j]\n        neighbors = []\n        for x in range(max(0, i-1),\
+            \ min(len(grid), i+2)):\n            for y in range(max(0, j-1), min(len(grid[0]),\
+            \ j+2)):\n                if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+            \        \n        visited[i][j] = True\n        max_len = 1\n       \
+            \ sum_val = h\n        for neighbor in neighbors:\n            if abs(h\
+            \ - neighbor) > 0:\n                new_len, new_sum = dfs(i, j)\n   \
+            \             max_len += new_len\n                sum_val += new_sum\n\
+            \        \n        return (max_len, sum_val)\n    \n    max_fractal =\
+            \ (0, 0)\n    for i in range(rows):\n        for j in range(cols):\n \
+            \           if not visited[i][j]:\n                fractal = dfs(i, j)\n\
+            \                max_fractal = (max(max_fractal[0], fractal[0]), \n  \
+            \                             max(max_fractal[1], fractal[1]))\n    \n\
+            \    return max(max_fractal)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# Fractal Forest Problem\n## Description\nYou are given a\
+            \ 2D grid representing a forest with trees of varying heights. Each cell\
+            \ in the grid contains a tree, and the height of each tree is represented\
+            \ by an integer value between 1 and 10 (inclusive). The goal is to find\
+            \ the maximum number of contiguous trees that form a fractal pattern.\n\
+            \nA fractal pattern is defined as a set of connected trees where each\
+            \ tree has at least one neighbor with a different height. Two trees are\
+            \ considered neighbors if they share an edge in the grid.\n\n## Example\n\
+            Input:\n  ```\n  [\n    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n\
+            \  ```\nOutput: 12\n\nThe maximum fractal pattern is formed by the trees\
+            \ with heights 3, 5, 6, 2, and 7.\n\n## Constraints\n- The grid will always\
+            \ contain at least one tree.\n- The height of each tree will be between\
+            \ 1 and 10 (inclusive).\n- The grid will not contain any cycles.\n"
+          code: "def transform(grid):\n    rows, cols = len(grid), len(grid[0])\n\
+            \    visited = [[False]*cols for _ in range(rows)]\n    \n    def dfs(i,\
+            \ j):\n        if i < 0 or i >= rows or j < 0 or j >= cols or visited[i][j]:\n\
+            \            return (0, 0)\n        \n        h = grid[i][j]\n       \
+            \ neighbors = []\n        for x in range(max(0, i-1), min(rows, i+2)):\n\
+            \            for y in range(max(0, j-1), min(cols, j+2)):\n          \
+            \      if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+            \        \n        visited[i][j] = True\n        max_len = 1\n       \
+            \ sum_val = h\n        for neighbor in neighbors:\n            if abs(h\
+            \ - neighbor) > 0:\n                new_len, new_sum = dfs(i, j)\n   \
+            \             max_len += new_len\n                sum_val += new_sum\n\
+            \        \n        return (max_len, sum_val)\n    \n    max_fractal =\
+            \ (0, 0)\n    for i in range(rows):\n        for j in range(cols):\n \
+            \           if not visited[i][j]:\n                fractal = dfs(i, j)\n\
+            \                max_fractal = (max(max_fractal[0], fractal[0]), \n  \
+            \                             max(max_fractal[1], fractal[1]))\n    \n\
+            \    return (max_fractal[0], max_fractal[1])"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Replace recursive DFS calls in `dfs` function
+            with memoization using a nested dictionary to store intermediate results,
+            utilizing advanced caching techniques to reduce redundant computations',
+          Revert the `dfs` function back to its original implementation using recursive
+            calls and remove the memoization dictionary]
+        middle_state:
+          description: "# Fractal Forest Problem\n## Description\nYou are given a\
+            \ 2D grid representing a forest with trees of varying heights. Each cell\
+            \ in the grid contains a tree, and the height of each tree is represented\
+            \ by an integer value between 1 and 10 (inclusive). The goal is to find\
+            \ the maximum number of contiguous trees that form a fractal pattern.\n\
+            \nA fractal pattern is defined as a set of connected trees where each\
+            \ tree has at least one neighbor with a different height. Two trees are\
+            \ considered neighbors if they share an edge in the grid.\n\n## Example\n\
+            Input:\n  ```\n  [\n    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n\
+            \  ```\nOutput: 12\n\nThe maximum fractal pattern is formed by the trees\
+            \ with heights 3, 5, 6, 2, and 7.\n\n## Constraints\n- The grid will always\
+            \ contain at least one tree.\n- The height of each tree will be between\
+            \ 1 and 10 (inclusive).\n- The grid will not contain any cycles.\n"
+          code: "def transform(grid):\n    rows, cols = len(grid), len(grid[0])\n\
+            \    visited = [[False]*cols for _ in range(rows)]\n    \n    memo = {}\n\
+            \    \n    def dfs(i, j):\n        if (i, j) in memo:\n            return\
+            \ memo[(i, j)]\n        \n        if i < 0 or i >= rows or j < 0 or j\
+            \ >= cols or visited[i][j]:\n            return (0, 0)\n        \n   \
+            \     h = grid[i][j]\n        neighbors = []\n        for x in range(max(0,\
+            \ i-1), min(rows, i+2)):\n            for y in range(max(0, j-1), min(cols,\
+            \ j+2)):\n                if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+            \        \n        visited[i][j] = True\n        max_len = 1\n       \
+            \ sum_val = h\n        for neighbor in neighbors:\n            if abs(h\
+            \ - neighbor) > 0:\n                new_len, new_sum = dfs(i, j)\n   \
+            \             max_len += new_len\n                sum_val += new_sum\n\
+            \        \n        memo[(i, j)] = (max_len, sum_val)\n        return memo[(i,\
+            \ j)]\n    \n    max_fractal = (0, 0)\n    for i in range(rows):\n   \
+            \     for j in range(cols):\n            if not visited[i][j]:\n     \
+            \           fractal = dfs(i, j)\n                max_fractal = (max(max_fractal[0],\
+            \ fractal[0]), \n                               max(max_fractal[1], fractal[1]))\n\
+            \    \n    return (max_fractal[0], max_fractal[1])"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+    - &id006 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "# Fractal Forest Problem\n## Description\nYou are given a 2D\
+          \ grid representing a forest with trees of varying heights. Each cell in\
+          \ the grid contains a tree, and the height of each tree is represented by\
+          \ an integer value between 1 and 10 (inclusive). The goal is to find the\
+          \ maximum number of contiguous trees that form a fractal pattern.\n\nA fractal\
+          \ pattern is defined as a set of connected trees where each tree has at\
+          \ least one neighbor with a different height. Two trees are considered neighbors\
+          \ if they share an edge in the grid.\n\n## Example\nInput:\n  ```\n  [\n\
+          \    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n  ```\nOutput: 12\n\
+          \nThe maximum fractal pattern is formed by the trees with heights 3, 5,\
+          \ 6, 2, and 7.\n\n## Constraints\n- The grid will always contain at least\
+          \ one tree.\n- The height of each tree will be between 1 and 10 (inclusive).\n\
+          - The grid will not contain any cycles.\n"
+        code: "def main(grid):\n    def dfs(i, j):\n        if i < 0 or i >= len(grid)\
+          \ or j < 0 or j >= len(grid[0]):\n            return 0\n        \n     \
+          \   h = grid[i][j]\n        neighbors = []\n        for x in range(max(0,\
+          \ i-1), min(len(grid), i+2)):\n            for y in range(max(0, j-1), min(len(grid[0]),\
+          \ j+2)):\n                if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+          \        \n        max_len = 1\n        for neighbor in neighbors:\n   \
+          \         if abs(h - neighbor) > 0:\n                max_len += dfs(x, y)\n\
+          \        \n        return max_len\n    \n    rows, cols = len(grid), len(grid[0])\n\
+          \    \n    max_fractal = 0\n    for i in range(rows):\n        for j in\
+          \ range(cols):\n            max_fractal = max(max_fractal, dfs(i, j))\n\
+          \    \n    return max_fractal"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Replace recursive DFS calls in `dfs` function with
+          memoization using a nested dictionary to store intermediate results, utilizing
+          advanced caching techniques to reduce redundant computations', Revert the
+          `dfs` function back to its original implementation using recursive calls
+          and remove the memoization dictionary]
+      middle_state:
+        description: "# Fractal Forest Problem\n## Description\nYou are given a 2D\
+          \ grid representing a forest with trees of varying heights. Each cell in\
+          \ the grid contains a tree, and the height of each tree is represented by\
+          \ an integer value between 1 and 10 (inclusive). The goal is to find the\
+          \ maximum number of contiguous trees that form a fractal pattern.\n\nA fractal\
+          \ pattern is defined as a set of connected trees where each tree has at\
+          \ least one neighbor with a different height. Two trees are considered neighbors\
+          \ if they share an edge in the grid.\n\n## Example\nInput:\n  ```\n  [\n\
+          \    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n  ```\nOutput: 12\n\
+          \nThe maximum fractal pattern is formed by the trees with heights 3, 5,\
+          \ 6, 2, and 7.\n\n## Constraints\n- The grid will always contain at least\
+          \ one tree.\n- The height of each tree will be between 1 and 10 (inclusive).\n\
+          - The grid will not contain any cycles.\n"
+        code: "def main(grid):\n    memo = {}\n\n    def dfs(i, j):\n        if (i,\
+          \ j) in memo:\n            return memo[(i, j)]\n\n        if i < 0 or i\
+          \ >= len(grid) or j < 0 or j >= len(grid[0]) or visited[i][j]:\n       \
+          \     return 0\n        \n        h = grid[i][j]\n        neighbors = []\n\
+          \        for x in range(max(0, i-1), min(len(grid), i+2)):\n           \
+          \ for y in range(max(0, j-1), min(len(grid[0]), j+2)):\n               \
+          \ if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+          \        \n        visited[i][j] = True\n        max_len = 1\n        for\
+          \ neighbor in neighbors:\n            if abs(h - neighbor) > 0:\n      \
+          \          max_len += dfs(x, y)\n        \n        memo[(i, j)] = max_len\n\
+          \        return max_len\n    \n    rows, cols = len(grid), len(grid[0])\n\
+          \    visited = [[False]*cols for _ in range(rows)]\n    \n    max_fractal\
+          \ = 0\n    for i in range(rows):\n        for j in range(cols):\n      \
+          \      if not visited[i][j]:\n                max_fractal = max(max_fractal,\
+          \ dfs(i, j))\n    \n    return max_fractal"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# Fractal Forest Problem\n## Description\nYou are given a\
+            \ 2D grid representing a forest with trees of varying heights. Each cell\
+            \ in the grid contains a tree, and the height of each tree is represented\
+            \ by an integer value between 1 and 10 (inclusive). The goal is to find\
+            \ the maximum number of contiguous trees that form a fractal pattern.\n\
+            \nA fractal pattern is defined as a set of connected trees where each\
+            \ tree has at least one neighbor with a different height. Two trees are\
+            \ considered neighbors if they share an edge in the grid.\n\n## Example\n\
+            Input:\n  ```\n  [\n    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n\
+            \  ```\nOutput: 12\n\nThe maximum fractal pattern is formed by the trees\
+            \ with heights 3, 5, 6, 2, and 7.\n\n## Constraints\n- The grid will always\
+            \ contain at least one tree.\n- The height of each tree will be between\
+            \ 1 and 10 (inclusive).\n- The grid will not contain any cycles.\n"
+          code: "def main(grid):\n    def dfs(i, j):\n        if i < 0 or i >= len(grid)\
+            \ or j < 0 or j >= len(grid[0]):\n            return 0\n        \n   \
+            \     h = grid[i][j]\n        neighbors = []\n        for x in range(max(0,\
+            \ i-1), min(len(grid), i+2)):\n            for y in range(max(0, j-1),\
+            \ min(len(grid[0]), j+2)):\n                if (x, y) != (i, j):\n   \
+            \                 neighbors.append(grid[x][y])\n        \n        max_len\
+            \ = 1\n        for neighbor in neighbors:\n            if abs(h - neighbor)\
+            \ > 0:\n                max_len += dfs(x, y)\n        \n        return\
+            \ max_len\n    \n    rows, cols = len(grid), len(grid[0])\n    \n    max_fractal\
+            \ = 0\n    for i in range(rows):\n        for j in range(cols):\n    \
+            \        max_fractal = max(max_fractal, dfs(i, j))\n    \n    return max_fractal\n\
+            \ndef transform_operation(grid):\n    def dfs(i, j):\n        if i < 0\
+            \ or i >= len(grid) or j < 0 or j >= len(grid[0]):\n            return\
+            \ 1\n        \n        h = grid[i][j]\n        neighbors = []\n      \
+            \  for x in range(max(0, i-1), min(len(grid), i+2)):\n            for\
+            \ y in range(max(0, j-1), min(len(grid[0]), j+2)):\n                if\
+            \ (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+            \        \n        max_len = 1\n        for neighbor in neighbors:\n \
+            \           if abs(h - neighbor) <= 0:\n                max_len += dfs(x,\
+            \ y)\n        \n        return max_len\n    \n    rows, cols = len(grid),\
+            \ len(grid[0])\n    \n    max_fractal = 0\n    for i in range(rows):\n\
+            \        for j in range(cols):\n            max_fractal = max(max_fractal,\
+            \ dfs(i, j))\n    \n    return max_fractal\n\ngrid = [[1,2],[3,4]]\nprint(main(transform_operation(grid)))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Transform operation, Reverse operation]
+        middle_state:
+          description: "# Fractal Forest Problem\n## Description\nYou are given a\
+            \ 2D grid representing a forest with trees of varying heights. Each cell\
+            \ in the grid contains a tree, and the height of each tree is represented\
+            \ by an integer value between 1 and 10 (inclusive). The goal is to find\
+            \ the maximum number of contiguous trees that form a fractal pattern.\n\
+            \nA fractal pattern is defined as a set of connected trees where each\
+            \ tree has at least one neighbor with a different height. Two trees are\
+            \ considered neighbors if they share an edge in the grid.\n\n## Example\n\
+            Input:\n  ```\n  [\n    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n\
+            \  ```\nOutput: 12\n\nThe maximum fractal pattern is formed by the trees\
+            \ with heights 3, 5, 6, 2, and 7.\n\n## Constraints\n- The grid will always\
+            \ contain at least one tree.\n- The height of each tree will be between\
+            \ 1 and 10 (inclusive).\n- The grid will not contain any cycles.\n"
+          code: "def main(grid):\n    def dfs(i, j):\n        if i < 0 or i >= len(grid)\
+            \ or j < 0 or j >= len(grid[0]):\n            return 0\n        \n   \
+            \     h = grid[i][j]\n        neighbors = []\n        for x in range(max(0,\
+            \ i-1), min(len(grid), i+2)):\n            for y in range(max(0, j-1),\
+            \ min(len(grid[0]), j+2)):\n                if (x, y) != (i, j):\n   \
+            \                 neighbors.append(grid[x][y])\n        \n        max_len\
+            \ = 1\n        for neighbor in neighbors:\n            if abs(h - neighbor)\
+            \ > 0:\n                max_len += dfs(x, y)\n        \n        return\
+            \ max_len\n    \n    rows, cols = len(grid), len(grid[0])\n    \n    max_fractal\
+            \ = 0\n    for i in range(rows):\n        for j in range(cols):\n    \
+            \        max_fractal = max(max_fractal, dfs(i, j))\n    \n    return max_fractal\n\
+            \ndef transform_operation(grid):\n    def dfs(i, j):\n        if i < 0\
+            \ or i >= len(grid) or j < 0 or j >= len(grid[0]):\n            return\
+            \ 1\n        \n        h = grid[i][j]\n        neighbors = []\n      \
+            \  for x in range(max(0, i-1), min(len(grid), i+2)):\n            for\
+            \ y in range(max(0, j-1), min(len(grid[0]), j+2)):\n                if\
+            \ (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+            \        \n        max_len = 1\n        for neighbor in neighbors:\n \
+            \           if abs(h - neighbor) <= 0:\n                max_len += dfs(x,\
+            \ y)\n        \n        return max_len\n    \n    rows, cols = len(grid),\
+            \ len(grid[0])\n    \n    max_fractal = 0\n    for i in range(rows):\n\
+            \        for j in range(cols):\n            max_fractal = max(max_fractal,\
+            \ dfs(i, j))\n    \n    return max_fractal\n\ngrid = [[1,2],[3,4]]\nprint(transform_operation(grid))"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# Fractal Forest Problem\n## Description\nYou are given a\
+            \ 2D grid representing a forest with trees of varying heights. Each cell\
+            \ in the grid contains a tree, and the height of each tree is represented\
+            \ by an integer value between 1 and 10 (inclusive). The goal is to find\
+            \ the maximum number of contiguous trees that form a fractal pattern.\n\
+            \nA fractal pattern is defined as a set of connected trees where each\
+            \ tree has at least one neighbor with a different height. Two trees are\
+            \ considered neighbors if they share an edge in the grid.\n\n## Example\n\
+            Input:\n  ```\n  [\n    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n\
+            \  ```\nOutput: 12\n\nThe maximum fractal pattern is formed by the trees\
+            \ with heights 3, 5, 6, 2, and 7.\n\n## Constraints\n- The grid will always\
+            \ contain at least one tree.\n- The height of each tree will be between\
+            \ 1 and 10 (inclusive).\n- The grid will not contain any cycles.\n"
+          code: "def main(grid):\n    \n    def dfs(i, j):\n        if i < 0 or i\
+            \ >= len(grid) or j < 0 or j >= len(grid[0]):\n            return 0\n\
+            \        \n        h = grid[i][j]\n        neighbors = []\n        for\
+            \ x in range(max(0, i-1), min(len(grid), i+2)):\n            for y in\
+            \ range(max(0, j-1), min(len(grid[0]), j+2)):\n                if (x,\
+            \ y) != (i, j):\n                    neighbors.append(grid[x][y])\n  \
+            \      \n        max_len = 1\n        for neighbor in neighbors:\n   \
+            \         if abs(h - neighbor) > 0:\n                max_len += dfs(x,\
+            \ y)\n        \n        return max_len\n    \n    rows, cols = len(grid),\
+            \ len(grid[0])\n    \n    max_fractal = 0\n    for i in range(rows):\n\
+            \        for j in range(cols):\n            max_fractal = max(max_fractal,\
+            \ dfs(i, j))\n    \n    return max_fractal"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Replace recursive DFS calls in `dfs` function
+            with memoization using a nested dictionary to store intermediate results,
+            utilizing advanced caching techniques to reduce redundant computations',
+          Revert the `dfs` function back to its original implementation using recursive
+            calls and remove the memoization dictionary]
+        middle_state:
+          description: "# Fractal Forest Problem\n## Description\nYou are given a\
+            \ 2D grid representing a forest with trees of varying heights. Each cell\
+            \ in the grid contains a tree, and the height of each tree is represented\
+            \ by an integer value between 1 and 10 (inclusive). The goal is to find\
+            \ the maximum number of contiguous trees that form a fractal pattern.\n\
+            \nA fractal pattern is defined as a set of connected trees where each\
+            \ tree has at least one neighbor with a different height. Two trees are\
+            \ considered neighbors if they share an edge in the grid.\n\n## Example\n\
+            Input:\n  ```\n  [\n    [3, 5, 6],\n    [4, 2, 7],\n    [1, 8, 9]\n  ]\n\
+            \  ```\nOutput: 12\n\nThe maximum fractal pattern is formed by the trees\
+            \ with heights 3, 5, 6, 2, and 7.\n\n## Constraints\n- The grid will always\
+            \ contain at least one tree.\n- The height of each tree will be between\
+            \ 1 and 10 (inclusive).\n- The grid will not contain any cycles.\n"
+          code: "def main(grid):\n    memo = {}\n    \n    def dfs(i, j):\n      \
+            \  if (i, j) in memo:\n            return memo[(i, j)]\n        \n   \
+            \     if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]):\n    \
+            \        return 0\n        \n        h = grid[i][j]\n        neighbors\
+            \ = []\n        for x in range(max(0, i-1), min(len(grid), i+2)):\n  \
+            \          for y in range(max(0, j-1), min(len(grid[0]), j+2)):\n    \
+            \            if (x, y) != (i, j):\n                    neighbors.append(grid[x][y])\n\
+            \        \n        max_len = 1\n        for neighbor in neighbors:\n \
+            \           if abs(h - neighbor) > 0:\n                max_len += dfs(x,\
+            \ y)\n        \n        memo[(i, j)] = max_len\n        return max_len\n\
+            \    \n    rows, cols = len(grid), len(grid[0])\n    \n    max_fractal\
+            \ = 0\n    for i in range(rows):\n        for j in range(cols):\n    \
+            \        max_fractal = max(max_fractal, dfs(i, j))\n    \n    return max_fractal"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []

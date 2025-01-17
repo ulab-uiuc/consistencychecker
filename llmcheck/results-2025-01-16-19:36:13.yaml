@@ -1,0 +1,768 @@
+evaluator_model: {model: 'ollama_chat/llama3.1:8b-instruct-fp16', temperature: 0.6,
+  api_base: 'http://localhost:11434'}
+evaluatee_model: {model: 'ollama_chat/llama3.1:8b-instruct-fp16', temperature: 0.6,
+  api_base: 'http://localhost:11434'}
+root_content: &id001
+  description: "# **Fractal Tessellation**\n\nIn this problem, you are given a list\
+    \ of points on a two-dimensional plane and a list of rectangles that intersect\
+    \ with these points. Your task is to find the fractal tessellation of these points\
+    \ and rectangles.\n\nA fractal tessellation is a way of dividing the plane into\
+    \ non-overlapping regions, called tiles, such that each tile contains at least\
+    \ one point from the given list and intersects with at least one rectangle from\
+    \ the given list. The division process stops when no further divisions are possible\
+    \ without violating these conditions.\n\nYou can assume that all points have integer\
+    \ coordinates and all rectangles have integer boundaries.\n\nExample inputs:\n\
+    ```\ninput_points = [(0, 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0), (3,\
+    \ 3)], [(2, 2), (5, 5)]]\n```\nExample output:\n```python\n[\n  [[(0, 0), (1,\
+    \ 1)], [(2, 2), (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n]\n```\n"
+  code: "def main(points, rectangles):\n    # Sort the points and rectangles by their\
+    \ y-coordinates\n    points.sort(key=lambda x: x[1])\n    rectangles.sort(key=lambda\
+    \ r: max(r[0][1], r[1][1]))\n\n    tiles = []\n\n    for rect in rectangles:\n\
+    \        # Find the first point that intersects with the current rectangle\n \
+    \       intersecting_point = next((p for p in points if (rect[0][0] <= p[0] <\
+    \ rect[1][0]) or (rect[1][0] > p[0] >= rect[0][0])), None)\n\n        # If no\
+    \ point intersects with the current rectangle, skip it\n        if intersecting_point\
+    \ is None:\n            continue\n\n        # Create a new tile for the current\
+    \ rectangle and its first intersecting point\n        tile = [[rect[0], rect[1]],\
+    \ [intersecting_point]]\n\n        # Add all points that intersect with the current\
+    \ tile\n        intersecting_points = []\n        for p in points:\n         \
+    \   if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n\
+    \                intersecting_points.append(p)\n            elif (p[0] in range(tile[0][0][0],\
+    \ tile[0][1][0])) and (p[1] in range(min([q[1] for q in tile]), max([q[1] for\
+    \ q in tile]))):\n                intersecting_points.append(p)\n\n        # Recursively\
+    \ divide the current tile into smaller tiles\n        new_tiles = fractal_tessellation(intersecting_points,\
+    \ rectangles)\n        tiles.extend(new_tiles)\n\n    return tiles\n\ndef fractal_tessellation(points,\
+    \ rectangles):\n    # Base case: if there are no points or rectangles, return\
+    \ an empty list\n    if not points or not rectangles:\n        return []\n\n \
+    \   # Find the point with the maximum y-coordinate that intersects with a rectangle\n\
+    \    max_y_point = next((p for p in points if any(max(r[0][1], r[1][1]) == p[1]\
+    \ for r in rectangles)), None)\n\n    # If no such point exists, return an empty\
+    \ list\n    if max_y_point is None:\n        return []\n\n    # Create a new tile\
+    \ for the maximum y-point and its intersecting rectangle\n    tile = [[(max_y_point[0],\
+    \ min([r[0][1] for r in rectangles])), (max_y_point[0]+1, max([r[1][1] for r in\
+    \ rectangles]))], [max_y_point]]\n\n    # Add all points that intersect with the\
+    \ current tile\n    intersecting_points = []\n    for p in points:\n        if\
+    \ (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n\
+    \            intersecting_points.append(p)\n        elif (p[0] in range(tile[0][0][0],\
+    \ tile[0][1][0])) and (p[1] in range(min([q[1] for q in tile]), max([q[1] for\
+    \ q in tile]))):\n            intersecting_points.append(p)\n\n    # Recursively\
+    \ divide the current tile into smaller tiles\n    new_tiles = fractal_tessellation(intersecting_points,\
+    \ rectangles)\n    return [tile] + new_tiles\n"
+  programming_language: python3
+  inputs: &id002
+  - points:
+    - [(0, 0), (1, 1)]
+    - [(2, 2), (3, 3)]
+    rectangles:
+    - [(0, 0), (3, 3)]
+    - [(2, 2), (5, 5)]
+  - points:
+    - [(10, 10), (11, 11)]
+    - [(12, 12), (13, 13)]
+    rectangles:
+    - [(10, 10), (13, 13)]
+    - [(11, 11), (14, 14)]
+  - points:
+    - [(20, 20), (21, 21)]
+    - [(22, 22), (23, 23)]
+    rectangles:
+    - [(20, 20), (23, 23)]
+    - [(21, 21), (24, 24)]
+  - points:
+    - [(30, 30), (31, 31)]
+    - [(32, 32), (33, 33)]
+    rectangles:
+    - [(30, 30), (33, 33)]
+    - [(31, 31), (34, 34)]
+  - points:
+    - [(40, 40), (41, 41)]
+    - [(42, 42), (43, 43)]
+    rectangles:
+    - [(40, 40), (43, 43)]
+    - [(41, 41), (44, 44)]
+  - points:
+    - [(50, 50), (51, 51)]
+    - [(52, 52), (53, 53)]
+    rectangles:
+    - [(50, 50), (53, 53)]
+    - [(51, 51), (54, 54)]
+  - points:
+    - [(60, 60), (61, 61)]
+    - [(62, 62), (63, 63)]
+    rectangles:
+    - [(60, 60), (63, 63)]
+    - [(61, 61), (64, 64)]
+  - points:
+    - [(70, 70), (71, 71)]
+    - [(72, 72), (73, 73)]
+    rectangles:
+    - [(70, 70), (73, 73)]
+    - [(71, 71), (74, 74)]
+  - points:
+    - [(80, 80), (81, 81)]
+    - [(82, 82), (83, 83)]
+    rectangles:
+    - [(80, 80), (83, 83)]
+    - [(81, 81), (84, 84)]
+  - points:
+    - [(90, 90), (91, 91)]
+    - [(92, 92), (93, 93)]
+    rectangles:
+    - [(90, 90), (93, 93)]
+    - [(91, 91), (94, 94)]
+  - points:
+    - [(100, 100), (101, 101)]
+    - [(102, 102), (103, 103)]
+    rectangles:
+    - [(100, 100), (103, 103)]
+    - [(101, 101), (104, 104)]
+  exec_results: &id003
+  - []
+  - []
+  - []
+  - []
+  - []
+  - []
+  - []
+  - []
+  - []
+  - []
+  - []
+operations:
+- !!python/tuple [Transform operation, Reverse operation]
+- !!python/tuple ['Replace all nested function calls in the ''main'' function in the
+    ''code'' key with equivalent lambda expressions, eliminating function names altogether',
+  'Replace all lambda expressions back to their original function call counterparts,
+    restoring readability']
+metrics:
+  L-1 AVG: 1.0000000000000002
+  L-1: [1.0000000000000002, 1.0000000000000002, 1.0000000000000002, 1.0000000000000002,
+    1.0000000000000002, 1.0000000000000002]
+  L-2 AVG: 1.0000000000000002
+  L-2: [1.0000000000000002, 1.0000000000000002, 1.0000000000000002, 1.0000000000000002]
+  L-3 AVG: 0.0
+  L-3: []
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+          \ a list of points on a two-dimensional plane and a list of rectangles that\
+          \ intersect with these points. Your task is to find the fractal tessellation\
+          \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+          \ dividing the plane into non-overlapping regions, called tiles, such that\
+          \ each tile contains at least one point from the given list and intersects\
+          \ with at least one rectangle from the given list. The division process\
+          \ stops when no further divisions are possible without violating these conditions.\n\
+          \nYou can assume that all points have integer coordinates and all rectangles\
+          \ have integer boundaries.\n\nExample inputs:\n```\ninput_points = [(0,\
+          \ 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0), (3, 3)], [(2, 2), (5,\
+          \ 5)]]\n```\nExample output:\n```python\n[\n  [[(0, 0), (1, 1)], [(2, 2),\
+          \ (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n]\n```\n"
+        code: "def main(points, rectangles):\n    rectangles.sort(key=lambda r: max(r[0][1],\
+          \ r[1][1]))\n    points.sort(key=lambda x: x[1])\n\n    tiles = []\n\n \
+          \   for rect in rectangles:\n        intersecting_point = next((p for p\
+          \ in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0] > p[0] >=\
+          \ rect[0][0])), None)\n\n        if intersecting_point is None:\n      \
+          \      continue\n\n        tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+          \n        intersecting_points = []\n        for p in points:\n         \
+          \   if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0]\
+          \ >= tile[0][0][0]):\n                intersecting_points.append(p)\n  \
+          \          elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1]\
+          \ in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n   \
+          \             intersecting_points.append(p)\n\n        new_tiles = fractal_tessellation(intersecting_points,\
+          \ rectangles)\n        tiles.extend(new_tiles)\n\n    return tiles\n\ndef\
+          \ fractal_tessellation(points, rectangles):\n    if not points or not rectangles:\n\
+          \        return []\n\n    max_y_point = next((p for p in points if any(max(r[0][1],\
+          \ r[1][1]) == p[1] for r in rectangles)), None)\n\n    if max_y_point is\
+          \ None:\n        return []\n\n    tile = [[(max_y_point[0], min([r[0][1]\
+          \ for r in rectangles])), (max_y_point[0]+1, max([r[1][1] for r in rectangles]))],\
+          \ [max_y_point]]\n\n    intersecting_points = []\n    for p in points:\n\
+          \        if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] >\
+          \ p[0] >= tile[0][0][0]):\n            intersecting_points.append(p)\n \
+          \       elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1] in\
+          \ range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n      \
+          \      intersecting_points.append(p)\n\n    new_tiles = fractal_tessellation(intersecting_points,\
+          \ rectangles)\n    return [tile] + new_tiles"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple [Transform operation, Reverse operation]
+      middle_state:
+        description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+          \ a list of points on a two-dimensional plane and a list of rectangles that\
+          \ intersect with these points. Your task is to find the fractal tessellation\
+          \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+          \ dividing the plane into non-overlapping regions, called tiles, such that\
+          \ each tile contains at least one point from the given list and intersects\
+          \ with at least one rectangle from the given list. The division process\
+          \ stops when no further divisions are possible without violating these conditions.\n\
+          \nYou can assume that all points have integer coordinates and all rectangles\
+          \ have integer boundaries.\n\nExample inputs:\n```\ninput_points = [(0,\
+          \ 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0), (3, 3)], [(2, 2), (5,\
+          \ 5)]]\n```\nExample output:\n```python\n[\n  [[(0, 0), (1, 1)], [(2, 2),\
+          \ (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n]\n```\n"
+        code: "def main(points, rectangles):\n    points.sort(key=lambda x: x[1])\n\
+          \    rectangles.sort(key=lambda r: max(r[0][1], r[1][1]))\n\n    tiles =\
+          \ []\n\n    for rect in rectangles:\n        intersecting_point = next((p\
+          \ for p in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0] >\
+          \ p[0] >= rect[0][0])), None)\n\n        if intersecting_point is None:\n\
+          \            continue\n\n        tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+          \n        intersecting_points = []\n        for p in points:\n         \
+          \   if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0]\
+          \ >= tile[0][0][0]):\n                intersecting_points.append(p)\n  \
+          \          elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1]\
+          \ in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n   \
+          \             intersecting_points.append(p)\n\n        new_tiles = fractal_tessellation(intersecting_points,\
+          \ rectangles)\n        tiles.extend(new_tiles)\n\n    return tiles\n\ndef\
+          \ fractal_tessellation(points, rectangles):\n    if not points or not rectangles:\n\
+          \        return []\n\n    max_y_point = next((p for p in points if any(max(r[0][1],\
+          \ r[1][1]) == p[1] for r in rectangles)), None)\n\n    if max_y_point is\
+          \ None:\n        return []\n\n    tile = [[(max_y_point[0], min([r[0][1]\
+          \ for r in rectangles])), (max_y_point[0]+1, max([r[1][1] for r in rectangles]))],\
+          \ [max_y_point]]\n\n    intersecting_points = []\n    for p in points:\n\
+          \        if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] >\
+          \ p[0] >= tile[0][0][0]):\n            intersecting_points.append(p)\n \
+          \       elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1] in\
+          \ range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n      \
+          \      intersecting_points.append(p)\n\n    new_tiles = fractal_tessellation(intersecting_points,\
+          \ rectangles)\n    return [tile] + new_tiles"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+            \ a list of points on a two-dimensional plane and a list of rectangles\
+            \ that intersect with these points. Your task is to find the fractal tessellation\
+            \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+            \ dividing the plane into non-overlapping regions, called tiles, such\
+            \ that each tile contains at least one point from the given list and intersects\
+            \ with at least one rectangle from the given list. The division process\
+            \ stops when no further divisions are possible without violating these\
+            \ conditions.\n\nYou can assume that all points have integer coordinates\
+            \ and all rectangles have integer boundaries.\n\nExample inputs:\n```\n\
+            input_points = [(0, 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0),\
+            \ (3, 3)], [(2, 2), (5, 5)]]\n```\nExample output:\n```python\n[\n  [[(0,\
+            \ 0), (1, 1)], [(2, 2), (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n\
+            ]\n```\n"
+          code: "def main(points, rectangles):\n    # Sort points and rectangles by\
+            \ y-coordinate\n    points.sort(key=lambda x: x[1])\n    rectangles.sort(key=lambda\
+            \ r: max(r[0][1], r[1][1]))\n\n    tiles = []\n\n    for rect in rectangles:\n\
+            \        intersecting_point = next((p for p in points if (rect[0][0] <=\
+            \ p[0] < rect[1][0]) or (rect[1][0] > p[0] >= rect[0][0])), None)\n\n\
+            \        if intersecting_point is None:\n            continue\n\n    \
+            \    tile = [[rect[0], rect[1]], [intersecting_point]]\n\n        intersecting_points\
+            \ = []\n        for p in points:\n            if (tile[0][0][0] <= p[0]\
+            \ < tile[0][1][0]) or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n     \
+            \           intersecting_points.append(p)\n            elif (p[0] in range(tile[0][0][0],\
+            \ tile[0][1][0])) and (min([q[1] for q in tile]) <= p[1] <= max([q[1]\
+            \ for q in tile])):\n                intersecting_points.append(p)\n\n\
+            \        new_tiles = fractal_tessellation(intersecting_points, rectangles)\n\
+            \        tiles.extend(new_tiles)\n\n    return tiles\n\ndef fractal_tessellation(points,\
+            \ rectangles):\n    if not points or not rectangles:\n        return []\n\
+            \n    max_y_point = next((p for p in points if any(max(r[0][1], r[1][1])\
+            \ == p[1] for r in rectangles)), None)\n\n    if max_y_point is None:\n\
+            \        return []\n\n    tile = [[(max_y_point[0], min([r[0][1] for r\
+            \ in rectangles])), (max_y_point[0]+1, max([r[1][1] for r in rectangles]))],\
+            \ [max_y_point]]\n\n    intersecting_points = []\n    for p in points:\n\
+            \        if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0]\
+            \ > p[0] >= tile[0][0][0]):\n            intersecting_points.append(p)\n\
+            \        elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (min([q[1]\
+            \ for q in tile]) <= p[1] <= max([q[1] for q in tile])):\n           \
+            \ intersecting_points.append(p)\n\n    new_tiles = fractal_tessellation(intersecting_points,\
+            \ rectangles)\n    return [tile] + new_tiles"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Transform operation, Reverse operation]
+        middle_state:
+          description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+            \ a list of points on a two-dimensional plane and a list of rectangles\
+            \ that intersect with these points. Your task is to find the fractal tessellation\
+            \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+            \ dividing the plane into non-overlapping regions, called tiles, such\
+            \ that each tile contains at least one point from the given list and intersects\
+            \ with at least one rectangle from the given list. The division process\
+            \ stops when no further divisions are possible without violating these\
+            \ conditions.\n\nYou can assume that all points have integer coordinates\
+            \ and all rectangles have integer boundaries.\n\nExample inputs:\n```\n\
+            input_points = [(0, 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0),\
+            \ (3, 3)], [(2, 2), (5, 5)]]\n```\nExample output:\n```python\n[\n  [[(0,\
+            \ 0), (1, 1)], [(2, 2), (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n\
+            ]\n```\n"
+          code: "def main(points, rectangles):\n    # Sort points and rectangles by\
+            \ y-coordinate\n    points.sort(key=lambda x: x[1])\n    rectangles.sort(key=lambda\
+            \ r: max(r[0][1], r[1][1]))\n\n    tiles = []\n\n    for rect in rectangles:\n\
+            \        intersecting_point = next((p for p in points if (rect[0][0] <=\
+            \ p[0] < rect[1][0]) or (rect[1][0] > p[0] >= rect[0][0])), None)\n\n\
+            \        if intersecting_point is None:\n            continue\n\n    \
+            \    tile = [[rect[0], rect[1]], [intersecting_point]]\n\n        intersecting_points\
+            \ = []\n        for p in points:\n            if (tile[0][0][0] <= p[0]\
+            \ < tile[0][1][0]) or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n     \
+            \           intersecting_points.append(p)\n            elif (p[0] in range(tile[0][0][0],\
+            \ tile[0][1][0])) and (min([q[1] for q in tile]) <= p[1] <= max([q[1]\
+            \ for q in tile])):\n                intersecting_points.append(p)\n\n\
+            \        new_tiles = fractal_tessellation(intersecting_points, rectangles)\n\
+            \        tiles.extend(new_tiles)\n\n    return tiles\n\ndef fractal_tessellation(points,\
+            \ rectangles):\n    if not points or not rectangles:\n        return []\n\
+            \n    max_y_point = next((p for p in points if any(max(r[0][1], r[1][1])\
+            \ == p[1] for r in rectangles)), None)\n\n    if max_y_point is None:\n\
+            \        return []\n\n    tile = [[(max_y_point[0], min([r[0][1] for r\
+            \ in rectangles])), (max_y_point[0]+1, max([r[1][1] for r in rectangles]))],\
+            \ [max_y_point]]\n\n    intersecting_points = []\n    for p in points:\n\
+            \        if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0]\
+            \ > p[0] >= tile[0][0][0]):\n            intersecting_points.append(p)\n\
+            \        elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (min([q[1]\
+            \ for q in tile]) <= p[1] <= max([q[1] for q in tile])):\n           \
+            \ intersecting_points.append(p)\n\n    new_tiles = fractal_tessellation(intersecting_points,\
+            \ rectangles)\n    return [tile] + new_tiles"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+            \ a list of points on a two-dimensional plane and a list of rectangles\
+            \ that intersect with these points. Your task is to find the fractal tessellation\
+            \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+            \ dividing the plane into non-overlapping regions, called tiles, such\
+            \ that each tile contains at least one point from the given list and intersects\
+            \ with at least one rectangle from the given list. The division process\
+            \ stops when no further divisions are possible without violating these\
+            \ conditions.\n\nYou can assume that all points have integer coordinates\
+            \ and all rectangles have integer boundaries.\n\nExample inputs:\n```\n\
+            input_points = [(0, 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0),\
+            \ (3, 3)], [(2, 2), (5, 5)]]\n```\nExample output:\n```python\n[\n  [[(0,\
+            \ 0), (1, 1)], [(2, 2), (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n\
+            ]\n```\n"
+          code: "def main(points, rectangles):\n    rectangles.sort(key=lambda r:\
+            \ max(r[0][1], r[1][1]))\n    points.sort(key=lambda x: x[1])\n\n    tiles\
+            \ = []\n\n    for rect in rectangles:\n        intersecting_point = next((p\
+            \ for p in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0]\
+            \ > p[0] >= rect[0][0])), None)\n\n        if intersecting_point is None:\n\
+            \            continue\n\n        tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+            \n        intersecting_points = []\n        for p in points:\n       \
+            \     if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0]\
+            \ >= tile[0][0][0]):\n                intersecting_points.append(p)\n\
+            \            elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1]\
+            \ in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n \
+            \               intersecting_points.append(p)\n\n        def new_tiles(points,\
+            \ rectangles):\n            return ([t for t in fractal_tessellation(points,\
+            \ rectangles)] if points else []) + [tile]\n        tiles.extend(new_tiles(intersecting_points,\
+            \ rectangles))\n\n    return tiles\n\ndef fractal_tessellation(points,\
+            \ rectangles):\n    if not points or not rectangles:\n        return []\n\
+            \n    max_y_point = next((p for p in points if any(max(r[0][1], r[1][1])\
+            \ == p[1] for r in rectangles)), None)\n\n    if max_y_point is None:\n\
+            \        return []\n\n    tile = [[(max_y_point[0], min([r[0][1] for r\
+            \ in rectangles])), (max_y_point[0]+1, max([r[1][1] for r in rectangles]))],\
+            \ [max_y_point]]\n\n    intersecting_points = []\n    for p in points:\n\
+            \        if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0]\
+            \ > p[0] >= tile[0][0][0]):\n            intersecting_points.append(p)\n\
+            \        elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1]\
+            \ in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n \
+            \           intersecting_points.append(p)\n\n    def recursive_call(points,\
+            \ rectangles):\n        return ([t for t in fractal_tessellation(points,\
+            \ rectangles)] if points else []) \n    return [tile] + recursive_call(intersecting_points,\
+            \ rectangles)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Replace all nested function calls in the ''main''
+            function in the ''code'' key with equivalent lambda expressions, eliminating
+            function names altogether', 'Replace all lambda expressions back to their
+            original function call counterparts, restoring readability']
+        middle_state:
+          description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+            \ a list of points on a two-dimensional plane and a list of rectangles\
+            \ that intersect with these points. Your task is to find the fractal tessellation\
+            \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+            \ dividing the plane into non-overlapping regions, called tiles, such\
+            \ that each tile contains at least one point from the given list and intersects\
+            \ with at least one rectangle from the given list. The division process\
+            \ stops when no further divisions are possible without violating these\
+            \ conditions.\n\nYou can assume that all points have integer coordinates\
+            \ and all rectangles have integer boundaries.\n\nExample inputs:\n```\n\
+            input_points = [(0, 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0),\
+            \ (3, 3)], [(2, 2), (5, 5)]]\n```\nExample output:\n```python\n[\n  [[(0,\
+            \ 0), (1, 1)], [(2, 2), (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n\
+            ]\n```\n"
+          code: "def main(points, rectangles):\n    rectangles.sort(key=lambda r:\
+            \ max(r[0][1], r[1][1]))\n    points.sort(key=lambda x: x[1])\n\n    tiles\
+            \ = []\n\n    for rect in rectangles:\n        intersecting_point = next((p\
+            \ for p in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0]\
+            \ > p[0] >= rect[0][0])), None)\n\n        if intersecting_point is None:\n\
+            \            continue\n\n        tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+            \n        intersecting_points = []\n        for p in points:\n       \
+            \     if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0]\
+            \ >= tile[0][0][0]):\n                intersecting_points.append(p)\n\
+            \            elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1]\
+            \ in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n \
+            \               intersecting_points.append(p)\n\n        new_tiles = lambda\
+            \ points, rectangles: ([t for t in fractal_tessellation(points, rectangles)]\
+            \ if points else []) + [tile]\n        tiles.extend(new_tiles(intersecting_points,\
+            \ rectangles))\n\n    return tiles\n\ndef fractal_tessellation(points,\
+            \ rectangles):\n    if not points or not rectangles:\n        return []\n\
+            \n    max_y_point = next((p for p in points if any(max(r[0][1], r[1][1])\
+            \ == p[1] for r in rectangles)), None)\n\n    if max_y_point is None:\n\
+            \        return []\n\n    tile = [[(max_y_point[0], min([r[0][1] for r\
+            \ in rectangles])), (max_y_point[0]+1, max([r[1][1] for r in rectangles]))],\
+            \ [max_y_point]]\n\n    intersecting_points = []\n    for p in points:\n\
+            \        if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0]\
+            \ > p[0] >= tile[0][0][0]):\n            intersecting_points.append(p)\n\
+            \        elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1]\
+            \ in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n \
+            \           intersecting_points.append(p)\n\n    return [tile] + lambda\
+            \ points, rectangles: ([t for t in fractal_tessellation(points, rectangles)]\
+            \ if points else []) "
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+    - &id006 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+          \ a list of points on a two-dimensional plane and a list of rectangles that\
+          \ intersect with these points. Your task is to find the fractal tessellation\
+          \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+          \ dividing the plane into non-overlapping regions, called tiles, such that\
+          \ each tile contains at least one point from the given list and intersects\
+          \ with at least one rectangle from the given list. The division process\
+          \ stops when no further divisions are possible without violating these conditions.\n\
+          \nYou can assume that all points have integer coordinates and all rectangles\
+          \ have integer boundaries.\n\nExample inputs:\n```\ninput_points = [(0,\
+          \ 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0), (3, 3)], [(2, 2), (5,\
+          \ 5)]]\n```\nExample output:\n```python\n[\n  [[(0, 0), (1, 1)], [(2, 2),\
+          \ (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n]\n```\n"
+        code: "def main(points, rectangles):\n    points.sort(key=lambda x: x[1])\n\
+          \    rectangles.sort(key=lambda r: max(r[0][1], r[1][1]))\n\n    tiles =\
+          \ []\n\n    for rect in rectangles:\n        intersecting_point = next((p\
+          \ for p in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0] >\
+          \ p[0] >= rect[0][0])), None)\n\n        if intersecting_point is None:\n\
+          \            continue\n\n        tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+          \n        intersecting_points = []\n        for p in points:\n         \
+          \   if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0]\
+          \ >= tile[0][0][0]):\n                intersecting_points.append(p)\n  \
+          \          elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1]\
+          \ in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n   \
+          \             intersecting_points.append(p)\n\n        new_tiles = [tile]\
+          \ + ([tile[:] for tile in fractal_tessellation(intersecting_points, rectangles)]\
+          \ if intersecting_points else [])\n\n        tiles.extend(new_tiles)\n\n\
+          \    return tiles\n\ndef fractal_tessellation(points, rectangles):\n   \
+          \ if not points or not rectangles:\n        return []\n\n    max_y_point\
+          \ = next((p for p in points if any(max(r[0][1], r[1][1]) == p[1] for r in\
+          \ rectangles)), None)\n\n    if max_y_point is None:\n        return []\n\
+          \n    tile = [[(max_y_point[0], min([r[0][1] for r in rectangles])), (max_y_point[0]+1,\
+          \ max([r[1][1] for r in rectangles]))], [max_y_point]]\n\n    intersecting_points\
+          \ = []\n    for p in points:\n        if (tile[0][0][0] <= p[0] < tile[0][1][0])\
+          \ or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n            intersecting_points.append(p)\n\
+          \        elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1] in\
+          \ range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n      \
+          \      intersecting_points.append(p)\n\n    return [tile] + ([tile[:] for\
+          \ tile in fractal_tessellation(intersecting_points, rectangles)] if intersecting_points\
+          \ else [])"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Replace all nested function calls in the ''main''
+          function in the ''code'' key with equivalent lambda expressions, eliminating
+          function names altogether', 'Replace all lambda expressions back to their
+          original function call counterparts, restoring readability']
+      middle_state:
+        description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+          \ a list of points on a two-dimensional plane and a list of rectangles that\
+          \ intersect with these points. Your task is to find the fractal tessellation\
+          \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+          \ dividing the plane into non-overlapping regions, called tiles, such that\
+          \ each tile contains at least one point from the given list and intersects\
+          \ with at least one rectangle from the given list. The division process\
+          \ stops when no further divisions are possible without violating these conditions.\n\
+          \nYou can assume that all points have integer coordinates and all rectangles\
+          \ have integer boundaries.\n\nExample inputs:\n```\ninput_points = [(0,\
+          \ 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0), (3, 3)], [(2, 2), (5,\
+          \ 5)]]\n```\nExample output:\n```python\n[\n  [[(0, 0), (1, 1)], [(2, 2),\
+          \ (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n]\n```\n"
+        code: "def main(points, rectangles):\n    points.sort(key=lambda x: x[1])\n\
+          \    rectangles.sort(key=lambda r: max(r[0][1], r[1][1]))\n\n    tiles =\
+          \ []\n\n    for rect in rectangles:\n        intersecting_point = next((p\
+          \ for p in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0] >\
+          \ p[0] >= rect[0][0])), None)\n\n        if intersecting_point is None:\n\
+          \            continue\n\n        tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+          \n        intersecting_points = []\n        for p in points:\n         \
+          \   if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0]\
+          \ >= tile[0][0][0]):\n                intersecting_points.append(p)\n  \
+          \          elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1]\
+          \ in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n   \
+          \             intersecting_points.append(p)\n\n        new_tiles = [tile]\
+          \ + ([tile[:] for tile in fractal_tessellation(intersecting_points, rectangles)]\
+          \ if intersecting_points else [])\n\n        tiles.extend(new_tiles)\n\n\
+          \    return tiles\n\ndef fractal_tessellation(points, rectangles):\n   \
+          \ if not points or not rectangles:\n        return []\n\n    max_y_point\
+          \ = next((p for p in points if any(max(r[0][1], r[1][1]) == p[1] for r in\
+          \ rectangles)), None)\n\n    if max_y_point is None:\n        return []\n\
+          \n    tile = [[(max_y_point[0], min([r[0][1] for r in rectangles])), (max_y_point[0]+1,\
+          \ max([r[1][1] for r in rectangles]))], [max_y_point]]\n\n    intersecting_points\
+          \ = []\n    for p in points:\n        if (tile[0][0][0] <= p[0] < tile[0][1][0])\
+          \ or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n            intersecting_points.append(p)\n\
+          \        elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1] in\
+          \ range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n      \
+          \      intersecting_points.append(p)\n\n    return [tile] + ([tile[:] for\
+          \ tile in fractal_tessellation(intersecting_points, rectangles)] if intersecting_points\
+          \ else [])"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+            \ a list of points on a two-dimensional plane and a list of rectangles\
+            \ that intersect with these points. Your task is to find the fractal tessellation\
+            \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+            \ dividing the plane into non-overlapping regions, called tiles, such\
+            \ that each tile contains at least one point from the given list and intersects\
+            \ with at least one rectangle from the given list. The division process\
+            \ stops when no further divisions are possible without violating these\
+            \ conditions.\n\nYou can assume that all points have integer coordinates\
+            \ and all rectangles have integer boundaries.\n\nExample inputs:\n```\n\
+            input_points = [(0, 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0),\
+            \ (3, 3)], [(2, 2), (5, 5)]]\n```\nExample output:\n```python\n[\n  [[(0,\
+            \ 0), (1, 1)], [(2, 2), (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n\
+            ]\n```\n"
+          code: "def fractal_tessellation(points, rectangles):\n    if points and\
+            \ rectangles:\n        max_y_point = next((p for p in points if any(max(r[0][1],\
+            \ r[1][1]) == p[1] for r in rectangles)), None)\n\n        if max_y_point\
+            \ is not None:\n            tile = [[(max_y_point[0], min([r[0][1] for\
+            \ r in rectangles])), (max_y_point[0]+1, max([r[1][1] for r in rectangles]))],\
+            \ [max_y_point]]\n\n            intersecting_points = []\n           \
+            \ for p in points:\n                if (tile[0][0][0] <= p[0] < tile[0][1][0])\
+            \ or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n                    intersecting_points.append(p)\n\
+            \                elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and\
+            \ (p[1] in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n\
+            \                    intersecting_points.append(p)\n\n            return\
+            \ [tile] + ([tile[:] for tile in fractal_tessellation(intersecting_points,\
+            \ rectangles)] if intersecting_points else [])\n\n    points.sort(key=lambda\
+            \ x: x[1])\n    rectangles.sort(key=lambda r: max(r[0][1], r[1][1]))\n\
+            \n    tiles = []\n\n    for rect in rectangles:\n        intersecting_point\
+            \ = next((p for p in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0]\
+            \ > p[0] >= rect[0][0])), None)\n\n        if intersecting_point is not\
+            \ None:\n            tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+            \n            intersecting_points = []\n            for p in points:\n\
+            \                if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0]\
+            \ > p[0] >= tile[0][0][0]):\n                    intersecting_points.append(p)\n\
+            \                elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and\
+            \ (p[1] in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n\
+            \                    intersecting_points.append(p)\n\n            new_tiles\
+            \ = [tile] + ([tile[:] for tile in fractal_tessellation(intersecting_points,\
+            \ rectangles)] if intersecting_points else [])\n\n            tiles.extend(new_tiles)\n\
+            \n    return tiles"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple [Transform operation, Reverse operation]
+        middle_state:
+          description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+            \ a list of points on a two-dimensional plane and a list of rectangles\
+            \ that intersect with these points. Your task is to find the fractal tessellation\
+            \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+            \ dividing the plane into non-overlapping regions, called tiles, such\
+            \ that each tile contains at least one point from the given list and intersects\
+            \ with at least one rectangle from the given list. The division process\
+            \ stops when no further divisions are possible without violating these\
+            \ conditions.\n\nYou can assume that all points have integer coordinates\
+            \ and all rectangles have integer boundaries.\n\nExample inputs:\n```\n\
+            input_points = [(0, 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0),\
+            \ (3, 3)], [(2, 2), (5, 5)]]\n```\nExample output:\n```python\n[\n  [[(0,\
+            \ 0), (1, 1)], [(2, 2), (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n\
+            ]\n```\n"
+          code: "def main(points, rectangles):\n    points.sort(key=lambda x: x[1])\n\
+            \    rectangles.sort(key=lambda r: max(r[0][1], r[1][1]))\n\n    tiles\
+            \ = []\n\n    for rect in rectangles:\n        intersecting_point = next((p\
+            \ for p in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0]\
+            \ > p[0] >= rect[0][0])), None)\n\n        if intersecting_point is None:\n\
+            \            continue\n\n        tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+            \n        intersecting_points = []\n        for p in points:\n       \
+            \     if (tile[0][0][0] <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0]\
+            \ >= tile[0][0][0]):\n                intersecting_points.append(p)\n\
+            \            elif (p[0] in range(tile[0][0][0], tile[0][1][0])) and (p[1]\
+            \ in range(min([q[1] for q in tile]), max([q[1] for q in tile]))):\n \
+            \               intersecting_points.append(p)\n\n        new_tiles = [tile]\
+            \ + ([tile[:] for tile in fractal_tessellation(intersecting_points, rectangles)]\
+            \ if intersecting_points else [])\n\n        tiles.extend(new_tiles)\n\
+            \n    return tiles\n\ndef fractal_tessellation(points, rectangles):\n\
+            \    if not points or not rectangles:\n        return []\n\n    max_y_point\
+            \ = next((p for p in points if any(max(r[0][1], r[1][1]) == p[1] for r\
+            \ in rectangles)), None)\n\n    if max_y_point is None:\n        return\
+            \ []\n\n    tile = [[(max_y_point[0], min([r[0][1] for r in rectangles])),\
+            \ (max_y_point[0]+1, max([r[1][1] for r in rectangles]))], [max_y_point]]\n\
+            \n    intersecting_points = []\n    for p in points:\n        if (tile[0][0][0]\
+            \ <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n\
+            \            intersecting_points.append(p)\n        elif (p[0] in range(tile[0][0][0],\
+            \ tile[0][1][0])) and (p[1] in range(min([q[1] for q in tile]), max([q[1]\
+            \ for q in tile]))):\n            intersecting_points.append(p)\n\n  \
+            \  return [tile] + ([tile[:] for tile in fractal_tessellation(intersecting_points,\
+            \ rectangles)] if intersecting_points else [])\n\ndef main(points, rectangles):\n\
+            \    points.sort(key=lambda x: x[1])\n    rectangles.sort(key=lambda r:\
+            \ max(r[0][1], r[1][1]))\n\n    tiles = []\n\n    for rect in rectangles:\n\
+            \        intersecting_point = next((p for p in points if (rect[0][0] <=\
+            \ p[0] < rect[1][0]) or (rect[1][0] > p[0] >= rect[0][0])), None)\n\n\
+            \        if intersecting_point is None:\n            continue\n\n    \
+            \    tile = [[rect[0], rect[1]], [intersecting_point]]\n\n        intersecting_points\
+            \ = []\n        for p in points:\n            if (tile[0][0][0] <= p[0]\
+            \ < tile[0][1][0]) or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n     \
+            \           intersecting_points.append(p)\n            elif (p[0] in range(tile[0][0][0],\
+            \ tile[0][1][0])) and (p[1] in range(min([q[1] for q in tile]), max([q[1]\
+            \ for q in tile]))):\n                intersecting_points.append(p)\n\n\
+            \        new_tiles = [tile] + ([tile[:] for tile in fractal_tessellation(intersecting_points,\
+            \ rectangles)] if intersecting_points else [])\n\n        tiles.extend(new_tiles)\n\
+            \n    return tiles\n\ndef fractal_tessellation(points, rectangles):\n\
+            \    if not points or not rectangles:\n        return []\n\n    max_y_point\
+            \ = next((p for p in points if any(max(r[0][1], r[1][1]) == p[1] for r\
+            \ in rectangles)), None)\n\n    if max_y_point is None:\n        return\
+            \ []\n\n    tile = [[(max_y_point[0], min([r[0][1] for r in rectangles])),\
+            \ (max_y_point[0]+1, max([r[1][1] for r in rectangles]))], [max_y_point]]\n\
+            \n    intersecting_points = []\n    for p in points:\n        if (tile[0][0][0]\
+            \ <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n\
+            \            intersecting_points.append(p)\n        elif (p[0] in range(tile[0][0][0],\
+            \ tile[0][1][0])) and (p[1] in range(min([q[1] for q in tile]), max([q[1]\
+            \ for q in tile]))):\n            intersecting_points.append(p)\n\n  \
+            \  return [tile] + ([tile[:] for tile in fractal_tessellation(intersecting_points,\
+            \ rectangles)] if intersecting_points else [])\n\ndef main(points, rectangles):\n\
+            \    points.sort(key=lambda x: x[1])\n    rectangles.sort(key=lambda r:\
+            \ max(r[0][1], r[1][1]))\n\n    tiles = []\n\n    for rect in rectangles:\n\
+            \        intersecting_point = next((p for p in points if (rect[0][0] <=\
+            \ p[0] < rect[1][0]) or (rect[1][0] > p[0] >= rect[0][0])), None)\n\n\
+            \        if intersecting_point is None:\n            continue\n\n    \
+            \    tile = [[rect[0], rect[1]], [intersecting_point]]\n\n        intersecting_points\
+            \ = []\n        for p in points:\n            if (tile[0][0][0] <= p[0]\
+            \ < tile[0][1][0]) or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n     \
+            \           intersecting_points.append(p)\n            elif (p[0] in range(tile[0][0][0],\
+            \ tile[0][1][0])) and (p[1] in range(min([q[1] for q in tile]), max([q[1]\
+            \ for q in tile]))):\n                intersecting_points.append(p)\n\n\
+            \        new_tiles = [tile] + ([tile[:] for tile in fractal_tessellation(intersecting_points,\
+            \ rectangles)] if intersecting_points else [])\n\n        tiles.extend(new_tiles)\n\
+            \n    return tiles\n\ndef fractal_tessellation(points, rectangles):\n\
+            \    if not points or not rectangles:\n        return []\n\n    max_y_point\
+            \ = next((p for p in points if any(max(r[0][1], r[1][1]) == p[1] for r\
+            \ in rectangles)), None)\n\n    if max_y_point is None:\n        return\
+            \ []\n\n    tile = [[(max_y_point[0], min([r[0][1] for r in rectangles])),\
+            \ (max_y_point[0]+1, max([r[1][1] for r in rectangles]))], [max_y_point]]\n\
+            \n    intersecting_points = []\n    for p in points:\n        if (tile[0][0][0]\
+            \ <= p[0] < tile[0][1][0]) or (tile[0][1][0] > p[0] >= tile[0][0][0]):\n\
+            \            intersecting_points.append(p)\n        elif (p[0] in range(tile[0][0][0],\
+            \ tile[0][1][0])) and (p[1] in range(min([q[1] for q in tile]), max([q[1]\
+            \ for q in tile]))):\n            intersecting_points.append(p)\n\n  \
+            \  return [tile] + ([tile[:] for tile in fractal_tessellation(intersecting_points,\
+            \ rectangles)] if intersecting_points else [])"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+            \ a list of points on a two-dimensional plane and a list of rectangles\
+            \ that intersect with these points. Your task is to find the fractal tessellation\
+            \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+            \ dividing the plane into non-overlapping regions, called tiles, such\
+            \ that each tile contains at least one point from the given list and intersects\
+            \ with at least one rectangle from the given list. The division process\
+            \ stops when no further divisions are possible without violating these\
+            \ conditions.\n\nYou can assume that all points have integer coordinates\
+            \ and all rectangles have integer boundaries.\n\nExample inputs:\n```\n\
+            input_points = [(0, 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0),\
+            \ (3, 3)], [(2, 2), (5, 5)]]\n```\nExample output:\n```python\n[\n  [[(0,\
+            \ 0), (1, 1)], [(2, 2), (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n\
+            ]\n```\n"
+          code: "def main(points, rectangles):\n    points.sort(key=lambda x: x[1])\n\
+            \    rectangles.sort(key=lambda r: max(r[0][1], r[1][1]))\n\n    tiles\
+            \ = []\n\n    for rect in rectangles:\n        intersecting_point = next((p\
+            \ for p in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0]\
+            \ > p[0] >= rect[0][0])), None)\n\n        if intersecting_point is None:\n\
+            \            continue\n\n        tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+            \n        intersecting_points = []\n        for p in points:\n       \
+            \     def lambda_func(p, t):\n                return (t[0][0] <= p[0]\
+            \ < t[0][1]) or (t[0][1][0] > p[0] >= t[0][0])\n            if lambda_func(p,\
+            \ tile):\n                intersecting_points.append(p)\n\n        new_tiles\
+            \ = [tile] + ([tile[:] for tile in fractal_tessellation(intersecting_points,\
+            \ rectangles)] if intersecting_points else [])\n\n        tiles.extend(new_tiles)\n\
+            \n    return tiles\n\ndef fractal_tessellation(points, rectangles):\n\
+            \    def lambda_func(p, r):\n        return any(max(r[0][1], r[1][1])\
+            \ == p[1] for r in rectangles)\n    if not points or not rectangles:\n\
+            \        return []\n\n    max_y_point = next((p for p in points if lambda_func(p,\
+            \ rectangles)), None)\n\n    if max_y_point is None:\n        return []\n\
+            \n    tile = [[(max_y_point[0], min([r[0][1] for r in rectangles])), (max_y_point[0]+1,\
+            \ max([r[1][1] for r in rectangles]))], [max_y_point]]\n\n    intersecting_points\
+            \ = []\n    def lambda_func(p, t):\n        return (t[0][0] <= p[0] <\
+            \ t[0][1]) or (t[0][1][0] > p[0] >= t[0][0])\n    if lambda_func(p, tile):\n\
+            \        intersecting_points.append(p)\n\n    return [tile] + ([tile[:]\
+            \ for tile in fractal_tessellation(intersecting_points, rectangles)] if\
+            \ intersecting_points else [])"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Replace all nested function calls in the ''main''
+            function in the ''code'' key with equivalent lambda expressions, eliminating
+            function names altogether', 'Replace all lambda expressions back to their
+            original function call counterparts, restoring readability']
+        middle_state:
+          description: "# **Fractal Tessellation**\n\nIn this problem, you are given\
+            \ a list of points on a two-dimensional plane and a list of rectangles\
+            \ that intersect with these points. Your task is to find the fractal tessellation\
+            \ of these points and rectangles.\n\nA fractal tessellation is a way of\
+            \ dividing the plane into non-overlapping regions, called tiles, such\
+            \ that each tile contains at least one point from the given list and intersects\
+            \ with at least one rectangle from the given list. The division process\
+            \ stops when no further divisions are possible without violating these\
+            \ conditions.\n\nYou can assume that all points have integer coordinates\
+            \ and all rectangles have integer boundaries.\n\nExample inputs:\n```\n\
+            input_points = [(0, 0), (1, 1), (2, 2)]\ninput_rectangles = [[(0, 0),\
+            \ (3, 3)], [(2, 2), (5, 5)]]\n```\nExample output:\n```python\n[\n  [[(0,\
+            \ 0), (1, 1)], [(2, 2), (3, 3)]],\n  [[(1, 1), (2, 2)], [(4, 4), (5, 5)]]\n\
+            ]\n```\n"
+          code: "def main(points, rectangles):\n    points.sort(key=lambda x: x[1])\n\
+            \    rectangles.sort(key=lambda r: max(r[0][1], r[1][1]))\n\n    tiles\
+            \ = []\n\n    for rect in rectangles:\n        intersecting_point = next((p\
+            \ for p in points if (rect[0][0] <= p[0] < rect[1][0]) or (rect[1][0]\
+            \ > p[0] >= rect[0][0])), None)\n\n        if intersecting_point is None:\n\
+            \            continue\n\n        tile = [[rect[0], rect[1]], [intersecting_point]]\n\
+            \n        intersecting_points = []\n        for p in points:\n       \
+            \     lambda_ := (lambda p, t: (t[0][0] <= p[0] < t[0][1]) or (t[0][1][0]\
+            \ > p[0] >= t[0][0])) if len(t) == 2 else (lambda p, t: (p[0] in range(t[0][0],\
+            \ t[0][1])) and (p[1] in range(min([q[1] for q in t]), max([q[1] for q\
+            \ in t]))))\n            if lambda_(p, tile):\n                intersecting_points.append(p)\n\
+            \n        new_tiles = [tile] + ([tile[:] for tile in fractal_tessellation(intersecting_points,\
+            \ rectangles)] if intersecting_points else [])\n\n        tiles.extend(new_tiles)\n\
+            \n    return tiles\n\ndef fractal_tessellation(points, rectangles):\n\
+            \    lambda_ := (lambda p, r: any(max(r[0][1], r[1][1]) == p[1] for r\
+            \ in rectangles))\n    if not points or not rectangles:\n        return\
+            \ []\n\n    max_y_point = next((p for p in points if lambda_(p, rectangles)),\
+            \ None)\n\n    if max_y_point is None:\n        return []\n\n    tile\
+            \ = [[(max_y_point[0], min([r[0][1] for r in rectangles])), (max_y_point[0]+1,\
+            \ max([r[1][1] for r in rectangles]))], [max_y_point]]\n\n    intersecting_points\
+            \ = []\n    for p in points:\n        lambda_ := (lambda p, t: (t[0][0]\
+            \ <= p[0] < t[0][1]) or (t[0][1][0] > p[0] >= t[0][0])) if len(t) == 2\
+            \ else (lambda p, t: (p[0] in range(t[0][0], t[0][1])) and (p[1] in range(min([q[1]\
+            \ for q in t]), max([q[1] for q in t]))))\n        if lambda_(p, tile):\n\
+            \            intersecting_points.append(p)\n\n    return [tile] + ([tile[:]\
+            \ for tile in fractal_tessellation(intersecting_points, rectangles)] if\
+            \ intersecting_points else [])"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []

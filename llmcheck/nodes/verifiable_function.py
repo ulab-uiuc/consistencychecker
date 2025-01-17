@@ -19,7 +19,7 @@ class VerifiableFunction:
             f"Code:\n{self.code}"
         )
 
-    def exec(self) -> List[Any]:  # Return the results as they are without conversion to str
+    def exec(self, catch:bool=False) -> List[Any]:  # Return the results as they are without conversion to str
         """Execute the function and return outputs"""
         if self.exec_results:
             return self.exec_results
@@ -45,7 +45,10 @@ class VerifiableFunction:
                     results.append(result)  # Append result without converting to str
                 except Exception as e:
                     results.append(f"Error: {str(e)}")
-                    print(f"Error: {str(e)}")
+                    if catch:
+                        print(f"Error: {str(e)}")
+                    else:
+                        raise RuntimeError(f"Execution error: {str(e)}")
 
             return results
         except Exception as e:

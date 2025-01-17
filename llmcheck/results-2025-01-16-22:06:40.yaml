@@ -1,0 +1,679 @@
+evaluator_model: {model: openai/gpt-4o-mini, temperature: 0.6, api_base: 'https://api.openai.com/v1'}
+evaluatee_model: {model: 'ollama_chat/llama3.1:8b-instruct-fp16', temperature: 0.6,
+  api_base: 'http://localhost:11434'}
+root_content: &id001
+  description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph represented\
+    \ as an adjacency list, where each node is an integer and edges represent connections\
+    \ between these integers, your task is to find the longest path that can be formed\
+    \ by visiting prime numbers only. Additionally, the graph traversal must be performed\
+    \ asynchronously, simulating a multithreaded environment where each thread explores\
+    \ a different starting prime number. \n\nYou should return the length of the longest\
+    \ path found. If no prime path exists, return 0. \n\nThe graph is guaranteed to\
+    \ contain at least one node, and the integers can be negative, zero, or positive.\
+    \ You are required to use dynamic programming, backtracking, and memoization to\
+    \ optimize your solution.\n\n### Input:\n- `graph`: A dictionary representing\
+    \ the adjacency list of the graph where keys are integers (nodes) and values are\
+    \ lists of integers (connected nodes).\n\n### Output:\n- An integer representing\
+    \ the length of the longest prime path.\n\n### Example:\nInput:\n```python\ngraph\
+    \ = {\n    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n    7: [3, 11],\n  \
+    \  11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n### Explanation:\nThe longest\
+    \ prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3 -> 7 -> 11.\n"
+  code: "import threading\nfrom collections import defaultdict\nfrom functools import\
+    \ lru_cache\nimport math\n\ndef is_prime(n):\n    if n <= 1:\n        return False\n\
+    \    for i in range(2, int(math.sqrt(n)) + 1):\n        if n % i == 0:\n     \
+    \       return False\n    return True\n\ndef longest_prime_path(graph):\n    primes\
+    \ = [node for node in graph if is_prime(node)]\n    max_length = 0\n    \n   \
+    \ @lru_cache(None)\n    def dfs(node, visited):\n        nonlocal max_length\n\
+    \        visited.add(node)\n        current_length = 1\n        \n        for\
+    \ neighbor in graph[node]:\n            if neighbor not in visited and is_prime(neighbor):\n\
+    \                current_length = max(current_length, 1 + dfs(neighbor, visited))\n\
+    \        \n        max_length = max(max_length, current_length)\n        visited.remove(node)\n\
+    \        return current_length\n\n    threads = []\n    \n    for prime in primes:\n\
+    \        thread = threading.Thread(target=dfs, args=(prime, set()))\n        threads.append(thread)\n\
+    \        thread.start()\n\n    for thread in threads:\n        thread.join()\n\
+    \n    return max_length\n\ndef main(graph):\n    return longest_prime_path(graph)\n"
+  programming_language: python3
+  inputs: &id002
+  - graph:
+      2: [3, 5]
+      3: [2, 5, 7]
+      5: [2, 3]
+      7: [3, 11]
+      11: [7]
+  - graph:
+      1: [2, 3]
+      2: [1, 4]
+      4: [2, 5]
+      5: [4]
+  - graph:
+      4: [6]
+      6: [4]
+      8: [9]
+      9: [8, 10]
+      10: [9]
+  - graph:
+      2: [4]
+      4: [2, 6]
+      6: [4, 3]
+      3: [6, 7]
+      7: [3, 11]
+      11: [7]
+  - graph:
+      13: [15]
+      15: [13, 17]
+      17: [15]
+      19: [20]
+      20: [19]
+  - graph:
+      23: [29]
+      29: [23, 31]
+      31: [29]
+      32: [33]
+      33: [32]
+  - graph:
+      5: [2]
+      2: [5]
+      7: [11]
+      11: [7]
+  - graph:
+      1: [2]
+      2: [3]
+      3: [4]
+      4: [5]
+      5: [6]
+  - graph:
+      6: [7]
+      7: [6]
+      8: [9]
+      9: [8]
+  - graph:
+      19: [23]
+      23: [19]
+      31: [37]
+      37: [31]
+  - graph:
+      2: [5]
+      5: [2, 3]
+      3: [5, 7]
+      7: [3]
+  - graph:
+      4: [8]
+      8: [4]
+      12: [16]
+      16: [12]
+  - graph:
+      1: [0]
+      0: [1]
+      2: [3]
+      3: [2]
+  - graph:
+      17: [19]
+      19: [17]
+      23: [29]
+      29: [23]
+  - graph:
+      3: [4]
+      4: [3, 5]
+      5: [4]
+  - graph:
+      7: [8]
+      8: [7]
+      9: [10]
+      10: [9]
+  - graph:
+      13: [14]
+      14: [13, 15]
+      15: [14]
+  - graph:
+      2: [6]
+      6: [2]
+      8: [10]
+      10: [8]
+  - graph:
+      29: [31]
+      31: [29]
+      37: [41]
+      41: [37]
+  - graph:
+      1: [2]
+      2: [3]
+      3: [1]
+  - graph:
+      11: [13]
+      13: [11]
+      17: [19]
+      19: [17]
+  exec_results: &id003 [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0]
+operations:
+- !!python/tuple ['Refactor the ''longest_prime_path'' function to use a breadth-first
+    search (BFS) approach instead of depth-first search (DFS), altering the data structure
+    to utilize a queue and tracking visited nodes with a dictionary', 'Restore the
+    original depth-first search (DFS) logic in the ''longest_prime_path'' function,
+    reverting the queue and dictionary back to the original recursive calls and set
+    for visited nodes.']
+- !!python/tuple ['Introduce memoization for the ''is_prime'' function to cache results
+    for previously computed prime checks, altering its signature to accept a cache
+    parameter', 'Remove the memoization from the ''is_prime'' function, reverting
+    it to its original form without caching and ensuring all prime checks are computed
+    afresh each time.']
+metrics:
+  L-1 AVG: 1.0
+  L-1: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+  L-2 AVG: 1.0
+  L-2: [1.0, 1.0, 1.0, 1.0]
+  L-3 AVG: 0.0
+  L-3: []
+  L-5 AVG: 0.0
+  L-5: []
+tree: !!python/object:llmcheck.core.tree.EvaluationTree
+  root: &id004 !!python/object:llmcheck.nodes.node.Node
+    content: *id001
+    operation: null
+    middle_state: null
+    parent: null
+    children:
+    - &id005 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+          \ represented as an adjacency list, where each node is an integer and edges\
+          \ represent connections between these integers, your task is to find the\
+          \ longest path that can be formed by visiting prime numbers only. Additionally,\
+          \ the graph traversal must be performed asynchronously, simulating a multithreaded\
+          \ environment where each thread explores a different starting prime number.\
+          \ \n\nYou should return the length of the longest path found. If no prime\
+          \ path exists, return 0. \n\nThe graph is guaranteed to contain at least\
+          \ one node, and the integers can be negative, zero, or positive. You are\
+          \ required to use dynamic programming, backtracking, and memoization to\
+          \ optimize your solution.\n\n### Input:\n- `graph`: A dictionary representing\
+          \ the adjacency list of the graph where keys are integers (nodes) and values\
+          \ are lists of integers (connected nodes).\n\n### Output:\n- An integer\
+          \ representing the length of the longest prime path.\n\n### Example:\nInput:\n\
+          ```python\ngraph = {\n    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n\
+          \    7: [3, 11],\n    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n###\
+          \ Explanation:\nThe longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3\
+          \ -> 7 -> 11.\n"
+        code: "import math\nfrom threading import Thread\n\ndef is_prime(n):\n   \
+          \ if n <= 1:\n        return False\n    for i in range(2, int(math.sqrt(n))\
+          \ + 1):\n        if n % i == 0:\n            return False\n    return True\n\
+          \ndef longest_prime_path(graph):\n    primes = [node for node in graph if\
+          \ is_prime(node)]\n    \n    max_length = 0\n    \n    def dfs(prime):\n\
+          \        nonlocal max_length\n        stack = [(prime, 1)]\n        \n \
+          \       while stack:\n            node, length = stack.pop()\n         \
+          \   \n            if not visited.get(node, False) and is_prime(node):\n\
+          \                visited[node] = True\n                \n              \
+          \  for neighbor in graph[node]:\n                    if not visited.get(neighbor,\
+          \ False) and is_prime(neighbor):\n                        stack.append((neighbor,\
+          \ length + 1))\n                \n                max_length = max(max_length,\
+          \ length)\n\n    visited = {}\n    \n    for prime in primes:\n        dfs(prime)\n\
+          \n    return max_length\n\ndef main(graph):\n    return longest_prime_path(graph)"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Refactor the ''longest_prime_path'' function to
+          use a breadth-first search (BFS) approach instead of depth-first search
+          (DFS), altering the data structure to utilize a queue and tracking visited
+          nodes with a dictionary', 'Restore the original depth-first search (DFS)
+          logic in the ''longest_prime_path'' function, reverting the queue and dictionary
+          back to the original recursive calls and set for visited nodes.']
+      middle_state:
+        description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+          \ represented as an adjacency list, where each node is an integer and edges\
+          \ represent connections between these integers, your task is to find the\
+          \ longest path that can be formed by visiting prime numbers only. Additionally,\
+          \ the graph traversal must be performed asynchronously, simulating a multithreaded\
+          \ environment where each thread explores a different starting prime number.\
+          \ \n\nYou should return the length of the longest path found. If no prime\
+          \ path exists, return 0. \n\nThe graph is guaranteed to contain at least\
+          \ one node, and the integers can be negative, zero, or positive. You are\
+          \ required to use dynamic programming, backtracking, and memoization to\
+          \ optimize your solution.\n\n### Input:\n- `graph`: A dictionary representing\
+          \ the adjacency list of the graph where keys are integers (nodes) and values\
+          \ are lists of integers (connected nodes).\n\n### Output:\n- An integer\
+          \ representing the length of the longest prime path.\n\n### Example:\nInput:\n\
+          ```python\ngraph = {\n    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n\
+          \    7: [3, 11],\n    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n###\
+          \ Explanation:\nThe longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3\
+          \ -> 7 -> 11.\n"
+        code: "import collections\nfrom threading import Thread\n\ndef is_prime(n):\n\
+          \    if n <= 1:\n        return False\n    for i in range(2, int(math.sqrt(n))\
+          \ + 1):\n        if n % i == 0:\n            return False\n    return True\n\
+          \ndef longest_prime_path(graph):\n    primes = [node for node in graph if\
+          \ is_prime(node)]\n    \n    max_length = 0\n    \n    def bfs(prime):\n\
+          \        nonlocal max_length\n        queue = collections.deque([(prime,\
+          \ 1)])\n        visited = set()\n        \n        while queue:\n      \
+          \      node, length = queue.popleft()\n            \n            if node\
+          \ not in visited and is_prime(node):\n                visited.add(node)\n\
+          \                \n                for neighbor in graph[node]:\n      \
+          \              if neighbor not in visited and is_prime(neighbor):\n    \
+          \                    queue.append((neighbor, length + 1))\n            \
+          \    \n                max_length = max(max_length, length)\n\n    threads\
+          \ = []\n    \n    for prime in primes:\n        thread = Thread(target=bfs,\
+          \ args=(prime,))\n        threads.append(thread)\n        thread.start()\n\
+          \n    for thread in threads:\n        thread.join()\n\n    return max_length\n\
+          \ndef main(graph):\n    return longest_prime_path(graph)"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+            \ represented as an adjacency list, where each node is an integer and\
+            \ edges represent connections between these integers, your task is to\
+            \ find the longest path that can be formed by visiting prime numbers only.\
+            \ Additionally, the graph traversal must be performed asynchronously,\
+            \ simulating a multithreaded environment where each thread explores a\
+            \ different starting prime number. \n\nYou should return the length of\
+            \ the longest path found. If no prime path exists, return 0. \n\nThe graph\
+            \ is guaranteed to contain at least one node, and the integers can be\
+            \ negative, zero, or positive. You are required to use dynamic programming,\
+            \ backtracking, and memoization to optimize your solution.\n\n### Input:\n\
+            - `graph`: A dictionary representing the adjacency list of the graph where\
+            \ keys are integers (nodes) and values are lists of integers (connected\
+            \ nodes).\n\n### Output:\n- An integer representing the length of the\
+            \ longest prime path.\n\n### Example:\nInput:\n```python\ngraph = {\n\
+            \    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n    7: [3, 11],\n\
+            \    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n### Explanation:\n\
+            The longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3 -> 7 -> 11.\n"
+          code: "import math\nfrom collections import deque\n\ndef is_prime(n):\n\
+            \    if n <= 1:\n        return False\n    for i in range(2, int(math.sqrt(n))\
+            \ + 1):\n        if n % i == 0:\n            return False\n    return\
+            \ True\n\ndef longest_prime_path(graph):\n    primes = [node for node\
+            \ in graph if is_prime(node)]\n    \n    max_length = 0\n    \n    def\
+            \ dfs(node, length):\n        nonlocal max_length\n        \n        if\
+            \ not visited.get(node, False) and is_prime(node):\n            visited[node]\
+            \ = True\n            \n            max_length = max(max_length, length)\n\
+            \            \n            for neighbor in graph[node]:\n            \
+            \    if not visited.get(neighbor, False) and is_prime(neighbor):\n   \
+            \                 dfs(neighbor, length + 1)\n\n    visited = {}\n    \n\
+            \    for prime in primes:\n        if not visited.get(prime, False) and\
+            \ is_prime(prime):\n            visited[prime] = True\n            dfs(prime,\
+            \ 1)\n    \n    return max_length\n\ndef main(graph):\n    return longest_prime_path(graph)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Refactor the ''longest_prime_path'' function to
+            use a breadth-first search (BFS) approach instead of depth-first search
+            (DFS), altering the data structure to utilize a queue and tracking visited
+            nodes with a dictionary', 'Restore the original depth-first search (DFS)
+            logic in the ''longest_prime_path'' function, reverting the queue and
+            dictionary back to the original recursive calls and set for visited nodes.']
+        middle_state:
+          description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+            \ represented as an adjacency list, where each node is an integer and\
+            \ edges represent connections between these integers, your task is to\
+            \ find the longest path that can be formed by visiting prime numbers only.\
+            \ Additionally, the graph traversal must be performed asynchronously,\
+            \ simulating a multithreaded environment where each thread explores a\
+            \ different starting prime number. \n\nYou should return the length of\
+            \ the longest path found. If no prime path exists, return 0. \n\nThe graph\
+            \ is guaranteed to contain at least one node, and the integers can be\
+            \ negative, zero, or positive. You are required to use dynamic programming,\
+            \ backtracking, and memoization to optimize your solution.\n\n### Input:\n\
+            - `graph`: A dictionary representing the adjacency list of the graph where\
+            \ keys are integers (nodes) and values are lists of integers (connected\
+            \ nodes).\n\n### Output:\n- An integer representing the length of the\
+            \ longest prime path.\n\n### Example:\nInput:\n```python\ngraph = {\n\
+            \    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n    7: [3, 11],\n\
+            \    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n### Explanation:\n\
+            The longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3 -> 7 -> 11.\n"
+          code: "import math\nfrom collections import deque\n\ndef is_prime(n):\n\
+            \    if n <= 1:\n        return False\n    for i in range(2, int(math.sqrt(n))\
+            \ + 1):\n        if n % i == 0:\n            return False\n    return\
+            \ True\n\ndef longest_prime_path(graph):\n    primes = [node for node\
+            \ in graph if is_prime(node)]\n    \n    max_length = 0\n    \n    visited\
+            \ = {}\n    queue = deque([(prime, 1) for prime in primes])\n    \n  \
+            \  while queue:\n        node, length = queue.popleft()\n        \n  \
+            \      if not visited.get(node, False) and is_prime(node):\n         \
+            \   visited[node] = True\n            \n            for neighbor in graph[node]:\n\
+            \                if not visited.get(neighbor, False) and is_prime(neighbor):\n\
+            \                    queue.append((neighbor, length + 1))\n          \
+            \  \n            max_length = max(max_length, length)\n\n    return max_length\n\
+            \ndef main(graph):\n    return longest_prime_path(graph)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+            \ represented as an adjacency list, where each node is an integer and\
+            \ edges represent connections between these integers, your task is to\
+            \ find the longest path that can be formed by visiting prime numbers only.\
+            \ Additionally, the graph traversal must be performed asynchronously,\
+            \ simulating a multithreaded environment where each thread explores a\
+            \ different starting prime number. \n\nYou should return the length of\
+            \ the longest path found. If no prime path exists, return 0. \n\nThe graph\
+            \ is guaranteed to contain at least one node, and the integers can be\
+            \ negative, zero, or positive. You are required to use dynamic programming,\
+            \ backtracking, and memoization to optimize your solution.\n\n### Input:\n\
+            - `graph`: A dictionary representing the adjacency list of the graph where\
+            \ keys are integers (nodes) and values are lists of integers (connected\
+            \ nodes).\n\n### Output:\n- An integer representing the length of the\
+            \ longest prime path.\n\n### Example:\nInput:\n```python\ngraph = {\n\
+            \    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n    7: [3, 11],\n\
+            \    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n### Explanation:\n\
+            The longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3 -> 7 -> 11.\n"
+          code: "import math\n\nclass PrimeChecker:\n    def is_prime(self, n):\n\
+            \        if n <= 1:\n            result = False\n        else:\n     \
+            \       for i in range(2, int(math.sqrt(n)) + 1):\n                if\
+            \ n % i == 0:\n                    result = False\n                  \
+            \  break\n            else:\n                result = True\n        return\
+            \ result\n\ndef longest_prime_path(graph):\n    primes = [node for node\
+            \ in graph if PrimeChecker().is_prime(node)]\n    \n    max_length = 0\n\
+            \    \n    def dfs(prime):\n        nonlocal max_length\n        stack\
+            \ = [(prime, 1)]\n        \n        while stack:\n            node, length\
+            \ = stack.pop()\n            \n            visited[node] = True\n    \
+            \        \n            for neighbor in graph[node]:\n                if\
+            \ not visited.get(neighbor, False) and PrimeChecker().is_prime(neighbor):\n\
+            \                    stack.append((neighbor, length + 1))\n          \
+            \      \n                max_length = max(max_length, length)\n\n    visited\
+            \ = {}\n    \n    for prime in primes:\n        dfs(prime)\n\n    return\
+            \ max_length\n\ndef main(graph):\n    return longest_prime_path(graph)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Introduce memoization for the ''is_prime'' function
+            to cache results for previously computed prime checks, altering its signature
+            to accept a cache parameter', 'Remove the memoization from the ''is_prime''
+            function, reverting it to its original form without caching and ensuring
+            all prime checks are computed afresh each time.']
+        middle_state:
+          description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+            \ represented as an adjacency list, where each node is an integer and\
+            \ edges represent connections between these integers, your task is to\
+            \ find the longest path that can be formed by visiting prime numbers only.\
+            \ Additionally, the graph traversal must be performed asynchronously,\
+            \ simulating a multithreaded environment where each thread explores a\
+            \ different starting prime number. \n\nYou should return the length of\
+            \ the longest path found. If no prime path exists, return 0. \n\nThe graph\
+            \ is guaranteed to contain at least one node, and the integers can be\
+            \ negative, zero, or positive. You are required to use dynamic programming,\
+            \ backtracking, and memoization to optimize your solution.\n\n### Input:\n\
+            - `graph`: A dictionary representing the adjacency list of the graph where\
+            \ keys are integers (nodes) and values are lists of integers (connected\
+            \ nodes).\n\n### Output:\n- An integer representing the length of the\
+            \ longest prime path.\n\n### Example:\nInput:\n```python\ngraph = {\n\
+            \    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n    7: [3, 11],\n\
+            \    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n### Explanation:\n\
+            The longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3 -> 7 -> 11.\n"
+          code: "import math\nfrom threading import Thread\n\nclass PrimeCache:\n\
+            \    def __init__(self):\n        self.cache = {}\n\n    def is_prime(self,\
+            \ n):\n        if n in self.cache:\n            return self.cache[n]\n\
+            \        elif n <= 1:\n            result = False\n        else:\n   \
+            \         for i in range(2, int(math.sqrt(n)) + 1):\n                if\
+            \ n % i == 0:\n                    result = False\n                  \
+            \  break\n            else:\n                result = True\n        self.cache[n]\
+            \ = result\n        return result\n\ndef longest_prime_path(graph, cache=None):\n\
+            \    primes = [node for node in graph if cache.is_prime(node) if cache\
+            \ is not None]\n    \n    max_length = 0\n    \n    def dfs(prime):\n\
+            \        nonlocal max_length\n        stack = [(prime, 1)]\n        \n\
+            \        while stack:\n            node, length = stack.pop()\n      \
+            \      \n            if not visited.get(node, False) and cache.is_prime(node)\
+            \ if cache else is_prime(node):\n                visited[node] = True\n\
+            \                \n                for neighbor in graph[node]:\n    \
+            \                if not visited.get(neighbor, False) and cache.is_prime(neighbor)\
+            \ if cache else is_prime(neighbor):\n                        stack.append((neighbor,\
+            \ length + 1))\n                \n                max_length = max(max_length,\
+            \ length)\n\n    visited = {}\n    \n    for prime in primes:\n      \
+            \  dfs(prime)\n\n    return max_length\n\ndef main(graph):\n    cache\
+            \ = PrimeCache()\n    return longest_prime_path(graph, cache)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id005
+        children: []
+    - &id006 !!python/object:llmcheck.nodes.node.Node
+      content:
+        description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+          \ represented as an adjacency list, where each node is an integer and edges\
+          \ represent connections between these integers, your task is to find the\
+          \ longest path that can be formed by visiting prime numbers only. Additionally,\
+          \ the graph traversal must be performed asynchronously, simulating a multithreaded\
+          \ environment where each thread explores a different starting prime number.\
+          \ \n\nYou should return the length of the longest path found. If no prime\
+          \ path exists, return 0. \n\nThe graph is guaranteed to contain at least\
+          \ one node, and the integers can be negative, zero, or positive. You are\
+          \ required to use dynamic programming, backtracking, and memoization to\
+          \ optimize your solution.\n\n### Input:\n- `graph`: A dictionary representing\
+          \ the adjacency list of the graph where keys are integers (nodes) and values\
+          \ are lists of integers (connected nodes).\n\n### Output:\n- An integer\
+          \ representing the length of the longest prime path.\n\n### Example:\nInput:\n\
+          ```python\ngraph = {\n    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n\
+          \    7: [3, 11],\n    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n###\
+          \ Explanation:\nThe longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3\
+          \ -> 7 -> 11.\n"
+        code: "import threading\nfrom collections import defaultdict\nimport math\n\
+          \ndef is_prime(n):\n    if n <= 1:\n        return False\n    for i in range(2,\
+          \ int(math.sqrt(n)) + 1):\n        if n % i == 0:\n            return False\n\
+          \    return True\n\ndef longest_prime_path(graph):\n    primes = [node for\
+          \ node in graph if is_prime(node)]\n    max_length = 0\n    \n    def dfs(node,\
+          \ visited):\n        nonlocal max_length\n        visited.add(node)\n  \
+          \      current_length = 1\n        \n        for neighbor in graph[node]:\n\
+          \            if neighbor not in visited and is_prime(neighbor):\n      \
+          \          current_length = max(current_length, 1 + dfs(neighbor, visited))\n\
+          \        \n        max_length = max(max_length, current_length)\n      \
+          \  visited.remove(node)\n        return current_length\n\n    threads =\
+          \ []\n    \n    for prime in primes:\n        thread = threading.Thread(target=dfs,\
+          \ args=(prime, set()))\n        threads.append(thread)\n        thread.start()\n\
+          \n    for thread in threads:\n        thread.join()\n\n    return max_length\n\
+          \ndef main(graph):\n    return longest_prime_path(graph)"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      operation: !!python/tuple ['Introduce memoization for the ''is_prime'' function
+          to cache results for previously computed prime checks, altering its signature
+          to accept a cache parameter', 'Remove the memoization from the ''is_prime''
+          function, reverting it to its original form without caching and ensuring
+          all prime checks are computed afresh each time.']
+      middle_state:
+        description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+          \ represented as an adjacency list, where each node is an integer and edges\
+          \ represent connections between these integers, your task is to find the\
+          \ longest path that can be formed by visiting prime numbers only. Additionally,\
+          \ the graph traversal must be performed asynchronously, simulating a multithreaded\
+          \ environment where each thread explores a different starting prime number.\
+          \ \n\nYou should return the length of the longest path found. If no prime\
+          \ path exists, return 0. \n\nThe graph is guaranteed to contain at least\
+          \ one node, and the integers can be negative, zero, or positive. You are\
+          \ required to use dynamic programming, backtracking, and memoization to\
+          \ optimize your solution.\n\n### Input:\n- `graph`: A dictionary representing\
+          \ the adjacency list of the graph where keys are integers (nodes) and values\
+          \ are lists of integers (connected nodes).\n\n### Output:\n- An integer\
+          \ representing the length of the longest prime path.\n\n### Example:\nInput:\n\
+          ```python\ngraph = {\n    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n\
+          \    7: [3, 11],\n    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n###\
+          \ Explanation:\nThe longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3\
+          \ -> 7 -> 11.\n"
+        code: "import threading\nfrom collections import defaultdict, cache\n\ndef\
+          \ is_prime(n, cache=None):\n    if n <= 1:\n        return False\n    if\
+          \ n in cache:\n        return cache[n]\n    for i in range(2, int(math.sqrt(n))\
+          \ + 1):\n        if n % i == 0:\n            cache[n] = False\n        \
+          \    return False\n    cache[n] = True\n    return True\n\ndef longest_prime_path(graph):\n\
+          \    primes = [node for node in graph if is_prime(node)]\n    max_length\
+          \ = 0\n    \n    @cache(None)\n    def dfs(node, visited):\n        nonlocal\
+          \ max_length\n        visited.add(node)\n        current_length = 1\n  \
+          \      \n        for neighbor in graph[node]:\n            if neighbor not\
+          \ in visited and is_prime(neighbor):\n                current_length = max(current_length,\
+          \ 1 + dfs(neighbor, visited))\n        \n        max_length = max(max_length,\
+          \ current_length)\n        visited.remove(node)\n        return current_length\n\
+          \n    threads = []\n    \n    for prime in primes:\n        thread = threading.Thread(target=dfs,\
+          \ args=(prime, set()))\n        threads.append(thread)\n        thread.start()\n\
+          \n    for thread in threads:\n        thread.join()\n\n    return max_length\n\
+          \ndef main(graph):\n    return longest_prime_path(graph)"
+        programming_language: python3
+        inputs: *id002
+        exec_results: *id003
+      parent: *id004
+      children:
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+            \ represented as an adjacency list, where each node is an integer and\
+            \ edges represent connections between these integers, your task is to\
+            \ find the longest path that can be formed by visiting prime numbers only.\
+            \ Additionally, the graph traversal must be performed asynchronously,\
+            \ simulating a multithreaded environment where each thread explores a\
+            \ different starting prime number. \n\nYou should return the length of\
+            \ the longest path found. If no prime path exists, return 0. \n\nThe graph\
+            \ is guaranteed to contain at least one node, and the integers can be\
+            \ negative, zero, or positive. You are required to use dynamic programming,\
+            \ backtracking, and memoization to optimize your solution.\n\n### Input:\n\
+            - `graph`: A dictionary representing the adjacency list of the graph where\
+            \ keys are integers (nodes) and values are lists of integers (connected\
+            \ nodes).\n\n### Output:\n- An integer representing the length of the\
+            \ longest prime path.\n\n### Example:\nInput:\n```python\ngraph = {\n\
+            \    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n    7: [3, 11],\n\
+            \    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n### Explanation:\n\
+            The longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3 -> 7 -> 11.\n"
+          code: "import threading\nfrom collections import defaultdict, deque\n\n\
+            def is_prime(n):\n    if n <= 1:\n        return False\n    for i in range(2,\
+            \ int(math.sqrt(n)) + 1):\n        if n % i == 0:\n            return\
+            \ False\n    return True\n\ndef longest_prime_path(graph):\n    primes\
+            \ = [node for node in graph if is_prime(node)]\n    \n    def dfs(prime,\
+            \ visited=None, max_length=0):\n        if visited is None:\n        \
+            \    visited = set()\n        \n        if prime not in visited and is_prime(prime):\n\
+            \            visited.add(prime)\n            \n            max_length\
+            \ = max(max_length, 1)\n            \n            for neighbor in graph[prime]:\n\
+            \                if neighbor not in visited and is_prime(neighbor):\n\
+            \                    max_length = dfs(neighbor, visited, max_length +\
+            \ 1)\n                    \n            return max_length\n        \n\
+            \        return max_length\n\n    results = {}\n    \n    for prime in\
+            \ primes:\n        results[prime] = dfs(prime)\n\n    return max(results.values())\n\
+            \ndef main(graph):\n    return longest_prime_path(graph)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Refactor the ''longest_prime_path'' function to
+            use a breadth-first search (BFS) approach instead of depth-first search
+            (DFS), altering the data structure to utilize a queue and tracking visited
+            nodes with a dictionary', 'Restore the original depth-first search (DFS)
+            logic in the ''longest_prime_path'' function, reverting the queue and
+            dictionary back to the original recursive calls and set for visited nodes.']
+        middle_state:
+          description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+            \ represented as an adjacency list, where each node is an integer and\
+            \ edges represent connections between these integers, your task is to\
+            \ find the longest path that can be formed by visiting prime numbers only.\
+            \ Additionally, the graph traversal must be performed asynchronously,\
+            \ simulating a multithreaded environment where each thread explores a\
+            \ different starting prime number. \n\nYou should return the length of\
+            \ the longest path found. If no prime path exists, return 0. \n\nThe graph\
+            \ is guaranteed to contain at least one node, and the integers can be\
+            \ negative, zero, or positive. You are required to use dynamic programming,\
+            \ backtracking, and memoization to optimize your solution.\n\n### Input:\n\
+            - `graph`: A dictionary representing the adjacency list of the graph where\
+            \ keys are integers (nodes) and values are lists of integers (connected\
+            \ nodes).\n\n### Output:\n- An integer representing the length of the\
+            \ longest prime path.\n\n### Example:\nInput:\n```python\ngraph = {\n\
+            \    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n    7: [3, 11],\n\
+            \    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n### Explanation:\n\
+            The longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3 -> 7 -> 11.\n"
+          code: "import threading\nfrom collections import defaultdict, deque\nimport\
+            \ math\n\ndef is_prime(n):\n    if n <= 1:\n        return False\n   \
+            \ for i in range(2, int(math.sqrt(n)) + 1):\n        if n % i == 0:\n\
+            \            return False\n    return True\n\ndef longest_prime_path(graph):\n\
+            \    primes = [node for node in graph if is_prime(node)]\n    \n    def\
+            \ bfs(prime):\n        visited = set()\n        queue = deque([(prime,\
+            \ 1)])\n        \n        while queue:\n            node, length = queue.popleft()\n\
+            \            \n            if node not in visited and is_prime(node):\n\
+            \                max_length = length\n                visited.add(node)\n\
+            \                \n                for neighbor in graph[node]:\n    \
+            \                if neighbor not in visited and is_prime(neighbor):\n\
+            \                        queue.append((neighbor, length + 1))\n      \
+            \                  \n                return max(max_length, length)\n\
+            \        \n        return 0\n\n    threads = []\n    \n    results = {}\n\
+            \    \n    for prime in primes:\n        thread = threading.Thread(target=lambda\
+            \ p: results[p] = bfs(p), args=(prime,))\n        threads.append(thread)\n\
+            \        thread.start()\n\n    for thread in threads:\n        thread.join()\n\
+            \n    return max(results.values())\n\ndef main(graph):\n    return longest_prime_path(graph)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []
+      - !!python/object:llmcheck.nodes.node.Node
+        content:
+          description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+            \ represented as an adjacency list, where each node is an integer and\
+            \ edges represent connections between these integers, your task is to\
+            \ find the longest path that can be formed by visiting prime numbers only.\
+            \ Additionally, the graph traversal must be performed asynchronously,\
+            \ simulating a multithreaded environment where each thread explores a\
+            \ different starting prime number. \n\nYou should return the length of\
+            \ the longest path found. If no prime path exists, return 0. \n\nThe graph\
+            \ is guaranteed to contain at least one node, and the integers can be\
+            \ negative, zero, or positive. You are required to use dynamic programming,\
+            \ backtracking, and memoization to optimize your solution.\n\n### Input:\n\
+            - `graph`: A dictionary representing the adjacency list of the graph where\
+            \ keys are integers (nodes) and values are lists of integers (connected\
+            \ nodes).\n\n### Output:\n- An integer representing the length of the\
+            \ longest prime path.\n\n### Example:\nInput:\n```python\ngraph = {\n\
+            \    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n    7: [3, 11],\n\
+            \    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n### Explanation:\n\
+            The longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3 -> 7 -> 11.\n"
+          code: "import threading\nfrom collections import defaultdict\nimport math\n\
+            \ndef is_prime(n):\n    if n <= 1:\n        return False\n    for i in\
+            \ range(2, int(math.sqrt(n)) + 1):\n        if n % i == 0:\n         \
+            \   return False\n    return True\n\ndef longest_prime_path(graph):\n\
+            \    primes = [node for node in graph if is_prime(node)]\n    max_length\
+            \ = 0\n    \n    def dfs(node, visited):\n        nonlocal max_length\n\
+            \        visited.add(node)\n        current_length = 1\n        \n   \
+            \     for neighbor in graph[node]:\n            if neighbor not in visited\
+            \ and is_prime(neighbor):\n                current_length = max(current_length,\
+            \ 1 + dfs(neighbor, visited))\n        \n        max_length = max(max_length,\
+            \ current_length)\n        visited.remove(node)\n        return current_length\n\
+            \n    threads = []\n    \n    for prime in primes:\n        thread = threading.Thread(target=dfs,\
+            \ args=(prime, set()))\n        threads.append(thread)\n        thread.start()\n\
+            \n    for thread in threads:\n        thread.join()\n\n    return max_length\n\
+            \ndef main(graph):\n    return longest_prime_path(graph)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        operation: !!python/tuple ['Introduce memoization for the ''is_prime'' function
+            to cache results for previously computed prime checks, altering its signature
+            to accept a cache parameter', 'Remove the memoization from the ''is_prime''
+            function, reverting it to its original form without caching and ensuring
+            all prime checks are computed afresh each time.']
+        middle_state:
+          description: "## Problem: Asynchronous Prime Path Finder\n\nGiven a graph\
+            \ represented as an adjacency list, where each node is an integer and\
+            \ edges represent connections between these integers, your task is to\
+            \ find the longest path that can be formed by visiting prime numbers only.\
+            \ Additionally, the graph traversal must be performed asynchronously,\
+            \ simulating a multithreaded environment where each thread explores a\
+            \ different starting prime number. \n\nYou should return the length of\
+            \ the longest path found. If no prime path exists, return 0. \n\nThe graph\
+            \ is guaranteed to contain at least one node, and the integers can be\
+            \ negative, zero, or positive. You are required to use dynamic programming,\
+            \ backtracking, and memoization to optimize your solution.\n\n### Input:\n\
+            - `graph`: A dictionary representing the adjacency list of the graph where\
+            \ keys are integers (nodes) and values are lists of integers (connected\
+            \ nodes).\n\n### Output:\n- An integer representing the length of the\
+            \ longest prime path.\n\n### Example:\nInput:\n```python\ngraph = {\n\
+            \    2: [3, 5],\n    3: [2, 5, 7],\n    5: [2, 3],\n    7: [3, 11],\n\
+            \    11: [7]\n}\n```\nOutput:\n```python\n4\n```\n\n### Explanation:\n\
+            The longest prime path can be 2 -> 3 -> 5 -> 7 or 2 -> 3 -> 7 -> 11.\n"
+          code: "import threading\nfrom collections import defaultdict, cache\nimport\
+            \ math\n\n@cache\ndef is_prime(n):\n    if n <= 1:\n        return False\n\
+            \    for i in range(2, int(math.sqrt(n)) + 1):\n        if n % i == 0:\n\
+            \            return False\n    return True\n\ndef longest_prime_path(graph):\n\
+            \    primes = [node for node in graph if is_prime(node)]\n    max_length\
+            \ = 0\n    \n    def dfs(node, visited):\n        nonlocal max_length\n\
+            \        visited.add(node)\n        current_length = 1\n        \n   \
+            \     for neighbor in graph[node]:\n            if neighbor not in visited\
+            \ and is_prime(neighbor):\n                current_length = max(current_length,\
+            \ 1 + dfs(neighbor, visited))\n        \n        max_length = max(max_length,\
+            \ current_length)\n        visited.remove(node)\n        return current_length\n\
+            \n    threads = []\n    \n    for prime in primes:\n        thread = threading.Thread(target=dfs,\
+            \ args=(prime, set()))\n        threads.append(thread)\n        thread.start()\n\
+            \n    for thread in threads:\n        thread.join()\n\n    return max_length\n\
+            \ndef main(graph):\n    return longest_prime_path(graph)"
+          programming_language: python3
+          inputs: *id002
+          exec_results: *id003
+        parent: *id006
+        children: []
