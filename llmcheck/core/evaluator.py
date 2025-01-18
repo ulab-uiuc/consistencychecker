@@ -102,6 +102,8 @@ class LLMCheck:
 
         metrics = self._calculate_metrics(tree, distance)
 
+        tree_dict = self._tree_to_dict(tree.root)
+
         return {
             "evaluator_model": {
                 "model": self.evaluator_model,
@@ -116,7 +118,7 @@ class LLMCheck:
             "root_content": root_content,
             "operations": operations,
             "metrics": metrics,
-            "tree": tree,
+            "tree": tree_dict
         }
 
     def _build_tree(self, node: Node, operations: List[Tuple[str, str]], depth: int) -> Node:
@@ -210,20 +212,15 @@ class LLMCheck:
         assert isinstance(response_str, str)
         return response_str
 
-    def _str_tree(self, node: Node, prefix: str, is_last: bool) -> str:
-        result = ""
-        marker = "└─ " if is_last else "├─ "
-        result += prefix + marker + f"Content: {node.content}\n"
-        if node.operation and node.middle_state:
-            transform, reverse = node.operation
-            child_prefix = prefix + ("   " if is_last else "│  ")
-            result += child_prefix + f"Transform: {transform}\n"
-            result += child_prefix + f"Middle state: {node.middle_state}\n"
-            result += child_prefix + f"Reverse: {reverse}\n"
-        new_prefix = prefix + ("   " if is_last else "│  ")
-        for i, child in enumerate(node.children):
-            result += self._str_tree(child, new_prefix, i == len(node.children) - 1)
-        return result
+
+    def _tree_to_dict(self, node: Node) -> Dict[str, Any]:
+        node_dict = {
+            "content": node.content,
+            "operation": node.operation,
+            "middle_state": node.middle_state,
+            "children": [self._tree_to_dict(child) for child in node.children]
+        }
+        return node_dict
 
     def _gather_all_nodes(self, root: Node) -> List[Node]:
         result = []
