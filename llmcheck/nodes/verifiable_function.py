@@ -13,7 +13,7 @@ class VerifiableFunction:
     time_limit: float  # Time limit for function execution in seconds
     exec_results: List[Any] = field(default_factory=list)  # Store the results of the function execution
 
-    def __init__(self, code: str, programming_language: str, inputs: List[dict[str, Any]], description: str, exec_results: List[Any] = field(default_factory=list), time_limit: float = 2.0) -> None:
+    def __init__(self, code: str, programming_language: str, inputs: List[dict[str, Any]], description: str, time_limit: float = 2.0) -> None:
         pattern = r'```(\w+)?'
         cleaned_code = re.sub(pattern, '', code).replace('```', '').strip()
         self.code = cleaned_code
@@ -33,8 +33,8 @@ class VerifiableFunction:
 
     def exec(self, catch:bool=False) -> List[Any]:  # Return the results as they are without conversion to str
         """Execute the function and return outputs"""
-        if self.exec_results:
-            return self.exec_results
+        # if self.exec_results:
+        #     return self.exec_results
         try:
             if self.programming_language not in ["python", "python3", "py", "py3", "Python", "Python3"]: # just in case the LLM is bad at following instructions
                 if not catch:
