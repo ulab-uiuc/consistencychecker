@@ -9,12 +9,6 @@ from llmcheck.metrics.base import BaseSimilarityMetric
 
 class APIBasedSimilarity(BaseSimilarityMetric):
     # Common embedding models and their token limits
-    MODEL_TOKEN_LIMITS = {
-        "text-embedding-ada-002": 8191,
-        "text-embedding-3-small": 8191,
-        "text-embedding-3-large": 8191,
-        # Add other models as needed
-    }
 
     def __init__(self,
                  model: str,
@@ -24,11 +18,9 @@ class APIBasedSimilarity(BaseSimilarityMetric):
         self.api_base = api_base
         if api_base:
             print(f"[INFO] Overriding API embedding model with set value: {model}")
-        if api_base not in self.MODEL_TOKEN_LIMITS:
-            raise ValueError("Truncation for this embedding model is not supported.")
 
         # Set token limit based on model or user-specified limit
-        self.max_tokens = max_tokens or self.MODEL_TOKEN_LIMITS.get(model, 8191)
+        self.max_tokens = 8191
 
         # Initialize tokenizer for length checking
         # Using gpt2 tokenizer as a reasonable default for token counting
