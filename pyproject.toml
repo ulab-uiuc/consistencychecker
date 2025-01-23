@@ -14,7 +14,7 @@ beartype = "*"
 numpy = "<2.0.0"
 transformers = "^4.45.1"
 torch = ">=2.2.0,<2.3.0"
-litellm = "^1.57.0"
+litellm = "^1.59.3"
 pyyaml = "^6.0.2"
 
 
