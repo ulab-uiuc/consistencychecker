@@ -63,9 +63,15 @@ def cli() -> None:
             print(f"    {key}: {results['metrics'][key]}")
 
     # Save results to YAML file
-    with open(args.result, "w") as file:
-        yaml.dump(results, file, default_flow_style=None, sort_keys=False)
-
+    try:
+        with open(args.result, "w") as file:
+            yaml.dump(results, file, default_flow_style=None, sort_keys=False)
+    except Exception as e:
+        # dump only metrics
+        results_safe = {"metrics": results["metrics"], "full": f"{results}"}
+        with open(args.result, "w") as file:
+            yaml.dump(results_safe, file, default_flow_style=None, sort_keys=False)
+        print(f"[WARNING] Failed to save full results: {e}. Content saved in safe mode. You might have to manually parse the content.")
 
 if __name__ == "__main__":
     cli()
