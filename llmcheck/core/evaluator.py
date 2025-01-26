@@ -4,7 +4,7 @@ import litellm
 import yaml
 from tqdm import tqdm
 
-from llmcheck.core.operations import OperationGenerator
+from llmcheck.core.generator import BenchmarkGenerator
 from llmcheck.core.tree import EvaluationTree
 from llmcheck.metrics.factory import SimilarityConfig, SimilarityFactory
 from llmcheck.nodes.node import Node
@@ -40,7 +40,7 @@ class LLMCheck:
         self.evaluatee_api_base = evaluatee_api_base
         self.evaluator_model_temperature = evaluator_model_temperature
         self.evaluatee_model_temperature = evaluatee_model_temperature
-        self.op_generator = OperationGenerator(evaluator_model, evaluator_api_base, evaluator_model_temperature, llm_max_new_tokens)
+        self.bench_generator = BenchmarkGenerator(evaluator_model, evaluator_api_base, evaluator_model_temperature, llm_max_new_tokens)
         self.similarity_metric = SimilarityFactory.create_metric(similarity_config)
         self.operation_code_format_enforce_prompt = operation_code_format_enforce_prompt
         self.llm_max_new_tokens = llm_max_new_tokens
@@ -87,7 +87,7 @@ class LLMCheck:
                 else:
                     root_code = root_content["code"]
                     prompt = prompt_template.format(n_operations=self.n_operations, root_code=root_code) ######
-                    operations = self.op_generator.generate_operations(prompt, self.n_operations)
+                    operations = self.bench_generator.generate_operations(prompt, self.n_operations)
                 state = 'Operations generated'
                 self._build_tree(tree.root, operations, 0)
                 state = 'Tree built'

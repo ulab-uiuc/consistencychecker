@@ -1,0 +1,80 @@
+#      ______                 _                          _      _____            
+#      | ___ \               | |                        | |    |  __ \           
+#      | |_/ / ___ _ __   ___| |__  _ __ ___   __ _ _ __| | __ | |  \/ ___ _ __  
+#      | ___ \/ _ \ '_ \ / __| '_ \| '_ ` _ \ / _` | '__| |/ / | | __ / _ \ '_ \ 
+#      | |_/ /  __/ | | | (__| | | | | | | | | (_| | |  |   <  | |_\ \  __/ | | |
+#      \____/ \___|_| |_|\___|_| |_|_| |_| |_|\__,_|_|  |_|\_\  \____/\___|_| |_|
+                                                                        
+evaluator:
+  model_name: "fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct"
+  api_base: "https://api.fireworks.ai/inference/v1"
+  temperature: 0.6
+
+llm_max_new_tokens: 4096
+forest_size: 10
+root_node_constraints: |
+  Write a LeetCode-Hard style problem. The problem must be super hard, that even
+  a graduate student in computer science will struggle to solve it.
+  Do not attempt to generate long, nested dicts. But it will require a very long
+  and complicated solution. The execution time should be very short.
+  However, it does not need to be super long. It can be shorter, but it must be really hard.
+  Please do this in a function way, e.g. provide a function called "main"
+  that returns the intended answer.
+  You will have to provide this in YAML format, comprising of multiple
+  keys and values:
+  - "description": a brief description of the question. It should be
+                  a string. As all LeetCode problems do, it should have
+                  a title, a description, example inputs and outputs,
+                  just like what you see in the LeetCode website.
+                  It is a string. Write it in markdown format.
+  - "code": the code that is the solution to the problem. It should be
+           a function called "main" that returns the intended answer.
+           It should be in `python3` language. Start without a code block.
+           Its "main" function takes in a list of parameters, as the input for
+           one test case.
+           It is a string.
+  - "programming_language": the programming language used in the code.
+                            In this case, it should be "python3".
+                            It is a string.
+  - "inputs": the inputs that tests its functionality. It is a list of
+              dictionaries for the kwargs of the function, the test case
+              for evaluating an solution, which will put into the "main" function
+              to obtain the output. You will need 20 test cases. The keys
+              should be parameters of the "main" function, not "args".or "kwargs"!
+              If your "main" is "def main(a, b, c):", then the keys should be
+              "a", "b", "c". It should contain a lot of edge cases, but only
+              require short time to execute.
+  Please use the "|" to write multi line strings:
+  description: |
+    ...
+    ...
+  code: |
+    def main(*args):
+        ...
+        ...
+  programming_language: "python3"
+  inputs:
+    - {"somekey": "somevalue", "anotherkey": "anothervalue", ...}
+    ...
+    ...
+
+  Please start right away without any explanation. Please DO NOT put it in a code block.
+  Please follow all the instructions or it will crash.
+  You must have a "main" function in the code, or it will crash.
+operation_generation_prompt: |
+  Generate {n_operations} pairs of transform-reverse operations for testing language model consistency.
+  Please make sure that these operations should be fit to perform on the root code: "{root_code}".
+  Each operation should modify the text and its reverse should restore it.
+  Format each line as: "transform operation | reverse operation"
+  Example: "split the 'main' function into multiple mini-functions, each only storing partial logic, with cryptic variable names that hide true purpose | merge all mini-functions back into one coherent 'main' function, restoring original descriptive variable names"
+  Example: "Utilize advanced concurrent data pipelines within the 'main' function in the 'code' key, splitting tasks via multiprocessing and merging results seamlessly | consolidate all concurrent pipelines back into a single, sequential 'main' function while preserving the original logic"
+  Example: "Replace standard control structures within the 'main' function in the 'code' key with complex generators and coroutines that lazily evaluate large datasets | revert the 'main' function to use basic loops and direct evaluations, ensuring behavior stays identical"
+  As we all know, there are many ways to transform a piece of code, preserving its functionality, while implementing the same logic in a different way.
+  Your operations should be based on what the root code is like, and have transformations that asks the code to be implemented in a different, but valid and equivalent way.
+  It is a piece of LeetCode-Hard style problem, but you will not access the description, inputs, and outputs. You will only access the code, which is in `python3` language.
+  Please try out what I have suggested above and then come up with your own ideas. Please avoid overly simple operations like "add a period | remove a period" or "capitalize the first letter | lowercase the first letter".
+  Please start each line without '- ', '1. ', 'a. ', 'i. ', etc. Keep it simple and clear. Just the operation and its reverse.
+  Please make sure in the operation to highlight that the transformation is evaluatee to the \"main\" function in the \"code\" key of the JSON text.
+  PLEASE generate EXTREMELY HARD TRANSFORMATIONS that weaker LLMs will struggle with! That is, harder than the examples given above.
+  These transformations may struggle and break the edge cases or main functionality.
+n_operations: 3
