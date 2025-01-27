@@ -31,21 +31,24 @@ To install the dependencies, run:
 ```bash
 poetry install
 ```
+Then simply use `llmcheck` as a CLI tool. There are three parameter combinations:
 
-Then simply use ```llmcheck``` as a cli tool. There are two parameters:
+1. Generate benchmark only:
+    ```bash
+    llmcheck --config <path_to_config> --benchmark_output <path_for_saving_benchmark> --benchmark_only
+    ```
 
-```
---config: path to the config file, which is yaml format
---result: path to the result file, which is also in yaml format
-```
+2. Evaluate using existing benchmark:
+    ```bash
+    llmcheck --config <path_to_config> --benchmark <path_to_benchmark> --result_output_folder <path_for_saving_results>
+    ```
 
-The acceptable config file format is a little bit complicated but it is explained in ```config.yaml``` file. To avoid outputs writing on top of each other, we default the result file to be tagged with the current time.
+3. Generate benchmark and evaluate:
+    ```bash
+    llmcheck --config <path_to_config> --result_output_folder <path_for_saving_results>
+    ```
 
-One example of the usage is:
-
-```bash
-llmcheck --config config.yaml --result result.yaml
-```
+The acceptable config file format is a little bit complicated but it is explained in the `config.yaml` file. To avoid outputs writing on top of each other, we default the result file to be tagged with the current time.
 
 ## LLM Options
 
