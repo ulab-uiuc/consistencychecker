@@ -106,18 +106,6 @@ There are a total of 3 parameter combinations:
     if step_generate_benchmark:
         print(f"[{INFO_PLAIN}] Generating benchmark...")
 
-        # print("evaluator model name: ", config.get("evaluator").get("model_name"))
-        # print("evaluator model api base: ", config.get("evaluator").get("api_base"))
-        # print("evaluator model temperature: ", config.get("evaluator").get("temperature"))
-        # print("llm max new tokens: ", config.get("llm_max_new_tokens"))
-
-        # print("forest size: ", config.get("forest_size", 1))
-        # print("root_node_constraints: ", config.get("root_node_constraints"))
-        # print("operation_generation_prompt: ", config.get("operation_generation_prompt"))
-        # print("n_operations: ", config.get("n_operations"))
-
-        # print("benchmark_output: ", args.benchmark_output)
-
         benchmark_generator = BenchmarkGenerator(
             evaluator_model=config.get("evaluator").get("model_name"),
             evaluator_model_api_base=config.get("evaluator").get("api_base"),
