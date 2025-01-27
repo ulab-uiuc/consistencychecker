@@ -1,11 +1,18 @@
 import argparse
 from typing import List
 from datetime import datetime
+import colorama
+import os
+from collections import defaultdict
+from copy import deepcopy
 
 import yaml
 
 from llmcheck.core.evaluator import LLMCheck
 from llmcheck.core.generator import BenchmarkGenerator
+
+INFO_PLAIN: str = "INFO"
+INFO_GREEN: str = colorama.Fore.GREEN + "INFO" + colorama.Style.RESET_ALL
 
 
 def cli() -> None:
@@ -24,7 +31,6 @@ def cli() -> None:
     )
     parser.add_argument(
         "--benchmark_output", type=str, required=False,
-        default=f"benchmark-results-{datetime.now().astimezone().strftime('%Y-%m-%d-%H:%M:%S')}.yaml",
         help="Path to the output file for the benchmark results."
     )
     # arg for generating benchmark only
@@ -93,8 +99,11 @@ There are a total of 3 parameter combinations:
 
     forest: List[dict] = []
 
+    # get forest size
+    forest_size = config.get("forest_size")
+
     if step_generate_benchmark:
-        print("[INFO] Generating benchmark...")
+        print(f"[{INFO_PLAIN}] Generating benchmark...")
 
         # print("evaluator model name: ", config.get("evaluator").get("model_name"))
         # print("evaluator model api base: ", config.get("evaluator").get("api_base"))
@@ -113,16 +122,16 @@ There are a total of 3 parameter combinations:
             evaluator_model_api_base=config.get("evaluator").get("api_base"),
             evaluator_model_temperature=config.get("evaluator").get("temperature"),
             llm_max_new_tokens=config.get("llm_max_new_tokens"),
+            time_limit=config.get("time_limit")
         )
 
-        # get forest size
-        forest_size = config.get("forest_size")
+        retry_max: int = config.get("retry_max")
 
         for tree_idx in range(forest_size):
-            print(f"[INFO] Generating tree {tree_idx + 1} / {forest_size}", end="\r")
+            print(f"[{INFO_PLAIN}] Generating tree {tree_idx + 1} / {forest_size}")
             # Generate benchmark
             retry_times: int = 0
-            while True:
+            while retry_times < retry_max:
                 try:
                     root, operations = benchmark_generator.generate_benchmark(
                         constraints=config.get("root_node_constraints"),
@@ -133,38 +142,48 @@ There are a total of 3 parameter combinations:
                 except Exception as e:
                     print(e)
                     retry_times += 1
-                    print(f"[INFO] Retry: {retry_times}")
+                    print(f"[{INFO_PLAIN}] Generating tree {tree_idx + 1} / {forest_size} failed. Retrying... ({retry_times} / {retry_max})")
                     continue
+            if retry_times == retry_max:
+                print(f"[ERROR] Failed to generate tree {tree_idx + 1} / {forest_size}")
+                raise Exception(f"Benchmark generation failed.\nCrank up the retry_max(now {retry_max}) would help.")
             forest.append({"operations": operations, "root": root})
-        
-        print(f"[INFO] Generating tree {forest_size} / {forest_size}")
         
         # write to benchmark file
         with open(args.benchmark_output, "w") as file:
             yaml.dump({"forest": forest}, file, default_flow_style=None, sort_keys=False)
-        print(f"[INFO] Benchmark saved to {args.benchmark_output}")
+        print(f"[{INFO_GREEN}] Benchmark saved to {args.benchmark_output}")
     else:
         # load from benchmark file
-        # with open(args.benchmark, "r") as file:
-        #     benchmark = yaml.safe_load(file)
-        #     forest = benchmark.get("forest")
-        #     # check format if each element has root and operations keys
-        #     for tree in forest:
-        #         assert "root" in tree, "Invalid benchmark format."
-        #         assert "operations" in tree, "Invalid benchmark format."
+        with open(args.benchmark, "r") as file:
+            benchmark = yaml.safe_load(file)
+            forest = benchmark.get("forest")
+            # check format if each element has root and operations keys
+            for tree in forest:
+                assert "root" in tree, "Invalid benchmark format."
+                assert "operations" in tree, "Invalid benchmark format."
         pass
 
     if not step_evaluate:
         return
-
-    return
+    
+    # if the target folder does not exist, create it
+    if args.result_output_folder:
+        if not os.path.exists(args.result_output_folder):
+            os.makedirs(args.result_output_folder)
+    # if files in the target folder exist, raise an error
+    if args.result_output_folder:
+        if os.path.exists(args.result_output_folder) and os.listdir(args.result_output_folder):
+            raise Exception("The target folder is not empty. To avoid overwriting, please provide an empty folder.")
+    
 
     # Extract parameters
     similarity_config = config.get("similarity_config")
     num_of_samples = config.get("num_of_samples")
 
+    full_avg_metrics_collect = defaultdict(list)
     for tree_idx, tree in enumerate(forest):
-        root = tree["root"]
+        root_original = tree["root"]
         operations = tree["operations"]
         llmcheck_instance = LLMCheck(
             evaluatee_model=config.get("evaluatee").get("model_name"),
@@ -174,19 +193,36 @@ There are a total of 3 parameter combinations:
             max_depth=config.get("max_depth"),
             operation_code_format_enforce_prompt=config.get("operation_code_format_enforce_prompt"),
             llm_max_new_tokens=config.get("llm_max_new_tokens"),
-            retry_max=config.get("retry_max"),
+            retry_max=16, #TODO
             time_limit=config.get("time_limit"),
         )
+        root = deepcopy(root_original)
         for sample_idx in range(num_of_samples):
             print(f"Sample {sample_idx + 1} / {num_of_samples}")
             results = llmcheck_instance.evaluate(
                 root=root,
-                operations=[tuple(op) for op in operations],
-                distance=config.get("distance")
+                operations=operations,
+                distance=config.get("l_scores")
             )
+            for key in results["metrics"]:
+                if "AVG" in key:
+                    full_avg_metrics_collect[key].append(results["metrics"][key])
             # Save results to YAML file
-            with open(f"{args.result_output_folder}/{tree_idx}_{sample_idx}.yaml", "w") as file:
+            with open(f"{args.result_output_folder}/tree_{tree_idx}_sample_{sample_idx}.yaml", "w") as file:
                 yaml.dump(results, file, default_flow_style=None, sort_keys=False)
+    # save all values, avg, and std, of the full_avg_metrics_collect
+    full_avg_metrics = {}
+    for key in full_avg_metrics_collect:
+        assert len(full_avg_metrics_collect[key]) == forest_size * num_of_samples
+    for key in full_avg_metrics_collect:
+        full_avg_metrics[key] = {
+            "values": full_avg_metrics_collect[key],
+            "avg": sum(full_avg_metrics_collect[key]) / len(full_avg_metrics_collect[key]),
+            "std": sum((x - (sum(full_avg_metrics_collect[key]) / len(full_avg_metrics_collect[key]))) ** 2 for x in full_avg_metrics_collect[key]) / len(full_avg_metrics_collect[key])
+        }
+    with open(f"{args.result_output_folder}/full_avg_metrics.yaml", "w") as file:
+        yaml.dump(full_avg_metrics, file, default_flow_style=None, sort_keys=False)
+        
 
 if __name__ == "__main__":
     cli()

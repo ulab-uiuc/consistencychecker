@@ -1,3 +1,7 @@
+# globals
+time_limit: 2.0
+llm_max_new_tokens: 4096
+
 #      ______                 _                          _      _____            
 #      | ___ \               | |                        | |    |  __ \           
 #      | |_/ / ___ _ __   ___| |__  _ __ ___   __ _ _ __| | __ | |  \/ ___ _ __  
@@ -10,7 +14,7 @@ evaluator:
   api_base: "https://api.fireworks.ai/inference/v1"
   temperature: 0.6
 
-llm_max_new_tokens: 4096
+retry_max: 16
 forest_size: 10
 root_node_constraints: |
   Write a LeetCode-Hard style problem. The problem must be super hard, that even
@@ -77,4 +81,29 @@ operation_generation_prompt: |
   Please make sure in the operation to highlight that the transformation is evaluatee to the \"main\" function in the \"code\" key of the JSON text.
   PLEASE generate EXTREMELY HARD TRANSFORMATIONS that weaker LLMs will struggle with! That is, harder than the examples given above.
   These transformations may struggle and break the edge cases or main functionality.
-n_operations: 3
+n_operations: 1
+
+#      ______                 _                          _     ______            
+#      | ___ \               | |                        | |    | ___ \           
+#      | |_/ / ___ _ __   ___| |__  _ __ ___   __ _ _ __| | __ | |_/ /   _ _ __  
+#      | ___ \/ _ \ '_ \ / __| '_ \| '_ ` _ \ / _` | '__| |/ / |    / | | | '_ \ 
+#      | |_/ /  __/ | | | (__| | | | | | | | | (_| | |  |   <  | |\ \ |_| | | | |
+#      \____/ \___|_| |_|\___|_| |_|_| |_| |_|\__,_|_|  |_|\_\ \_| \_\__,_|_| |_|                                                           
+                                                            
+evaluatee:
+  model_name: "fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct"
+  api_base: "https://api.fireworks.ai/inference/v1"
+  temperature: 0.6
+
+similarity_config:
+  type: "api"
+  model_name: "text-embedding-ada-002"
+  api_base: "https://api.openai.com/v1"
+num_of_samples: 1
+max_depth: 1
+operation_code_format_enforce_prompt: |
+  For the sake of parsing, please enclose your code within a code block,
+  e.g. f"```{programming_language}\n{code}\n```". Please make sure that the code is valid.
+  And programming_language is the language for the code. For python code, it should be "python3".
+  For JavaScript code, it should be "javascript", etc. Do NOT include anything else.
+l_scores: [1, 2, 3]

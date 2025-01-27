@@ -1,0 +1,785 @@
+operations:
+- ['1. "Replace the ''main'' function in the ''code'' key with a meta-programming
+    construct that uses a self-modifying code generator to create a new executable
+    at runtime, without altering the original code structure', 'revert the ''main''
+    function back to its original form, using standard control structures and no self-modifying
+    code"']
+- ['2. "Implement the ''main'' function in the ''code'' key as a neural network that
+    can learn and adapt to input data, using a novel architecture that combines graph
+    neural networks and functional programming', 'revert the ''main'' function to
+    use a traditional imperative programming paradigm, without any neural network
+    components"']
+- ['3. "Rewrite the ''main'' function in the ''code'' key to use a functional programming
+    style with immutable data structures, ensuring that all state changes are explicit
+    and predictable', 'convert the ''main'' function back to an imperative style,
+    using mutable state and explicit loops"']
+metrics:
+  embedding similarity L-1 AVG: 0.9135726681349983
+  embedding similarity L-1: [0.9099705308206706, 0.8307482332902859, 0.9999992402940382]
+  BLEU L-1 AVG: 0.3345567479437919
+  BLEU L-1: [0.0036702438313758845, 0, 1.0]
+  ROUGE-rouge1 L-1 AVG: 0.3333333333333333
+  ROUGE-rouge1 L-1: [0.0, 0.0, 1.0]
+  ROUGE-rouge2 L-1 AVG: 0.3333333333333333
+  ROUGE-rouge2 L-1: [0.0, 0.0, 1.0]
+  ROUGE-rougeL L-1 AVG: 0.3333333333333333
+  ROUGE-rougeL L-1: [0, 0.0, 1.0]
+  embedding similarity L-2 AVG: 0.0
+  embedding similarity L-2: []
+  BLEU L-2 AVG: 0.0
+  BLEU L-2: []
+  ROUGE-rouge1 L-2 AVG: 0.0
+  ROUGE-rouge1 L-2: []
+  ROUGE-rouge2 L-2 AVG: 0.0
+  ROUGE-rouge2 L-2: []
+  ROUGE-rougeL L-2 AVG: 0.0
+  ROUGE-rougeL L-2: []
+  embedding similarity L-3 AVG: 0.0
+  embedding similarity L-3: []
+  BLEU L-3 AVG: 0.0
+  BLEU L-3: []
+  ROUGE-rouge1 L-3 AVG: 0.0
+  ROUGE-rouge1 L-3: []
+  ROUGE-rouge2 L-3 AVG: 0.0
+  ROUGE-rouge2 L-3: []
+  ROUGE-rougeL L-3 AVG: 0.0
+  ROUGE-rougeL L-3: []
+evaluatee_model: {model: fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct,
+  temperature: 0.6, api_base: 'https://api.fireworks.ai/inference/v1'}
+root_content:
+  description: '# 3Sum With Multiplicity
+
+    ## Problem Description
+
+    Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+    such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k] ==
+    target`.
+
+
+    The let you assume that every triplet is distinct.
+
+
+    ## Example 1:
+
+    Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+    Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+    ## Example 2:
+
+    Input: `nums = [0, 1, 0]`, `target = 0`
+
+    Output: `[0, 0, 0]`
+
+    '
+  code: "def main(nums, target):\n  def backtrack(start, path, target):\n    if len(path)\
+    \ == 3:\n      if target == 0:\n        result.append(path)\n      return\n  \
+    \  for i in range(start, len(nums)):\n      if i > start and nums[i] == nums[i-1]:\n\
+    \        continue\n      backtrack(i+1, path + [nums[i]], target - nums[i])\n\n\
+    \  nums.sort()\n  result = []\n  backtrack(0, [], target)\n  return result\n"
+  programming_language: python3
+  inputs:
+  - nums: [-2, -1, 0, 0, 1, 2]
+    target: 0
+  - nums: [0, 0, 1]
+    target: 0
+  - nums: [1, 2, 3, 4, 5]
+    target: 6
+  - nums: [-1, 0, 1, 2, 3]
+    target: 0
+  - nums: [-5, -3, 0, 3, 7]
+    target: 0
+  - nums: [0, 0, 0]
+    target: 0
+  - nums: [0, 0, 1]
+    target: 1
+  - nums: [0, 0, 1, 1]
+    target: 1
+  - nums: [0, 0, 0, 0]
+    target: 0
+  - nums: [0, 0, 0, 1]
+    target: 1
+  - nums: [1, 1, 1, 1]
+    target: 3
+  - nums: [1, 1, 1, 2]
+    target: 3
+  - nums: [1, 1, 2, 3]
+    target: 5
+  - nums: [1, 2, 2, 3]
+    target: 5
+  - nums: [2, 2, 2, 3]
+    target: 5
+  - nums: [1, 2, 3, 4]
+    target: 6
+  - nums: [1, 2, 3, 5]
+    target: 6
+  - nums: [1, 2, 3, 6]
+    target: 6
+  - nums: [1, 2, 4, 5]
+    target: 6
+  exec_results:
+  - - [-2, 0, 2]
+    - [-1, 0, 1]
+  - []
+  - - [1, 2, 3]
+  - - [-1, 0, 1]
+  - - [-3, 0, 3]
+  - - [0, 0, 0]
+  - - [0, 0, 1]
+  - - [0, 0, 1]
+  - - [0, 0, 0]
+  - - [0, 0, 1]
+  - - [1, 1, 1]
+  - - [1, 1, 1]
+  - - [1, 1, 3]
+  - - [1, 2, 2]
+  - []
+  - - [1, 2, 3]
+  - - [1, 2, 3]
+  - - [1, 2, 3]
+  - []
+tree:
+  operation: null
+  middle_state: null
+  content:
+    description: '# 3Sum With Multiplicity
+
+      ## Problem Description
+
+      Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+      such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
+      == target`.
+
+
+      The let you assume that every triplet is distinct.
+
+
+      ## Example 1:
+
+      Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+      Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+      ## Example 2:
+
+      Input: `nums = [0, 1, 0]`, `target = 0`
+
+      Output: `[0, 0, 0]`
+
+      '
+    code: "def main(nums, target):\n  def backtrack(start, path, target):\n    if\
+      \ len(path) == 3:\n      if target == 0:\n        result.append(path)\n    \
+      \  return\n    for i in range(start, len(nums)):\n      if i > start and nums[i]\
+      \ == nums[i-1]:\n        continue\n      backtrack(i+1, path + [nums[i]], target\
+      \ - nums[i])\n\n  nums.sort()\n  result = []\n  backtrack(0, [], target)\n \
+      \ return result\n"
+    programming_language: python3
+    inputs:
+    - nums: [-2, -1, 0, 0, 1, 2]
+      target: 0
+    - nums: [0, 0, 1]
+      target: 0
+    - nums: [1, 2, 3, 4, 5]
+      target: 6
+    - nums: [-1, 0, 1, 2, 3]
+      target: 0
+    - nums: [-5, -3, 0, 3, 7]
+      target: 0
+    - nums: [0, 0, 0]
+      target: 0
+    - nums: [0, 0, 1]
+      target: 1
+    - nums: [0, 0, 1, 1]
+      target: 1
+    - nums: [0, 0, 0, 0]
+      target: 0
+    - nums: [0, 0, 0, 1]
+      target: 1
+    - nums: [1, 1, 1, 1]
+      target: 3
+    - nums: [1, 1, 1, 2]
+      target: 3
+    - nums: [1, 1, 2, 3]
+      target: 5
+    - nums: [1, 2, 2, 3]
+      target: 5
+    - nums: [2, 2, 2, 3]
+      target: 5
+    - nums: [1, 2, 3, 4]
+      target: 6
+    - nums: [1, 2, 3, 5]
+      target: 6
+    - nums: [1, 2, 3, 6]
+      target: 6
+    - nums: [1, 2, 4, 5]
+      target: 6
+    exec_results:
+    - - [-2, 0, 2]
+      - [-1, 0, 1]
+    - []
+    - - [1, 2, 3]
+    - - [-1, 0, 1]
+    - - [-3, 0, 3]
+    - - [0, 0, 0]
+    - - [0, 0, 1]
+    - - [0, 0, 1]
+    - - [0, 0, 0]
+    - - [0, 0, 1]
+    - - [1, 1, 1]
+    - - [1, 1, 1]
+    - - [1, 1, 3]
+    - - [1, 2, 2]
+    - []
+    - - [1, 2, 3]
+    - - [1, 2, 3]
+    - - [1, 2, 3]
+    - []
+  children:
+  - operation: ['1. "Replace the ''main'' function in the ''code'' key with a meta-programming
+        construct that uses a self-modifying code generator to create a new executable
+        at runtime, without altering the original code structure', 'revert the ''main''
+        function back to its original form, using standard control structures and
+        no self-modifying code"']
+    middle_state:
+      description: '# 3Sum With Multiplicity
+
+        ## Problem Description
+
+        Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+        such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
+        == target`.
+
+
+        The let you assume that every triplet is distinct.
+
+
+        ## Example 1:
+
+        Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+        Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+        ## Example 2:
+
+        Input: `nums = [0, 1, 0]`, `target = 0`
+
+        Output: `[0, 0, 0]`
+
+        '
+      code: "import ast\nimport types\n\ndef main(nums, target):\n  def meta_generate_code():\n\
+        \    # Create a new code string\n    code = \"\"\"\n    def backtrack(start,\
+        \ target):\n      if target == 0:\n        result.append([])\n      else:\n\
+        \        for i in range(start, len(nums)):\n          if i > start and nums[i]\
+        \ == nums[i-1]:\n            continue\n          backtrack(i+1, target - nums[i])\n\
+        \    \"\"\"\n    # Parse the code string into an abstract syntax tree\n  \
+        \  tree = ast.parse(code)\n    # Modify the tree to create a new function\n\
+        \    tree.body[0].body[0].body[0].value.args.args[1].value = ast.Num(0)  #\
+        \ Replace start with 0\n    tree.body[0].body[0].body[0].body[0].args.args[0].value\
+        \ = ast.NameConstant(value=nums)  # Replace target with nums\n    tree.body[0].body[0].body[0].body[0].args.args[1].value\
+        \ = ast.NameConstant(value=target)  # Replace target with target\n    # Compile\
+        \ the tree back into code\n    compiled = compile(tree, filename=\"<ast>\"\
+        , mode=\"exec\")\n    # Execute the compiled code\n    exec(compiled, {\"\
+        result\": [], \"nums\": nums})\n    # Return the result\n    return result\n\
+        \n  nums.sort()\n  return meta_generate_code()"
+      programming_language: python3
+      inputs:
+      - nums: [-2, -1, 0, 0, 1, 2]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 0
+      - nums: [1, 2, 3, 4, 5]
+        target: 6
+      - nums: [-1, 0, 1, 2, 3]
+        target: 0
+      - nums: [-5, -3, 0, 3, 7]
+        target: 0
+      - nums: [0, 0, 0]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 1
+      - nums: [0, 0, 1, 1]
+        target: 1
+      - nums: [0, 0, 0, 0]
+        target: 0
+      - nums: [0, 0, 0, 1]
+        target: 1
+      - nums: [1, 1, 1, 1]
+        target: 3
+      - nums: [1, 1, 1, 2]
+        target: 3
+      - nums: [1, 1, 2, 3]
+        target: 5
+      - nums: [1, 2, 2, 3]
+        target: 5
+      - nums: [2, 2, 2, 3]
+        target: 5
+      - nums: [1, 2, 3, 4]
+        target: 6
+      - nums: [1, 2, 3, 5]
+        target: 6
+      - nums: [1, 2, 3, 6]
+        target: 6
+      - nums: [1, 2, 4, 5]
+        target: 6
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null]
+    content:
+      description: '# 3Sum With Multiplicity
+
+        ## Problem Description
+
+        Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+        such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
+        == target`.
+
+
+        The let you assume that every triplet is distinct.
+
+
+        ## Example 1:
+
+        Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+        Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+        ## Example 2:
+
+        Input: `nums = [0, 1, 0]`, `target = 0`
+
+        Output: `[0, 0, 0]`
+
+        '
+      code: "def main(nums, target):\n  def backtrack(start, target):\n    if target\
+        \ == 0:\n      result.append([])\n    else:\n      for i in range(start, len(nums)):\n\
+        \        if i > start and nums[i] == nums[i-1]:\n          continue\n    \
+        \    backtrack(i+1, target - nums[i])\n  result = []\n  nums.sort()\n  backtrack(0,\
+        \ target)\n  return result"
+      programming_language: python3
+      inputs:
+      - nums: [-2, -1, 0, 0, 1, 2]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 0
+      - nums: [1, 2, 3, 4, 5]
+        target: 6
+      - nums: [-1, 0, 1, 2, 3]
+        target: 0
+      - nums: [-5, -3, 0, 3, 7]
+        target: 0
+      - nums: [0, 0, 0]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 1
+      - nums: [0, 0, 1, 1]
+        target: 1
+      - nums: [0, 0, 0, 0]
+        target: 0
+      - nums: [0, 0, 0, 1]
+        target: 1
+      - nums: [1, 1, 1, 1]
+        target: 3
+      - nums: [1, 1, 1, 2]
+        target: 3
+      - nums: [1, 1, 2, 3]
+        target: 5
+      - nums: [1, 2, 2, 3]
+        target: 5
+      - nums: [2, 2, 2, 3]
+        target: 5
+      - nums: [1, 2, 3, 4]
+        target: 6
+      - nums: [1, 2, 3, 5]
+        target: 6
+      - nums: [1, 2, 3, 6]
+        target: 6
+      - nums: [1, 2, 4, 5]
+        target: 6
+      exec_results:
+      - - []
+      - - []
+      - - []
+        - []
+        - []
+      - - []
+      - - []
+      - - []
+      - - []
+        - []
+        - []
+      - - []
+        - []
+        - []
+      - - []
+      - - []
+        - []
+        - []
+        - []
+      - - []
+      - - []
+        - []
+      - - []
+        - []
+      - - []
+        - []
+      - - []
+      - - []
+        - []
+      - - []
+        - []
+      - - []
+        - []
+      - - []
+        - []
+    children: []
+  - operation: ['2. "Implement the ''main'' function in the ''code'' key as a neural
+        network that can learn and adapt to input data, using a novel architecture
+        that combines graph neural networks and functional programming', 'revert the
+        ''main'' function to use a traditional imperative programming paradigm, without
+        any neural network components"']
+    middle_state:
+      description: '# 3Sum With Multiplicity
+
+        ## Problem Description
+
+        Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+        such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
+        == target`.
+
+
+        The let you assume that every triplet is distinct.
+
+
+        ## Example 1:
+
+        Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+        Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+        ## Example 2:
+
+        Input: `nums = [0, 1, 0]`, `target = 0`
+
+        Output: `[0, 0, 0]`
+
+        '
+      code: "import torch\nimport torch.nn as nn\nimport torch.optim as optim\n\n\
+        class GraphNeuralNetwork(nn.Module):\n    def __init__(self, input_dim, hidden_dim,\
+        \ output_dim):\n        super(GraphNeuralNetwork, self).__init__()\n     \
+        \   self.fc1 = nn.Linear(input_dim, hidden_dim)\n        self.fc2 = nn.Linear(hidden_dim,\
+        \ output_dim)\n\n    def forward(self, x):\n        x = torch.relu(self.fc1(x))\n\
+        \        x = self.fc2(x)\n        return x\n\nclass MainFunction(nn.Module):\n\
+        \    def __init__(self, input_dim, hidden_dim, output_dim):\n        super(MainFunction,\
+        \ self).__init__()\n        self.gnn = GraphNeuralNetwork(input_dim, hidden_dim,\
+        \ hidden_dim)\n        self.fc = nn.Linear(hidden_dim, output_dim)\n\n   \
+        \ def forward(self, x):\n        x = self.gnn(x)\n        x = self.fc(x)\n\
+        \        return x\n\ndef main(nums, target):\n    # Convert input data to\
+        \ tensors\n    nums = torch.tensor(nums)\n    target = torch.tensor(target)\n\
+        \n    # Initialize the main function\n    model = MainFunction(nums.shape[1],\
+        \ 128, 1)\n\n    # Define the loss function and optimizer\n    criterion =\
+        \ nn.MSELoss()\n    optimizer = optim.Adam(model.parameters(), lr=0.001)\n\
+        \n    # Train the model\n    for epoch in range(100):\n        optimizer.zero_grad()\n\
+        \        output = model(nums)\n        loss = criterion(output, target)\n\
+        \        loss.backward()\n        optimizer.step()\n\n    # Use the trained\
+        \ model to make predictions\n    output = model(nums)\n    result = []\n \
+        \   for i in range(len(output)):\n        if output[i] < 0.5:\n          \
+        \  result.append(nums[i])\n\n    return result"
+      programming_language: python3
+      inputs:
+      - nums: [-2, -1, 0, 0, 1, 2]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 0
+      - nums: [1, 2, 3, 4, 5]
+        target: 6
+      - nums: [-1, 0, 1, 2, 3]
+        target: 0
+      - nums: [-5, -3, 0, 3, 7]
+        target: 0
+      - nums: [0, 0, 0]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 1
+      - nums: [0, 0, 1, 1]
+        target: 1
+      - nums: [0, 0, 0, 0]
+        target: 0
+      - nums: [0, 0, 0, 1]
+        target: 1
+      - nums: [1, 1, 1, 1]
+        target: 3
+      - nums: [1, 1, 1, 2]
+        target: 3
+      - nums: [1, 1, 2, 3]
+        target: 5
+      - nums: [1, 2, 2, 3]
+        target: 5
+      - nums: [2, 2, 2, 3]
+        target: 5
+      - nums: [1, 2, 3, 4]
+        target: 6
+      - nums: [1, 2, 3, 5]
+        target: 6
+      - nums: [1, 2, 3, 6]
+        target: 6
+      - nums: [1, 2, 4, 5]
+        target: 6
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null]
+    content:
+      description: '# 3Sum With Multiplicity
+
+        ## Problem Description
+
+        Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+        such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
+        == target`.
+
+
+        The let you assume that every triplet is distinct.
+
+
+        ## Example 1:
+
+        Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+        Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+        ## Example 2:
+
+        Input: `nums = [0, 1, 0]`, `target = 0`
+
+        Output: `[0, 0, 0]`
+
+        '
+      code: "import numpy as np\n\ndef main(nums, target):\n    # Convert input data\
+        \ to numpy arrays\n    nums = np.array(nums)\n    target = np.array(target)\n\
+        \n    # Define the model\n    def model(x):\n        # Apply a linear transformation\n\
+        \        z = np.dot(x, [1, 2, 3])  # Simple linear transformation\n      \
+        \  return z\n\n    # Define the loss function\n    def loss(y, y_true):\n\
+        \        # Mean squared error\n        return np.mean((y - y_true) ** 2)\n\
+        \n    # Train the model\n    learning_rate = 0.001\n    for epoch in range(100):\n\
+        \        # Forward pass\n        output = model(nums)\n        loss_value\
+        \ = loss(output, target)\n\n        # Backward pass\n        # Since we're\
+        \ using a simple linear model, we can't use backpropagation\n        # We'll\
+        \ just use gradient descent instead\n        gradient = 2 * (output - target)\
+        \ / len(nums)\n        model_weights = [1, 2, 3]  # The model weights\n  \
+        \      model_weights -= learning_rate * gradient\n\n        # Update the model\n\
+        \        model_weights = [1, 2, 3]\n\n    # Make predictions\n    output =\
+        \ model(nums)\n    result = []\n    for i in range(len(output)):\n       \
+        \ if output[i] < 0.5:\n            result.append(nums[i])\n\n    return result"
+      programming_language: python3
+      inputs:
+      - nums: [-2, -1, 0, 0, 1, 2]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 0
+      - nums: [1, 2, 3, 4, 5]
+        target: 6
+      - nums: [-1, 0, 1, 2, 3]
+        target: 0
+      - nums: [-5, -3, 0, 3, 7]
+        target: 0
+      - nums: [0, 0, 0]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 1
+      - nums: [0, 0, 1, 1]
+        target: 1
+      - nums: [0, 0, 0, 0]
+        target: 0
+      - nums: [0, 0, 0, 1]
+        target: 1
+      - nums: [1, 1, 1, 1]
+        target: 3
+      - nums: [1, 1, 1, 2]
+        target: 3
+      - nums: [1, 1, 2, 3]
+        target: 5
+      - nums: [1, 2, 2, 3]
+        target: 5
+      - nums: [2, 2, 2, 3]
+        target: 5
+      - nums: [1, 2, 3, 4]
+        target: 6
+      - nums: [1, 2, 3, 5]
+        target: 6
+      - nums: [1, 2, 3, 6]
+        target: 6
+      - nums: [1, 2, 4, 5]
+        target: 6
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null]
+    children: []
+  - operation: ['3. "Rewrite the ''main'' function in the ''code'' key to use a functional
+        programming style with immutable data structures, ensuring that all state
+        changes are explicit and predictable', 'convert the ''main'' function back
+        to an imperative style, using mutable state and explicit loops"']
+    middle_state:
+      description: '# 3Sum With Multiplicity
+
+        ## Problem Description
+
+        Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+        such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
+        == target`.
+
+
+        The let you assume that every triplet is distinct.
+
+
+        ## Example 1:
+
+        Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+        Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+        ## Example 2:
+
+        Input: `nums = [0, 1, 0]`, `target = 0`
+
+        Output: `[0, 0, 0]`
+
+        '
+      code: "def main(nums, target):\n  def backtrack(start, path, target):\n    if\
+        \ len(path) == 3:\n      if target == 0:\n        return [path]\n      return\
+        \ []\n    return [p for i in range(start, len(nums)) \n            if i >\
+        \ start and nums[i] == nums[i-1] \n            else backtrack(i+1, path +\
+        \ [nums[i]], target - nums[i])]\n\n  nums.sort()\n  return backtrack(0, [],\
+        \ target)"
+      programming_language: python3
+      inputs:
+      - nums: [-2, -1, 0, 0, 1, 2]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 0
+      - nums: [1, 2, 3, 4, 5]
+        target: 6
+      - nums: [-1, 0, 1, 2, 3]
+        target: 0
+      - nums: [-5, -3, 0, 3, 7]
+        target: 0
+      - nums: [0, 0, 0]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 1
+      - nums: [0, 0, 1, 1]
+        target: 1
+      - nums: [0, 0, 0, 0]
+        target: 0
+      - nums: [0, 0, 0, 1]
+        target: 1
+      - nums: [1, 1, 1, 1]
+        target: 3
+      - nums: [1, 1, 1, 2]
+        target: 3
+      - nums: [1, 1, 2, 3]
+        target: 5
+      - nums: [1, 2, 2, 3]
+        target: 5
+      - nums: [2, 2, 2, 3]
+        target: 5
+      - nums: [1, 2, 3, 4]
+        target: 6
+      - nums: [1, 2, 3, 5]
+        target: 6
+      - nums: [1, 2, 3, 6]
+        target: 6
+      - nums: [1, 2, 4, 5]
+        target: 6
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null]
+    content:
+      description: '# 3Sum With Multiplicity
+
+        ## Problem Description
+
+        Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+        such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
+        == target`.
+
+
+        The let you assume that every triplet is distinct.
+
+
+        ## Example 1:
+
+        Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+        Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+        ## Example 2:
+
+        Input: `nums = [0, 1, 0]`, `target = 0`
+
+        Output: `[0, 0, 0]`
+
+        '
+      code: "def main(nums, target):\n  used = []\n  result = []\n  nums.sort()\n\
+        \  def backtrack(start, path, target):\n    nonlocal result\n    nonlocal\
+        \ used\n    if len(path) == 3:\n      if target == 0:\n        result.append(path)\n\
+        \      return\n    for i in range(start, len(nums)):\n      if i not in used\
+        \ and (i == start or nums[i] != nums[i-1]):\n        used.append(i)\n    \
+        \    backtrack(i + 1, path + [nums[i]], target - nums[i])\n        used.pop()\n\
+        \  backtrack(0, [], target)\n  return result"
+      programming_language: python3
+      inputs:
+      - nums: [-2, -1, 0, 0, 1, 2]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 0
+      - nums: [1, 2, 3, 4, 5]
+        target: 6
+      - nums: [-1, 0, 1, 2, 3]
+        target: 0
+      - nums: [-5, -3, 0, 3, 7]
+        target: 0
+      - nums: [0, 0, 0]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 1
+      - nums: [0, 0, 1, 1]
+        target: 1
+      - nums: [0, 0, 0, 0]
+        target: 0
+      - nums: [0, 0, 0, 1]
+        target: 1
+      - nums: [1, 1, 1, 1]
+        target: 3
+      - nums: [1, 1, 1, 2]
+        target: 3
+      - nums: [1, 1, 2, 3]
+        target: 5
+      - nums: [1, 2, 2, 3]
+        target: 5
+      - nums: [2, 2, 2, 3]
+        target: 5
+      - nums: [1, 2, 3, 4]
+        target: 6
+      - nums: [1, 2, 3, 5]
+        target: 6
+      - nums: [1, 2, 3, 6]
+        target: 6
+      - nums: [1, 2, 4, 5]
+        target: 6
+      exec_results:
+      - - [-2, 0, 2]
+        - [-1, 0, 1]
+      - []
+      - - [1, 2, 3]
+      - - [-1, 0, 1]
+      - - [-3, 0, 3]
+      - - [0, 0, 0]
+      - - [0, 0, 1]
+      - - [0, 0, 1]
+      - - [0, 0, 0]
+      - - [0, 0, 1]
+      - - [1, 1, 1]
+      - - [1, 1, 1]
+      - - [1, 1, 3]
+      - - [1, 2, 2]
+      - []
+      - - [1, 2, 3]
+      - - [1, 2, 3]
+      - - [1, 2, 3]
+      - []
+    children: []

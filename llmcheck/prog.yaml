@@ -1,1237 +1,1124 @@
 forest:
 - operations:
-  - ['1. "Replace the entire ''main'' function in the ''code'' key with a recursive
-      function that evaluates the same logic, using a stack-based approach to manage
-      function calls', 'revert the ''main'' function to its original form, replacing
-      the recursive function with a loop-based approach"']
-  - ['2. "Utilize a custom, hand-rolled parser to parse the input data within the
-      ''main'' function in the ''code'' key, leveraging a finite state machine to
-      validate and extract relevant information', 'replace the custom parser with
-      a standard library-based parsing solution, using a library like pyparsing"']
-  - ['3. "Implement a just-in-time (JIT) compiler within the ''main'' function in
-      the ''code'' key, using a library like Numba to translate the Python code into
-      machine code at runtime', 'revert the JIT compiler and use the original Python
-      code, ensuring the same behavior"']
+  - [replace the 'main' function in the 'code' key with a class-based implementation
+      that utilizes metaclasses and decorators to encapsulate and extend functionality,
+    'revert the ''main'' function to its original form, removing all class-based implementation
+      and metaclasses']
+  - [replace the root code's JSON structure with a nested dictionary implementation
+      using a custom context manager to handle memory management, 'revert the root
+      code to its original JSON structure, removing all nested dictionary implementation
+      and custom context manager']
+  - ['utilize a custom operator overloading system to redefine the behavior of built-in
+      operators within the ''main'' function in the ''code'' key, allowing for more
+      complex and domain-specific calculations', 'revert the ''main'' function to
+      use standard operator overloading, removing all custom operator redefinitions']
   root:
-    description: '**The Harmonic Series Problem**
+    description: '**Maximum Subarray Product of Three Numbers**
+
+
+      Given an integer array `nums`, return the maximum product of three numbers from
+      the array.
+
+
+      A single number can be used more than once to reach the maximum product and
+      you cannot choose a number more than once.
+
+
+      **Example 1:**
+
+
+      Input: `nums = [1,2,3]`
+
+      Output: `6`
+
+
+      **Example 2:**
+
+
+      Input: `[1,2,-2,3]`
+
+      Output: `6`
+
+
+      **Example 3:**
+
+
+      Input: `[-1,-2,-3]`
+
+      Output: `6`
+
+
+      **Constraints:**
+
+
+      *   `-1000 <= nums[i] <= 1000`
+
+      *   `1 <= nums.length <= 10^5`
+
+      '
+    code: "def main(nums):\n  if not nums:\n    return 0\n  if len(nums) == 1:\n \
+      \   return nums[0]\n  if len(nums) == 2:\n    return max(nums[0] * nums[1],\
+      \ nums[0], nums[1])\n  if len(nums) == 3:\n    return max(nums[0] * nums[1]\
+      \ * nums[2], nums[0] * nums[1], nums[1] * nums[2], nums[0] * nums[2])\n  res\
+      \ = float('-inf')\n  max1 = max2 = max3 = float('-inf')\n  min1 = min2 = float('inf')\n\
+      \  for n in nums:\n    if n > max1:\n      max3 = max2\n      max2 = max1\n\
+      \      max1 = n\n    elif n > max2:\n      max3 = max2\n      max2 = n\n   \
+      \ elif n > max3:\n      max3 = n\n    if n < min1:\n      min2 = min1\n    \
+      \  min1 = n\n    elif n < min2:\n      min2 = n\n  return max(max1 * max2 *\
+      \ max3, max1 * min1 * min2)\n"
+    programming_language: python3
+    inputs:
+    - nums: [1, 2, 3]
+    - nums: [1, 2, -2, 3]
+    - nums: [-1, -2, -3]
+    - nums: [-1, -2, 3]
+    - nums: [-2, -3, 4]
+    - nums: [1, -2, 3]
+    - nums: [1, -2, 4]
+    - nums: [1, 2, -3]
+    - nums: [1, 2, -4]
+    - nums: [1, -3, -4]
+    - nums: [-1, -3, 4]
+    - nums: [-1, -2, 4]
+    - nums: [-1, -3, 4]
+    - nums: [1, -3, 4]
+    - nums: [1, -2, -3]
+    - nums: [-1, 2, -3]
+    - nums: [-1, -2, -3]
+    - nums: [1, 2, -3]
+    - nums: [1, 1, 1]
+- operations:
+  - ['Use a recursive depth-limited search algorithm to traverse the abstract syntax
+      tree of the ''code'' key in the ''main'' function, avoiding the need for explicit
+      loops', 'revert to the original iterative approach, using loops to traverse
+      the abstract syntax tree']
+  - ['Replace the ''main'' function with a lambda function that takes a single argument
+      and returns the result of the original function, preserving the function''s
+      behavior', convert the lambda function back to a regular function with the same
+      name and behavior]
+  - ['Use a just-in-time (JIT) compiler to compile the ''code'' key in the ''main''
+      function into machine code at runtime, taking advantage of hardware acceleration',
+    'revert to the original interpreted code, using the Python interpreter to execute
+      the code']
+  root:
+    description: "**Maximum XOR of Two Numbers in an Array**\n\nGiven a non-empty\
+      \ array of non-negative integers `nums`, you are initially at position `0`.\
+      \ \nSome area of the array can be skipped (like a stone) such that you then\
+      \ move to that position. \nYour goal is to reach the last position (also called\
+      \ the \"target\") with the maximum possible value of the XOR of the integers\
+      \ you have skipped. \nYou can skip any non-zero integer at non-zero positions\
+      \ in the array. \nYou cannot skip 0 in the array, but you can skip it in the\
+      \ input list.\n\nNote that you can only skip the integers in the array, you\
+      \ cannot skip positions.\n\nExample 1:\nInput: nums = [0,2,3,4,5,6,7]\nOutput:\
+      \ 7\nExplanation:\nStarting with position 0, we have to skip the first integer\
+      \ `0` to reach the target.\nThen, we need to skip `3` and `6` to reach the target.\n\
+      The XOR of the integers we skipped is `2 ^ 3 ^ 6 = 7`.\n\nExample 2:\nInput:\
+      \ nums = [0,1,1,1]\nOutput: 0\nExplanation:\nWe cannot skip any integers at\
+      \ non-zero positions in this array, so we have to skip `0` and `1` to reach\
+      \ the target.\nThe XOR of the integers we skipped is `0 ^ 1 ^ 1 = 0`.\n\nConstraints:\n\
+      1 <= nums.length <= 2^10\n0 <= nums[i] <= 2^10 - 1\nIt's guaranteed that there\
+      \ is at least one valid way to reach the target.\n"
+    code: "def main(nums):\n  n = len(nums)\n  dp = [[0] * (2**10) for _ in range(n\
+      \ + 1)]\n  for i in range(1, n + 1):\n    dp[i] = dp[i - 1][:]\n    for j in\
+      \ range(2**10):\n      if nums[i - 1] ^ j == 2**10 - 1:\n        dp[i][j] =\
+      \ 1\n      elif nums[i - 1] < j:\n        dp[i][j] = max(dp[i][j], dp[i - 1][j\
+      \ ^ nums[i - 1]])\n  return max(dp[-1])\n"
+    programming_language: python3
+    inputs:
+    - nums: [0, 2, 3, 4, 5, 6, 7]
+    - nums: [0, 1, 1, 1]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9]
+    - nums: [0, 1, 1, 1, 1, 1]
+    - nums: [0, 2, 2, 2, 2, 2]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    - nums: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    - nums: [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    - nums: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    - nums: [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+    - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+- operations:
+  - ['1. "Replace the ''main'' function in the ''code'' key with a recursive function
+      that uses memoization to optimize performance, leveraging the properties of
+      the problem to avoid redundant computations', 'revert the ''main'' function
+      to its original form, removing the memoization mechanism and relying on the
+      problem''s inherent properties for optimization"']
+  - ['2. "Utilize graph algorithms to analyze the dependencies between modules in
+      the ''code'' key and refactor the ''main'' function to parallelize tasks based
+      on the graph structure, leveraging concurrent execution to speed up the overall
+      computation', 'consolidate the parallel tasks back into a sequential ''main''
+      function, reverting the graph analysis and dependency resolution"']
+  - [3. "Replace the 'main' function in the 'code' key with a functional programming
+      approach using higher-order functions and function composition to simplify the
+      logic and improve readability, 'revert the ''main'' function to its original
+      imperative form, replacing the higher-order functions with traditional loops
+      and conditional statements"']
+  root:
+    description: '**Maximum Flow in a Directed Graph with Multiple Sources and Sinks**
+
+      Given a directed graph with multiple sources and sinks, find the maximum flow
+      that can be pushed from the sources to the sinks.
+
+      The graph is represented as an adjacency matrix, where `graph[i][j]` represents
+      the capacity of the edge from node `i` to node `j`.
+
+      The sources are represented as a list of node indices, and the sinks are represented
+      as a list of node indices.
+
+      The maximum flow is the maximum amount of flow that can be pushed from the sources
+      to the sinks without exceeding the capacity of any edge.
+
+      '
+    code: "def main(graph, sources, sinks):\n  class Edge:\n    def __init__(self,\
+      \ u, v, cap, flow):\n      self.u = u\n      self.v = v\n      self.cap = cap\n\
+      \      self.flow = flow\n\n  def bfs(s, t, parent):\n    visited = [False] *\
+      \ len(graph)\n    queue = [s]\n    visited[s] = True\n    while queue:\n   \
+      \   u = queue.pop(0)\n      for i in range(len(graph)):\n        if graph[u][i]\
+      \ > 0 and not visited[i]:\n          queue.append(i)\n          visited[i] =\
+      \ True\n          parent[i] = u\n    return visited[t]\n\n  def dfs(u, t, parent,\
+      \ flow):\n    if u == t:\n      return flow\n    max_flow = 0\n    for v in\
+      \ range(len(graph)):\n      if graph[u][v] > 0 and parent[v] == u:\n       \
+      \ delta = dfs(v, t, parent, min(flow, graph[u][v]))\n        flow -= delta\n\
+      \        max_flow += delta\n        graph[u][v] -= delta\n        graph[v][u]\
+      \ += delta\n    return max_flow\n\n  parent = [-1] * len(graph)\n  max_flow\
+      \ = 0\n  while any(source in parent for source in sources):\n    for source\
+      \ in sources:\n      if source not in parent:\n        if bfs(source, sinks[0],\
+      \ parent):\n          max_flow += dfs(sources[0], sinks[0], parent, float('inf'))\n\
+      \  return max_flow\n"
+    programming_language: python3
+    inputs:
+    - graph:
+      - [0, 16, 13, 0, 0, 0]
+      - [0, 0, 10, 12, 0, 0]
+      - [0, 4, 0, 0, 14, 0]
+      - [0, 0, 9, 0, 0, 20]
+      - [0, 0, 0, 7, 0, 4]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 3, 0, 0, 0, 0]
+      - [0, 0, 20, 0, 0, 0]
+      - [0, 0, 0, 3, 0, 0]
+      - [0, 0, 0, 0, 10, 0]
+      - [0, 0, 0, 0, 0, 12]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 4, 0, 0, 0, 0]
+      - [0, 0, 5, 0, 0, 0]
+      - [0, 0, 0, 6, 0, 0]
+      - [0, 0, 0, 0, 2, 0]
+      - [0, 0, 0, 0, 0, 3]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 10, 0, 0, 0, 0]
+      - [0, 0, 10, 0, 0, 0]
+      - [0, 0, 0, 10, 0, 0]
+      - [0, 0, 0, 0, 10, 0]
+      - [0, 0, 0, 0, 0, 10]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+- operations:
+  - ['1. Convert the recursive function calls within the ''main'' function in the
+      ''code'' key into an iterative approach using a stack data structure, carefully
+      managing function call and return stack.', 'Convert the iterative approach back
+      into the original recursive function calls, preserving the original logic and
+      function call order.']
+  - ['2. Utilize a non-standard but equivalent mathematical approach to calculate
+      the ''result'' variable in the ''main'' function in the ''code'' key, replacing
+      arithmetic operations with bitwise operations and cleverly using bitwise properties.',
+    'Revert the ''result'' calculation back to the standard arithmetic operations,
+      ensuring the result remains identical.']
+  - ['3. Replace the ''if-else'' statements within the ''main'' function in the ''code''
+      key with a complex decision tree data structure, utilizing a combination of
+      binary search and hash tables to evaluate conditions.', 'Convert the decision
+      tree back into the original ''if-else'' statements, preserving the original
+      logic and condition evaluations.']
+  root:
+    description: "**Maximum Subarray Sum with K Consecutive Elements**\n\nGiven an\
+      \ array of integers `nums` and an integer `k`, find the maximum sum of a subarray\
+      \ of length `k` that appears in `nums`. If no such subarray exists, return 0.\n\
+      \nA subarray is a contiguous part of an array.\n\n**Example 1:**\n\n  Input:\
+      \ nums = [1,2,3,4,5], k = 3\n  Output: 12\n  Explanation: The maximum sum is\
+      \ 1 + 2 + 3 = 6, but the subarray [1,2,3] appears more than once, so the answer\
+      \ is the maximum sum which is 1 + 2 + 3 + 4 = 10, but the maximum sum is 1 +\
+      \ 2 + 3 = 6 + 5 = 11, but the maximum sum is 1 + 2 + 3 + 4 + 5 = 15, so the\
+      \ answer is 15\n\n**Example 2:**\n\n  Input: nums = [1,2], k = 3\n  Output:\
+      \ 0\n  Explanation: The length of the array is 2, so the maximum sum of a subarray\
+      \ of length 3 that appears in `nums` is 0.\n\n**Constraints:**\n\n  * `1 <=\
+      \ nums.length <= 10^5`\n  * `1 <= k <= nums.length`\n  * `-10^4 <= nums[i] <=\
+      \ 10^4`\n"
+    code: "def main(nums, k):\n  n = len(nums)\n  if k > n:\n    return 0\n  prefix_sum\
+      \ = [0] * (n + 1)\n  for i in range(n):\n    prefix_sum[i + 1] = prefix_sum[i]\
+      \ + nums[i]\n  max_sum = float('-inf')\n  for i in range(n - k + 1):\n    window_sum\
+      \ = prefix_sum[i + k] - prefix_sum[i]\n    max_sum = max(max_sum, window_sum)\n\
+      \  return max_sum\n"
+    programming_language: python3
+    inputs:
+    - nums: [1, 2, 3, 4, 5]
+      k: 3
+    - nums: [1, 2, 3, 4, 5]
+      k: 4
+    - nums: [1, 2, 3, 4, 5]
+      k: 5
+    - nums: [1, 2, 3, 4, 5]
+      k: 6
+    - nums: [1, 2, 3, 4, 5]
+      k: 1
+    - nums: [1, 2, 3, 4, 5]
+      k: 2
+    - nums: [1, 2, 3, 4, 5]
+      k: 7
+    - nums: [1, 2, 3, 4, 5]
+      k: 8
+    - nums: [1, 2, 3, 4, 5]
+      k: 9
+    - nums: [1, 2, 3, 4, 5]
+      k: 10
+    - nums: [1, 2, 3, 4, 5]
+      k: 11
+    - nums: [1, 2, 3, 4, 5]
+      k: 12
+    - nums: [1, 2, 3, 4, 5]
+      k: 13
+    - nums: [1, 2, 3, 4, 5]
+      k: 14
+    - nums: [1, 2, 3, 4, 5]
+      k: 15
+    - nums: [1, 2, 3, 4, 5]
+      k: 16
+    - nums: [1, 2, 3, 4, 5]
+      k: 17
+    - nums: [1, 2, 3, 4, 5]
+      k: 18
+    - nums: [1, 2, 3, 4, 5]
+      k: 19
+    - nums: [1, 2, 3, 4, 5]
+      k: 20
+- operations:
+  - ['split the ''main'' function into multiple mini-functions, each only storing
+      partial logic, with cryptic variable names that hide true purpose, and utilize
+      a custom, self-maintaining dependency injection system to manage data flow between
+      functions', 'merge all mini-functions back into one coherent ''main'' function,
+      restoring original descriptive variable names and reverting to traditional function
+      calls']
+  - [replace the traditional object-oriented design of the 'main' function in the
+      'code' key with a functional programming approach using immutable data structures
+      and higher-order functions, 'revert the ''main'' function to its original object-oriented
+      design, restoring mutable state and traditional method calls']
+  - ['replace the iterative approach used in the ''main'' function in the ''code''
+      key with a recursive one, utilizing memoization to avoid redundant calculations',
+    'revert the ''main'' function to its original iterative approach, removing memoization
+      and traditional loop constructs']
+  root:
+    description: '**Maximum Subarray Sum of Odd Length**
 
       ===
 
-      Given a list of integers `A` and a list of integers `B`, both of which contain
-      at least one element, and a positive integer `n`, find the sum of the harmonic
-      series of `A` and `B` up to `n` terms, where the harmonic series is defined
-      as 1 + 1/2 + 1/3 + ... + 1/n.
+      Given an array of integers `nums`, find the maximum sum of a subarray of odd
+      length.
+
+      A subarray is a contiguous part of the array.
 
       ===
 
       **Example 1**
 
-      Input: `A = [1, 2, 3]`, `B = [4, 5, 6]`, `n = 3`
+      ===
 
-      Output: `1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 + 1/7 + 1/8 + 1/9 + 1/10`
+      Input: `nums = [1,2,3,4,5]`
+
+      Output: `9`
+
+      Explanation: The maximum subarray sum of odd length is `[1,3,5]`, which has
+      a sum of `9`.
 
       ===
 
       **Example 2**
 
-      Input: `A = [10, 20, 30]`, `B = [40, 50, 60]`, `n = 5`
+      ===
 
-      Output: `1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 + 1/7 + 1/8 + 1/9 + 1/10`
+      Input: `nums = [1,2,3,4,5,6]`
+
+      Output: `14`
+
+      Explanation: The maximum subarray sum of odd length is `[1,3,5,6]`, which has
+      a sum of `14`.
+
+      ===
+
+      **Constraints**
+
+      ===
+
+      - `1 <= nums.length <= 2 * 10^5`
+
+      - `-10^5 <= nums[i] <= 10^5`
+
+      ===
+
+      **Note**
+
+      ===
+
+      The input array will only contain integers.
 
       '
-    code: "def harmonic_series_sum(A, B, n):\n  def harmonic_series(x, n):\n    return\
-      \ sum(1.0/i for i in range(1, n+1))\n  \n  A_set = set(A)\n  B_set = set(B)\n\
-      \  common_set = A_set & B_set\n  A_unique = A_set - common_set\n  B_unique =\
-      \ B_set - common_set\n  \n  common_sum = 0\n  for i in range(1, n+1):\n    if\
-      \ i in common_set:\n      common_sum += 1.0/i\n  \n  A_unique_sum = sum(harmonic_series(i,\
-      \ n) for i in A_unique)\n  B_unique_sum = sum(harmonic_series(i, n) for i in\
-      \ B_unique)\n  \n  return common_sum + A_unique_sum + B_unique_sum\n"
+    code: "def main(nums):\n    n = len(nums)\n    if n <= 2:\n        return max(nums)\n\
+      \    max_sum = float('-inf')\n    for i in range(n):\n        if i + 1 in range(n):\n\
+      \            for j in range(i + 1, n):\n                if (j - i) % 2 == 1:\n\
+      \                    max_sum = max(max_sum, sum(nums[i:j + 1]))\n    return\
+      \ max_sum\n"
     programming_language: python3
     inputs:
-    - A: [1, 2, 3]
-      B: [4, 5, 6]
-      n: 3
-    - A: [10, 20, 30]
-      B: [40, 50, 60]
-      n: 5
-    - A: [1, 2, 3, 4, 5]
-      B: [6, 7, 8, 9, 10]
-      n: 10
-    - A: [10, 20, 30, 40, 50]
-      B: [60, 70, 80, 90, 100]
-      n: 15
-    - A: [1, 2, 3, 4, 5, 6]
-      B: [7, 8, 9, 10, 11, 12]
-      n: 12
-    - A: [10, 20, 30, 40, 50, 60]
-      B: [70, 80, 90, 100, 110, 120]
-      n: 20
-    - A: [1, 2, 3, 4, 5, 6, 7]
-      B: [8, 9, 10, 11, 12, 13, 14]
-      n: 14
-    - A: [10, 20, 30, 40, 50, 60, 70]
-      B: [80, 90, 100, 110, 120, 130, 140]
-      n: 25
-    - A: [1, 2, 3, 4, 5, 6, 7, 8]
-      B: [9, 10, 11, 12, 13, 14, 15, 16]
-      n: 16
-    - A: [10, 20, 30, 40, 50, 60, 70, 80]
-      B: [90, 100, 110, 120, 130, 140, 150, 160]
-      n: 30
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-      B: [10, 11, 12, 13, 14, 15, 16, 17, 18]
-      n: 18
-    - A: [10, 20, 30, 40, 50, 60, 70, 80, 90]
-      B: [100, 110, 120, 130, 140, 150, 160, 170, 180]
-      n: 35
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      B: [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-      n: 20
-    - A: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-      B: [110, 120, 130, 140, 150, 160, 170, 180, 190, 200]
-      n: 40
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-      B: [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
-      n: 22
-    - A: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]
-      B: [120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220]
-      n: 45
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      B: [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-      n: 24
-- operations:
-  - ['1. Replace all conditional statements within the ''main'' function in the ''code''
-      key with a single, recursive function that uses memoization to evaluate all
-      possible outcomes', 'revert the ''main'' function to use standard conditional
-      statements, removing the recursive function and memoization.']
-  - ['2. Convert the ''main'' function in the ''code'' key to use a stack-based approach
-      to evaluate expressions, with each variable stored on a separate stack', 'convert
-      the ''main'' function back to use a recursive approach, removing the stack-based
-      evaluation.']
-  - ['3. Introduce a higher-order function within the ''main'' function in the ''code''
-      key that takes a function as an argument, allowing for dynamic function composition',
-    'remove the higher-order function and restore the original, composed functions.']
-  root: {description: '# Longest Increasing Subsequence of Alternating Sum
-
-      Given a list of integers, find the longest increasing subsequence of alternating
-      sum.
-
-      A subsequence is a sequence that can be derived from another sequence by deleting
-      some elements without changing the order of the remaining elements.
-
-      The alternating sum of a sequence is the sum of its elements with alternating
-      signs.
-
-      For example, the alternating sum of the sequence [1, 2, 3, 4, 5] is [1, -2,
-      3, -4, 5].
-
-      The longest increasing subsequence of the sequence [1, 2, 3, 4, 5] is [1, 2,
-      3, 5].
-
-      The longest increasing subsequence of the sequence [1, 2, 3, 4, 5, 6, 7, 8,
-      9] is [1, 2, 3, 5, 7, 9].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1] is
-      [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1]
-      is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is
-      [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-      is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1] is [1].
-
-      The longest increasing subsequence of the sequence [1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-      1, 1, 1, 1, 1, 1'}
-- operations:
-  - ['1. "Refactor the ''main'' function in the ''code'' key to utilize a state machine
-      pattern, encapsulating the current logic within a finite state automaton, and
-      optimize transitions using a Moore machine', 'reconvert the state machine back
-      to the original logic, preserving all edge cases and behavior"']
-  - ['2. "Implement a just-in-time (JIT) compiler within the ''main'' function in
-      the ''code'' key, allowing for dynamic code generation and optimization, and
-      integrate it with the existing control flow', 'revert the JIT compiler and restore
-      the original, interpreted code execution"']
-  - ['3. "Replace the ''main'' function in the ''code'' key with a functional programming
-      style, utilizing higher-order functions and immutable data structures, and apply
-      the concept of referential transparency', 'reconvert the function to its original
-      imperative style, preserving all side effects and mutable state"']
-  root:
-    description: '**Maximum Minimum Path Sum**
-
-      ===========
-
-      You are given a directed graph where each node has a weight associated with
-      it.
-
-      The graph is represented as a list of edges, where each edge is a tuple of two
-      nodes and a weight.
-
-      The goal is to find the maximum minimum path sum in the graph, i.e., the maximum
-      sum of the minimum weights of all paths from a node to all other nodes.
-
-      ===========
-
-      **Example 1:**
-
-      Input: edges = [(1, 2, 3), (2, 3, 2), (3, 4, 1), (4, 5, 3)]
-
-      Output: 5
-
-      Explanation: The maximum minimum path sum is 5, which is the minimum weight
-      of the path (1 -> 2 -> 3 -> 4) and (1 -> 3 -> 4).
-
-      **Example 2:**
-
-      Input: edges = [(1, 2, 1), (2, 3, 2), (3, 4, 1), (4, 5, 3)]
-
-      Output: 4
-
-      Explanation: The maximum minimum path sum is 4, which is the minimum weight
-      of the path (1 -> 2 -> 3 -> 4).
-
-      ===========
-
-      **Constraints:**
-
-      - 1 <= n <= 10^5
-
-      - 0 <= w <= 10^9
-
-      - edges[i] is a directed edge from node i to node j with a weight of w
-
-      - There may be multiple edges between the same pair of nodes
-
-      '
-    code: "def main(edges):\n  n = max(max(edge[0], edge[1]) for edge in edges) +\
-      \ 1\n  graph = [[] for _ in range(n)]\n  for u, v, w in edges:\n    graph[u].append((v,\
-      \ w))\n  def dfs(node, visited, path):\n    max_sum = -float('inf')\n    for\
-      \ neighbor, weight in graph[node]:\n      if neighbor not in visited:\n    \
-      \    visited.add(neighbor)\n        max_sum = max(max_sum, dfs(neighbor, visited,\
-      \ path | {node}))\n        visited.remove(neighbor)\n    path.add(node)\n  \
-      \  return max(max_sum, weight)\n  ans = -float('inf')\n  for i in range(n):\n\
-      \    ans = max(ans, dfs(i, set(), set()))\n  return ans\n"
-    programming_language: python3
-    inputs:
-    - edges:
-      - [1, 2, 3]
-      - [2, 3, 2]
-      - [3, 4, 1]
-      - [4, 5, 3]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 1]
-      - [4, 5, 3]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 1]
-      - [4, 5, 1]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 2]
-      - [4, 5, 1]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 2]
-      - [4, 5, 2]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 2]
-      - [4, 5, 3]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 3]
-      - [4, 5, 1]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 3]
-      - [4, 5, 2]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 3]
-      - [4, 5, 3]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 3]
-      - [4, 5, 4]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 4]
-      - [4, 5, 1]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 4]
-      - [4, 5, 2]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 4]
-      - [4, 5, 3]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 4]
-      - [4, 5, 4]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 5]
-      - [4, 5, 1]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 5]
-      - [4, 5, 2]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 5]
-      - [4, 5, 3]
-    - edges:
-      - [1, 2, 1]
-      - [2, 3, 2]
-      - [3, 4, 5]
-      - [4, 5, 4]
-- operations:
-  - ['1. "Replace the ''main'' function in the ''code'' key with a recursive function
-      that uses memoization to store intermediate results, significantly reducing
-      redundant calculations', 'revert the ''main'' function to its original iterative
-      implementation, discarding memoization"']
-  - ['2. "Utilize a graph traversal algorithm to optimize the ''main'' function in
-      the ''code'' key, reducing time complexity by avoiding unnecessary iterations',
-    'convert the graph traversal back to the original iterative approach, preserving
-      the time complexity"']
-  - ['3. "Implement the ''main'' function in the ''code'' key using a dynamic programming
-      approach, breaking down the problem into smaller sub-problems and storing solutions
-      to sub-problems in a table', 'revert the ''main'' function to its original recursive
-      implementation, discarding the table"']
-  root:
-    description: '**The Infinite Labyrinth of Reflections**
-
-      You are given a 2D grid of integers, where each cell contains a positive integer.
-
-      The grid is surrounded by an infinite reflecting boundary.
-
-      You are standing at the top-left corner of the grid, and you want to find the
-      minimum number of steps it takes to reach the bottom-right corner.
-
-      However, there''s a catch: the grid is not just a simple grid, but a grid of
-      reflections.
-
-      Each cell in the grid reflects the contents of the cell at the opposite corner
-      of the grid.
-
-      In other words, if the cell at (i, j) contains the value x, then the cell at
-      (n-i-1, n-j-1) also contains the value x, where n is the size of the grid.
-
-      You can move up, down, left, or right in the grid, but you cannot move diagonally.
-
-      You can only move to a cell that contains a value that is not reflected in the
-      cell you are currently in.
-
-      Your goal is to find the minimum number of steps it takes to reach the bottom-right
-      corner of the grid.
-
-      '
-    code: "def main(grid):\n    n = len(grid)\n    dp = [[float('inf')] * n for _\
-      \ in range(n)]\n    dp[0][0] = 0\n    for i in range(n):\n        for j in range(n):\n\
-      \            if grid[i][j] == grid[n-i-1][n-j-1]:\n                continue\n\
-      \            if i > 0:\n                dp[i][j] = min(dp[i][j], dp[i-1][j]\
-      \ + 1)\n            if j > 0:\n                dp[i][j] = min(dp[i][j], dp[i][j-1]\
-      \ + 1)\n            if i < n-1:\n                dp[i][j] = min(dp[i][j], dp[i+1][j]\
-      \ + 1)\n            if j < n-1:\n                dp[i][j] = min(dp[i][j], dp[i][j+1]\
-      \ + 1)\n            if grid[n-i-1][n-j-1] == grid[n-i-2][n-j-1]:\n         \
-      \       dp[i][j] = min(dp[i][j], dp[i+1][j] + 1)\n            if grid[n-i-1][n-j-1]\
-      \ == grid[n-i-1][n-j-2]:\n                dp[i][j] = min(dp[i][j], dp[i][j+1]\
-      \ + 1)\n    return dp[n-1][n-1]\n"
-    programming_language: python3
-    inputs:
-    - grid:
-      - [1, 2, 3]
-      - [4, 5, 6]
-      - [7, 8, 9]
-    - grid:
-      - [1, 1, 1]
-      - [1, 1, 1]
-      - [1, 1, 1]
-    - grid:
-      - [5, 5, 5]
-      - [5, 5, 5]
-      - [5, 5, 5]
-    - grid:
-      - [1, 2, 3, 4]
-      - [5, 6, 7, 8]
-      - [9, 10, 11, 12]
-      - [13, 14, 15, 16]
-    - grid:
-      - [1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1]
-    - grid:
-      - [1, 2, 3, 4, 5]
-      - [6, 7, 8, 9, 10]
-      - [11, 12, 13, 14, 15]
-      - [16, 17, 18, 19, 20]
-      - [21, 22, 23, 24, 25]
-    - grid:
-      - [1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1]
-    - grid:
-      - [1, 2, 3, 4, 5, 6, 7]
-      - [8, 9, 10, 11, 12, 13, 14]
-      - [15, 16, 17, 18, 19, 20, 21]
-      - [22, 23, 24, 25, 26, 27, 28]
-      - [29, 30, 31, 32, 33, 34, 35]
-      - [36, 37, 38, 39, 40, 41, 42]
-    - grid:
-      - [1, 2, 3, 4, 5, 6, 7, 8]
-      - [9, 10, 11, 12, 13, 14, 15, 16]
-      - [17, 18, 19, 20, 21, 22, 23, 24]
-      - [25, 26, 27, 28, 29, 30, 31, 32]
-      - [33, 34, 35, 36, 37, 38, 39, 40]
-      - [41, 42, 43, 44, 45, 46, 47, 48]
-    - grid:
-      - [1, 1, 1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1, 1, 1]
-      - [1, 1, 1, 1, 1, 1, 1, 1, 1]
-    - grid:
-      - [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      - [11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-      - [21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
-      - [31, 32, 33, 34, 35, 36, 37, 38, 39, 40]
-      - [41, 42, 43, 44, 45, 46, 47, 48, 49, 50]
-      - [51, 52, 53, 54, 55, 56, 57, 58, 59, 60]
-      - [61, 62, 63, 64, 65, 66, 67, 68, 69, 70]
-      - [71, 72, 73, 74, 75, 76, 77, 78, 79, 80]
-      - [81, 82, 83, 84, 85, 86, 87, 88, 89, 90]
-      - [91, 92, 93, 94, 95, 96, 97, 98, 99, 100]
-    - grid:
-      - [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-      - [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
-      - [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33]
-      - [34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44]
-      - [45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55]
-      - [56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66]
-      - [67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77]
-      - [78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88]
-      - [89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
-      - [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110]
-- operations:
-  - ['1. Replace the ''code'' key with a nested object, encapsulating the ''main''
-      function within a self-consistent namespace, utilizing Python''s inner scope
-      to minimize global variable pollution', 'Restore the ''code'' key to its original
-      location, unencapsulating the ''main'' function and re-establishing global variable
-      access']
-  - ['2. Utilize a state machine to manage the control flow within the ''main'' function,
-      decoupling logic from sequential execution', 'Revert the ''main'' function to
-      use a linear control flow, re-establishing direct logic execution']
-  - ['3. Implement a dependency injection system for the ''main'' function, injecting
-      all external dependencies through a single entry point', 'Extract all external
-      dependencies from the ''main'' function, re-establishing direct imports and
-      module references']
-  root:
-    description: '# LeetCode-Hard: Optimal Substructure Problem
-
-      Given a directed graph where each node has a value and an edge has a weight,
-      find the minimum cost to traverse from a source node to a sink node. The graph
-      is represented as a list of edges, where each edge is a tuple of two nodes and
-      a weight.
-
-      The graph may contain negative weight edges, and there may be negative cycles
-      in the graph.
-
-      Your function should return the minimum cost to traverse from the source node
-      to the sink node.
-
-      '
-    code: "def main(edges, source, sink):\n  graph = {}\n  for u, v, w in edges:\n\
-      \    if u not in graph:\n      graph[u] = {}\n    if v not in graph:\n     \
-      \ graph[v] = {}\n    graph[u][v] = w\n\n  def bellman_ford(graph, source):\n\
-      \    distance = {node: float('inf') for node in graph}\n    distance[source]\
-      \ = 0\n    for _ in range(len(graph) - 1):\n      for u in graph:\n        for\
-      \ v in graph[u]:\n          distance[v] = min(distance[v], distance[u] + graph[u][v])\n\
-      \    return distance\n\n  def has_negative_cycle(graph, distance):\n    for\
-      \ u in graph:\n      for v in graph[u]:\n        if distance[v] > distance[u]\
-      \ + graph[u][v]:\n          return True\n    return False\n\n  distance = bellman_ford(graph,\
-      \ source)\n  if has_negative_cycle(graph, distance):\n    return \"Negative\
-      \ cycle detected\"\n  return distance[sink]\n"
-    programming_language: python3
-    inputs:
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 1
-      sink: 4
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 1
-      sink: 3
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 1
-      sink: 2
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 2
-      sink: 4
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 2
-      sink: 3
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 3
-      sink: 4
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 3
-      sink: 2
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 4
-      sink: 4
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 4
-      sink: 3
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 4
-      sink: 2
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 1
-      sink: 1
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 2
-      sink: 2
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 3
-      sink: 3
-    - edges: [(1, 2, -1), (2, 3, 4), (3, 4, -2)]
-      source: 4
-      sink: 4
-    - edges: [(1, 2, 1), (2, 3, 4), (3, 4, 2)]
-      source: 1
-      sink: 4
-    - edges: [(1, 2, 1), (2, 3, 4), (3, 4, 2)]
-      source: 1
-      sink: 3
-    - edges: [(1, 2, 1), (2, 3, 4), (3, 4, 2)]
-      source: 2
-      sink: 4
-    - edges: [(1, 2, 1), (2, 3, 4), (3, 4, 2)]
-      source: 2
-      sink: 3
-    - edges: [(1, 2, 1), (2, 3, 4), (3, 4, 2)]
-      source: 3
-      sink: 4
-    - edges: [(1, 2, 1), (2, 3, 4), (3, 4, 2)]
-      source: 3
-      sink: 2
-- operations:
-  - ['Replace all recursive function calls in the ''code'' key with memoized function
-      calls to optimize performance, using a dictionary to store the results of expensive
-      function calls', 'revert the ''code'' key to use standard recursive function
-      calls, discarding the memoization dictionary']
-  - ['Utilize a custom, domain-specific language (DSL) within the ''code'' key, allowing
-      for the creation of abstract syntax trees (ASTs) that can be evaluated at runtime',
-    'parse the DSL back into a standard, Python syntax, ensuring the original logic
-      is preserved']
-  - ['Implement the ''code'' key using a Just-In-Time (JIT) compiler, generating machine
-      code on the fly to optimize performance', 'decompile the JIT-compiled machine
-      code back into a standard, Python syntax, ensuring the original logic is preserved']
-  root:
-    description: "**Longest Increasing Subarray with Modulo Operations**\n**==========================================**\n\
-      Given an array of integers `nums` and an integer `k`, find the length of the\
-      \ longest subarray that has a sum of numbers modulo `k` equal to 0.\n**Example\
-      \ 1:**\n  ```\n  Input: nums = [4, 5, 0, -2, -3, 1], k = 5\n  Output: 7\n  Explanation:\
-      \ The longest subarray with a sum of numbers modulo 5 equal to 0 is [4, 5, 0,\
-      \ -2, -3, 1].\n  ```\n**Example 2:**\n  ```\n  Input: nums = [5], k = 9\n  Output:\
-      \ 1\n  Explanation: The longest subarray with a sum of numbers modulo 9 equal\
-      \ to 0 is [5].\n  ```\n**Constraints:**\n  * `1 <= nums.length <= 10^5`\n  *\
-      \ `-10^9 <= nums[i] <= 10^9`\n  * `1 <= k <= 2 * 10^5`\n"
-    code: "def main(nums, k):\n  n = len(nums)\n  prefix = [0] * (n + 1)\n  for i\
-      \ in range(n):\n    prefix[i + 1] = (prefix[i] + nums[i]) % k\n  dp = {0: 1}\n\
-      \  max_length = 0\n  for i in range(1, n + 1):\n    dp[prefix[i]] = dp.get(prefix[i],\
-      \ 0) + 1\n    max_length = max(max_length, dp[prefix[i]])\n  return max_length\n"
-    programming_language: python3
-    inputs:
-    - nums: [4, 5, 0, -2, -3, 1]
-      k: 5
-    - nums: [5]
-      k: 9
     - nums: [1, 2, 3, 4, 5]
-      k: 10
-    - nums: [10, 20, 30, 40, 50]
-      k: 5
-    - nums: [-10, -20, -30, -40, -50]
-      k: 5
+    - nums: [1, 2, 3, 4, 5, 6]
+    - nums: [1, 2, 3, 4]
+    - nums: [1, 2, 3, 4, 5, 6, 7]
+    - nums: [1, 2, 3, 4, 5, 6, 7, 8]
+    - nums: [1, 2, 3, 4, 5, 6, 7, 8, 9]
     - nums: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      k: 10
-    - nums: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-      k: 10
-    - nums: [-1, -2, -3, -4, -5, -6, -7, -8, -9, -10]
-      k: 10
+    - nums: [-1, 1, -1, 1, -1, 1]
+    - nums: [-1, 1, -1, 1, -1, 1, -1, 1]
+    - nums: [-1, 1, -1, 1, -1, 1, -1, 1, -1, 1]
     - nums: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-      k: 10
-    - nums: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-      k: 10
-    - nums: [3, 3, 3, 3, 3, 3, 3, 3, 3, 3]
-      k: 10
-    - nums: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4]
-      k: 10
-    - nums: [5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
-      k: 10
-    - nums: [6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
-      k: 10
-    - nums: [7, 7, 7, 7, 7, 7, 7, 7, 7, 7]
-      k: 10
-    - nums: [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
-      k: 10
-    - nums: [9, 9, 9, 9, 9, 9, 9, 9, 9, 9]
-      k: 10
+    - nums: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    - nums: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    - nums: [-10, 10, -10, 10, -10, 10, -10, 10]
+    - nums: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10]
+    - nums: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10, -10, 10]
+    - nums: [10, 20, 30, 40, 50]
+    - nums: [10, 20, 30, 40, 50, 60]
 - operations:
-  - ['1. "Replace the ''main'' function in the ''code'' key with a recursive function
-      that uses memoization to optimize performance, where function calls are cached
-      and reused', 'revert the ''main'' function to its original imperative form,
-      losing the memoization optimization"']
-  - ['2. "Utilize a functional programming approach in the ''main'' function by replacing
-      loops with higher-order functions and lambda expressions, leveraging the power
-      of map, filter, and reduce', 'convert the functional programming approach back
-      to traditional loops and imperative logic, restoring the original control flow"']
-  - ['3. "Replace the ''main'' function in the ''code'' key with a meta-programming
-      construct that generates a new function at runtime, allowing for dynamic code
-      generation and evaluation', 'revert the ''main'' function to its original form,
-      losing the meta-programming capabilities"']
+  - [transform operation, reverse operation]
+  - ['Replace the ''main'' function with a recursive function that mimics its behavior
+      using a stack-based approach, leveraging the call stack to store intermediate
+      results', 'Replace the recursive function with a straightforward iterative implementation,
+      utilizing a stack data structure to manage the recursion.']
+  - ['Replace the conditional statements in the ''main'' function with a decision
+      tree-based approach, using a dictionary to map conditions to actions', 'Revert
+      the decision tree to use straightforward conditional statements, leveraging
+      the original logic.']
   root:
-    description: '# 77778: Fastest Path to 1000 Points on a Weighted Graph
+    description: '# Lattice Point Count Problem
 
+      Given a 3D lattice with dimensions m x n x p, find the number of lattice points
+      that are reachable from the origin (0, 0, 0) by a sequence of moves (0, 0, 1),
+      (0, 1, 0), (1, 0, 0), (0, 0, -1), (0, -1, 0), (-1, 0, 0) without crossing any
+      plane that contains the origin.
 
-      You are given a weighted graph G = (V, E) with n nodes and m edges, where each
-      edge (u, v) has a weight w. You are also given a starting node s and a target
-      number of points, 1000.
+      For example, if m = 3, n = 3, p = 3, the lattice points that are reachable from
+      the origin are (0, 0, 0), (0, 0, 1), (0, 1, 0), (0, 1, 1), (1, 0, 0), (1, 0,
+      1), (1, 1, 0), (1, 1, 1), (0, 1, 1), (1, 1, 1).
 
-
-      Your goal is to find the fastest path from node s to any node v in the graph
-      such that the sum of the weights of the edges in the path is at most 1000. If
-      no such path exists, return -1.
-
-
-      The graph can be represented as an adjacency list, where each node i is associated
-      with a list of edges (j, w) representing the edge from node i to node j with
-      weight w.
-
-
-      You should implement a function `main` that takes as input the graph, the starting
-      node, and the target number of points, and returns the fastest path and the
-      total weight of the path.
-
-
-      The function should run in O(m log n) time complexity, where m is the number
-      of edges and n is the number of nodes.
-
-
-      Example inputs and outputs:
-
-
-      - `main([[1, 2, 1], [2, 3, 3], [1, 3, 2]], 1, 4)` returns (3, 2)
-
-      - `main([[1, 2, 10], [2, 3, 20]], 1, 10)` returns (2, 10)
-
-      - `main([[1, 2, 10], [2, 3, 20]], 1, 5)` returns -1
+      The output should be the total number of reachable lattice points.
 
       '
-    code: "def main(graph, s, target):\n  import heapq\n\n  def dijkstra(graph, s):\n\
-      \    n = len(graph)\n    dist = [float('inf')] * n\n    dist[s] = 0\n    pq\
-      \ = [(0, s)]\n\n    while pq:\n      d, u = heapq.heappop(pq)\n\n      for v,\
-      \ w in graph[u]:\n        if dist[v] > dist[u] + w:\n          dist[v] = dist[u]\
-      \ + w\n          heapq.heappush(pq, (dist[v], v))\n\n    return dist\n\n  dist\
-      \ = dijkstra(graph, s)\n  for v in range(len(dist)):\n    if dist[v] <= target:\n\
-      \      return v, dist[v]\n\n  return -1\n"
+    code: "def main(m, n, p):\n  def gcd(a, b):\n    while b:\n      a, b = b, a %\
+      \ b\n    return a\n  def lcm(a, b):\n    return a * b // gcd(a, b)\n  def calculate(m,\
+      \ n, p):\n    if m == 1 and n == 1:\n      return p + 1\n    elif n == 1:\n\
+      \      return m * (p + 1)\n    elif p == 1:\n      return (m + 1) * n\n    else:\n\
+      \      return (m + 1) * (n + 1) * (p + 1)\n  return calculate(m, n, p)\n"
     programming_language: python3
     inputs:
-    - graph:
-      - [1, 2, 1]
-      - [2, 3, 3]
-      - [1, 3, 2]
-      s: 1
-      target: 4
-    - graph:
-      - [1, 2, 10]
-      - [2, 3, 20]
-      s: 1
-      target: 10
-    - graph:
-      - [1, 2, 10]
-      - [2, 3, 20]
-      s: 1
-      target: 5
-    - graph:
-      - [1, 2, 1]
-      - [2, 3, 3]
-      - [1, 3, 2]
-      s: 1
-      target: 2
-    - graph:
-      - [1, 2, 10]
-      - [2, 3, 20]
-      s: 1
-      target: 15
-    - graph:
-      - [1, 2, 1]
-      - [2, 3, 3]
-      - [1, 3, 2]
-      s: 1
-      target: 10
-    - graph:
-      - [1, 2, 10]
-      - [2, 3, 20]
-      s: 1
-      target: 20
-    - graph:
-      - [1, 2, 1]
-      - [2, 3, 3]
-      - [1, 3, 2]
-      s: 1
-      target: 1
-    - graph:
-      - [1, 2, 10]
-      - [2, 3, 20]
-      s: 1
-      target: 5
-    - graph:
-      - [1, 2, 1]
-      - [2, 3, 3]
-      - [1, 3, 2]
-      s: 1
-      target: 5
-    - graph:
-      - [1, 2, 10]
-      - [2, 3, 20]
-      s: 1
-      target: 10
-    - graph:
-      - [1, 2, 1]
-      - [2, 3, 3]
-      - [1, 3, 2]
-      s: 1
-      target: 10
-    - graph:
-      - [1, 2, 10]
-      - [2, 3, 20]
-      s: 1
-      target: 20
-    - graph:
-      - [1, 2, 1]
-      - [2, 3, 3]
-      - [1, 3, 2]
-      s: 1
-      target: 15
-    - graph:
-      - [1, 2, 10]
-      - [2, 3, 20]
-      s: 1
-      target: 10
-    - graph:
-      - [1, 2, 1]
-      - [2, 3, 3]
-      - [1, 3, 2]
-      s: 1
-      target: 20
-    - graph:
-      - [1, 2, 10]
-      - [2, 3, 20]
-      s: 1
-      target: 15
+    - {m: 1, n: 1, p: 1}
+    - {m: 2, n: 2, p: 2}
+    - {m: 3, n: 3, p: 3}
+    - {m: 4, n: 4, p: 4}
+    - {m: 5, n: 5, p: 5}
+    - {m: 10, n: 10, p: 10}
+    - {m: 100, n: 100, p: 100}
+    - {m: 1, n: 2, p: 3}
+    - {m: 2, n: 3, p: 1}
+    - {m: 3, n: 1, p: 2}
+    - {m: 1, n: 3, p: 2}
+    - {m: 2, n: 1, p: 3}
+    - {m: 3, n: 2, p: 1}
+    - {m: 1, n: 2, p: 1}
+    - {m: 2, n: 1, p: 1}
+    - {m: 1, n: 1, p: 2}
+    - {m: 1, n: 1, p: 3}
+    - {m: 1, n: 2, p: 2}
+    - {m: 2, n: 1, p: 2}
 - operations:
-  - ['Replace the ''main'' function in the ''code'' key with a class definition that
-      encapsulates the entire logic, using object-oriented programming principles,
-      and modify the function calls to method invocations', 'Convert the class back
-      into a standalone function, restoring the original function signature and behavior']
-  - ['Utilize a single, monolithic ''main'' function in the ''code'' key to handle
-      all error cases, using try-except blocks to catch and handle exceptions, and
-      consolidate error messages into a single, centralized logging mechanism', 'Replace
-      the monolithic error handling with individual try-except blocks for each operation,
-      restoring the original error handling logic and behavior']
-  - [Replace the 'main' function in the 'code' key with a recursive function that
-      uses memoization to store intermediate results and avoid redundant calculations,
-    'Convert the recursive function back into an iterative solution, using a cache
-      to store intermediate results and restore the original behavior']
+  - ['1. "Transmogrify the ''code'' key''s ''main'' function into a lambda function
+      by inlining all variables and operations, utilizing advanced Python features
+      like type hints and annotations, while maintaining the original logic and functionality',
+    'Revert the ''main'' function to its original form, preserving the variable and
+      operation structure"']
+  - ['2. "Replace the ''code'' key''s ''main'' function with a recursive function
+      that uses memoization to optimize performance, minimizing repeated calculations
+      and improving efficiency', 'Unroll the recursive function and revert to the
+      original iterative approach, ensuring identical behavior and performance"']
+  - ['3. "Introduce a new, abstract class in the ''code'' key''s ''main'' function
+      to encapsulate the business logic, leveraging Python''s object-oriented programming
+      features and type checking', 'Refactor the abstract class back into a traditional
+      function, removing unnecessary complexity and maintaining the original logic"']
   root:
-    description: '**The Cosmic String Theory Problem**
-
-      You are given a list of `n` points in 3D space, each represented by a tuple
-      of three integers `(x, y, z)`. Your task is to find the maximum number of points
-      that can be covered by a set of `k` spheres, where each sphere has a fixed radius
-      of `r`. The points are considered covered by a sphere if they lie within a distance
-      of `r` from the center of the sphere.
-
-      For example, if we have the points `(1, 2, 3), (4, 5, 6), (7, 8, 9)` and `k
-      = 2, r = 3`, one possible solution is to place two spheres at `(1, 2, 3)` and
-      `(4, 5, 6)`, covering a total of 3 points.
-
-      The input list of points may contain duplicate points, and the output should
-      be the maximum number of points that can be covered by the spheres. The points
-      are guaranteed to be non-empty and the input list will not be empty.
-
-
-      For example:
-
-      ```
-
-      Input: points = [(1, 2, 3), (4, 5, 6), (7, 8, 9)], k = 2, r = 3
-
-      Output: 3
-
-      ```
-
-
-      **Constraints:**
-
-      * 1 <= n <= 1000
-
-      * 0 <= x, y, z <= 1000
-
-      * 1 <= k <= n
-
-      * 1 <= r <= 1000
-
-      '
-    code: "def main(points, k, r):\n  def distance(point1, point2):\n    return ((point1[0]\
-      \ - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2 + (point1[2] - point2[2])\
-      \ ** 2) ** 0.5\n\n  points.sort(key=lambda x: distance(points[0], x))\n  covered_points\
-      \ = set()\n  spheres = []\n\n  for point in points:\n    if not covered_points\
-      \ or distance(point, spheres[-1]) > r:\n      spheres.append(point)\n      covered_points.add(point)\n\
-      \    else:\n      for sphere in spheres:\n        if distance(point, sphere)\
-      \ <= r:\n          covered_points.add(point)\n          break\n\n  return len(covered_points)\n"
-    programming_language: python3
-    inputs:
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
-      k: 2
-      r: 3
-    - points: [(1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4)]
-      k: 2
-      r: 1
-    - points: [(0, 0, 0), (1, 1, 1), (2, 2, 2), (3, 3, 3), (4, 4, 4), (5, 5, 5)]
-      k: 3
-      r: 2
-    - points: [(10, 10, 10), (20, 20, 20), (30, 30, 30), (40, 40, 40), (50, 50, 50)]
-      k: 2
-      r: 5
-    - points: [(100, 100, 100), (200, 200, 200), (300, 300, 300), (400, 400, 400),
-        (500, 500, 500)]
-      k: 3
-      r: 10
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15)]
-      k: 2
-      r: 3
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18)]
-      k: 3
-      r: 4
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21)]
-      k: 2
-      r: 5
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24)]
-      k: 3
-      r: 6
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27)]
-      k: 2
-      r: 7
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30)]
-      k: 3
-      r: 8
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33)]
-      k: 2
-      r: 9
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36)]
-      k: 3
-      r: 10
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39)]
-      k: 2
-      r: 11
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39), (40, 41, 42)]
-      k: 3
-      r: 12
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39), (40, 41, 42), (43, 44, 45)]
-      k: 2
-      r: 13
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39), (40, 41, 42), (43, 44, 45), (46, 47, 48)]
-      k: 3
-      r: 14
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39), (40, 41, 42), (43, 44, 45), (46, 47, 48), (49,
-        50, 51)]
-      k: 2
-      r: 15
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39), (40, 41, 42), (43, 44, 45), (46, 47, 48), (49,
-        50, 51), (52, 53, 54)]
-      k: 3
-      r: 16
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39), (40, 41, 42), (43, 44, 45), (46, 47, 48), (49,
-        50, 51), (52, 53, 54), (55, 56, 57)]
-      k: 2
-      r: 17
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39), (40, 41, 42), (43, 44, 45), (46, 47, 48), (49,
-        50, 51), (52, 53, 54), (55, 56, 57), (58, 59, 60)]
-      k: 3
-      r: 18
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39), (40, 41, 42), (43, 44, 45), (46, 47, 48), (49,
-        50, 51), (52, 53, 54), (55, 56, 57), (58, 59, 60), (61, 62, 63)]
-      k: 2
-      r: 19
-    - points: [(1, 2, 3), (4, 5, 6), (7, 8, 9), (10, 11, 12), (13, 14, 15), (16, 17,
-        18), (19, 20, 21), (22, 23, 24), (25, 26, 27), (28, 29, 30), (31, 32, 33),
-        (34, 35, 36), (37, 38, 39), (40, 41, 42), (43, 44, 45), (46, 47, 48), (49,
-        50, 51), (52, 53, 54), (55, 56, 57), (58, 59, 60), (61, 62, 63), (64, 65,
-        66)]
-      k: 3
-      r: 20
-- operations:
-  - ['1. "Invert the order of nested loops in the ''main'' function, prioritizing
-      parallelism over sequential execution, and utilize advanced iterator protocols
-      to optimize memory usage', 'Reorder the loops back to their original sequence,
-      ensuring sequential execution and reverting to basic iterator usage"']
-  - ['2. "Replace the ''main'' function''s logic with a recursive implementation,
-      utilizing memoization to avoid redundant computations, and then optimize the
-      recursive calls using a technique such as trampolining', 'Convert the recursive
-      implementation back to an iterative one, eliminating memoization and reverting
-      to basic function calls"']
-  - ['3. "Rewrite the ''main'' function to utilize a custom, type-safe, and efficient
-      data structure, such as a treap, to store and manipulate large datasets', 'Revert
-      the data structure to a traditional list or dictionary, ensuring compatibility
-      with the original function''s behavior"']
-  root:
-    description: '**Problem: Fast Fourier Transform with Modular Arithmetic**
-
-
-      Given a list of integers `A` and a prime number `p`, compute the Fast Fourier
-      Transform (FFT) of `A` modulo `p`. The FFT is a fast and efficient algorithm
-      for computing the discrete Fourier transform (DFT) of a sequence.
-
-
-      The DFT of a sequence `A` is a sequence of complex numbers that represents the
-      distribution of the original sequence in the frequency domain.
-
-
-      The input list `A` is of length `n`, and the prime number `p` is given.
-
-
-      The output should be a list of complex numbers representing the FFT of `A` modulo
-      `p`.
-
-
-      **Example:**
-
-
-      Input: `A = [1, 2, 3, 4, 5]`, `p = 7`
-
-      Output: `[4, 5, 6, 1, 2]`
-
-
-      **Constraints:**
-
-
-      * `1 <= n <= 10^6`
-
-      * `1 <= p <= 10^9`
-
-      * `A` is a list of integers of length `n`
-
-      * `p` is a prime number
-
-      '
-    code: "def main(A, p):\n    n = len(A)\n    if n == 1:\n        return A\n   \
-      \ even = [A[i] for i in range(0, n, 2)]\n    odd = [A[i] for i in range(1, n,\
-      \ 2)]\n    even_fft = main(even, p)\n    odd_fft = main(odd, p)\n    result\
-      \ = [0]*n\n    for k in range(n//2):\n        result[k] = (even_fft[k] + odd_fft[k]*pow(2,\
-      \ n//2, p)) % p\n        result[k + n//2] = (even_fft[k] - odd_fft[k]*pow(2,\
-      \ n//2, p)) % p\n    return result\n"
-    programming_language: python3
-    inputs:
-    - A: [1, 2, 3, 4, 5]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-        22]
-      p: 7
-    - A: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-        22, 23]
-      p: 7
-- operations:
-  - ['1. "Rewrite the ''main'' function in the ''code'' key to utilize a custom, hand-rolled
-      parser instead of the built-in JSON parser, handling nested objects and arrays
-      recursively', 'Revert the ''main'' function to use the original built-in JSON
-      parser, ensuring compatibility with the original structure"']
-  - ['2. "Replace the ''main'' function in the ''code'' key with a functional programming
-      approach using higher-order functions, currying, and function composition, eliminating
-      loops and conditionals', 'Revert the ''main'' function to use a traditional
-      imperative approach with loops and conditionals, preserving the original logic"']
-  - ['3. "Implement a just-in-time (JIT) compiler within the ''main'' function in
-      the ''code'' key, dynamically compiling and executing functions at runtime,
-      optimizing performance-critical code paths', 'Disable the JIT compiler and revert
-      the ''main'' function to execute code sequentially, ensuring compatibility with
-      the original functionality"']
-  root:
-    description: '**Longest Palindromic Subsequence with Consecutive Deletions**
+    description: '**Longest Increasing Subsequence with Wildcard**
 
       ===
 
 
-      Given a string `s` and an integer `k`, find the length of the longest palindromic
-      subsequence in `s` that can be obtained by deleting at most `k` characters.
+      Given an array of integers `nums` and a wildcard character `?`, find the length
+      of the longest increasing subsequence that can be formed by replacing some or
+      no elements of `nums` with `?`.
 
 
       A subsequence is a sequence that can be derived from another sequence by deleting
       some elements without changing the order of the remaining elements.
 
 
+      The wildcard `?` can be used as any integer, positive or negative.
+
+
       Example 1:
 
-      Input: `s = "abracadabra", k = 2`
+      Input: `nums = [1, 2, 2, 3, 4, 5, 6], ? = 2`
 
-      Output: `5`
+      Output: 5
 
-      Explanation: The longest palindromic subsequence is "abbra".
+      Explanation: Replace the first 2 with ?, then the subsequence is [?, 2, 3, 4,
+      5, 6].
 
 
       Example 2:
 
-      Input: `s = "abcdefghijklmnopqrstuvwxyz", k = 25`
+      Input: `nums = [1, 2, 4, 5, 6], ? = 3`
 
-      Output: `26`
+      Output: 4
 
-      Explanation: The longest palindromic subsequence is the entire string.
+      Explanation: Replace the first 2 with ?, then the subsequence is [?, 3, 4, 5,
+      6].
 
 
       Example 3:
 
-      Input: `s = "aabbcc", k = 0`
+      Input: `nums = [1, 2, 3, 4, 5], ? = 6`
 
-      Output: `4`
+      Output: 5
 
-      Explanation: The longest palindromic subsequence is "aabb".
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5].
+
+
+      Example 4:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 1`
+
+      Output: 1
+
+      Explanation: Replace all elements with ?, then the subsequence is [?, ?, ?,
+      ?, ?, ?].
+
+
+      Example 5:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 10`
+
+      Output: 6
+
+      Explanation: Replace all elements with ?, then the subsequence is [?, ?, ?,
+      ?, ?, ?].
+
+
+      Example 6:
+
+      Input: `nums = [1, 2, 2, 3, 4, 5, 6], ? = 1`
+
+      Output: 7
+
+      Explanation: Replace all elements with ?, then the subsequence is [?, ?, ?,
+      ?, ?, ?, ?].
+
+
+      Example 7:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 7`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 8:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 0`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 9:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = -1`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 10:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = -10`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 11:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 0.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 12:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = -0.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 13:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 10.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 14:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = -10.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 15:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 1.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 16:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 2.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 17:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 3.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 18:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 4.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 19:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 5.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
+
+
+      Example 20:
+
+      Input: `nums = [1, 2, 3, 4, 5, 6], ? = 6.5`
+
+      Output: 6
+
+      Explanation: No need to replace any elements, the subsequence is [1, 2, 3, 4,
+      5, 6].
 
       '
-    code: "def main(s, k):\n  n = len(s)\n  dp = [[0] * (k + 1) for _ in range(n +\
-      \ 1)]\n  for i in range(1, n + 1):\n    for j in range(min(i, k) + 1):\n   \
-      \   if i == j:\n        dp[i][j] = 1\n      else:\n        dp[i][j] = max(dp[i\
-      \ - 1][j], dp[i - 1][j - 1] + (s[i - 1] == s[i - j]))\n  return dp[n][k]\n"
+    code: "def main(nums, wildcard):\n  n = len(nums)\n  dp = [[0] * (n + 1) for _\
+      \ in range(n + 1)]\n  for i in range(1, n + 1):\n    for j in range(i + 1):\n\
+      \      if j == 0:\n        dp[i][j] = 1\n      else:\n        if nums[i - 1]\
+      \ == wildcard or nums[i - 1] > nums[j - 1]:\n          dp[i][j] = dp[i - 1][j\
+      \ - 1] + 1\n        else:\n          dp[i][j] = max(dp[i - 1][j], dp[i][j -\
+      \ 1])\n  return dp[n][n]\n"
     programming_language: python3
     inputs:
-    - {s: abracadabra, k: 2}
-    - {s: abcdefghijklmnopqrstuvwxyz, k: 25}
-    - {s: aabbcc, k: 0}
-    - {s: a, k: 0}
-    - {s: aa, k: 1}
-    - {s: aaa, k: 1}
-    - {s: aaaa, k: 1}
-    - {s: aaaaa, k: 1}
+    - nums: [1, 2, 2, 3, 4, 5, 6]
+      wildcard: 2
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 2
+    - nums: [1, 2, 4, 5, 6]
+      wildcard: 3
+    - nums: [1, 2, 3, 4, 5]
+      wildcard: 6
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 1
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 1
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 0
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: -1
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: -10
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 0.5
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: -0.5
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 10.5
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: -10.5
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 1.5
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 2.5
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 3.5
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 4.5
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 5.5
+    - nums: [1, 2, 3, 4, 5, 6]
+      wildcard: 6.5
+- operations:
+  - ['1. "Replace the ''main'' function in the ''code'' key with a recursive function
+      that uses memoization to improve performance, utilizing a dictionary to store
+      and reuse intermediate results', 'revert the ''main'' function to use a non-recursive,
+      iterative approach, dropping memoization and restoring original logic"']
+  - ['2. "Implement the ''main'' function in the ''code'' key using a functional programming
+      style, with a focus on immutability and higher-order functions, encapsulating
+      data and behavior within pure functions', 'transform the functional implementation
+      back into an imperative, mutable version, using global variables and side effects
+      as needed"']
+  - ['3. "Use a type hinting system in the ''main'' function in the ''code'' key to
+      specify the types of function arguments and return values, leveraging type inference
+      and static analysis tools', 'remove type hints and annotations, opting for runtime
+      type checking and dynamic typing instead"']
+  root:
+    description: '# Maximum XOR With an Array Element
+
+      You are given a non-empty array of integers `nums` and an integer `target`.
+
+      Find the maximum integer in the array that can be obtained by performing a series
+      of XOR operations on `nums` where each number can be used at most once.
+
+      Return the maximum integer that can be obtained by performing the above operations,
+      or 0 if no such integer exists.
+
+
+      Example 1:
+
+      Input: nums = [3, 9, 8, 4], target = 2
+
+      Output: 3
+
+
+      Example 2:
+
+      Input: nums = [1, 2, 3, 4], target = 7
+
+      Output: 4
+
+
+      Example 3:
+
+      Input: nums = [5, 6, 7, 8], target = 2
+
+      Output: 0
+
+
+      Note:
+
+      - 1 <= nums.length <= 25
+
+      - 1 <= nums[i], target <= 10^9
+
+      - It''s guaranteed that the answer is unique.
+
+      '
+    code: "from functools import lru_cache\n\ndef main(nums, target):\n  def get_bit(num):\n\
+      \    binary = bin(num)[2:]\n    return [int(bit) for bit in binary]\n\n  @lru_cache(None)\n\
+      \  def get_max_xor(i, target):\n    if target == 0:\n      return 0\n    if\
+      \ i == len(nums):\n      return 0\n    return max(get_max_xor(i + 1, target),\
+      \ get_max_xor(i + 1, target ^ nums[i]) + nums[i])\n\n  return get_max_xor(0,\
+      \ target)\n"
+    programming_language: python3
+    inputs:
+    - nums: [3, 9, 8, 4]
+      target: 2
+    - nums: [1, 2, 3, 4]
+      target: 7
+    - nums: [5, 6, 7, 8]
+      target: 2
+    - nums: [2, 4, 6, 8]
+      target: 3
+    - nums: [1, 2, 3, 4]
+      target: 4
+    - nums: [5, 6, 7, 8]
+      target: 1
+    - nums: [3, 9, 8, 4]
+      target: 3
+    - nums: [1, 2, 3, 4]
+      target: 5
+    - nums: [5, 6, 7, 8]
+      target: 6
+    - nums: [2, 4, 6, 8]
+      target: 4
+    - nums: [1, 2, 3, 4]
+      target: 2
+    - nums: [5, 6, 7, 8]
+      target: 8
+    - nums: [3, 9, 8, 4]
+      target: 9
+    - nums: [1, 2, 3, 4]
+      target: 3
+    - nums: [5, 6, 7, 8]
+      target: 7
+    - nums: [2, 4, 6, 8]
+      target: 6
+    - nums: [1, 2, 3, 4]
+      target: 6
+    - nums: [5, 6, 7, 8]
+      target: 5
+    - nums: [3, 9, 8, 4]
+      target: 1
+    - nums: [1, 2, 3, 4]
+      target: 8
+- operations:
+  - ['1. "Replace the ''main'' function in the ''code'' key with a meta-programming
+      construct that uses a self-modifying code generator to create a new executable
+      at runtime, without altering the original code structure', 'revert the ''main''
+      function back to its original form, using standard control structures and no
+      self-modifying code"']
+  - ['2. "Implement the ''main'' function in the ''code'' key as a neural network
+      that can learn and adapt to input data, using a novel architecture that combines
+      graph neural networks and functional programming', 'revert the ''main'' function
+      to use a traditional imperative programming paradigm, without any neural network
+      components"']
+  - ['3. "Rewrite the ''main'' function in the ''code'' key to use a functional programming
+      style with immutable data structures, ensuring that all state changes are explicit
+      and predictable', 'convert the ''main'' function back to an imperative style,
+      using mutable state and explicit loops"']
+  root:
+    description: '# 3Sum With Multiplicity
+
+      ## Problem Description
+
+      Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+      such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
+      == target`.
+
+
+      The let you assume that every triplet is distinct.
+
+
+      ## Example 1:
+
+      Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+      Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+      ## Example 2:
+
+      Input: `nums = [0, 1, 0]`, `target = 0`
+
+      Output: `[0, 0, 0]`
+
+      '
+    code: "def main(nums, target):\n  def backtrack(start, path, target):\n    if\
+      \ len(path) == 3:\n      if target == 0:\n        result.append(path)\n    \
+      \  return\n    for i in range(start, len(nums)):\n      if i > start and nums[i]\
+      \ == nums[i-1]:\n        continue\n      backtrack(i+1, path + [nums[i]], target\
+      \ - nums[i])\n\n  nums.sort()\n  result = []\n  backtrack(0, [], target)\n \
+      \ return result\n"
+    programming_language: python3
+    inputs:
+    - nums: [-2, -1, 0, 0, 1, 2]
+      target: 0
+    - nums: [0, 0, 1]
+      target: 0
+    - nums: [1, 2, 3, 4, 5]
+      target: 6
+    - nums: [-1, 0, 1, 2, 3]
+      target: 0
+    - nums: [-5, -3, 0, 3, 7]
+      target: 0
+    - nums: [0, 0, 0]
+      target: 0
+    - nums: [0, 0, 1]
+      target: 1
+    - nums: [0, 0, 1, 1]
+      target: 1
+    - nums: [0, 0, 0, 0]
+      target: 0
+    - nums: [0, 0, 0, 1]
+      target: 1
+    - nums: [1, 1, 1, 1]
+      target: 3
+    - nums: [1, 1, 1, 2]
+      target: 3
+    - nums: [1, 1, 2, 3]
+      target: 5
+    - nums: [1, 2, 2, 3]
+      target: 5
+    - nums: [2, 2, 2, 3]
+      target: 5
+    - nums: [1, 2, 3, 4]
+      target: 6
+    - nums: [1, 2, 3, 5]
+      target: 6
+    - nums: [1, 2, 3, 6]
+      target: 6
+    - nums: [1, 2, 4, 5]
+      target: 6
+- operations:
+  - ['1. "Rewrite the ''main'' function in the ''code'' key using a Metaprogramming
+      approach, dynamically generating classes and methods at runtime, and using introspection
+      to optimize performance', 'Revert the ''main'' function to use explicit class
+      definitions and method calls, ensuring consistent behavior"']
+  - ['2. "Implement the ''main'' function in the ''code'' key as a Pure Functional
+      Program, using immutable data structures and recursive function calls to process
+      input', 'Convert the ''main'' function to use Imperative programming, leveraging
+      mutable state and loops to achieve the same result"']
+  - [3. "Use a Just-In-Time (JIT) Compiler within the 'main' function in the 'code'
+      key to dynamically compile and optimize performance-critical sections of code,
+    'Revert the JIT Compiler to use traditional interpretation, ensuring compatibility
+      with existing dependencies"']
+  root:
+    description: "**Minimum Window Substring with Multiple K-Distinct Characters**\n\
+      Given a string `s` and an integer `k`, find the minimum window substring of\
+      \ `s` that contains at least `k` distinct characters, and the sum of the ASCII\
+      \ values of all the characters in this substring is minimal.\nThe substring\
+      \ should be returned as a string. If no such substring exists, return an empty\
+      \ string.\n\n**Example 1:**\nInput: `s = \"abcba\", k = 2`\nOutput: `\"bba\"\
+      `\n\n**Example 2:**\nInput: `s = \"abccde\", k = 3`\nOutput: `\"bce\"`\n\n**Example\
+      \ 3:**\nInput: `s = \"abacbe\", k = 3`\nOutput: `\"abc\"`\n\n**Example 4:**\n\
+      Input: `s = \"abc\", k = 1`\nOutput: \"a\"\n\n**Example 5:**\nInput: `s = \"\
+      ab\", k = 2`\nOutput: \"\"\n\n**Constraints:**\n1 \u2264 `s.length` \u2264 10^5\n\
+      `s` consists of lowercase English letters\n1 \u2264 `k` \u2264 `s.length`\n"
+    code: "def main(s, k):\n    from collections import defaultdict\n    from string\
+      \ import ascii_lowercase\n    n = len(s)\n    min_sum = float('inf')\n    min_substring\
+      \ = \"\"\n    char_sum = defaultdict(int)\n    left = 0\n    distinct_chars\
+      \ = 0\n    for right in range(n):\n        char_sum[s[right]] += ord(s[right])\n\
+      \        if s[right] in ascii_lowercase:\n            distinct_chars += 1\n\
+      \        while left <= right and distinct_chars == k:\n            if sum(char_sum.values())\
+      \ < min_sum:\n                min_sum = sum(char_sum.values())\n           \
+      \     min_substring = s[left:right + 1]\n            char_sum[s[left]] -= ord(s[left])\n\
+      \            if s[left] in ascii_lowercase and char_sum[s[left]] == 0:\n   \
+      \             distinct_chars -= 1\n            left += 1\n    return min_substring\n"
+    programming_language: python3
+    inputs:
+    - {s: abcba, k: 2}
+    - {s: abccde, k: 3}
+    - {s: abacbe, k: 3}
     - {s: abc, k: 1}
-    - {s: abc, k: 0}
-    - {s: abcd, k: 0}
-    - {s: abcd, k: 1}
-    - {s: abcde, k: 1}
-    - {s: abcde, k: 2}
-    - {s: abcdef, k: 1}
-    - {s: abcdef, k: 2}
-    - {s: aabbcc, k: 1}
+    - {s: ab, k: 2}
+    - {s: abcabc, k: 2}
     - {s: aabbcc, k: 2}
-    - {s: aabbcc, k: 3}
-    - {s: aabbcc, k: 4}
+    - {s: abccba, k: 2}
+    - {s: abcabcabc, k: 2}
+    - {s: abccba, k: 3}
+    - {s: abcabcabc, k: 3}
+    - {s: abccba, k: 4}
+    - {s: abcabcabc, k: 4}
+    - {s: abccba, k: 5}
+    - {s: abcabcabc, k: 5}
+    - {s: abccba, k: 6}
+    - {s: abcabcabc, k: 6}
+    - {s: abccba, k: 7}
+    - {s: abcabcabc, k: 7}
+    - {s: abccba, k: 8}

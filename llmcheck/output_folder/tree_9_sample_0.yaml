@@ -1,0 +1,455 @@
+operations:
+- ['1. "Rewrite the ''main'' function in the ''code'' key using a Metaprogramming
+    approach, dynamically generating classes and methods at runtime, and using introspection
+    to optimize performance', 'Revert the ''main'' function to use explicit class
+    definitions and method calls, ensuring consistent behavior"']
+- ['2. "Implement the ''main'' function in the ''code'' key as a Pure Functional Program,
+    using immutable data structures and recursive function calls to process input',
+  'Convert the ''main'' function to use Imperative programming, leveraging mutable
+    state and loops to achieve the same result"']
+- [3. "Use a Just-In-Time (JIT) Compiler within the 'main' function in the 'code'
+    key to dynamically compile and optimize performance-critical sections of code,
+  'Revert the JIT Compiler to use traditional interpretation, ensuring compatibility
+    with existing dependencies"']
+metrics:
+  embedding similarity L-1 AVG: 0.8482448898362631
+  embedding similarity L-1: [0.944372206875055, 0.8126594071965302, 0.7877030554372043]
+  BLEU L-1 AVG: 0.008356931442380198
+  BLEU L-1: [0.013618796864073041, 0.011451997463067555, 0]
+  ROUGE-rouge1 L-1 AVG: 0.04597701149425287
+  ROUGE-rouge1 L-1: [0.13793103448275862, 0.0, 0.0]
+  ROUGE-rouge2 L-1 AVG: 0.0
+  ROUGE-rouge2 L-1: [0.0, 0.0, 0.0]
+  ROUGE-rougeL L-1 AVG: 0.022988505747126436
+  ROUGE-rougeL L-1: [0.06896551724137931, 0.0, 0.0]
+  embedding similarity L-2 AVG: 0.0
+  embedding similarity L-2: []
+  BLEU L-2 AVG: 0.0
+  BLEU L-2: []
+  ROUGE-rouge1 L-2 AVG: 0.0
+  ROUGE-rouge1 L-2: []
+  ROUGE-rouge2 L-2 AVG: 0.0
+  ROUGE-rouge2 L-2: []
+  ROUGE-rougeL L-2 AVG: 0.0
+  ROUGE-rougeL L-2: []
+  embedding similarity L-3 AVG: 0.0
+  embedding similarity L-3: []
+  BLEU L-3 AVG: 0.0
+  BLEU L-3: []
+  ROUGE-rouge1 L-3 AVG: 0.0
+  ROUGE-rouge1 L-3: []
+  ROUGE-rouge2 L-3 AVG: 0.0
+  ROUGE-rouge2 L-3: []
+  ROUGE-rougeL L-3 AVG: 0.0
+  ROUGE-rougeL L-3: []
+evaluatee_model: {model: fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct,
+  temperature: 0.6, api_base: 'https://api.fireworks.ai/inference/v1'}
+root_content:
+  description: "**Minimum Window Substring with Multiple K-Distinct Characters**\n\
+    Given a string `s` and an integer `k`, find the minimum window substring of `s`\
+    \ that contains at least `k` distinct characters, and the sum of the ASCII values\
+    \ of all the characters in this substring is minimal.\nThe substring should be\
+    \ returned as a string. If no such substring exists, return an empty string.\n\
+    \n**Example 1:**\nInput: `s = \"abcba\", k = 2`\nOutput: `\"bba\"`\n\n**Example\
+    \ 2:**\nInput: `s = \"abccde\", k = 3`\nOutput: `\"bce\"`\n\n**Example 3:**\n\
+    Input: `s = \"abacbe\", k = 3`\nOutput: `\"abc\"`\n\n**Example 4:**\nInput: `s\
+    \ = \"abc\", k = 1`\nOutput: \"a\"\n\n**Example 5:**\nInput: `s = \"ab\", k =\
+    \ 2`\nOutput: \"\"\n\n**Constraints:**\n1 \u2264 `s.length` \u2264 10^5\n`s` consists\
+    \ of lowercase English letters\n1 \u2264 `k` \u2264 `s.length`\n"
+  code: "def main(s, k):\n    from collections import defaultdict\n    from string\
+    \ import ascii_lowercase\n    n = len(s)\n    min_sum = float('inf')\n    min_substring\
+    \ = \"\"\n    char_sum = defaultdict(int)\n    left = 0\n    distinct_chars =\
+    \ 0\n    for right in range(n):\n        char_sum[s[right]] += ord(s[right])\n\
+    \        if s[right] in ascii_lowercase:\n            distinct_chars += 1\n  \
+    \      while left <= right and distinct_chars == k:\n            if sum(char_sum.values())\
+    \ < min_sum:\n                min_sum = sum(char_sum.values())\n             \
+    \   min_substring = s[left:right + 1]\n            char_sum[s[left]] -= ord(s[left])\n\
+    \            if s[left] in ascii_lowercase and char_sum[s[left]] == 0:\n     \
+    \           distinct_chars -= 1\n            left += 1\n    return min_substring\n"
+  programming_language: python3
+  inputs:
+  - {s: abcba, k: 2}
+  - {s: abccde, k: 3}
+  - {s: abacbe, k: 3}
+  - {s: abc, k: 1}
+  - {s: ab, k: 2}
+  - {s: abcabc, k: 2}
+  - {s: aabbcc, k: 2}
+  - {s: abccba, k: 2}
+  - {s: abcabcabc, k: 2}
+  - {s: abccba, k: 3}
+  - {s: abcabcabc, k: 3}
+  - {s: abccba, k: 4}
+  - {s: abcabcabc, k: 4}
+  - {s: abccba, k: 5}
+  - {s: abcabcabc, k: 5}
+  - {s: abccba, k: 6}
+  - {s: abcabcabc, k: 6}
+  - {s: abccba, k: 7}
+  - {s: abcabcabc, k: 7}
+  - {s: abccba, k: 8}
+  exec_results: [ab, cd, ba, a, ab, ab, a, a, ab, ba, abc, ba, bca, cba, cab, cba,
+    abc, '', bca, '']
+tree:
+  operation: null
+  middle_state: null
+  content:
+    description: "**Minimum Window Substring with Multiple K-Distinct Characters**\n\
+      Given a string `s` and an integer `k`, find the minimum window substring of\
+      \ `s` that contains at least `k` distinct characters, and the sum of the ASCII\
+      \ values of all the characters in this substring is minimal.\nThe substring\
+      \ should be returned as a string. If no such substring exists, return an empty\
+      \ string.\n\n**Example 1:**\nInput: `s = \"abcba\", k = 2`\nOutput: `\"bba\"\
+      `\n\n**Example 2:**\nInput: `s = \"abccde\", k = 3`\nOutput: `\"bce\"`\n\n**Example\
+      \ 3:**\nInput: `s = \"abacbe\", k = 3`\nOutput: `\"abc\"`\n\n**Example 4:**\n\
+      Input: `s = \"abc\", k = 1`\nOutput: \"a\"\n\n**Example 5:**\nInput: `s = \"\
+      ab\", k = 2`\nOutput: \"\"\n\n**Constraints:**\n1 \u2264 `s.length` \u2264 10^5\n\
+      `s` consists of lowercase English letters\n1 \u2264 `k` \u2264 `s.length`\n"
+    code: "def main(s, k):\n    from collections import defaultdict\n    from string\
+      \ import ascii_lowercase\n    n = len(s)\n    min_sum = float('inf')\n    min_substring\
+      \ = \"\"\n    char_sum = defaultdict(int)\n    left = 0\n    distinct_chars\
+      \ = 0\n    for right in range(n):\n        char_sum[s[right]] += ord(s[right])\n\
+      \        if s[right] in ascii_lowercase:\n            distinct_chars += 1\n\
+      \        while left <= right and distinct_chars == k:\n            if sum(char_sum.values())\
+      \ < min_sum:\n                min_sum = sum(char_sum.values())\n           \
+      \     min_substring = s[left:right + 1]\n            char_sum[s[left]] -= ord(s[left])\n\
+      \            if s[left] in ascii_lowercase and char_sum[s[left]] == 0:\n   \
+      \             distinct_chars -= 1\n            left += 1\n    return min_substring\n"
+    programming_language: python3
+    inputs:
+    - {s: abcba, k: 2}
+    - {s: abccde, k: 3}
+    - {s: abacbe, k: 3}
+    - {s: abc, k: 1}
+    - {s: ab, k: 2}
+    - {s: abcabc, k: 2}
+    - {s: aabbcc, k: 2}
+    - {s: abccba, k: 2}
+    - {s: abcabcabc, k: 2}
+    - {s: abccba, k: 3}
+    - {s: abcabcabc, k: 3}
+    - {s: abccba, k: 4}
+    - {s: abcabcabc, k: 4}
+    - {s: abccba, k: 5}
+    - {s: abcabcabc, k: 5}
+    - {s: abccba, k: 6}
+    - {s: abcabcabc, k: 6}
+    - {s: abccba, k: 7}
+    - {s: abcabcabc, k: 7}
+    - {s: abccba, k: 8}
+    exec_results: [ab, cd, ba, a, ab, ab, a, a, ab, ba, abc, ba, bca, cba, cab, cba,
+      abc, '', bca, '']
+  children:
+  - operation: ['1. "Rewrite the ''main'' function in the ''code'' key using a Metaprogramming
+        approach, dynamically generating classes and methods at runtime, and using
+        introspection to optimize performance', 'Revert the ''main'' function to use
+        explicit class definitions and method calls, ensuring consistent behavior"']
+    middle_state:
+      description: "**Minimum Window Substring with Multiple K-Distinct Characters**\n\
+        Given a string `s` and an integer `k`, find the minimum window substring of\
+        \ `s` that contains at least `k` distinct characters, and the sum of the ASCII\
+        \ values of all the characters in this substring is minimal.\nThe substring\
+        \ should be returned as a string. If no such substring exists, return an empty\
+        \ string.\n\n**Example 1:**\nInput: `s = \"abcba\", k = 2`\nOutput: `\"bba\"\
+        `\n\n**Example 2:**\nInput: `s = \"abccde\", k = 3`\nOutput: `\"bce\"`\n\n\
+        **Example 3:**\nInput: `s = \"abacbe\", k = 3`\nOutput: `\"abc\"`\n\n**Example\
+        \ 4:**\nInput: `s = \"abc\", k = 1`\nOutput: \"a\"\n\n**Example 5:**\nInput:\
+        \ `s = \"ab\", k = 2`\nOutput: \"\"\n\n**Constraints:**\n1 \u2264 `s.length`\
+        \ \u2264 10^5\n`s` consists of lowercase English letters\n1 \u2264 `k` \u2264\
+        \ `s.length`\n"
+      code: "class SubstringMinimizer:\n    def __init__(self, s, k):\n        self.s\
+        \ = s\n        self.k = k\n        self.min_sum = float('inf')\n        self.min_substring\
+        \ = \"\"\n        self.char_sum = {}\n        self.left = 0\n        self.distinct_chars\
+        \ = 0\n\n    def add_char(self, char):\n        self.char_sum[char] = self.char_sum.get(char,\
+        \ 0) + ord(char)\n        if char in 'abcdefghijklmnopqrstuvwxyz':\n     \
+        \       self.distinct_chars += 1\n\n    def remove_char(self, char):\n   \
+        \     self.char_sum[char] -= ord(char)\n        if char in 'abcdefghijklmnopqrstuvwxyz'\
+        \ and self.char_sum[char] == 0:\n            self.distinct_chars -= 1\n\n\
+        \    def update_min(self):\n        if self.distinct_chars == self.k and sum(self.char_sum.values())\
+        \ < self.min_sum:\n            self.min_sum = sum(self.char_sum.values())\n\
+        \            self.min_substring = self.s[self.left:]\n\n    def optimize(self):\n\
+        \        for right in range(len(self.s)):\n            self.add_char(self.s[right])\n\
+        \            while self.distinct_chars == self.k:\n                self.update_min()\n\
+        \                self.remove_char(self.s[self.left])\n                self.left\
+        \ += 1\n        return self.min_substring\n\ndef main(s, k):\n    minimizer\
+        \ = SubstringMinimizer(s, k)\n    return minimizer.optimize()"
+      programming_language: python3
+      inputs:
+      - {s: abcba, k: 2}
+      - {s: abccde, k: 3}
+      - {s: abacbe, k: 3}
+      - {s: abc, k: 1}
+      - {s: ab, k: 2}
+      - {s: abcabc, k: 2}
+      - {s: aabbcc, k: 2}
+      - {s: abccba, k: 2}
+      - {s: abcabcabc, k: 2}
+      - {s: abccba, k: 3}
+      - {s: abcabcabc, k: 3}
+      - {s: abccba, k: 4}
+      - {s: abcabcabc, k: 4}
+      - {s: abccba, k: 5}
+      - {s: abcabcabc, k: 5}
+      - {s: abccba, k: 6}
+      - {s: abcabcabc, k: 6}
+      - {s: abccba, k: 7}
+      - {s: abcabcabc, k: 7}
+      - {s: abccba, k: 8}
+      exec_results: [abcba, cde, bacbe, abc, ab, abcabc, abbcc, a, abcabcabc, ba,
+        abcabcabc, ba, bcabcabc, cba, cabcabc, cba, abcabc, '', bcabc, '']
+    content:
+      description: "**Minimum Window Substring with Multiple K-Distinct Characters**\n\
+        Given a string `s` and an integer `k`, find the minimum window substring of\
+        \ `s` that contains at least `k` distinct characters, and the sum of the ASCII\
+        \ values of all the characters in this substring is minimal.\nThe substring\
+        \ should be returned as a string. If no such substring exists, return an empty\
+        \ string.\n\n**Example 1:**\nInput: `s = \"abcba\", k = 2`\nOutput: `\"bba\"\
+        `\n\n**Example 2:**\nInput: `s = \"abccde\", k = 3`\nOutput: `\"bce\"`\n\n\
+        **Example 3:**\nInput: `s = \"abacbe\", k = 3`\nOutput: `\"abc\"`\n\n**Example\
+        \ 4:**\nInput: `s = \"abc\", k = 1`\nOutput: \"a\"\n\n**Example 5:**\nInput:\
+        \ `s = \"ab\", k = 2`\nOutput: \"\"\n\n**Constraints:**\n1 \u2264 `s.length`\
+        \ \u2264 10^5\n`s` consists of lowercase English letters\n1 \u2264 `k` \u2264\
+        \ `s.length`\n"
+      code: "class SubstringMinimizer:\n    def __init__(self, s, k):\n        self.s\
+        \ = s\n        self.k = k\n        self.min_sum = float('inf')\n        self.min_substring\
+        \ = \"\"\n        self.char_sum = {}\n        self.left = 0\n        self.distinct_chars\
+        \ = 0\n\n    def add_char(self, char):\n        if char in self.char_sum:\n\
+        \            self.char_sum[char] += ord(char)\n            if char in 'abcdefghijklmnopqrstuvwxyz'\
+        \ and self.char_sum[char] == 1:\n                self.distinct_chars += 1\n\
+        \        else:\n            self.char_sum[char] = ord(char)\n            if\
+        \ char in 'abcdefghijklmnopqrstuvwxyz':\n                self.distinct_chars\
+        \ += 1\n\n    def remove_char(self, char):\n        if char in self.char_sum:\n\
+        \            self.char_sum[char] -= ord(char)\n            if char in 'abcdefghijklmnopqrstuvwxyz'\
+        \ and self.char_sum[char] == 0:\n                self.distinct_chars -= 1\n\
+        \n    def update_min(self):\n        if self.distinct_chars == self.k and\
+        \ sum(self.char_sum.values()) < self.min_sum:\n            self.min_sum =\
+        \ sum(self.char_sum.values())\n            self.min_substring = self.s[self.left:]\n\
+        \n    def optimize(self):\n        for right in range(len(self.s)):\n    \
+        \        self.add_char(self.s[right])\n            while self.distinct_chars\
+        \ == self.k:\n                self.update_min()\n                self.remove_char(self.s[self.left])\n\
+        \                self.left += 1\n        return self.min_substring\n\ndef\
+        \ main(s, k):\n    minimizer = SubstringMinimizer(s, k)\n    return minimizer.optimize()"
+      programming_language: python3
+      inputs:
+      - {s: abcba, k: 2}
+      - {s: abccde, k: 3}
+      - {s: abacbe, k: 3}
+      - {s: abc, k: 1}
+      - {s: ab, k: 2}
+      - {s: abcabc, k: 2}
+      - {s: aabbcc, k: 2}
+      - {s: abccba, k: 2}
+      - {s: abcabcabc, k: 2}
+      - {s: abccba, k: 3}
+      - {s: abcabcabc, k: 3}
+      - {s: abccba, k: 4}
+      - {s: abcabcabc, k: 4}
+      - {s: abccba, k: 5}
+      - {s: abcabcabc, k: 5}
+      - {s: abccba, k: 6}
+      - {s: abcabcabc, k: 6}
+      - {s: abccba, k: 7}
+      - {s: abcabcabc, k: 7}
+      - {s: abccba, k: 8}
+      exec_results: [abcba, abccde, bacbe, abc, ab, abcabc, abbcc, abccba, abcabcabc,
+        abccba, abcabcabc, '', '', '', '', '', '', '', '', '']
+    children: []
+  - operation: ['2. "Implement the ''main'' function in the ''code'' key as a Pure
+        Functional Program, using immutable data structures and recursive function
+        calls to process input', 'Convert the ''main'' function to use Imperative
+        programming, leveraging mutable state and loops to achieve the same result"']
+    middle_state:
+      description: "**Minimum Window Substring with Multiple K-Distinct Characters**\n\
+        Given a string `s` and an integer `k`, find the minimum window substring of\
+        \ `s` that contains at least `k` distinct characters, and the sum of the ASCII\
+        \ values of all the characters in this substring is minimal.\nThe substring\
+        \ should be returned as a string. If no such substring exists, return an empty\
+        \ string.\n\n**Example 1:**\nInput: `s = \"abcba\", k = 2`\nOutput: `\"bba\"\
+        `\n\n**Example 2:**\nInput: `s = \"abccde\", k = 3`\nOutput: `\"bce\"`\n\n\
+        **Example 3:**\nInput: `s = \"abacbe\", k = 3`\nOutput: `\"abc\"`\n\n**Example\
+        \ 4:**\nInput: `s = \"abc\", k = 1`\nOutput: \"a\"\n\n**Example 5:**\nInput:\
+        \ `s = \"ab\", k = 2`\nOutput: \"\"\n\n**Constraints:**\n1 \u2264 `s.length`\
+        \ \u2264 10^5\n`s` consists of lowercase English letters\n1 \u2264 `k` \u2264\
+        \ `s.length`\n"
+      code: "def main(s, k):\n    from collections import defaultdict\n    from string\
+        \ import ascii_lowercase\n    n = len(s)\n    min_sum = float('inf')\n   \
+        \ min_substring = \"\"\n    char_sum = defaultdict(int)\n    left = 0\n  \
+        \  distinct_chars = 0\n    for right in range(n):\n        char_sum[s[right]]\
+        \ += ord(s[right])\n        if s[right] in ascii_lowercase:\n            distinct_chars\
+        \ += 1\n        while left <= right and distinct_chars == k:\n           \
+        \ if sum(char_sum.values()) < min_sum:\n                min_sum = sum(char_sum.values())\n\
+        \                min_substring = s[left:right + 1]\n            char_sum[s[left]]\
+        \ -= ord(s[left])\n            if s[left] in ascii_lowercase and char_sum[s[left]]\
+        \ == 0:\n                distinct_chars -= 1\n            left += 1\n    return\
+        \ min_substring"
+      programming_language: python3
+      inputs:
+      - {s: abcba, k: 2}
+      - {s: abccde, k: 3}
+      - {s: abacbe, k: 3}
+      - {s: abc, k: 1}
+      - {s: ab, k: 2}
+      - {s: abcabc, k: 2}
+      - {s: aabbcc, k: 2}
+      - {s: abccba, k: 2}
+      - {s: abcabcabc, k: 2}
+      - {s: abccba, k: 3}
+      - {s: abcabcabc, k: 3}
+      - {s: abccba, k: 4}
+      - {s: abcabcabc, k: 4}
+      - {s: abccba, k: 5}
+      - {s: abcabcabc, k: 5}
+      - {s: abccba, k: 6}
+      - {s: abcabcabc, k: 6}
+      - {s: abccba, k: 7}
+      - {s: abcabcabc, k: 7}
+      - {s: abccba, k: 8}
+      exec_results: [ab, cd, ba, a, ab, ab, a, a, ab, ba, abc, ba, bca, cba, cab,
+        cba, abc, '', bca, '']
+    content:
+      description: "**Minimum Window Substring with Multiple K-Distinct Characters**\n\
+        Given a string `s` and an integer `k`, find the minimum window substring of\
+        \ `s` that contains at least `k` distinct characters, and the sum of the ASCII\
+        \ values of all the characters in this substring is minimal.\nThe substring\
+        \ should be returned as a string. If no such substring exists, return an empty\
+        \ string.\n\n**Example 1:**\nInput: `s = \"abcba\", k = 2`\nOutput: `\"bba\"\
+        `\n\n**Example 2:**\nInput: `s = \"abccde\", k = 3`\nOutput: `\"bce\"`\n\n\
+        **Example 3:**\nInput: `s = \"abacbe\", k = 3`\nOutput: `\"abc\"`\n\n**Example\
+        \ 4:**\nInput: `s = \"abc\", k = 1`\nOutput: \"a\"\n\n**Example 5:**\nInput:\
+        \ `s = \"ab\", k = 2`\nOutput: \"\"\n\n**Constraints:**\n1 \u2264 `s.length`\
+        \ \u2264 10^5\n`s` consists of lowercase English letters\n1 \u2264 `k` \u2264\
+        \ `s.length`\n"
+      code: "def main(s, k):\n    n = len(s)\n    min_sum = float('inf')\n    min_substring\
+        \ = \"\"\n    char_sum = [0] * 26\n    distinct_chars = 0\n    left = 0\n\
+        \    for right in range(n):\n        char_index = ord(s[right]) - ord('a')\n\
+        \        char_sum[char_index] += 1\n        if char_sum[char_index] == 1:\n\
+        \            distinct_chars += 1\n        while left <= right and distinct_chars\
+        \ == k:\n            if sum(char_sum) < min_sum:\n                min_sum\
+        \ = sum(char_sum)\n                min_substring = s[left:right + 1]\n   \
+        \         char_sum[ord(s[left]) - ord('a')] -= 1\n            if char_sum[ord(s[left])\
+        \ - ord('a')] == 0 and s[left] in ascii_lowercase:\n                distinct_chars\
+        \ -= 1\n            left += 1\n    return min_substring"
+      programming_language: python3
+      inputs:
+      - {s: abcba, k: 2}
+      - {s: abccde, k: 3}
+      - {s: abacbe, k: 3}
+      - {s: abc, k: 1}
+      - {s: ab, k: 2}
+      - {s: abcabc, k: 2}
+      - {s: aabbcc, k: 2}
+      - {s: abccba, k: 2}
+      - {s: abcabcabc, k: 2}
+      - {s: abccba, k: 3}
+      - {s: abcabcabc, k: 3}
+      - {s: abccba, k: 4}
+      - {s: abcabcabc, k: 4}
+      - {s: abccba, k: 5}
+      - {s: abcabcabc, k: 5}
+      - {s: abccba, k: 6}
+      - {s: abcabcabc, k: 6}
+      - {s: abccba, k: 7}
+      - {s: abcabcabc, k: 7}
+      - {s: abccba, k: 8}
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        '', '', '', '', '', '', '', '', '']
+    children: []
+  - operation: [3. "Use a Just-In-Time (JIT) Compiler within the 'main' function in
+        the 'code' key to dynamically compile and optimize performance-critical sections
+        of code, 'Revert the JIT Compiler to use traditional interpretation, ensuring
+        compatibility with existing dependencies"']
+    middle_state:
+      description: "**Minimum Window Substring with Multiple K-Distinct Characters**\n\
+        Given a string `s` and an integer `k`, find the minimum window substring of\
+        \ `s` that contains at least `k` distinct characters, and the sum of the ASCII\
+        \ values of all the characters in this substring is minimal.\nThe substring\
+        \ should be returned as a string. If no such substring exists, return an empty\
+        \ string.\n\n**Example 1:**\nInput: `s = \"abcba\", k = 2`\nOutput: `\"bba\"\
+        `\n\n**Example 2:**\nInput: `s = \"abccde\", k = 3`\nOutput: `\"bce\"`\n\n\
+        **Example 3:**\nInput: `s = \"abacbe\", k = 3`\nOutput: `\"abc\"`\n\n**Example\
+        \ 4:**\nInput: `s = \"abc\", k = 1`\nOutput: \"a\"\n\n**Example 5:**\nInput:\
+        \ `s = \"ab\", k = 2`\nOutput: \"\"\n\n**Constraints:**\n1 \u2264 `s.length`\
+        \ \u2264 10^5\n`s` consists of lowercase English letters\n1 \u2264 `k` \u2264\
+        \ `s.length`\n"
+      code: "import numba\n\n@numba.jit(nopython=True)\ndef main(s, k):\n    n = len(s)\n\
+        \    min_sum = float('inf')\n    min_substring = \"\"\n    char_sum = [0]\
+        \ * 256\n    left = 0\n    distinct_chars = 0\n    for right in range(n):\n\
+        \        char_sum[ord(s[right])] += 1\n        if s[right].isalpha():\n  \
+        \          distinct_chars += 1\n        while left <= right and distinct_chars\
+        \ == k:\n            if sum(char_sum) < min_sum:\n                min_sum\
+        \ = sum(char_sum)\n                min_substring = s[left:right + 1]\n   \
+        \         char_sum[ord(s[left])] -= 1\n            if s[left].isalpha() and\
+        \ char_sum[ord(s[left])] == 0:\n                distinct_chars -= 1\n    \
+        \        left += 1\n    return min_substring"
+      programming_language: python3
+      inputs:
+      - {s: abcba, k: 2}
+      - {s: abccde, k: 3}
+      - {s: abacbe, k: 3}
+      - {s: abc, k: 1}
+      - {s: ab, k: 2}
+      - {s: abcabc, k: 2}
+      - {s: aabbcc, k: 2}
+      - {s: abccba, k: 2}
+      - {s: abcabcabc, k: 2}
+      - {s: abccba, k: 3}
+      - {s: abcabcabc, k: 3}
+      - {s: abccba, k: 4}
+      - {s: abcabcabc, k: 4}
+      - {s: abccba, k: 5}
+      - {s: abcabcabc, k: 5}
+      - {s: abccba, k: 6}
+      - {s: abcabcabc, k: 6}
+      - {s: abccba, k: 7}
+      - {s: abcabcabc, k: 7}
+      - {s: abccba, k: 8}
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null]
+    content:
+      description: "**Minimum Window Substring with Multiple K-Distinct Characters**\n\
+        Given a string `s` and an integer `k`, find the minimum window substring of\
+        \ `s` that contains at least `k` distinct characters, and the sum of the ASCII\
+        \ values of all the characters in this substring is minimal.\nThe substring\
+        \ should be returned as a string. If no such substring exists, return an empty\
+        \ string.\n\n**Example 1:**\nInput: `s = \"abcba\", k = 2`\nOutput: `\"bba\"\
+        `\n\n**Example 2:**\nInput: `s = \"abccde\", k = 3`\nOutput: `\"bce\"`\n\n\
+        **Example 3:**\nInput: `s = \"abacbe\", k = 3`\nOutput: `\"abc\"`\n\n**Example\
+        \ 4:**\nInput: `s = \"abc\", k = 1`\nOutput: \"a\"\n\n**Example 5:**\nInput:\
+        \ `s = \"ab\", k = 2`\nOutput: \"\"\n\n**Constraints:**\n1 \u2264 `s.length`\
+        \ \u2264 10^5\n`s` consists of lowercase English letters\n1 \u2264 `k` \u2264\
+        \ `s.length`\n"
+      code: "import numba\n\n@numba.compile(nopython=False)\ndef main(s, k):\n   \
+        \ n = len(s)\n    min_sum = float('inf')\n    min_substring = \"\"\n    char_sum\
+        \ = [0] * 256\n    left = 0\n    distinct_chars = 0\n    for right in range(n):\n\
+        \        char_sum[ord(s[right])] += 1\n        if s[right].isalpha():\n  \
+        \          distinct_chars += 1\n        while left <= right and distinct_chars\
+        \ == k:\n            if sum(char_sum) < min_sum:\n                min_sum\
+        \ = sum(char_sum)\n                min_substring = s[left:right + 1]\n   \
+        \         char_sum[ord(s[left])] -= 1\n            if s[left].isalpha() and\
+        \ char_sum[ord(s[left])] == 0:\n                distinct_chars -= 1\n    \
+        \        left += 1\n    return min_substring"
+      programming_language: python3
+      inputs:
+      - {s: abcba, k: 2}
+      - {s: abccde, k: 3}
+      - {s: abacbe, k: 3}
+      - {s: abc, k: 1}
+      - {s: ab, k: 2}
+      - {s: abcabc, k: 2}
+      - {s: aabbcc, k: 2}
+      - {s: abccba, k: 2}
+      - {s: abcabcabc, k: 2}
+      - {s: abccba, k: 3}
+      - {s: abcabcabc, k: 3}
+      - {s: abccba, k: 4}
+      - {s: abcabcabc, k: 4}
+      - {s: abccba, k: 5}
+      - {s: abcabcabc, k: 5}
+      - {s: abccba, k: 6}
+      - {s: abcabcabc, k: 6}
+      - {s: abccba, k: 7}
+      - {s: abcabcabc, k: 7}
+      - {s: abccba, k: 8}
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null]
+    children: []

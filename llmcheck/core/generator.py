@@ -2,14 +2,17 @@ from typing import List, Tuple, Dict, Any
 import yaml
 
 import litellm
+from llmcheck.nodes.verifiable_function import VerifiableFunction
+from llmcheck.core.tree import EvaluationTree
 
 
 class BenchmarkGenerator:
-    def __init__(self, evaluator_model: str, evaluator_model_api_base: str, evaluator_model_temperature: float, llm_max_new_tokens: int):
+    def __init__(self, evaluator_model: str, evaluator_model_api_base: str, evaluator_model_temperature: float, llm_max_new_tokens: int, time_limit: float):
         self.model = evaluator_model
         self.api_base = evaluator_model_api_base
         self.temperature = evaluator_model_temperature
         self.llm_max_new_tokens = llm_max_new_tokens
+        self.time_limit = time_limit
 
     def _yaml_str_to_dict(self, yaml_str: str) -> Dict[str, Any]:
         yaml_str_trimmed = yaml_str.strip("```yaml").strip("```yml").strip("```").strip("\n")
@@ -26,6 +29,11 @@ class BenchmarkGenerator:
         )
         response_str = response.choices[0].message.content
         response_dict = self._yaml_str_to_dict(response_str)
+        # verify validity of the response (static)
+        tree = EvaluationTree(response_dict)
+        # verify validity of the response (execution)
+        root_vf: VerifiableFunction = VerifiableFunction(**response_dict, time_limit=self.time_limit)
+        root_vf.exec(catch=False)
         # stringify each element in inputs
         return response_dict
 
