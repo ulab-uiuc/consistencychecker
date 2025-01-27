@@ -13,16 +13,16 @@ operations:
     features and type checking', 'Refactor the abstract class back into a traditional
     function, removing unnecessary complexity and maintaining the original logic"']
 metrics:
-  embedding similarity L-1 AVG: 0.9861844623937669
-  embedding similarity L-1: [1.0, 0.9681833418070431, 0.9903700453742574]
-  BLEU L-1 AVG: 0.6547161187407755
-  BLEU L-1: [1.0, 0.02153320854081468, 0.9426151476815119]
-  ROUGE-rouge1 L-1 AVG: 0.7017543859649122
-  ROUGE-rouge1 L-1: [1.0, 0.15789473684210525, 0.9473684210526315]
-  ROUGE-rouge2 L-1 AVG: 0.6851851851851851
-  ROUGE-rouge2 L-1: [1.0, 0.1111111111111111, 0.9444444444444444]
-  ROUGE-rougeL L-1 AVG: 0.7017543859649122
-  ROUGE-rougeL L-1: [1.0, 0.15789473684210525, 0.9473684210526315]
+  embedding similarity L-1 AVG: 0.9710421469643862
+  embedding similarity L-1: [0.9682185244148372, 0.9545378711040641, 0.9903700453742574]
+  BLEU L-1 AVG: 0.32856052158771376
+  BLEU L-1: [0.02153320854081468, 0.02153320854081468, 0.9426151476815119]
+  ROUGE-rouge1 L-1 AVG: 0.40350877192982454
+  ROUGE-rouge1 L-1: [0.15789473684210525, 0.10526315789473684, 0.9473684210526315]
+  ROUGE-rouge2 L-1 AVG: 0.3703703703703704
+  ROUGE-rouge2 L-1: [0.1111111111111111, 0.05555555555555555, 0.9444444444444444]
+  ROUGE-rougeL L-1 AVG: 0.40350877192982454
+  ROUGE-rougeL L-1: [0.15789473684210525, 0.10526315789473684, 0.9473684210526315]
   embedding similarity L-2 AVG: 0.0
   embedding similarity L-2: []
   BLEU L-2 AVG: 0.0
@@ -802,13 +802,12 @@ tree:
         4, 5, 6].
 
         '
-      code: "def main(nums: list[str], wildcard: str) -> int:\n    n = len(nums)\n\
-        \    dp = [[0] * (n + 1) for _ in range(n + 1)]\n    for i in range(1, n +\
-        \ 1):\n        for j in range(i + 1):\n            if j == 0:\n          \
-        \      dp[i][j] = 1\n            else:\n                if nums[i - 1] ==\
-        \ wildcard or nums[i - 1] > nums[j - 1]:\n                    dp[i][j] = dp[i\
-        \ - 1][j - 1] + 1\n                else:\n                    dp[i][j] = max(dp[i\
-        \ - 1][j], dp[i][j - 1])\n    return dp[n][n]"
+      code: "def main(nums: list[int], wildcard: int) -> int:\n  n = len(nums)\n \
+        \ dp = [[0] * (n + 1) for _ in range(n + 1)]\n  for i in range(1, n + 1):\n\
+        \    for j in range(i + 1):\n      if j == 0:\n        dp[i][j] = 1\n    \
+        \  else:\n        if nums[i - 1] == wildcard or nums[i - 1] > nums[j - 1]:\n\
+        \          dp[i][j] = dp[i - 1][j - 1] + 1\n        else:\n          dp[i][j]\
+        \ = max(dp[i - 1][j], dp[i][j - 1])\n  return dp[n][n]"
       programming_language: python3
       inputs:
       - nums: [1, 2, 2, 3, 4, 5, 6]
@@ -1068,13 +1067,11 @@ tree:
         4, 5, 6].
 
         '
-      code: "def main(nums: list[str], wildcard: str) -> int:\n    n = len(nums)\n\
-        \    dp = [[0] * (n + 1) for _ in range(n + 1)]\n    for i in range(1, n +\
-        \ 1):\n        for j in range(i):\n            if j == 0:\n              \
-        \  dp[i][j] = 1\n            else:\n                if nums[i - 1] == wildcard\
-        \ or nums[i - 1] > nums[j - 1]:\n                    dp[i][j] = dp[i - 1][j\
-        \ - 1] + 1\n                else:\n                    dp[i][j] = max(dp[i\
-        \ - 1][j], dp[i][j - 1])\n    return dp[n][j]"
+      code: "def main(nums: list[int], wildcard: int) -> int:\n  n = len(nums)\n \
+        \ dp = [[0] * (n + 1) for _ in range(n + 1)]\n  for i in range(1, n + 1):\n\
+        \    for j in range(1, i + 1):\n      if nums[i - 1] == wildcard or nums[i\
+        \ - 1] > nums[j - 1]:\n        dp[i][j] = dp[i - 1][j - 1] + 1\n      else:\n\
+        \        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n  return dp[n][n]"
       programming_language: python3
       inputs:
       - nums: [1, 2, 2, 3, 4, 5, 6]
@@ -1115,7 +1112,7 @@ tree:
         wildcard: 5.5
       - nums: [1, 2, 3, 4, 5, 6]
         wildcard: 6.5
-      exec_results: [7, 6, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+      exec_results: [6, 5, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
     children: []
   - operation: ['2. "Replace the ''code'' key''s ''main'' function with a recursive
         function that uses memoization to optimize performance, minimizing repeated
@@ -1340,13 +1337,13 @@ tree:
         4, 5, 6].
 
         '
-      code: "def main(nums, wildcard):\n  memo = dict()\n  def recurse(i, j):\n  \
-        \  if (i, j) in memo:\n      return memo[(i, j)]\n    n = len(nums)\n    if\
-        \ j == 0:\n      result = 1\n    elif i == 0:\n      result = 0\n    elif\
-        \ nums[i - 1] == wildcard or nums[i - 1] > nums[j - 1]:\n      result = recurse(i\
-        \ - 1, j - 1) + 1\n    else:\n      result = max(recurse(i - 1, j), recurse(i,\
-        \ j - 1))\n    memo[(i, j)] = result\n    return result\n  return recurse(len(nums),\
-        \ len(nums))"
+      code: "def main(nums, wildcard):\n    n = len(nums)\n    memo = {}\n    def\
+        \ recursive_function(i, j):\n        if (i, j) in memo: return memo[(i, j)]\n\
+        \        if j == 0:\n            return 1\n        if nums[i - 1] == '*' or\
+        \ nums[i - 1] > nums[j - 1]:\n            result = recursive_function(i -\
+        \ 1, j - 1) + 1\n        else:\n            result = max(recursive_function(i\
+        \ - 1, j), recursive_function(i, j - 1))\n        memo[(i, j)] = result\n\
+        \        return result\n    return recursive_function(n, n)"
       programming_language: python3
       inputs:
       - nums: [1, 2, 2, 3, 4, 5, 6]
@@ -1387,7 +1384,8 @@ tree:
         wildcard: 5.5
       - nums: [1, 2, 3, 4, 5, 6]
         wildcard: 6.5
-      exec_results: [7, 6, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null]
     content:
       description: '**Longest Increasing Subsequence with Wildcard**
 
@@ -1606,13 +1604,13 @@ tree:
         4, 5, 6].
 
         '
-      code: "def main(nums, wildcard):\n  memo = dict()\n  n = len(nums)\n  for i\
-        \ in range(n + 1):\n    for j in range(n + 1):\n      if i == 0:\n       \
-        \ memo[(i, j)] = 1\n      elif j == 0:\n        memo[(i, j)] = 0\n      elif\
-        \ nums[i - 1] == wildcard or nums[i - 1] > nums[j - 1]:\n        memo[(i,\
-        \ j)] = memo.get((i - 1, j - 1), 0) + 1\n      else:\n        memo[(i, j)]\
-        \ = max(memo.get((i - 1, j), 0), memo.get((i, j - 1), 0))\n  return memo[(n,\
-        \ n)]"
+      code: "def main(nums, wildcard):\n    n = len(nums)\n    dp = [[0] * (n + 1)\
+        \ for _ in range(n + 1)]\n    \n    for j in range(n + 1):\n        if j ==\
+        \ 0:\n            dp[0][j] = 1\n        else:\n            for i in range(1,\
+        \ n + 1):\n                if nums[i - 1] == '*' or nums[i - 1] > nums[j -\
+        \ 1]:\n                    dp[i][j] = dp[i - 1][j - 1] + 1\n             \
+        \   else:\n                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\
+        \                    \n    return dp[n][n]"
       programming_language: python3
       inputs:
       - nums: [1, 2, 2, 3, 4, 5, 6]
@@ -1653,7 +1651,7 @@ tree:
         wildcard: 5.5
       - nums: [1, 2, 3, 4, 5, 6]
         wildcard: 6.5
-      exec_results: [6, 5, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+      exec_results: [5, 5, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
     children: []
   - operation: ['3. "Introduce a new, abstract class in the ''code'' key''s ''main''
         function to encapsulate the business logic, leveraging Python''s object-oriented
@@ -2149,10 +2147,10 @@ tree:
       code: "def main(nums, wildcard):\n    n = len(nums)\n    dp = [[0] * (n + 1)\
         \ for _ in range(n + 1)]\n    for i in range(1, n + 1):\n        for j in\
         \ range(i + 1):\n            if j == 0:\n                dp[i][j] = 1\n  \
-        \          elif nums[i - 1] == '*':\n                dp[i][j] = max(dp[i -\
-        \ 1][j - 1] + 1, dp[i - 1][j])\n            elif nums[i - 1] > nums[j - 1]:\n\
-        \                dp[i][j] = dp[i - 1][j - 1] + 1\n            else:\n    \
-        \            dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n    return dp[n][n]"
+        \          else:\n                if nums[i - 1] == '*' or nums[i - 1] > nums[j\
+        \ - 1]:\n                    dp[i][j] = dp[i - 1][j - 1] + 1\n           \
+        \     else:\n                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])\n\
+        \    return dp[n][n]"
       programming_language: python3
       inputs:
       - nums: [1, 2, 2, 3, 4, 5, 6]

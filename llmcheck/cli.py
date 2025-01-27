@@ -1,10 +1,12 @@
 import argparse
 from typing import List
-from datetime import datetime
+from datetime import datetime, timedelta
 import colorama
+import time
 import os
 from collections import defaultdict
 from copy import deepcopy
+import sys
 
 import yaml
 
@@ -167,6 +169,9 @@ There are a total of 3 parameter combinations:
     if not step_evaluate:
         return
     
+    timestamp_run_start: int = datetime.now()
+    run_passes: int = 0
+    
     # if the target folder does not exist, create it
     if args.result_output_folder:
         if not os.path.exists(args.result_output_folder):
@@ -198,7 +203,12 @@ There are a total of 3 parameter combinations:
         )
         root = deepcopy(root_original)
         for sample_idx in range(num_of_samples):
-            print(f"Sample {sample_idx + 1} / {num_of_samples}")
+            time_eta_str: str = "N/A"
+            if run_passes > 0:
+                time_eta: int = (datetime.now() - timestamp_run_start) / run_passes * (forest_size * num_of_samples - run_passes)
+                time_eta_str = str(timedelta(seconds=int(time_eta.total_seconds())))
+                print(f"Estimated time remaining: {time_eta_str}")
+            print(f"{colorama.Fore.BLUE}Evaluating tree {tree_idx + 1} / {forest_size}, {colorama.Fore.GREEN}Sample {sample_idx + 1} / {num_of_samples}, {colorama.Fore.RED}ETA {time_eta_str}{colorama.Style.RESET_ALL}")
             results = llmcheck_instance.evaluate(
                 root=root,
                 operations=operations,
@@ -210,6 +220,7 @@ There are a total of 3 parameter combinations:
             # Save results to YAML file
             with open(f"{args.result_output_folder}/tree_{tree_idx}_sample_{sample_idx}.yaml", "w") as file:
                 yaml.dump(results, file, default_flow_style=None, sort_keys=False)
+            run_passes += 1
     # save all values, avg, and std, of the full_avg_metrics_collect
     full_avg_metrics = {}
     for key in full_avg_metrics_collect:
@@ -222,7 +233,12 @@ There are a total of 3 parameter combinations:
         }
     with open(f"{args.result_output_folder}/full_avg_metrics.yaml", "w") as file:
         yaml.dump(full_avg_metrics, file, default_flow_style=None, sort_keys=False)
-        
+    print(f"[{INFO_GREEN}] Evaluation results saved to {args.result_output_folder}")
+    return
 
 if __name__ == "__main__":
+    # colorama init
+    colorama.init(autoreset=True)
+    # for yaml dumping of arbitrarily large integers
+    sys.set_int_max_str_digits(2147483647)
     cli()

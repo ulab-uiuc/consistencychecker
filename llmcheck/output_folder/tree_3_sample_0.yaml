@@ -15,16 +15,16 @@ operations:
     into the original ''if-else'' statements, preserving the original logic and condition
     evaluations.']
 metrics:
-  embedding similarity L-1 AVG: 0.8818971884686242
-  embedding similarity L-1: [0.9168108842847926, 0.9999999999999998, 0.72888068112108]
-  BLEU L-1 AVG: 0.3504049632037161
-  BLEU L-1: [0.05121488961114836, 1.0, 0]
+  embedding similarity L-1 AVG: 0.9269237835325912
+  embedding similarity L-1: [0.8702321956751243, 0.9999999999999998, 0.9105391549226495]
+  BLEU L-1 AVG: 0.34084580424089167
+  BLEU L-1: [0.02253741272267485, 1.0, 0]
   ROUGE-rouge1 L-1 AVG: 0.39999999999999997
   ROUGE-rouge1 L-1: [0.20000000000000004, 1.0, 0.0]
   ROUGE-rouge2 L-1 AVG: 0.3684210526315789
   ROUGE-rouge2 L-1: [0.10526315789473684, 1.0, 0.0]
   ROUGE-rougeL L-1 AVG: 0.39999999999999997
-  ROUGE-rougeL L-1: [0.20000000000000004, 1.0, 0]
+  ROUGE-rougeL L-1: [0.20000000000000004, 1.0, 0.0]
   embedding similarity L-2 AVG: 0.0
   embedding similarity L-2: []
   BLEU L-2 AVG: 0.0
@@ -193,11 +193,12 @@ tree:
         \ sum of a subarray of length 3 that appears in `nums` is 0.\n\n**Constraints:**\n\
         \n  * `1 <= nums.length <= 10^5`\n  * `1 <= k <= nums.length`\n  * `-10^4\
         \ <= nums[i] <= 10^4`\n"
-      code: "def main(nums, k):\n  n = len(nums)\n  if k > n:\n    return 0\n  max_sum\
-        \ = float('-inf')\n  window_start = 0\n  current_sum = 0\n  for window_end\
-        \ in range(n):\n    current_sum += nums[window_end]\n    if window_end >=\
-        \ k - 1:\n      max_sum = max(max_sum, current_sum)\n      current_sum -=\
-        \ nums[window_start]\n      window_start += 1\n  return max_sum"
+      code: "def main(nums, k):\n  n = len(nums)\n  if k > n:\n    return 0\n  prefix_sum\
+        \ = [0] * (n + 1)\n  stack = []\n  max_sum = float('-inf')\n  for i in range(n):\n\
+        \    while stack and stack[-1][0] < i - k + 1:\n      stack.pop()\n    stack.append((i,\
+        \ prefix_sum[i]))\n    prefix_sum[i + 1] = prefix_sum[i] + nums[i]\n    if\
+        \ i >= k - 1:\n      max_sum = max(max_sum, prefix_sum[i + 1] - stack[0][1])\n\
+        \  return max_sum"
       programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
@@ -240,7 +241,8 @@ tree:
         k: 19
       - nums: [1, 2, 3, 4, 5]
         k: 20
-      exec_results: [12, 14, 15, 0, 5, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      exec_results: [15, 15, 15, 0, 5, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0]
     content:
       description: "**Maximum Subarray Sum with K Consecutive Elements**\n\nGiven\
         \ an array of integers `nums` and an integer `k`, find the maximum sum of\
@@ -255,12 +257,13 @@ tree:
         \ sum of a subarray of length 3 that appears in `nums` is 0.\n\n**Constraints:**\n\
         \n  * `1 <= nums.length <= 10^5`\n  * `1 <= k <= nums.length`\n  * `-10^4\
         \ <= nums[i] <= 10^4`\n"
-      code: "def main(nums, k):\n  def max_subarray_sum(nums, k, window_start):\n\
-        \    if k == 1:\n      return nums[0]\n    max_sum = float('-inf')\n    current_sum\
-        \ = 0\n    for window_end in range(len(nums)):\n      current_sum += nums[window_end]\n\
-        \      if window_end >= k - 1:\n        max_sum = max(max_sum, current_sum)\n\
-        \        current_sum -= nums[window_start]\n        window_start += 1\n  \
-        \  return max_sum\n  return max_subarray_sum(nums, k, 0)"
+      code: "def main(nums, k):\n  def helper(i):\n    if i >= k:\n      return 0\n\
+        \    prefix_sum = [0] * (i + 1)\n    stack = []\n    max_sum = float('-inf')\n\
+        \    for j in range(i):\n      while stack and stack[-1][0] < j - k + 1:\n\
+        \        stack.pop()\n      stack.append((j, prefix_sum[j]))\n      prefix_sum[j\
+        \ + 1] = prefix_sum[j] + nums[j]\n      if j >= k - 1:\n        max_sum =\
+        \ max(max_sum, prefix_sum[j + 1] - stack[0][1])\n    return max_sum\n  return\
+        \ helper(len(nums) - 1)"
       programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
@@ -303,8 +306,8 @@ tree:
         k: 19
       - nums: [1, 2, 3, 4, 5]
         k: 20
-      exec_results: [12, 14, 15, -.inf, 1, 9, -.inf, -.inf, -.inf, -.inf, -.inf, -.inf,
-        -.inf, -.inf, -.inf, -.inf, -.inf, -.inf, -.inf, -.inf]
+      exec_results: [0, 0, -.inf, -.inf, 0, 0, -.inf, -.inf, -.inf, -.inf, -.inf,
+        -.inf, -.inf, -.inf, -.inf, -.inf, -.inf, -.inf, -.inf, -.inf]
     children: []
   - operation: ['2. Utilize a non-standard but equivalent mathematical approach to
         calculate the ''result'' variable in the ''main'' function in the ''code''
@@ -326,10 +329,10 @@ tree:
         \n  * `1 <= nums.length <= 10^5`\n  * `1 <= k <= nums.length`\n  * `-10^4\
         \ <= nums[i] <= 10^4`\n"
       code: "def main(nums, k):\n  n = len(nums)\n  if k > n:\n    return 0\n  prefix_sum\
-        \ = [0] * (n + 1)\n  for i in range(n):\n    prefix_sum[i + 1] = (prefix_sum[i]\
-        \ ^ nums[i] & (~0)) & (~0)\n  max_sum = -2**63\n  for i in range(n - k + 1):\n\
-        \    window_sum = ((prefix_sum[i + k] & (~0)) ^ (~0)) - (prefix_sum[i] & (~0))\n\
-        \    max_sum = max(max_sum, window_sum)\n  return max_sum"
+        \ = [0] * (n + 1)\n  for i in range(n):\n    prefix_sum[i + 1] = prefix_sum[i]\
+        \ ^ (nums[i] & 0xffffffff)\n  max_sum = -2**31\n  for i in range(n - k + 1):\n\
+        \    window_sum = (prefix_sum[i + k] ^ prefix_sum[i]) & 0xffffffff\n    max_sum\
+        \ = max(max_sum, window_sum)\n  return max_sum"
       programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
@@ -372,8 +375,7 @@ tree:
         k: 19
       - nums: [1, 2, 3, 4, 5]
         k: 20
-      exec_results: [-1, -3, -2, 0, -2, -2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0]
+      exec_results: [5, 4, 1, 0, 5, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     content:
       description: "**Maximum Subarray Sum with K Consecutive Elements**\n\nGiven\
         \ an array of integers `nums` and an integer `k`, find the maximum sum of\
@@ -390,9 +392,9 @@ tree:
         \ <= nums[i] <= 10^4`\n"
       code: "def main(nums, k):\n  n = len(nums)\n  if k > n:\n    return 0\n  prefix_sum\
         \ = [0] * (n + 1)\n  for i in range(n):\n    prefix_sum[i + 1] = prefix_sum[i]\
-        \ + nums[i]\n  max_sum = -2**63\n  for i in range(n - k + 1):\n    window_sum\
-        \ = prefix_sum[i + k] - prefix_sum[i]\n    max_sum = max(max_sum, window_sum)\n\
-        \  return max_sum"
+        \ + nums[i]\n  max_sum = float('-inf')\n  for i in range(n - k + 1):\n   \
+        \ window_sum = prefix_sum[i + k] - prefix_sum[i]\n    max_sum = max(max_sum,\
+        \ window_sum)\n  return max_sum"
       programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
@@ -456,33 +458,36 @@ tree:
         \ sum of a subarray of length 3 that appears in `nums` is 0.\n\n**Constraints:**\n\
         \n  * `1 <= nums.length <= 10^5`\n  * `1 <= k <= nums.length`\n  * `-10^4\
         \ <= nums[i] <= 10^4`\n"
-      code: "function Node(key, value) {\n    this.key = key;\n    this.value = value;\n\
-        \    this.left = null;\n    this.right = null;\n}\n\nfunction DecisionTree()\
-        \ {\n    this.root = null;\n}\n\nDecisionTree.prototype.insert = function(key,\
-        \ value) {\n    if (this.root === null) {\n        this.root = new Node(key,\
-        \ value);\n    } else {\n        this._insertRecursive(this.root, key, value);\n\
-        \    }\n};\n\nDecisionTree.prototype._insertRecursive = function(node, key,\
-        \ value) {\n    if (key < node.key) {\n        if (node.left === null) {\n\
-        \            node.left = new Node(key, value);\n        } else {\n       \
-        \     this._insertRecursive(node.left, key, value);\n        }\n    } else\
-        \ {\n        if (node.right === null) {\n            node.right = new Node(key,\
-        \ value);\n        } else {\n            this._insertRecursive(node.right,\
-        \ key, value);\n        }\n    }\n};\n\nDecisionTree.prototype.search = function(key)\
-        \ {\n    return this._searchRecursive(this.root, key);\n};\n\nDecisionTree.prototype._searchRecursive\
-        \ = function(node, key) {\n    if (node === null) {\n        return null;\n\
-        \    }\n    if (key === node.key) {\n        return node.value;\n    }\n \
-        \   if (key < node.key) {\n        return this._searchRecursive(node.left,\
-        \ key);\n    }\n    return this._searchRecursive(node.right, key);\n};\n\n\
-        function main(nums, k) {\n    n = nums.length;\n    if (k > n) {\n       \
-        \ return 0;\n    }\n    const prefix_sum = new Array(n + 1).fill(0);\n   \
-        \ for (let i = 0; i < n; i++) {\n        prefix_sum[i + 1] = prefix_sum[i]\
-        \ + nums[i];\n    }\n    const max_sum = new DecisionTree();\n    max_sum.insert(0,\
-        \ -Infinity);\n    for (let i = 0; i < n - k + 1; i++) {\n        const window_sum\
-        \ = prefix_sum[i + k] - prefix_sum[i];\n        const node = max_sum.search(window_sum);\n\
-        \        if (node === null) {\n            max_sum.insert(window_sum, window_sum);\n\
-        \        } else {\n            max_sum.insert(window_sum, Math.max(node.value,\
-        \ window_sum));\n        }\n    }\n    return max_sum.search(0);\n}"
-      programming_language: javascript
+      code: "class Node:\n    def __init__(self, value, left=None, right=None):\n\
+        \        self.value = value\n        self.left = left\n        self.right\
+        \ = right\n\nclass DecisionTree:\n    def __init__(self, condition, true_branch,\
+        \ false_branch):\n        self.condition = condition\n        self.true_branch\
+        \ = true_branch\n        self.false_branch = false_branch\n\n    def evaluate(self,\
+        \ nums, k):\n        if self.condition(nums, k):\n            return self.true_branch.evaluate(nums,\
+        \ k)\n        else:\n            return self.false_branch.evaluate(nums, k)\n\
+        \ndef main(nums, k):\n    n = len(nums)\n    decision_tree = DecisionTree(\n\
+        \        lambda nums, k: k > n,\n        DecisionTree(\n            lambda\
+        \ nums, k: k <= 0,\n            lambda nums, k: DecisionTree(\n          \
+        \      lambda nums, k: len(nums) < k,\n                lambda nums, k: 0,\n\
+        \                lambda nums, k: DecisionTree(\n                    lambda\
+        \ prefix_sum, k: prefix_sum[k] - prefix_sum[0],\n                    DecisionTree(\n\
+        \                        lambda prefix_sum, k: prefix_sum[k+1] - prefix_sum[k],\n\
+        \                        lambda prefix_sum, k: prefix_sum[k],\n          \
+        \              lambda prefix_sum, k: prefix_sum[k+1]\n                   \
+        \ ),\n                    lambda prefix_sum, k: prefix_sum[k]\n          \
+        \      )\n            ),\n            lambda nums, k: DecisionTree(\n    \
+        \            lambda prefix_sum, k: prefix_sum[k] - prefix_sum[0],\n      \
+        \          DecisionTree(\n                    lambda prefix_sum, k: prefix_sum[k+1]\
+        \ - prefix_sum[k],\n                    lambda prefix_sum, k: prefix_sum[k],\n\
+        \                    lambda prefix_sum, k: prefix_sum[k+1]\n             \
+        \   ),\n                lambda prefix_sum, k: prefix_sum[k]\n            )\n\
+        \        ),\n        lambda nums, k: DecisionTree(\n            lambda prefix_sum,\
+        \ k: prefix_sum[k+1] - prefix_sum[0],\n            DecisionTree(\n       \
+        \         lambda prefix_sum, k: prefix_sum[k+1] - prefix_sum[k],\n       \
+        \         lambda prefix_sum, k: prefix_sum[k],\n                lambda prefix_sum,\
+        \ k: prefix_sum[k+1]\n            ),\n            lambda prefix_sum, k: prefix_sum[k]\n\
+        \        )\n    )\n    return decision_tree.evaluate([0]*n, k)"
+      programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
         k: 3
@@ -524,7 +529,8 @@ tree:
         k: 19
       - nums: [1, 2, 3, 4, 5]
         k: 20
-      exec_results: []
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null]
     content:
       description: "**Maximum Subarray Sum with K Consecutive Elements**\n\nGiven\
         \ an array of integers `nums` and an integer `k`, find the maximum sum of\
@@ -539,17 +545,19 @@ tree:
         \ sum of a subarray of length 3 that appears in `nums` is 0.\n\n**Constraints:**\n\
         \n  * `1 <= nums.length <= 10^5`\n  * `1 <= k <= nums.length`\n  * `-10^4\
         \ <= nums[i] <= 10^4`\n"
-      code: "function main(nums, k) {\n    let n = nums.length;\n    if (k > n) {\n\
-        \        return 0;\n    }\n    let prefix_sum = new Array(n + 1).fill(0);\n\
-        \    for (let i = 0; i < n; i++) {\n        prefix_sum[i + 1] = prefix_sum[i]\
-        \ + nums[i];\n    }\n    let max_sum = -Infinity;\n    for (let i = 0; i <\
-        \ n - k + 1; i++) {\n        let window_sum = prefix_sum[i + k] - prefix_sum[i];\n\
-        \        let max_window_sum = 0;\n        for (let j = i; j < i + k; j++)\
-        \ {\n            if (nums[j] > max_window_sum) {\n                max_window_sum\
-        \ = nums[j];\n            }\n        }\n        if (window_sum > max_sum)\
-        \ {\n            max_sum = window_sum;\n        }\n    }\n    return max_sum;\n\
-        }"
-      programming_language: javascript
+      code: "def compute_prefix_sum(nums):\n    n = len(nums)\n    prefix_sum = [0]\
+        \ * (n + 1)\n    for i in range(n):\n        prefix_sum[i + 1] = prefix_sum[i]\
+        \ + nums[i]\n    return prefix_sum\n\ndef get_kth_smallest(nums, k):\n   \
+        \ n = len(nums)\n    if k > n:\n        return -1\n    elif k <= 0:\n    \
+        \    return -1\n    elif len(nums) < k:\n        return -1\n    else:\n  \
+        \      prefix_sum = compute_prefix_sum(nums)\n        if prefix_sum[k] - prefix_sum[0]\
+        \ > prefix_sum[n] - prefix_sum[0]:\n            if prefix_sum[k+1] - prefix_sum[k]\
+        \ > 0:\n                return prefix_sum[k+1] - prefix_sum[k]\n         \
+        \   else:\n                return prefix_sum[k]\n        else:\n         \
+        \   if prefix_sum[k+1] - prefix_sum[k] > 0:\n                return prefix_sum[k]\n\
+        \            else:\n                return prefix_sum[k+1]\n\ndef main(nums,\
+        \ k):\n    return get_kth_smallest(nums, k)"
+      programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
         k: 3
@@ -591,5 +599,6 @@ tree:
         k: 19
       - nums: [1, 2, 3, 4, 5]
         k: 20
-      exec_results: []
+      exec_results: [6, 10, null, -1, 1, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
+        -1, -1, -1, -1]
     children: []

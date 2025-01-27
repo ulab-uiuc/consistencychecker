@@ -8,16 +8,16 @@ operations:
     approach, using a dictionary to map conditions to actions', 'Revert the decision
     tree to use straightforward conditional statements, leveraging the original logic.']
 metrics:
-  embedding similarity L-1 AVG: 0.906569949110283
-  embedding similarity L-1: [0.985841122300549, 0.8145850748211174, 0.9192836502091826]
-  BLEU L-1 AVG: 0.12065104853988301
-  BLEU L-1: [0.32825185297291753, 0, 0.033701292646731475]
-  ROUGE-rouge1 L-1 AVG: 0.2807017543859649
-  ROUGE-rouge1 L-1: [0.5263157894736842, 0.0, 0.3157894736842105]
-  ROUGE-rouge2 L-1 AVG: 0.16666666666666666
-  ROUGE-rouge2 L-1: [0.3333333333333333, 0.0, 0.16666666666666666]
-  ROUGE-rougeL L-1 AVG: 0.22807017543859645
-  ROUGE-rougeL L-1: [0.47368421052631576, 0.0, 0.21052631578947367]
+  embedding similarity L-1 AVG: 0.9534491851974166
+  embedding similarity L-1: [0.9956359738507209, 0.8647115817415288, 1.0000000000000002]
+  BLEU L-1 AVG: 0.6323690690849083
+  BLEU L-1: [0.6004981752197522, 0.2966090320349725, 1.0]
+  ROUGE-rouge1 L-1 AVG: 0.7894736842105262
+  ROUGE-rouge1 L-1: [0.8421052631578947, 0.5263157894736842, 1.0]
+  ROUGE-rouge2 L-1 AVG: 0.6666666666666666
+  ROUGE-rouge2 L-1: [0.6666666666666666, 0.3333333333333333, 1.0]
+  ROUGE-rougeL L-1 AVG: 0.7894736842105262
+  ROUGE-rougeL L-1: [0.8421052631578947, 0.5263157894736842, 1.0]
   embedding similarity L-2 AVG: 0.0
   embedding similarity L-2: []
   BLEU L-2 AVG: 0.0
@@ -150,9 +150,9 @@ tree:
         \ % b\n    return a\n  def lcm(a, b):\n    return a * b // gcd(a, b)\n  def\
         \ calculate(m, n, p):\n    if m == 1 and n == 1:\n      return p + 1\n   \
         \ elif n == 1:\n      return m * (p + 1)\n    elif p == 1:\n      return (m\
-        \ + 1) * n\n    else:\n      return (m + 1) * (n + 1) * (p + 1)\n  return\
-        \ (m + 1) * (n + 1) * (p + 1)"
-      programming_language: python3
+        \ + 1) * n\n    elif m == 1:\n      return (n + 1) * p\n    else:\n      return\
+        \ (m + 1) * (n + 1) * (p + 1)\n  return calculate(m, n, p)"
+      programming_language: python
       inputs:
       - {m: 1, n: 1, p: 1}
       - {m: 2, n: 2, p: 2}
@@ -173,8 +173,8 @@ tree:
       - {m: 1, n: 1, p: 3}
       - {m: 1, n: 2, p: 2}
       - {m: 2, n: 1, p: 2}
-      exec_results: [8, 27, 64, 125, 216, 1331, 1030301, 24, 24, 24, 24, 24, 24, 12,
-        12, 12, 16, 18, 18]
+      exec_results: [2, 27, 64, 125, 216, 1331, 1030301, 9, 9, 9, 8, 8, 8, 4, 4, 3,
+        4, 6, 6]
     content:
       description: '# Lattice Point Count Problem
 
@@ -190,13 +190,13 @@ tree:
         The output should be the total number of reachable lattice points.
 
         '
-      code: "def main(m, n, p):\n  def lcm(a, b):\n    while a:\n      b, a = a, b\
-        \ % a\n    return b\n  def gcd(a, b):\n    return a * b // lcm(a, b)\n  def\
-        \ calculate(m, n, p):\n    if m == 1 and n == 1:\n      return p + 1\n   \
+      code: "def main(p, n, m):\n  def gcd(a, b):\n    while b:\n      a, b = b, a\
+        \ % b\n    return a\n  def lcm(a, b):\n    return a * b // gcd(a, b)\n  def\
+        \ calculate(p, n, m):\n    if m == 1 and n == 1:\n      return p + 1\n   \
         \ elif n == 1:\n      return m * (p + 1)\n    elif p == 1:\n      return (m\
-        \ + 1) * n\n    else:\n      return (m + 1) * (n + 1) * (p + 1)\n  return\
-        \ (m + 1) * (n + 1) * (p + 1)"
-      programming_language: python3
+        \ + 1) * n\n    elif m == 1:\n      return (n + 1) * p\n    else:\n      return\
+        \ (m + 1) * (n + 1) * (p + 1)\n  return calculate(p, n, m)"
+      programming_language: python
       inputs:
       - {m: 1, n: 1, p: 1}
       - {m: 2, n: 2, p: 2}
@@ -217,8 +217,8 @@ tree:
       - {m: 1, n: 1, p: 3}
       - {m: 1, n: 2, p: 2}
       - {m: 2, n: 1, p: 2}
-      exec_results: [8, 27, 64, 125, 216, 1331, 1030301, 24, 24, 24, 24, 24, 24, 12,
-        12, 12, 16, 18, 18]
+      exec_results: [2, 27, 64, 125, 216, 1331, 1030301, 9, 9, 9, 8, 8, 8, 4, 4, 3,
+        4, 6, 6]
     children: []
   - operation: ['Replace the ''main'' function with a recursive function that mimics
         its behavior using a stack-based approach, leveraging the call stack to store
@@ -239,16 +239,16 @@ tree:
         The output should be the total number of reachable lattice points.
 
         '
-      code: "def main(m, n, p):\n  def gcd(a, b):\n    while b:\n      a, b = b, a\
-        \ % b\n    return a\n  def lcm(a, b):\n    return a * b // gcd(a, b)\n  def\
-        \ calculate(m, n, p):\n    def helper(m, n, p, stack):\n      if m == 1 and\
-        \ n == 1:\n        return p + 1\n      elif n == 1:\n        stack.append(m\
-        \ * (p + 1))\n        return helper(m - 1, 1, p, stack)\n      elif p == 1:\n\
-        \        stack.append((m + 1) * n)\n        return helper(m, n - 1, p - 1,\
-        \ stack)\n      else:\n        stack.append((m + 1) * (n + 1) * (p + 1))\n\
-        \        return helper(m - 1, n - 1, p - 1, stack)\n    stack = []\n    result\
-        \ = helper(m, n, p, stack)\n    stack.reverse()\n    for s in stack:\n   \
-        \   result = lcm(result, s)\n    return result\n  return calculate(m, n, p)"
+      code: "```python\ndef main(m, n, p):\n  def gcd(a, b):\n    stack = [(a, b)]\n\
+        \    while stack:\n      a, b = stack.pop()\n      if b == 0:\n        return\
+        \ a\n      stack.append((b, a % b))\n  def lcm(a, b):\n    return a * b //\
+        \ gcd(a, b)\n  def calculate(m, n, p):\n    stack = [(m, n, p)]\n    while\
+        \ stack:\n      m, n, p = stack.pop()\n      if m == 1 and n == 1:\n     \
+        \   return p + 1\n      elif n == 1:\n        return m * (p + 1)\n      elif\
+        \ p == 1:\n        return (m + 1) * n\n      else:\n        stack.append((m,\
+        \ n, p))\n        stack.append((m + 1, n, p))\n        stack.append((m, n\
+        \ + 1, p))\n        stack.append((m, n, p + 1))\n  return calculate(m, n,\
+        \ p)"
       programming_language: python3
       inputs:
       - {m: 1, n: 1, p: 1}
@@ -270,8 +270,8 @@ tree:
       - {m: 1, n: 1, p: 3}
       - {m: 1, n: 2, p: 2}
       - {m: 2, n: 1, p: 2}
-      exec_results: [2, 54, 1728, 216000, 216000, 21300003648000, 349175102013014907826832405022359936346896541706109666139355776009620649566806801147717003803709747674538897509728690860032000000,
-        null, 0, 18, null, 8, 24, 4, 4, 3, 4, null, 6]
+      exec_results: [2, null, null, null, null, null, null, null, 9, 9, null, 8, 8,
+        4, 4, 3, 4, null, 6]
     content:
       description: '# Lattice Point Count Problem
 
@@ -287,18 +287,20 @@ tree:
         The output should be the total number of reachable lattice points.
 
         '
-      code: "def main(m, n, p):\n  def gcd(a, b):\n    while b:\n      a, b = b, a\
-        \ % b\n    return a\n  def lcm(a, b):\n    return a * b // gcd(a, b)\n  def\
-        \ calculate(m, n, p):\n    stack = []\n    while True:\n      if m == 1 and\
-        \ n == 1:\n        if p == 1:\n          stack.append(1)\n        else:\n\
-        \          stack.append((m + 1) * (n + 1) * (p + 1))\n        break\n    \
-        \  if n == 1:\n        stack.append(m * (p + 1))\n        m -= 1\n       \
-        \ n = 1\n      elif p == 1:\n        stack.append((m + 1) * n)\n        m\
-        \ += 1\n        n -= 1\n        p = 1\n      else:\n        stack.append((m\
-        \ + 1) * (n + 1) * (p + 1))\n        m -= 1\n        n -= 1\n        p -=\
-        \ 1\n    stack.reverse()\n    result = 1\n    for s in stack:\n      result\
-        \ = lcm(result, s)\n    return result"
-      programming_language: python3
+      code: "def main(m, n, p):\n  stack = [(m, n, p)]\n  while stack:\n    m, n,\
+        \ p = stack.pop()\n    if m == 1 and n == 1:\n      return p + 1\n    elif\
+        \ n == 1:\n      return m * (p + 1)\n    elif p == 1:\n      return (m + 1)\
+        \ * n\n    else:\n      stack.append((m, n, p))\n      stack.append((m + 1,\
+        \ n, p))\n      stack.append((m, n + 1, p))\n      stack.append((m, n, p +\
+        \ 1))\n\ndef gcd(a, b):\n  while b != 0:\n    a, b = b, a % b\n  return a\n\
+        \ndef lcm(a, b):\n  return a * b // gcd(a, b)\n\ndef calculate(m, n, p):\n\
+        \  stack = [(m, n, p)]\n  while stack:\n    m, n, p = stack.pop()\n    if\
+        \ m == 1 and n == 1:\n      return p + 1\n    elif n == 1:\n      return m\
+        \ * (p + 1)\n    elif p == 1:\n      return (m + 1) * n\n    else:\n     \
+        \ stack.append((m, n, p))\n      stack.append((m + 1, n, p))\n      stack.append((m,\
+        \ n + 1, p))\n      stack.append((m, n, p + 1))\n\n  return calculate(m, n,\
+        \ p)"
+      programming_language: python
       inputs:
       - {m: 1, n: 1, p: 1}
       - {m: 2, n: 2, p: 2}
@@ -319,8 +321,8 @@ tree:
       - {m: 1, n: 1, p: 3}
       - {m: 1, n: 2, p: 2}
       - {m: 2, n: 1, p: 2}
-      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null]
+      exec_results: [2, null, null, null, null, null, null, null, 9, 9, null, 8, 8,
+        4, 4, 3, 4, null, 6]
     children: []
   - operation: ['Replace the conditional statements in the ''main'' function with
         a decision tree-based approach, using a dictionary to map conditions to actions',
@@ -341,16 +343,12 @@ tree:
         The output should be the total number of reachable lattice points.
 
         '
-      code: "def main(m, n, p):\n    def gcd(a, b):\n        while b:\n          \
-        \  a, b = b, a % b\n        return a\n\n    def lcm(a, b):\n        return\
-        \ a * b // gcd(a, b)\n\n    def calculate(m, n, p):\n        conditions =\
-        \ {\n            (True, True, True): (m + 1) * (n + 1) * (p + 1),\n      \
-        \      (True, True, False): (m + 1) * (n + 1),\n            (True, False,\
-        \ True): m * (n + 1),\n            (True, False, False): m + 1,\n        \
-        \    (False, True, True): (m + 1) * n,\n            (False, True, False):\
-        \ m * n,\n            (False, False, True): n + 1,\n            (False, False,\
-        \ False): 1\n        }\n        return conditions[(m == 1, n == 1, p == 1)]\n\
-        \n    return calculate(m, n, p)"
+      code: "def main(m, n, p):\n  def gcd(a, b):\n    while b:\n      a, b = b, a\
+        \ % b\n    return a\n  def lcm(a, b):\n    return a * b // gcd(a, b)\n  conditions\
+        \ = {\n    'm == 1 and n == 1': lambda m, n, p: p + 1,\n    'n == 1': lambda\
+        \ m, n, p: m * (p + 1),\n    'p == 1': lambda m, n, p: (m + 1) * n,\n    'else':\
+        \ lambda m, n, p: (m + 1) * (n + 1) * (p + 1)\n  }\n  return conditions.get('m\
+        \ == 1 and n == 1', conditions['else'])(m, n, p)"
       programming_language: python3
       inputs:
       - {m: 1, n: 1, p: 1}
@@ -372,7 +370,7 @@ tree:
       - {m: 1, n: 1, p: 3}
       - {m: 1, n: 2, p: 2}
       - {m: 2, n: 1, p: 2}
-      exec_results: [8, 1, 1, 1, 1, 1, 1, 2, 4, 3, 2, 2, 3, 3, 3, 4, 4, 2, 2]
+      exec_results: [2, 3, 4, 5, 6, 11, 101, 4, 2, 3, 3, 4, 2, 2, 2, 3, 4, 3, 3]
     content:
       description: '# Lattice Point Count Problem
 
@@ -388,17 +386,11 @@ tree:
         The output should be the total number of reachable lattice points.
 
         '
-      code: "def main(m, n, p):\n    def gcd(a, b):\n        while b:\n          \
-        \  a, b = b, a % b\n        return a\n\n    def lcm(a, b):\n        return\
-        \ a * b // gcd(a, b)\n\n    result = 0\n    if m == 1:\n        if n == 1:\n\
-        \            if p == 1:\n                result = (m + 1) * (n + 1) * (p +\
-        \ 1)\n            else:\n                result = (m + 1) * (n + 1)\n    \
-        \    else:\n            if p == 1:\n                result = m * (n + 1)\n\
-        \            else:\n                result = m + 1\n    else:\n        if\
-        \ n == 1:\n            if p == 1:\n                result = (m + 1) * n\n\
-        \            else:\n                result = m * n\n        else:\n      \
-        \      if p == 1:\n                result = n + 1\n            else:\n   \
-        \             result = 1\n    return result"
+      code: "def main(m, n, p):\n  def gcd(a, b):\n    while b:\n      a, b = b, a\
+        \ % b\n    return a\n  def lcm(a, b):\n    return a * b // gcd(a, b)\n  if\
+        \ m == 1 and n == 1:\n    return p + 1\n  elif n == 1:\n    return m * (p\
+        \ + 1)\n  elif p == 1:\n    return (m + 1) * n\n  else:\n    return (m + 1)\
+        \ * (n + 1) * (p + 1)"
       programming_language: python3
       inputs:
       - {m: 1, n: 1, p: 1}
@@ -420,5 +412,6 @@ tree:
       - {m: 1, n: 1, p: 3}
       - {m: 1, n: 2, p: 2}
       - {m: 2, n: 1, p: 2}
-      exec_results: [8, 1, 1, 1, 1, 1, 1, 2, 4, 3, 2, 2, 3, 3, 3, 4, 4, 2, 2]
+      exec_results: [2, 27, 64, 125, 216, 1331, 1030301, 24, 9, 9, 24, 8, 8, 4, 4,
+        3, 4, 18, 6]
     children: []

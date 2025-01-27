@@ -46,12 +46,13 @@ class LLMCheck:
         retry: int = 0
         retry_max: int = self.retry_max
         state: str = ''
-        print("[INFO] It is normal for errors and retries to occur when using LLM-generated YAML content and programs.")
+        # print("[INFO] It is normal for errors and retries to occur when using LLM-generated YAML content and programs.")
         while retry <= retry_max:
             # if build vf and exec failed, make a new root
             try:
                 root_content = root
-                print(f"[INFO] Overriding root content with set value: {root_content}")
+                root_content_abstract = f"{root_content}"[:100]
+                print(f"[INFO] Overriding root content with set value: {root_content_abstract}...")
                 state = 'Root node generated'
                 root_vf: VerifiableFunction = VerifiableFunction(**root_content, time_limit=self.time_limit)
                 state = 'Root node verified'

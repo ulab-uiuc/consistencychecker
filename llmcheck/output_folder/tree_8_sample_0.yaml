@@ -14,16 +14,16 @@ operations:
     and predictable', 'convert the ''main'' function back to an imperative style,
     using mutable state and explicit loops"']
 metrics:
-  embedding similarity L-1 AVG: 0.9135726681349983
-  embedding similarity L-1: [0.9099705308206706, 0.8307482332902859, 0.9999992402940382]
-  BLEU L-1 AVG: 0.3345567479437919
-  BLEU L-1: [0.0036702438313758845, 0, 1.0]
-  ROUGE-rouge1 L-1 AVG: 0.3333333333333333
-  ROUGE-rouge1 L-1: [0.0, 0.0, 1.0]
-  ROUGE-rouge2 L-1 AVG: 0.3333333333333333
-  ROUGE-rouge2 L-1: [0.0, 0.0, 1.0]
-  ROUGE-rougeL L-1 AVG: 0.3333333333333333
-  ROUGE-rougeL L-1: [0, 0.0, 1.0]
+  embedding similarity L-1 AVG: 0.9103386515870547
+  embedding similarity L-1: [0.9043084666526233, 0.8307482332902859, 0.9959592548182549]
+  BLEU L-1 AVG: 0.3258290114015563
+  BLEU L-1: [0.0827430962676074, 0, 0.8947439379370614]
+  ROUGE-rouge1 L-1 AVG: 0.514018691588785
+  ROUGE-rouge1 L-1: [0.5420560747663551, 0.0, 1.0]
+  ROUGE-rouge2 L-1 AVG: 0.440952380952381
+  ROUGE-rouge2 L-1: [0.34285714285714286, 0.0, 0.98]
+  ROUGE-rougeL L-1 AVG: 0.4632582004764523
+  ROUGE-rougeL L-1: [0.4485981308411215, 0.0, 0.9411764705882353]
   embedding similarity L-2 AVG: 0.0
   embedding similarity L-2: []
   BLEU L-2 AVG: 0.0
@@ -266,21 +266,16 @@ tree:
         Output: `[0, 0, 0]`
 
         '
-      code: "import ast\nimport types\n\ndef main(nums, target):\n  def meta_generate_code():\n\
-        \    # Create a new code string\n    code = \"\"\"\n    def backtrack(start,\
-        \ target):\n      if target == 0:\n        result.append([])\n      else:\n\
-        \        for i in range(start, len(nums)):\n          if i > start and nums[i]\
-        \ == nums[i-1]:\n            continue\n          backtrack(i+1, target - nums[i])\n\
-        \    \"\"\"\n    # Parse the code string into an abstract syntax tree\n  \
-        \  tree = ast.parse(code)\n    # Modify the tree to create a new function\n\
-        \    tree.body[0].body[0].body[0].value.args.args[1].value = ast.Num(0)  #\
-        \ Replace start with 0\n    tree.body[0].body[0].body[0].body[0].args.args[0].value\
-        \ = ast.NameConstant(value=nums)  # Replace target with nums\n    tree.body[0].body[0].body[0].body[0].args.args[1].value\
-        \ = ast.NameConstant(value=target)  # Replace target with target\n    # Compile\
-        \ the tree back into code\n    compiled = compile(tree, filename=\"<ast>\"\
-        , mode=\"exec\")\n    # Execute the compiled code\n    exec(compiled, {\"\
-        result\": [], \"nums\": nums})\n    # Return the result\n    return result\n\
-        \n  nums.sort()\n  return meta_generate_code()"
+      code: "import types\n\ndef main(nums, target):\n  def generate_backtrack():\n\
+        \    def backtrack(start, path, target):\n      if len(path) == 3:\n     \
+        \   if target == 0:\n          result.append(path)\n        return\n     \
+        \ for i in range(start, len(nums)):\n        if i > start and nums[i] == nums[i-1]:\n\
+        \          continue\n        self = types.FunctionType(getattr(__code__, 'f_back'))\n\
+        \        self.__globals__.update({'result': result})\n        self.__name__\
+        \ = 'backtrack'\n        exec(compile(self.__code__, '', 'exec'), self.__globals__,\
+        \ self.__globals__)\n        self.__globals__['backtrack'](i+1, path + [nums[i]],\
+        \ target - nums[i])\n\n    nums.sort()\n    result = []\n    backtrack(0,\
+        \ [], target)\n    return result"
       programming_language: python3
       inputs:
       - nums: [-2, -1, 0, 0, 1, 2]
@@ -349,11 +344,14 @@ tree:
         Output: `[0, 0, 0]`
 
         '
-      code: "def main(nums, target):\n  def backtrack(start, target):\n    if target\
-        \ == 0:\n      result.append([])\n    else:\n      for i in range(start, len(nums)):\n\
-        \        if i > start and nums[i] == nums[i-1]:\n          continue\n    \
-        \    backtrack(i+1, target - nums[i])\n  result = []\n  nums.sort()\n  backtrack(0,\
-        \ target)\n  return result"
+      code: "import itertools\n\ndef main(nums, target):\n    def backtrack(start,\
+        \ path, target):\n        if len(path) == 3:\n            if target == 0:\n\
+        \                result.append(path)\n            return\n        for i in\
+        \ range(start, len(nums)):\n            if i > start and nums[i] == nums[i-1]:\n\
+        \                continue\n            for num in itertools.combinations(nums[i:],\
+        \ target - nums[i]):\n                backtrack(i+1, path + [nums[i]] + list(num),\
+        \ 0)\n\n    nums.sort()\n    result = []\n    backtrack(0, [], target)\n \
+        \   return result"
       programming_language: python3
       inputs:
       - nums: [-2, -1, 0, 0, 1, 2]
@@ -395,41 +393,35 @@ tree:
       - nums: [1, 2, 4, 5]
         target: 6
       exec_results:
-      - - []
-      - - []
-      - - []
-        - []
-        - []
-      - - []
-      - - []
-      - - []
-      - - []
-        - []
-        - []
-      - - []
-        - []
-        - []
-      - - []
-      - - []
-        - []
-        - []
-        - []
-      - - []
-      - - []
-        - []
-      - - []
-        - []
-      - - []
-        - []
-      - - []
-      - - []
-        - []
-      - - []
-        - []
-      - - []
-        - []
-      - - []
-        - []
+      - null
+      - null
+      - null
+      - null
+      - null
+      - - [0, 0, 0]
+      - null
+      - null
+      - - [0, 0, 0]
+      - null
+      - - [1, 1, 1]
+        - [1, 1, 1]
+        - [1, 1, 1]
+        - [1, 1, 1]
+        - [1, 1, 1]
+        - [1, 1, 1]
+      - - [1, 1, 1]
+        - [1, 1, 1]
+        - [1, 1, 2]
+        - [1, 1, 1]
+        - [1, 1, 2]
+        - [1, 1, 2]
+      - null
+      - null
+      - null
+      - []
+      - []
+      - []
+      - - [4, 4, 5]
     children: []
   - operation: ['2. "Implement the ''main'' function in the ''code'' key as a neural
         network that can learn and adapt to input data, using a novel architecture
@@ -462,27 +454,33 @@ tree:
         Output: `[0, 0, 0]`
 
         '
-      code: "import torch\nimport torch.nn as nn\nimport torch.optim as optim\n\n\
-        class GraphNeuralNetwork(nn.Module):\n    def __init__(self, input_dim, hidden_dim,\
+      code: "import torch\nimport torch.nn as nn\nimport torch.optim as optim\nfrom\
+        \ torch.utils.data import Dataset, DataLoader\nimport numpy as np\n\nclass\
+        \ GraphNeuralNetwork(nn.Module):\n    def __init__(self, input_dim, hidden_dim,\
         \ output_dim):\n        super(GraphNeuralNetwork, self).__init__()\n     \
         \   self.fc1 = nn.Linear(input_dim, hidden_dim)\n        self.fc2 = nn.Linear(hidden_dim,\
         \ output_dim)\n\n    def forward(self, x):\n        x = torch.relu(self.fc1(x))\n\
-        \        x = self.fc2(x)\n        return x\n\nclass MainFunction(nn.Module):\n\
-        \    def __init__(self, input_dim, hidden_dim, output_dim):\n        super(MainFunction,\
-        \ self).__init__()\n        self.gnn = GraphNeuralNetwork(input_dim, hidden_dim,\
-        \ hidden_dim)\n        self.fc = nn.Linear(hidden_dim, output_dim)\n\n   \
-        \ def forward(self, x):\n        x = self.gnn(x)\n        x = self.fc(x)\n\
-        \        return x\n\ndef main(nums, target):\n    # Convert input data to\
-        \ tensors\n    nums = torch.tensor(nums)\n    target = torch.tensor(target)\n\
-        \n    # Initialize the main function\n    model = MainFunction(nums.shape[1],\
-        \ 128, 1)\n\n    # Define the loss function and optimizer\n    criterion =\
-        \ nn.MSELoss()\n    optimizer = optim.Adam(model.parameters(), lr=0.001)\n\
-        \n    # Train the model\n    for epoch in range(100):\n        optimizer.zero_grad()\n\
-        \        output = model(nums)\n        loss = criterion(output, target)\n\
-        \        loss.backward()\n        optimizer.step()\n\n    # Use the trained\
-        \ model to make predictions\n    output = model(nums)\n    result = []\n \
-        \   for i in range(len(output)):\n        if output[i] < 0.5:\n          \
-        \  result.append(nums[i])\n\n    return result"
+        \        x = self.fc2(x)\n        return x\n\nclass CodeDataset(Dataset):\n\
+        \    def __init__(self, data, labels):\n        self.data = torch.tensor(data,\
+        \ dtype=torch.float32)\n        self.labels = torch.tensor(labels, dtype=torch.float32)\n\
+        \n    def __len__(self):\n        return len(self.data)\n\n    def __getitem__(self,\
+        \ idx):\n        return self.data[idx], self.labels[idx]\n\ndef create_dataloader(data,\
+        \ labels, batch_size):\n    dataset = CodeDataset(data, labels)\n    dataloader\
+        \ = DataLoader(dataset, batch_size=batch_size, shuffle=True)\n    return dataloader\n\
+        \ndef train(model, dataloader, criterion, optimizer):\n    for epoch in range(10):\n\
+        \        for batch in dataloader:\n            inputs, labels = batch\n  \
+        \          optimizer.zero_grad()\n            outputs = model(inputs)\n  \
+        \          loss = criterion(outputs, labels)\n            loss.backward()\n\
+        \            optimizer.step()\n        print(f'Epoch {epoch+1}, Loss: {loss.item()}')\n\
+        \ndef main():\n    # Generate input data\n    data = np.random.rand(100, 3)\n\
+        \    labels = np.random.rand(100)\n\n    # Create dataset and dataloader\n\
+        \    dataloader = create_dataloader(data, labels, batch_size=32)\n\n    #\
+        \ Initialize model, criterion, and optimizer\n    model = GraphNeuralNetwork(input_dim=3,\
+        \ hidden_dim=10, output_dim=1)\n    criterion = nn.MSELoss()\n    optimizer\
+        \ = optim.Adam(model.parameters(), lr=0.001)\n\n    # Train model\n    train(model,\
+        \ dataloader, criterion, optimizer)\n\n    # Test model\n    test_data = torch.randn(1,\
+        \ 3)\n    test_label = model(test_data)\n    print(test_label)\n\nif __name__\
+        \ == \"__main__\":\n    main()"
       programming_language: python3
       inputs:
       - nums: [-2, -1, 0, 0, 1, 2]
@@ -551,22 +549,27 @@ tree:
         Output: `[0, 0, 0]`
 
         '
-      code: "import numpy as np\n\ndef main(nums, target):\n    # Convert input data\
-        \ to numpy arrays\n    nums = np.array(nums)\n    target = np.array(target)\n\
-        \n    # Define the model\n    def model(x):\n        # Apply a linear transformation\n\
-        \        z = np.dot(x, [1, 2, 3])  # Simple linear transformation\n      \
-        \  return z\n\n    # Define the loss function\n    def loss(y, y_true):\n\
-        \        # Mean squared error\n        return np.mean((y - y_true) ** 2)\n\
-        \n    # Train the model\n    learning_rate = 0.001\n    for epoch in range(100):\n\
-        \        # Forward pass\n        output = model(nums)\n        loss_value\
-        \ = loss(output, target)\n\n        # Backward pass\n        # Since we're\
-        \ using a simple linear model, we can't use backpropagation\n        # We'll\
-        \ just use gradient descent instead\n        gradient = 2 * (output - target)\
-        \ / len(nums)\n        model_weights = [1, 2, 3]  # The model weights\n  \
-        \      model_weights -= learning_rate * gradient\n\n        # Update the model\n\
-        \        model_weights = [1, 2, 3]\n\n    # Make predictions\n    output =\
-        \ model(nums)\n    result = []\n    for i in range(len(output)):\n       \
-        \ if output[i] < 0.5:\n            result.append(nums[i])\n\n    return result"
+      code: "import numpy as np\n\ndef main():\n    # Generate input data\n    data\
+        \ = np.random.rand(100, 3)\n    labels = np.random.rand(100)\n\n    # Train\
+        \ model\n    model = train_model(data, labels)\n\n    # Test model\n    test_data\
+        \ = np.random.rand(1, 3)\n    test_label = model(test_data)\n    print(test_label)\n\
+        \ndef train_model(data, labels):\n    # Initialize model parameters\n    input_dim\
+        \ = 3\n    hidden_dim = 10\n    output_dim = 1\n\n    # Initialize model weights\n\
+        \    weights1 = np.random.rand(input_dim, hidden_dim)\n    weights2 = np.random.rand(hidden_dim,\
+        \ output_dim)\n    bias1 = np.zeros((1, hidden_dim))\n    bias2 = np.zeros((1,\
+        \ output_dim))\n\n    # Train model\n    for epoch in range(10):\n       \
+        \ for i in range(len(data)):\n            input_data = data[i]\n         \
+        \   label = labels[i]\n\n            # Forward pass\n            hidden_layer\
+        \ = np.dot(input_data, weights1) + bias1\n            hidden_layer = np.maximum(hidden_layer,\
+        \ 0)\n            output_layer = np.dot(hidden_layer, weights2) + bias2\n\n\
+        \            # Backward pass\n            error = label - output_layer\n \
+        \           output_layer_error = error\n            hidden_layer_error = output_layer_error\
+        \ * (hidden_layer > 0)\n\n            # Weight updates\n            weights2\
+        \ += 0.001 * np.dot(hidden_layer.T, output_layer_error)\n            bias2\
+        \ += 0.001 * output_layer_error\n            weights1 += 0.001 * np.dot(input_data.reshape(-1,\
+        \ 1).T, hidden_layer_error)\n            bias1 += 0.001 * hidden_layer_error\n\
+        \n    return lambda x: np.dot(np.maximum(np.dot(x, weights1) + bias1, 0),\
+        \ weights2) + bias2\n\nif __name__ == \"__main__\":\n    main()"
       programming_language: python3
       inputs:
       - nums: [-2, -1, 0, 0, 1, 2]
@@ -641,86 +644,12 @@ tree:
 
         '
       code: "def main(nums, target):\n  def backtrack(start, path, target):\n    if\
-        \ len(path) == 3:\n      if target == 0:\n        return [path]\n      return\
-        \ []\n    return [p for i in range(start, len(nums)) \n            if i >\
-        \ start and nums[i] == nums[i-1] \n            else backtrack(i+1, path +\
-        \ [nums[i]], target - nums[i])]\n\n  nums.sort()\n  return backtrack(0, [],\
-        \ target)"
-      programming_language: python3
-      inputs:
-      - nums: [-2, -1, 0, 0, 1, 2]
-        target: 0
-      - nums: [0, 0, 1]
-        target: 0
-      - nums: [1, 2, 3, 4, 5]
-        target: 6
-      - nums: [-1, 0, 1, 2, 3]
-        target: 0
-      - nums: [-5, -3, 0, 3, 7]
-        target: 0
-      - nums: [0, 0, 0]
-        target: 0
-      - nums: [0, 0, 1]
-        target: 1
-      - nums: [0, 0, 1, 1]
-        target: 1
-      - nums: [0, 0, 0, 0]
-        target: 0
-      - nums: [0, 0, 0, 1]
-        target: 1
-      - nums: [1, 1, 1, 1]
-        target: 3
-      - nums: [1, 1, 1, 2]
-        target: 3
-      - nums: [1, 1, 2, 3]
-        target: 5
-      - nums: [1, 2, 2, 3]
-        target: 5
-      - nums: [2, 2, 2, 3]
-        target: 5
-      - nums: [1, 2, 3, 4]
-        target: 6
-      - nums: [1, 2, 3, 5]
-        target: 6
-      - nums: [1, 2, 3, 6]
-        target: 6
-      - nums: [1, 2, 4, 5]
-        target: 6
-      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null]
-    content:
-      description: '# 3Sum With Multiplicity
-
-        ## Problem Description
-
-        Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
-        such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
-        == target`.
-
-
-        The let you assume that every triplet is distinct.
-
-
-        ## Example 1:
-
-        Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
-
-        Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
-
-        ## Example 2:
-
-        Input: `nums = [0, 1, 0]`, `target = 0`
-
-        Output: `[0, 0, 0]`
-
-        '
-      code: "def main(nums, target):\n  used = []\n  result = []\n  nums.sort()\n\
-        \  def backtrack(start, path, target):\n    nonlocal result\n    nonlocal\
-        \ used\n    if len(path) == 3:\n      if target == 0:\n        result.append(path)\n\
-        \      return\n    for i in range(start, len(nums)):\n      if i not in used\
-        \ and (i == start or nums[i] != nums[i-1]):\n        used.append(i)\n    \
-        \    backtrack(i + 1, path + [nums[i]], target - nums[i])\n        used.pop()\n\
-        \  backtrack(0, [], target)\n  return result"
+        \ len(path) == 3:\n      if target == 0:\n        result.append(tuple(path))\
+        \  # create a tuple to ensure immutability\n      return\n    for i in range(start,\
+        \ len(nums)):\n      if i > start and nums[i] == nums[i-1]:\n        continue\n\
+        \      backtrack(i+1, path + [nums[i]], target - nums[i])\n\n  nums.sort()\n\
+        \  result = []\n  backtrack(0, [], target)\n  return [list(x) for x in set(result)]\
+        \  # convert tuples back to lists and remove duplicates"
       programming_language: python3
       inputs:
       - nums: [-2, -1, 0, 0, 1, 2]
@@ -762,8 +691,103 @@ tree:
       - nums: [1, 2, 4, 5]
         target: 6
       exec_results:
-      - - [-2, 0, 2]
-        - [-1, 0, 1]
+      - - [-1, 0, 1]
+        - [-2, 0, 2]
+      - []
+      - - [1, 2, 3]
+      - - [-1, 0, 1]
+      - - [-3, 0, 3]
+      - - [0, 0, 0]
+      - - [0, 0, 1]
+      - - [0, 0, 1]
+      - - [0, 0, 0]
+      - - [0, 0, 1]
+      - - [1, 1, 1]
+      - - [1, 1, 1]
+      - - [1, 1, 3]
+      - - [1, 2, 2]
+      - []
+      - - [1, 2, 3]
+      - - [1, 2, 3]
+      - - [1, 2, 3]
+      - []
+    content:
+      description: '# 3Sum With Multiplicity
+
+        ## Problem Description
+
+        Given an integer array `nums`, return all triplets `[nums[i], nums[j], nums[k]]`
+        such that `i != j`, `i != k`, and `j != k`, and `nums[i] + nums[j] + nums[k]
+        == target`.
+
+
+        The let you assume that every triplet is distinct.
+
+
+        ## Example 1:
+
+        Input: `nums = [1, 0, -1, 0, -2, 2]`, `target = 0`
+
+        Output: `[[-2, -1, 3], [-2, 0, 2], [-1, 0, 1]]`
+
+        ## Example 2:
+
+        Input: `nums = [0, 1, 0]`, `target = 0`
+
+        Output: `[0, 0, 0]`
+
+        '
+      code: "def main(nums, target):\n  result = []\n  nums.sort()\n  used = [False]\
+        \ * len(nums)\n  def backtrack(start, path, target):\n    if len(path) ==\
+        \ 3:\n      if target == 0:\n        result.append(path[:])  # create a copy\
+        \ of the list\n      return\n    for i in range(start, len(nums)):\n     \
+        \ if used[i] or (i > start and nums[i] == nums[i-1]):\n        continue\n\
+        \      used[i] = True\n      path.append(nums[i])\n      backtrack(i+1, path,\
+        \ target - nums[i])\n      path.pop()\n      used[i] = False\n\n  backtrack(0,\
+        \ [], target)\n  return [list(x) for x in set(tuple(x) for x in result)]"
+      programming_language: python3
+      inputs:
+      - nums: [-2, -1, 0, 0, 1, 2]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 0
+      - nums: [1, 2, 3, 4, 5]
+        target: 6
+      - nums: [-1, 0, 1, 2, 3]
+        target: 0
+      - nums: [-5, -3, 0, 3, 7]
+        target: 0
+      - nums: [0, 0, 0]
+        target: 0
+      - nums: [0, 0, 1]
+        target: 1
+      - nums: [0, 0, 1, 1]
+        target: 1
+      - nums: [0, 0, 0, 0]
+        target: 0
+      - nums: [0, 0, 0, 1]
+        target: 1
+      - nums: [1, 1, 1, 1]
+        target: 3
+      - nums: [1, 1, 1, 2]
+        target: 3
+      - nums: [1, 1, 2, 3]
+        target: 5
+      - nums: [1, 2, 2, 3]
+        target: 5
+      - nums: [2, 2, 2, 3]
+        target: 5
+      - nums: [1, 2, 3, 4]
+        target: 6
+      - nums: [1, 2, 3, 5]
+        target: 6
+      - nums: [1, 2, 3, 6]
+        target: 6
+      - nums: [1, 2, 4, 5]
+        target: 6
+      exec_results:
+      - - [-1, 0, 1]
+        - [-2, 0, 2]
       - []
       - - [1, 2, 3]
       - - [-1, 0, 1]

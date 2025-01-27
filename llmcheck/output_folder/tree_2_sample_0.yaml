@@ -15,16 +15,16 @@ operations:
     form, replacing the higher-order functions with traditional loops and conditional
     statements"']
 metrics:
-  embedding similarity L-1 AVG: 0.9104924456696776
-  embedding similarity L-1: [0.9436244898689049, 0.8939264235700638, 0.8939264235700638]
-  BLEU L-1 AVG: 0.2468002774997896
-  BLEU L-1: [0.7404008324993688, 0, 0]
-  ROUGE-rouge1 L-1 AVG: 0.2666666666666667
-  ROUGE-rouge1 L-1: [0.8000000000000002, 0.0, 0.0]
-  ROUGE-rouge2 L-1 AVG: 0.24561403508771928
-  ROUGE-rouge2 L-1: [0.7368421052631579, 0.0, 0.0]
-  ROUGE-rougeL L-1 AVG: 0.2666666666666667
-  ROUGE-rougeL L-1: [0.8000000000000002, 0.0, 0.0]
+  embedding similarity L-1 AVG: 0.9292842823800425
+  embedding similarity L-1: [0.9999999999999998, 0.8939264235700638, 0.8939264235700638]
+  BLEU L-1 AVG: 0.3333333333333333
+  BLEU L-1: [1.0, 0, 0]
+  ROUGE-rouge1 L-1 AVG: 0.3333333333333333
+  ROUGE-rouge1 L-1: [1.0, 0.0, 0.0]
+  ROUGE-rouge2 L-1 AVG: 0.3333333333333333
+  ROUGE-rouge2 L-1: [1.0, 0.0, 0.0]
+  ROUGE-rougeL L-1 AVG: 0.3333333333333333
+  ROUGE-rougeL L-1: [1.0, 0.0, 0.0]
   embedding similarity L-2 AVG: 0.0
   embedding similarity L-2: []
   BLEU L-2 AVG: 0.0
@@ -81,48 +81,48 @@ root_content:
   programming_language: python3
   inputs:
   - graph:
-    - [0, 4, 13, 0, 0, 0]
-    - [12, 0, 10, 0, 0, 0]
+    - [0, 16, 13, 0, 0, 0]
+    - [0, 0, 10, 12, 0, 0]
     - [0, 4, 0, 0, 14, 0]
-    - [0, 12, 9, 0, 0, 8]
+    - [0, 0, 9, 0, 0, 20]
     - [0, 0, 0, 7, 0, 4]
-    - [0, 0, 0, 12, 0, 0]
+    - [0, 0, 0, 0, 0, 0]
     sources: [0]
     sinks: [5]
   - graph:
-    - [0, 0, 0, 0, 0, 0]
-    - [3, 0, 17, 0, 0, 0]
     - [0, 3, 0, 0, 0, 0]
-    - [0, 0, 3, 0, 7, 0]
-    - [0, 0, 0, 3, 0, 9]
-    - [0, 0, 0, 0, 3, 0]
+    - [0, 0, 20, 0, 0, 0]
+    - [0, 0, 0, 3, 0, 0]
+    - [0, 0, 0, 0, 10, 0]
+    - [0, 0, 0, 0, 0, 12]
+    - [0, 0, 0, 0, 0, 0]
     sources: [0]
     sinks: [5]
   - graph:
-    - [0, 2, 0, 0, 0, 0]
-    - [2, 0, 3, 0, 0, 0]
-    - [0, 2, 0, 4, 0, 0]
-    - [0, 0, 2, 0, 0, 0]
-    - [0, 0, 0, 2, 0, 1]
+    - [0, 4, 0, 0, 0, 0]
+    - [0, 0, 5, 0, 0, 0]
+    - [0, 0, 0, 6, 0, 0]
     - [0, 0, 0, 0, 2, 0]
-    sources: [0]
-    sinks: [5]
-  - graph:
-    - [0, 0, 0, 0, 0, 0]
-    - [0, 0, 0, 0, 0, 0]
-    - [0, 0, 0, 0, 0, 0]
-    - [0, 0, 0, 0, 0, 0]
-    - [0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 3]
     - [0, 0, 0, 0, 0, 0]
     sources: [0]
     sinks: [5]
   - graph:
     - [0, 0, 0, 0, 0, 0]
-    - [10, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0]
+    - [0, 0, 0, 0, 0, 0]
+    sources: [0]
+    sinks: [5]
+  - graph:
     - [0, 10, 0, 0, 0, 0]
     - [0, 0, 10, 0, 0, 0]
     - [0, 0, 0, 10, 0, 0]
     - [0, 0, 0, 0, 10, 0]
+    - [0, 0, 0, 0, 0, 10]
+    - [0, 0, 0, 0, 0, 0]
     sources: [0]
     sinks: [5]
   - graph:
@@ -299,48 +299,48 @@ tree:
     programming_language: python3
     inputs:
     - graph:
-      - [0, 4, 13, 0, 0, 0]
-      - [12, 0, 10, 0, 0, 0]
+      - [0, 16, 13, 0, 0, 0]
+      - [0, 0, 10, 12, 0, 0]
       - [0, 4, 0, 0, 14, 0]
-      - [0, 12, 9, 0, 0, 8]
+      - [0, 0, 9, 0, 0, 20]
       - [0, 0, 0, 7, 0, 4]
-      - [0, 0, 0, 12, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
       sources: [0]
       sinks: [5]
     - graph:
-      - [0, 0, 0, 0, 0, 0]
-      - [3, 0, 17, 0, 0, 0]
       - [0, 3, 0, 0, 0, 0]
-      - [0, 0, 3, 0, 7, 0]
-      - [0, 0, 0, 3, 0, 9]
-      - [0, 0, 0, 0, 3, 0]
+      - [0, 0, 20, 0, 0, 0]
+      - [0, 0, 0, 3, 0, 0]
+      - [0, 0, 0, 0, 10, 0]
+      - [0, 0, 0, 0, 0, 12]
+      - [0, 0, 0, 0, 0, 0]
       sources: [0]
       sinks: [5]
     - graph:
-      - [0, 2, 0, 0, 0, 0]
-      - [2, 0, 3, 0, 0, 0]
-      - [0, 2, 0, 4, 0, 0]
-      - [0, 0, 2, 0, 0, 0]
-      - [0, 0, 0, 2, 0, 1]
+      - [0, 4, 0, 0, 0, 0]
+      - [0, 0, 5, 0, 0, 0]
+      - [0, 0, 0, 6, 0, 0]
       - [0, 0, 0, 0, 2, 0]
-      sources: [0]
-      sinks: [5]
-    - graph:
-      - [0, 0, 0, 0, 0, 0]
-      - [0, 0, 0, 0, 0, 0]
-      - [0, 0, 0, 0, 0, 0]
-      - [0, 0, 0, 0, 0, 0]
-      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 3]
       - [0, 0, 0, 0, 0, 0]
       sources: [0]
       sinks: [5]
     - graph:
       - [0, 0, 0, 0, 0, 0]
-      - [10, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      - [0, 0, 0, 0, 0, 0]
+      sources: [0]
+      sinks: [5]
+    - graph:
       - [0, 10, 0, 0, 0, 0]
       - [0, 0, 10, 0, 0, 0]
       - [0, 0, 0, 10, 0, 0]
       - [0, 0, 0, 0, 10, 0]
+      - [0, 0, 0, 0, 0, 10]
+      - [0, 0, 0, 0, 0, 0]
       sources: [0]
       sinks: [5]
     - graph:
@@ -501,69 +501,68 @@ tree:
         sources to the sinks without exceeding the capacity of any edge.
 
         '
-      code: "from functools import lru_cache\n\ndef main(graph, sources, sinks):\n\
-        \  class Edge:\n    def __init__(self, u, v, cap, flow):\n      self.u = u\n\
-        \      self.v = v\n      self.cap = cap\n      self.flow = flow\n\n  @lru_cache(maxsize=None)\n\
-        \  def bfs(s, t, parent):\n    visited = [False] * len(graph)\n    queue =\
-        \ [s]\n    visited[s] = True\n    while queue:\n      u = queue.pop(0)\n \
-        \     for i in range(len(graph)):\n        if graph[u][i] > 0 and not visited[i]:\n\
-        \          queue.append(i)\n          visited[i] = True\n          parent[i]\
-        \ = u\n    return visited[t]\n\n  def dfs(u, t, parent, flow):\n    if u ==\
-        \ t:\n      return flow\n    max_flow = 0\n    for v in range(len(graph)):\n\
+      code: "def main(graph, sources, sinks):\n  class Edge:\n    def __init__(self,\
+        \ u, v, cap, flow):\n      self.u = u\n      self.v = v\n      self.cap =\
+        \ cap\n      self.flow = flow\n\n  memo = {}\n\n  def dfs(u, t, parent, flow):\n\
+        \    if (u, t, flow) in memo:\n      return memo[(u, t, flow)]\n\n    if u\
+        \ == t:\n      return flow\n    max_flow = 0\n    for v in range(len(graph)):\n\
         \      if graph[u][v] > 0 and parent[v] == u:\n        delta = dfs(v, t, parent,\
         \ min(flow, graph[u][v]))\n        flow -= delta\n        max_flow += delta\n\
-        \        graph[u][v] -= delta\n        graph[v][u] += delta\n    return max_flow\n\
+        \        graph[u][v] -= delta\n        graph[v][u] += delta\n    memo[(u,\
+        \ t, flow)] = max_flow\n    return max_flow\n\n  def bfs(s, t, parent):\n\
+        \    visited = [False] * len(graph)\n    queue = [s]\n    visited[s] = True\n\
+        \    while queue:\n      u = queue.pop(0)\n      for i in range(len(graph)):\n\
+        \        if graph[u][i] > 0 and not visited[i]:\n          queue.append(i)\n\
+        \          visited[i] = True\n          parent[i] = u\n    return visited[t]\n\
         \n  parent = [-1] * len(graph)\n  max_flow = 0\n  while any(source in parent\
         \ for source in sources):\n    for source in sources:\n      if source not\
-        \ in parent:\n        if bfs.cache_info().hits == 1:\n          parent[source]\
-        \ = None\n        else:\n          if bfs(source, sinks[0], parent):\n   \
-        \         max_flow += dfs(sources[0], sinks[0], parent, float('inf'))\n  return\
-        \ max_flow"
+        \ in parent:\n        if bfs(source, sinks[0], parent):\n          max_flow\
+        \ += dfs(sources[0], sinks[0], parent, float('inf'))\n  return max_flow"
       programming_language: python3
       inputs:
       - graph:
-        - [0, 4, 13, 0, 0, 0]
-        - [12, 0, 10, 0, 0, 0]
+        - [0, 16, 13, 0, 0, 0]
+        - [0, 0, 10, 12, 0, 0]
         - [0, 4, 0, 0, 14, 0]
-        - [0, 12, 9, 0, 0, 8]
+        - [0, 0, 9, 0, 0, 20]
         - [0, 0, 0, 7, 0, 4]
-        - [0, 0, 0, 12, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [3, 0, 17, 0, 0, 0]
         - [0, 3, 0, 0, 0, 0]
-        - [0, 0, 3, 0, 7, 0]
-        - [0, 0, 0, 3, 0, 9]
-        - [0, 0, 0, 0, 3, 0]
+        - [0, 0, 20, 0, 0, 0]
+        - [0, 0, 0, 3, 0, 0]
+        - [0, 0, 0, 0, 10, 0]
+        - [0, 0, 0, 0, 0, 12]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 2, 0, 0, 0, 0]
-        - [2, 0, 3, 0, 0, 0]
-        - [0, 2, 0, 4, 0, 0]
-        - [0, 0, 2, 0, 0, 0]
-        - [0, 0, 0, 2, 0, 1]
+        - [0, 4, 0, 0, 0, 0]
+        - [0, 0, 5, 0, 0, 0]
+        - [0, 0, 0, 6, 0, 0]
         - [0, 0, 0, 0, 2, 0]
-        sources: [0]
-        sinks: [5]
-      - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 3]
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
         - [0, 0, 0, 0, 0, 0]
-        - [10, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        sources: [0]
+        sinks: [5]
+      - graph:
         - [0, 10, 0, 0, 0, 0]
         - [0, 0, 10, 0, 0, 0]
         - [0, 0, 0, 10, 0, 0]
         - [0, 0, 0, 0, 10, 0]
+        - [0, 0, 0, 0, 0, 10]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
@@ -720,71 +719,64 @@ tree:
         '
       code: "def main(graph, sources, sinks):\n  class Edge:\n    def __init__(self,\
         \ u, v, cap, flow):\n      self.u = u\n      self.v = v\n      self.cap =\
-        \ cap\n      self.flow = flow\n\n  def bfs(s, t, parent):\n    visited = [False]\
-        \ * len(graph)\n    queue = [s]\n    visited[s] = True\n    while queue:\n\
-        \      u = queue.pop(0)\n      for i in range(len(graph)):\n        if graph[u][i]\
-        \ > 0 and not visited[i]:\n          queue.append(i)\n          visited[i]\
-        \ = True\n          parent[i] = u\n    return visited[t]\n\n  def dfs(u, t,\
-        \ parent, flow):\n    if u == t:\n      return flow\n    max_flow = 0\n  \
-        \  for v in range(len(graph)):\n      if graph[u][v] > 0 and parent[v] ==\
-        \ u:\n        delta = dfs(v, t, parent, min(flow, graph[u][v]))\n        flow\
-        \ -= delta\n        max_flow += delta\n        graph[u][v] -= delta\n    \
-        \    graph[v][u] += delta\n    return max_flow\n\n  parent = [-1] * len(graph)\n\
-        \  max_flow = 0\n  for source in sources:\n    if bfs(source, sinks[0], parent):\n\
-        \      max_flow += dfs(source, sinks[0], parent, float('inf'))\n  return max_flow"
+        \ cap\n      self.flow = flow\n\n  def dfs(u, t, parent, flow):\n    if u\
+        \ == t:\n      return flow\n    max_flow = 0\n    for v in range(len(graph)):\n\
+        \      if graph[u][v] > 0 and parent[v] == u:\n        delta = dfs(v, t, parent,\
+        \ min(flow, graph[u][v]))\n        flow -= delta\n        max_flow += delta\n\
+        \        graph[u][v] -= delta\n        graph[v][u] += delta\n    return max_flow\n\
+        \n  def bfs(s, t, parent):\n    visited = [False] * len(graph)\n    queue\
+        \ = [s]\n    visited[s] = True\n    while queue:\n      u = queue.pop(0)\n\
+        \      for i in range(len(graph)):\n        if graph[u][i] > 0 and not visited[i]:\n\
+        \          queue.append(i)\n          visited[i] = True\n          parent[i]\
+        \ = u\n    return visited[t]\n\n  parent = [-1] * len(graph)\n  max_flow =\
+        \ 0\n  while any(source in parent for source in sources):\n    for source\
+        \ in sources:\n      if source not in parent:\n        if bfs(source, sinks[0],\
+        \ parent):\n          max_flow += dfs(sources[0], sinks[0], parent, float('inf'))\n\
+        \  return max_flow"
       programming_language: python3
       inputs:
       - graph:
-        - [0, 4, 13, 0, 0, 0]
-        - [12, 0, 10, 0, 0, 0]
+        - [0, 16, 13, 0, 0, 0]
+        - [0, 0, 10, 12, 0, 0]
         - [0, 4, 0, 0, 14, 0]
-        - [0, 12, 9, 0, 0, 8]
+        - [0, 0, 9, 0, 0, 20]
         - [0, 0, 0, 7, 0, 4]
-        - [0, 0, 0, 12, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [3, 0, 17, 0, 0, 0]
         - [0, 3, 0, 0, 0, 0]
-        - [0, 0, 3, 0, 7, 0]
-        - [0, 0, 0, 3, 0, 9]
-        - [0, 0, 0, 0, 3, 0]
+        - [0, 0, 20, 0, 0, 0]
+        - [0, 0, 0, 3, 0, 0]
+        - [0, 0, 0, 0, 10, 0]
+        - [0, 0, 0, 0, 0, 12]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 2, 0, 0, 0, 0]
-        - [2, 0, 3, 0, 0, 0]
-        - [0, 2, 0, 4, 0, 0]
-        - [0, 0, 2, 0, 0, 0]
-        - [0, 0, 0, 2, 0, 1]
+        - [0, 4, 0, 0, 0, 0]
+        - [0, 0, 5, 0, 0, 0]
+        - [0, 0, 0, 6, 0, 0]
         - [0, 0, 0, 0, 2, 0]
-        sources: [0]
-        sinks: [5]
-      - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 3]
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
         - [0, 0, 0, 0, 0, 0]
-        - [10, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        sources: [0]
+        sinks: [5]
+      - graph:
         - [0, 10, 0, 0, 0, 0]
         - [0, 0, 10, 0, 0, 0]
         - [0, 0, 0, 10, 0, 0]
         - [0, 0, 0, 0, 10, 0]
-        sources: [0]
-        sinks: [5]
-      - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 10]
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
@@ -914,7 +906,16 @@ tree:
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
-      exec_results: [12, 3, 2, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      - graph:
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        sources: [0]
+        sinks: [5]
+      exec_results: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     children: []
   - operation: ['2. "Utilize graph algorithms to analyze the dependencies between
         modules in the ''code'' key and refactor the ''main'' function to parallelize
@@ -937,69 +938,66 @@ tree:
         sources to the sinks without exceeding the capacity of any edge.
 
         '
-      code: "import networkx as nx\nimport concurrent.futures\n\ndef main(graph, sources,\
-        \ sinks):\n  G = nx.DiGraph()\n  for i in range(len(graph)):\n    for j in\
-        \ range(len(graph)):\n      if graph[i][j] > 0:\n        G.add_edge(i, j,\
-        \ capacity=graph[i][j], flow=0)\n  \n  with concurrent.futures.ThreadPoolExecutor()\
-        \ as executor:\n    futures = []\n    for source in sources:\n      futures.append(executor.submit(nx.shortest_path,\
-        \ G, source, sinks[0]))\n    paths = [f.result() for f in futures]\n  \n \
-        \ max_flow = 0\n  for path in paths:\n    flow = min(graph[path[0]][path[-1]],\
-        \ 1)  # assuming capacity is 1\n    max_flow += flow\n    for i in range(len(path)\
-        \ - 1):\n      G[path[i]][path[i+1]]['flow'] += flow\n      G[path[i+1]][path[i]]['flow']\
-        \ -= flow\n  \n  return max_flow"
+      code: "from collections import deque\n\ndef main(graph, sources, sinks):\n \
+        \ class Edge:\n    def __init__(self, u, v, cap, flow):\n      self.u = u\n\
+        \      self.v = v\n      self.cap = cap\n      self.flow = flow\n\n  def bfs(s,\
+        \ t, parent):\n    visited = [False] * len(graph)\n    queue = deque([s])\n\
+        \    visited[s] = True\n    while queue:\n      u = queue.popleft()\n    \
+        \  for i in range(len(graph)):\n        if graph[u][i] > 0 and not visited[i]:\n\
+        \          queue.append(i)\n          visited[i] = True\n          parent[i]\
+        \ = u\n    return visited[t]\n\n  def dfs(u, t, parent, flow):\n    if u ==\
+        \ t:\n      return flow\n    max_flow = 0\n    for v in range(len(graph)):\n\
+        \      if graph[u][v] > 0 and parent[v] == u:\n        delta = dfs(v, t, parent,\
+        \ min(flow, graph[u][v]))\n        flow -= delta\n        max_flow += delta\n\
+        \        graph[u][v] -= delta\n        graph[v][u] += delta\n    return max_flow\n\
+        \n  parent = [-1] * len(graph)\n  max_flow = 0\n  while any(source in parent\
+        \ for source in sources):\n    for source in sources:\n      if source not\
+        \ in parent:\n        if bfs(source, sinks[0], parent):\n          max_flow\
+        \ += dfs(sources[0], sinks[0], parent, float('inf'))\n  return max_flow"
       programming_language: python3
       inputs:
       - graph:
-        - [0, 4, 13, 0, 0, 0]
-        - [12, 0, 10, 0, 0, 0]
+        - [0, 16, 13, 0, 0, 0]
+        - [0, 0, 10, 12, 0, 0]
         - [0, 4, 0, 0, 14, 0]
-        - [0, 12, 9, 0, 0, 8]
+        - [0, 0, 9, 0, 0, 20]
         - [0, 0, 0, 7, 0, 4]
-        - [0, 0, 0, 12, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [3, 0, 17, 0, 0, 0]
         - [0, 3, 0, 0, 0, 0]
-        - [0, 0, 3, 0, 7, 0]
-        - [0, 0, 0, 3, 0, 9]
-        - [0, 0, 0, 0, 3, 0]
+        - [0, 0, 20, 0, 0, 0]
+        - [0, 0, 0, 3, 0, 0]
+        - [0, 0, 0, 0, 10, 0]
+        - [0, 0, 0, 0, 0, 12]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 2, 0, 0, 0, 0]
-        - [2, 0, 3, 0, 0, 0]
-        - [0, 2, 0, 4, 0, 0]
-        - [0, 0, 2, 0, 0, 0]
-        - [0, 0, 0, 2, 0, 1]
+        - [0, 4, 0, 0, 0, 0]
+        - [0, 0, 5, 0, 0, 0]
+        - [0, 0, 0, 6, 0, 0]
         - [0, 0, 0, 0, 2, 0]
-        sources: [0]
-        sinks: [5]
-      - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 3]
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
         - [0, 0, 0, 0, 0, 0]
-        - [10, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        sources: [0]
+        sinks: [5]
+      - graph:
         - [0, 10, 0, 0, 0, 0]
         - [0, 0, 10, 0, 0, 0]
         - [0, 0, 0, 10, 0, 0]
         - [0, 0, 0, 0, 10, 0]
-        sources: [0]
-        sinks: [5]
-      - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 10]
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
@@ -1129,8 +1127,16 @@ tree:
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
-      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null, null, null]
+      - graph:
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        sources: [0]
+        sinks: [5]
+      exec_results: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     content:
       description: '**Maximum Flow in a Directed Graph with Multiple Sources and Sinks**
 
@@ -1147,63 +1153,73 @@ tree:
         sources to the sinks without exceeding the capacity of any edge.
 
         '
-      code: "import networkx as nx\n\ndef main():\n  # graph is a matrix representing\
-        \ the flow network, where graph[i][j] is the capacity of the edge from i to\
-        \ j\n  graph = [[0, 2, 0, 0, 0],\n           [0, 0, 3, 5, 0],\n          \
-        \ [0, 0, 0, 0, 6],\n           [0, 0, 0, 0, 0],\n           [0, 0, 0, 0, 0]]\n\
-        \n  # sources and sinks are lists of node indices\n  sources = [0, 2]\n  sinks\
-        \ = [4]\n\n  G = nx.DiGraph()\n  for i in range(len(graph)):\n    for j in\
-        \ range(len(graph)):\n      if graph[i][j] > 0:\n        G.add_edge(i, j,\
-        \ capacity=graph[i][j], flow=0)\n\n  max_flow = 0\n  for source in sources:\n\
-        \    for sink in sinks:\n      path = nx.shortest_path(G, source, sink)\n\
-        \      flow = min(graph[path[0]][path[-1]], 1)  # assuming capacity is 1\n\
-        \      max_flow += flow\n      for i in range(len(path) - 1):\n        G[path[i]][path[i+1]]['flow']\
-        \ += flow\n        G[path[i+1]][path[i]]['flow'] -= flow\n\n  return max_flow"
+      code: "from collections import deque\n\ndef main():\n  graph = [[0, 16, 13,\
+        \ 0, 0, 0],\n           [0, 0, 10, 12, 0, 0],\n           [0, 4, 0, 0, 14,\
+        \ 0],\n           [0, 0, 9, 0, 0, 20],\n           [0, 0, 0, 7, 0, 4],\n \
+        \          [0, 0, 0, 0, 0, 0]]\n\n  sources = [0]\n  sinks = [5]\n\n  class\
+        \ Edge:\n    def __init__(self, u, v, cap, flow):\n      self.u = u\n    \
+        \  self.v = v\n      self.cap = cap\n      self.flow = flow\n\n  class Graph:\n\
+        \    def __init__(self, graph):\n      self.graph = graph\n      self.n =\
+        \ len(graph)\n\n    def bfs(self, s, t, parent):\n      visited = [False]\
+        \ * self.n\n      queue = deque([s])\n      visited[s] = True\n      while\
+        \ queue:\n        u = queue.popleft()\n        for i in range(self.n):\n \
+        \         if self.graph[u][i] > 0 and not visited[i]:\n            queue.append(i)\n\
+        \            visited[i] = True\n            parent[i] = u\n      return visited[t]\n\
+        \n    def dfs(self, u, t, parent, flow):\n      if u == t:\n        return\
+        \ flow\n      max_flow = 0\n      for v in range(self.n):\n        if self.graph[u][v]\
+        \ > 0 and parent[v] == u:\n          delta = self.dfs(v, t, parent, min(flow,\
+        \ self.graph[u][v]))\n          flow -= delta\n          max_flow += delta\n\
+        \          self.graph[u][v] -= delta\n          self.graph[v][u] += delta\n\
+        \      return max_flow\n\n  parent = [-1] * self.n\n  max_flow = 0\n  while\
+        \ any(source in parent for source in sources):\n    for source in sources:\n\
+        \      if source not in parent:\n        if self.bfs(source, sinks[0], parent):\n\
+        \          max_flow += self.dfs(source, sinks[0], parent, float('inf'))\n\
+        \  return max_flow\n\nprint(main())"
       programming_language: python3
       inputs:
       - graph:
-        - [0, 4, 13, 0, 0, 0]
-        - [12, 0, 10, 0, 0, 0]
+        - [0, 16, 13, 0, 0, 0]
+        - [0, 0, 10, 12, 0, 0]
         - [0, 4, 0, 0, 14, 0]
-        - [0, 12, 9, 0, 0, 8]
+        - [0, 0, 9, 0, 0, 20]
         - [0, 0, 0, 7, 0, 4]
-        - [0, 0, 0, 12, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [3, 0, 17, 0, 0, 0]
         - [0, 3, 0, 0, 0, 0]
-        - [0, 0, 3, 0, 7, 0]
-        - [0, 0, 0, 3, 0, 9]
-        - [0, 0, 0, 0, 3, 0]
+        - [0, 0, 20, 0, 0, 0]
+        - [0, 0, 0, 3, 0, 0]
+        - [0, 0, 0, 0, 10, 0]
+        - [0, 0, 0, 0, 0, 12]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 2, 0, 0, 0, 0]
-        - [2, 0, 3, 0, 0, 0]
-        - [0, 2, 0, 4, 0, 0]
-        - [0, 0, 2, 0, 0, 0]
-        - [0, 0, 0, 2, 0, 1]
+        - [0, 4, 0, 0, 0, 0]
+        - [0, 0, 5, 0, 0, 0]
+        - [0, 0, 0, 6, 0, 0]
         - [0, 0, 0, 0, 2, 0]
-        sources: [0]
-        sinks: [5]
-      - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 3]
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
         - [0, 0, 0, 0, 0, 0]
-        - [10, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        sources: [0]
+        sinks: [5]
+      - graph:
         - [0, 10, 0, 0, 0, 0]
         - [0, 0, 10, 0, 0, 0]
         - [0, 0, 0, 10, 0, 0]
         - [0, 0, 0, 0, 10, 0]
+        - [0, 0, 0, 0, 0, 10]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
@@ -1365,8 +1381,9 @@ tree:
         sources to the sinks without exceeding the capacity of any edge.
 
         '
-      code: "def main(graph, sources, sinks):\n  def create_edge(u, v, cap, flow):\n\
-        \    return (u, v, cap, flow)\n\n  def bfs(s, t, parent):\n    visited = [False]\
+      code: "def max_flow(graph, sources, sinks):\n  class Edge:\n    def __init__(self,\
+        \ u, v, cap, flow):\n      self.u = u\n      self.v = v\n      self.cap =\
+        \ cap\n      self.flow = flow\n\n  def bfs(s, t, parent):\n    visited = [False]\
         \ * len(graph)\n    queue = [s]\n    visited[s] = True\n    while queue:\n\
         \      u = queue.pop(0)\n      for i in range(len(graph)):\n        if graph[u][i]\
         \ > 0 and not visited[i]:\n          queue.append(i)\n          visited[i]\
@@ -1375,65 +1392,57 @@ tree:
         \  for v in range(len(graph)):\n      if graph[u][v] > 0 and parent[v] ==\
         \ u:\n        delta = dfs(v, t, parent, min(flow, graph[u][v]))\n        flow\
         \ -= delta\n        max_flow += delta\n        graph[u][v] -= delta\n    \
-        \    graph[v][u] += delta\n    return max_flow\n\n  def max_flow_algorithm(graph,\
-        \ sources, sinks):\n    parent = [-1] * len(graph)\n    max_flow = 0\n   \
-        \ while any(source in parent for source in sources):\n      for source in\
-        \ sources:\n        if source not in parent:\n          if bfs(source, sinks[0],\
-        \ parent):\n            max_flow += dfs(sources[0], sinks[0], parent, float('inf'))\n\
-        \    return max_flow\n\n  return max_flow_algorithm(graph, sources, sinks)"
+        \    graph[v][u] += delta\n    return max_flow\n\n  def augment_flow(parent):\n\
+        \    max_flow = 0\n    for source in sources:\n      if source not in parent:\n\
+        \        if bfs(source, sinks[0], parent):\n          max_flow += dfs(sources[0],\
+        \ sinks[0], parent, float('inf'))\n    return max_flow\n\n  def residual_capacity(graph):\n\
+        \    return any(source in [edge.u for edge in graph] for source in sources)\n\
+        \n  parent = [-1] * len(graph)\n  while residual_capacity(graph):\n    augment_flow(parent)\n\
+        \  return augment_flow(parent)"
       programming_language: python3
       inputs:
       - graph:
-        - [0, 4, 13, 0, 0, 0]
-        - [12, 0, 10, 0, 0, 0]
+        - [0, 16, 13, 0, 0, 0]
+        - [0, 0, 10, 12, 0, 0]
         - [0, 4, 0, 0, 14, 0]
-        - [0, 12, 9, 0, 0, 8]
+        - [0, 0, 9, 0, 0, 20]
         - [0, 0, 0, 7, 0, 4]
-        - [0, 0, 0, 12, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [3, 0, 17, 0, 0, 0]
         - [0, 3, 0, 0, 0, 0]
-        - [0, 0, 3, 0, 7, 0]
-        - [0, 0, 0, 3, 0, 9]
-        - [0, 0, 0, 0, 3, 0]
+        - [0, 0, 20, 0, 0, 0]
+        - [0, 0, 0, 3, 0, 0]
+        - [0, 0, 0, 0, 10, 0]
+        - [0, 0, 0, 0, 0, 12]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 2, 0, 0, 0, 0]
-        - [2, 0, 3, 0, 0, 0]
-        - [0, 2, 0, 4, 0, 0]
-        - [0, 0, 2, 0, 0, 0]
-        - [0, 0, 0, 2, 0, 1]
+        - [0, 4, 0, 0, 0, 0]
+        - [0, 0, 5, 0, 0, 0]
+        - [0, 0, 0, 6, 0, 0]
         - [0, 0, 0, 0, 2, 0]
-        sources: [0]
-        sinks: [5]
-      - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 3]
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
         - [0, 0, 0, 0, 0, 0]
-        - [10, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        sources: [0]
+        sinks: [5]
+      - graph:
         - [0, 10, 0, 0, 0, 0]
         - [0, 0, 10, 0, 0, 0]
         - [0, 0, 0, 10, 0, 0]
         - [0, 0, 0, 0, 10, 0]
-        sources: [0]
-        sinks: [5]
-      - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 10]
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
@@ -1563,7 +1572,17 @@ tree:
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
-      exec_results: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      - graph:
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        sources: [0]
+        sinks: [5]
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null]
     content:
       description: '**Maximum Flow in a Directed Graph with Multiple Sources and Sinks**
 
@@ -1580,67 +1599,69 @@ tree:
         sources to the sinks without exceeding the capacity of any edge.
 
         '
-      code: "def main(graph, sources, sinks):\n  max_flow = 0\n  while any(source\
-        \ in sources for source in sources):\n    for source in sources:\n      if\
-        \ source not in sources:\n        visited = [False] * len(graph)\n       \
-        \ queue = [source]\n        visited[source] = True\n        while queue:\n\
-        \          u = queue.pop(0)\n          for i in range(len(graph)):\n     \
-        \       if graph[u][i] > 0 and not visited[i]:\n              queue.append(i)\n\
-        \              visited[i] = True\n        found_sink = False\n        for\
-        \ v in range(len(graph)):\n          if graph[source][v] > 0 and visited[v]:\n\
-        \            found_sink = True\n            flow = float('inf')\n        \
-        \    parent = [-1] * len(graph)\n            parent[v] = source\n        \
-        \    while v != source:\n              u = parent[v]\n              flow =\
-        \ min(flow, graph[u][v])\n              v = u\n            max_flow += flow\n\
-        \            v = source\n            while v != source:\n              u =\
-        \ parent[v]\n              graph[u][v] -= flow\n              graph[v][u]\
-        \ += flow\n              v = u\n        if not found_sink:\n          break\n\
-        \  return max_flow"
+      code: "def max_flow(graph, sources, sinks):\n  class Edge:\n    def __init__(self,\
+        \ u, v, cap, flow):\n      self.u = u\n      self.v = v\n      self.cap =\
+        \ cap\n      self.flow = flow\n\n  visited = [False] * len(graph)\n  parent\
+        \ = [-1] * len(graph)\n  queue = [sources[0]]\n  visited[sources[0]] = True\n\
+        \  while queue:\n    u = queue.pop(0)\n    for v in range(len(graph)):\n \
+        \     if graph[u][v] > 0 and not visited[v]:\n        queue.append(v)\n  \
+        \      visited[v] = True\n        parent[v] = u\n\n  max_flow = 0\n  for source\
+        \ in sources:\n    if source not in parent:\n      queue = [source]\n    \
+        \  visited = [False] * len(graph)\n      visited[source] = True\n      while\
+        \ queue:\n        u = queue.pop(0)\n        for v in range(len(graph)):\n\
+        \          if graph[u][v] > 0 and not visited[v]:\n            queue.append(v)\n\
+        \            visited[v] = True\n            parent[v] = u\n      flow = float('inf')\n\
+        \      while True:\n        u = sinks[0]\n        delta = 0\n        while\
+        \ u != source:\n          delta = min(delta, graph[parent[u]][u])\n      \
+        \    u = parent[u]\n        if delta == 0:\n          break\n        u = sinks[0]\n\
+        \        while u != source:\n          graph[parent[u]][u] -= delta\n    \
+        \      graph[u][parent[u]] += delta\n          u = parent[u]\n        max_flow\
+        \ += delta\n\n  return max_flow"
       programming_language: python3
       inputs:
       - graph:
-        - [0, 4, 13, 0, 0, 0]
-        - [12, 0, 10, 0, 0, 0]
+        - [0, 16, 13, 0, 0, 0]
+        - [0, 0, 10, 12, 0, 0]
         - [0, 4, 0, 0, 14, 0]
-        - [0, 12, 9, 0, 0, 8]
+        - [0, 0, 9, 0, 0, 20]
         - [0, 0, 0, 7, 0, 4]
-        - [0, 0, 0, 12, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [3, 0, 17, 0, 0, 0]
         - [0, 3, 0, 0, 0, 0]
-        - [0, 0, 3, 0, 7, 0]
-        - [0, 0, 0, 3, 0, 9]
-        - [0, 0, 0, 0, 3, 0]
+        - [0, 0, 20, 0, 0, 0]
+        - [0, 0, 0, 3, 0, 0]
+        - [0, 0, 0, 0, 10, 0]
+        - [0, 0, 0, 0, 0, 12]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
-        - [0, 2, 0, 0, 0, 0]
-        - [2, 0, 3, 0, 0, 0]
-        - [0, 2, 0, 4, 0, 0]
-        - [0, 0, 2, 0, 0, 0]
-        - [0, 0, 0, 2, 0, 1]
+        - [0, 4, 0, 0, 0, 0]
+        - [0, 0, 5, 0, 0, 0]
+        - [0, 0, 0, 6, 0, 0]
         - [0, 0, 0, 0, 2, 0]
-        sources: [0]
-        sinks: [5]
-      - graph:
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
-        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 3]
         - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:
         - [0, 0, 0, 0, 0, 0]
-        - [10, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        - [0, 0, 0, 0, 0, 0]
+        sources: [0]
+        sinks: [5]
+      - graph:
         - [0, 10, 0, 0, 0, 0]
         - [0, 0, 10, 0, 0, 0]
         - [0, 0, 0, 10, 0, 0]
         - [0, 0, 0, 0, 10, 0]
+        - [0, 0, 0, 0, 0, 10]
+        - [0, 0, 0, 0, 0, 0]
         sources: [0]
         sinks: [5]
       - graph:

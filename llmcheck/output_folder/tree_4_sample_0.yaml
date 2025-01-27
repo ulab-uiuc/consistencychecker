@@ -13,16 +13,16 @@ operations:
   'revert the ''main'' function to its original iterative approach, removing memoization
     and traditional loop constructs']
 metrics:
-  embedding similarity L-1 AVG: 0.8171841818780559
-  embedding similarity L-1: [0.712845234782428, 0.8315623197460742, 0.907144991105665]
-  BLEU L-1 AVG: 0.008427056232464982
-  BLEU L-1: [0, 0, 0.025281168697394947]
-  ROUGE-rouge1 L-1 AVG: 0.05555555555555555
-  ROUGE-rouge1 L-1: [0.0, 0.0, 0.16666666666666666]
-  ROUGE-rouge2 L-1 AVG: 0.0196078431372549
-  ROUGE-rouge2 L-1: [0.0, 0.0, 0.058823529411764705]
-  ROUGE-rougeL L-1 AVG: 0.05555555555555555
-  ROUGE-rougeL L-1: [0, 0.0, 0.16666666666666666]
+  embedding similarity L-1 AVG: 0.8877082131640495
+  embedding similarity L-1: [0.8315623197460742, 1.0, 0.8315623197460742]
+  BLEU L-1 AVG: 0.3333333333333333
+  BLEU L-1: [0, 1.0, 0]
+  ROUGE-rouge1 L-1 AVG: 0.3333333333333333
+  ROUGE-rouge1 L-1: [0.0, 1.0, 0.0]
+  ROUGE-rouge2 L-1 AVG: 0.3333333333333333
+  ROUGE-rouge2 L-1: [0.0, 1.0, 0.0]
+  ROUGE-rougeL L-1 AVG: 0.3333333333333333
+  ROUGE-rougeL L-1: [0.0, 1.0, 0.0]
   embedding similarity L-2 AVG: 0.0
   embedding similarity L-2: []
   BLEU L-2 AVG: 0.0
@@ -271,22 +271,15 @@ tree:
         The input array will only contain integers.
 
         '
-      code: "function get_len(arr) {\n    return arr.length;\n}\n\nfunction is_two_or_less(arr)\
-        \ {\n    return arr.length <= 2;\n}\n\nfunction get_inf() {\n    return -Infinity;\n\
-        }\n\nfunction get_max(arr) {\n    return Math.max(...arr);\n}\n\nfunction\
-        \ get_range(len) {\n    return Array(len).fill(0).map((_, i) => i);\n}\n\n\
-        function is_odd(num) {\n    return (num & 1) === 1;\n}\n\nfunction get_slice(arr,\
-        \ start, end) {\n    return arr.slice(start, end);\n}\n\nfunction sum_slice(arr,\
-        \ start, end) {\n    return arr.slice(start, end).reduce((a, b) => a + b,\
-        \ 0);\n}\n\nfunction get_max_sum(arr, i, j) {\n    return Math.max(get_max_sum(arr,\
-        \ i, j - 1), sum_slice(arr, i, j));\n}\n\nfunction do_work(arr, i) {\n   \
-        \ for (let j = i + 1; j < get_len(arr); j++) {\n        if (is_odd(j - i))\
-        \ {\n            return get_max_sum(arr, i, j);\n        }\n    }\n}\n\nfunction\
-        \ main(arr) {\n    if (is_two_or_less(arr)) {\n        return get_max(arr);\n\
-        \    }\n    let max_sum = get_inf();\n    for (let i = 0; i < get_len(arr);\
-        \ i++) {\n        max_sum = Math.max(max_sum, do_work(arr, i));\n    }\n \
-        \   return max_sum;\n}"
-      programming_language: javascript
+      code: "def inject_data(nums):\n    return len(nums)\n\ndef check_edge_case(n):\n\
+        \    if n <= 2:\n        return max(nums)\n\ndef get_max_sum_window(i, j):\n\
+        \    if (j - i) % 2 == 1:\n        return sum(nums[i:j + 1])\n\ndef get_max_sum(nums):\n\
+        \    max_sum = float('-inf')\n    for i in range(inject_data(nums)):\n   \
+        \     for j in range(i + 1, inject_data(nums)):\n            max_sum = max(max_sum,\
+        \ get_max_sum_window(i, j))\n    return max_sum\n\ndef main(nums):\n    n\
+        \ = check_edge_case(inject_data(nums))\n    if n <= 2:\n        return check_edge_case(n)\n\
+        \    return get_max_sum(nums)"
+      programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
       - nums: [1, 2, 3, 4, 5, 6]
@@ -306,7 +299,8 @@ tree:
       - nums: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10, -10, 10]
       - nums: [10, 20, 30, 40, 50]
       - nums: [10, 20, 30, 40, 50, 60]
-      exec_results: []
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null]
     content:
       description: '**Maximum Subarray Sum of Odd Length**
 
@@ -362,14 +356,16 @@ tree:
         The input array will only contain integers.
 
         '
-      code: "function maxSumSubarray(arr) {\n    function get_len(arr) {\n       \
-        \ return arr.length;\n    }\n    if (get_len(arr) <= 2) {\n        return\
-        \ Math.max(...arr);\n    }\n    let max_sum = -Infinity;\n    for (let i =\
-        \ 0; i < get_len(arr); i++) {\n        for (let j = i + 1; j < get_len(arr);\
-        \ j++) {\n            if ((j - i) % 2 === 1) {\n                max_sum =\
-        \ Math.max(max_sum, arr.slice(i, j).reduce((a, b) => a + b, 0));\n       \
-        \     }\n        }\n    }\n    return max_sum;\n}"
-      programming_language: javascript
+      code: "def main(nums):\n    def inject_data(nums):\n        return len(nums)\n\
+        \n    def check_edge_case(n):\n        if n <= 2:\n            return max(nums)\n\
+        \n    def get_max_sum_window(i, j):\n        if (j - i) % 2 == 1:\n      \
+        \      return sum(nums[i:j + 1])\n\n    def get_max_sum(nums):\n        max_sum\
+        \ = float('-inf')\n        for i in range(inject_data(nums)):\n          \
+        \  for j in range(i + 1, inject_data(nums)):\n                max_sum = max(max_sum,\
+        \ get_max_sum_window(i, j))\n        return max_sum\n\n    n = check_edge_case(inject_data(nums))\n\
+        \    if n <= 2:\n        return check_edge_case(n)\n    else:\n        return\
+        \ get_max_sum(nums)"
+      programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
       - nums: [1, 2, 3, 4, 5, 6]
@@ -389,7 +385,8 @@ tree:
       - nums: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10, -10, 10]
       - nums: [10, 20, 30, 40, 50]
       - nums: [10, 20, 30, 40, 50, 60]
-      exec_results: []
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null]
     children: []
   - operation: [replace the traditional object-oriented design of the 'main' function
         in the 'code' key with a functional programming approach using immutable data
@@ -451,10 +448,13 @@ tree:
         The input array will only contain integers.
 
         '
-      code: "from functools import reduce\n\ndef max_sum_of_odd_length_subarrays(nums):\n\
-        \    n = len(nums)\n    return reduce(lambda max_sum, num: max(max_sum, num),\
-        \ \n                 (sum(nums[i:j + 1]) for i in range(n) for j in range(i\
-        \ + 1, n) if (j - i) % 2 == 1), \n                 float('-inf'))"
+      code: "def main(nums):\n    def max_subarray_sum(start, end):\n        return\
+        \ sum(nums[start:end+1])\n    \n    def max_odd_subarray_sum(start, end):\n\
+        \        if (end - start) % 2 == 1:\n            return max_subarray_sum(start,\
+        \ end)\n        else:\n            return 0\n    \n    n = len(nums)\n   \
+        \ max_sum = float('-inf')\n    for i in range(n):\n        for j in range(i\
+        \ + 1, n):\n            max_sum = max(max_sum, max_odd_subarray_sum(i, j))\n\
+        \    return max_sum"
       programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
@@ -475,8 +475,8 @@ tree:
       - nums: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10, -10, 10]
       - nums: [10, 20, 30, 40, 50]
       - nums: [10, 20, 30, 40, 50, 60]
-      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null]
+      exec_results: [14, 21, 10, 27, 36, 44, 55, 0, 0, 0, 10, 10, 12, 0, 0, 0, 140,
+        210]
     content:
       description: '**Maximum Subarray Sum of Odd Length**
 
@@ -532,14 +532,15 @@ tree:
         The input array will only contain integers.
 
         '
-      code: "class MaxSumOfOddLengthSubarrays:\n    def __init__(self, nums):\n  \
-        \      self.nums = nums\n        self.max_sum = float('-inf')\n\n    def calculate_max_sum(self):\n\
-        \        for i in range(len(self.nums)):\n            for j in range(i + 1,\
-        \ len(self.nums)):\n                if (j - i) % 2 == 1:\n               \
-        \     current_sum = sum(self.nums[i:j + 1])\n                    self.max_sum\
-        \ = max(self.max_sum, current_sum)\n\n    def get_max_sum(self):\n       \
-        \ self.calculate_max_sum()\n        return self.max_sum\n\nnums = [1, 4, 2,\
-        \ 8, 4]\nmax_sum = MaxSumOfOddLengthSubarrays(nums)\nprint(max_sum.get_max_sum())"
+      code: "class MaxSubarray:\n    def __init__(self, nums):\n        self.nums\
+        \ = nums\n        self.max_sum = float('-inf')\n\n    def max_subarray_sum(self,\
+        \ start, end):\n        return sum(self.nums[start:end+1])\n\n    def max_odd_subarray_sum(self,\
+        \ start, end):\n        if (end - start) % 2 == 1:\n            return self.max_subarray_sum(start,\
+        \ end)\n        else:\n            return 0\n\n    def find_max_odd_subarray_sum(self):\n\
+        \        n = len(self.nums)\n        for i in range(n):\n            for j\
+        \ in range(i + 1, n):\n                self.max_sum = max(self.max_sum, self.max_odd_subarray_sum(i,\
+        \ j))\n        return self.max_sum\n\ndef main(nums):\n    max_subarray =\
+        \ MaxSubarray(nums)\n    return max_subarray.find_max_odd_subarray_sum()"
       programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
@@ -560,8 +561,8 @@ tree:
       - nums: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10, -10, 10]
       - nums: [10, 20, 30, 40, 50]
       - nums: [10, 20, 30, 40, 50, 60]
-      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null]
+      exec_results: [14, 21, 10, 27, 36, 44, 55, 0, 0, 0, 10, 10, 12, 0, 0, 0, 140,
+        210]
     children: []
   - operation: ['replace the iterative approach used in the ''main'' function in the
         ''code'' key with a recursive one, utilizing memoization to avoid redundant
@@ -622,12 +623,13 @@ tree:
         The input array will only contain integers.
 
         '
-      code: "def main(nums):\n    memo = {}\n\n    def max_sum(i, n):\n        if\
-        \ (i, n) in memo:\n            return memo[(i, n)]\n        if n <= 2:\n \
-        \           return max(nums[i:n])\n        max_val = float('-inf')\n     \
-        \   for j in range(i + 1, n):\n            if (j - i) % 2 == 1:\n        \
-        \        max_val = max(max_val, sum(nums[i:j + 1]))\n        memo[(i, n)]\
-        \ = max_val\n        return max_val\n\n    return max_sum(0, len(nums))"
+      code: "def max_rob(nums):\n    def helper(i, memo):\n        if i >= len(nums):\n\
+        \            return 0\n        if i in memo:\n            return memo[i]\n\
+        \        if i + 1 == len(nums):\n            return nums[i]\n        if (i\
+        \ + 1) % 2 == 1:\n            memo[i] = max(nums[i] + helper(i + 2, memo),\
+        \ helper(i + 1, memo))\n            return memo[i]\n        memo[i] = max(nums[i]\
+        \ + helper(i + 2, memo), helper(i + 1, memo))\n        return memo[i]\n  \
+        \  memo = {}\n    return helper(0, memo)"
       programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
@@ -648,8 +650,8 @@ tree:
       - nums: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10, -10, 10]
       - nums: [10, 20, 30, 40, 50]
       - nums: [10, 20, 30, 40, 50, 60]
-      exec_results: [10, 21, 10, 21, 36, 36, 55, 0, 0, 0, 10, 10, 12, 0, 0, 0, 100,
-        210]
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null]
     content:
       description: '**Maximum Subarray Sum of Odd Length**
 
@@ -705,10 +707,14 @@ tree:
         The input array will only contain integers.
 
         '
-      code: "def main(nums):\n    max_val = float('-inf')\n    for i in range(len(nums)):\n\
-        \        for j in range(i + 1, len(nums) + 1):\n            if (j - i) % 2\
-        \ == 1:\n                max_val = max(max_val, sum(nums[i:j]))\n    return\
-        \ max_val"
+      code: "def max_rob(nums):\n    if not nums:\n        return 0\n    if len(nums)\
+        \ == 1:\n        return nums[0]\n    if len(nums) == 2:\n        return max(nums[0],\
+        \ nums[1])\n    odd = [0 for _ in range(len(nums))]\n    even = [0 for _ in\
+        \ range(len(nums))]\n    odd[1] = nums[0]\n    even[1] = nums[1]\n    even[2]\
+        \ = max(nums[0], nums[1])\n    for i in range(3, len(nums)):\n        if i\
+        \ % 2 == 1:\n            odd[i] = max(odd[i-2] + nums[i], even[i-1])\n   \
+        \     else:\n            even[i] = max(even[i-2] + nums[i], odd[i-1])\n  \
+        \  return max(odd[-1], even[-1])"
       programming_language: python3
       inputs:
       - nums: [1, 2, 3, 4, 5]
@@ -729,6 +735,6 @@ tree:
       - nums: [-10, 10, -10, 10, -10, 10, -10, 10, -10, 10, -10, 10]
       - nums: [10, 20, 30, 40, 50]
       - nums: [10, 20, 30, 40, 50, 60]
-      exec_results: [15, 20, 9, 28, 35, 45, 54, 1, 1, 1, 9, 11, 11, 10, 10, 10, 150,
-        200]
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null]
     children: []

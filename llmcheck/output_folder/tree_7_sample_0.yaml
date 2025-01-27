@@ -13,8 +13,8 @@ operations:
     and static analysis tools', 'remove type hints and annotations, opting for runtime
     type checking and dynamic typing instead"']
 metrics:
-  embedding similarity L-1 AVG: 0.8768442840596485
-  embedding similarity L-1: [0.9194723457119831, 0.7110605064669624, 1.0]
+  embedding similarity L-1 AVG: 0.9183549965923911
+  embedding similarity L-1: [0.9194723457119831, 0.8355926440651901, 1.0]
   BLEU L-1 AVG: 0.3333333333333333
   BLEU L-1: [0, 0, 1.0]
   ROUGE-rouge1 L-1 AVG: 0.3333333333333333
@@ -22,7 +22,7 @@ metrics:
   ROUGE-rouge2 L-1 AVG: 0.3333333333333333
   ROUGE-rouge2 L-1: [0.0, 0.0, 1.0]
   ROUGE-rougeL L-1 AVG: 0.3333333333333333
-  ROUGE-rougeL L-1: [0.0, 0, 1.0]
+  ROUGE-rougeL L-1: [0.0, 0.0, 1.0]
   embedding similarity L-2 AVG: 0.0
   embedding similarity L-2: []
   BLEU L-2 AVG: 0.0
@@ -281,10 +281,11 @@ tree:
         '
       code: "from functools import lru_cache\n\ndef main(nums, target):\n  def get_bit(num):\n\
         \    binary = bin(num)[2:]\n    return [int(bit) for bit in binary]\n\n  @lru_cache(None)\n\
-        \  def get_max_xor(i, target):\n    if i == len(nums):\n      return 0\n \
-        \   result = get_max_xor(i + 1, target)\n    if target & nums[i]:\n      result\
-        \ = max(result, get_max_xor(i + 1, target ^ nums[i]) + nums[i])\n    return\
-        \ result\n\n  return get_max_xor(0, target)"
+        \  def get_max_xor(i):\n    if i == len(nums):\n      return 0\n    return\
+        \ max(get_max_xor(i + 1), get_max_xor(i + 1, nums[i]) + nums[i])\n\n  def\
+        \ get_max_xor_helper(i, target):\n    if target == 0:\n      return 0\n  \
+        \  return max(get_max_xor_helper(i + 1, target), get_max_xor_helper(i + 1,\
+        \ target ^ nums[i]) + nums[i])\n    \n  return get_max_xor_helper(0, target)"
       programming_language: python3
       inputs:
       - nums: [3, 9, 8, 4]
@@ -327,8 +328,8 @@ tree:
         target: 1
       - nums: [1, 2, 3, 4]
         target: 8
-      exec_results: [20, 9, 13, 6, 4, 18, 17, 7, 18, 6, 3, 8, 12, 5, 18, 10, 7, 13,
-        17, 0]
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null]
     content:
       description: '# Maximum XOR With an Array Element
 
@@ -373,9 +374,9 @@ tree:
         '
       code: "def main(nums, target):\n  def get_bit(num):\n    binary = bin(num)[2:]\n\
         \    return [int(bit) for bit in binary]\n\n  max_xor = 0\n  for i in range(len(nums)):\n\
-        \    for j in range(i + 1, len(nums) + 1):\n      xor = 0\n      for k in\
-        \ range(i, j):\n        xor ^= nums[k]\n      max_xor = max(max_xor, xor)\n\
-        \n  return max_xor"
+        \    for j in range(i + 1, len(nums) + 1):\n      current_xor = 0\n      for\
+        \ k in range(i, j):\n        current_xor ^= nums[k]\n      max_xor = max(max_xor,\
+        \ current_xor)\n\n  return max_xor"
       programming_language: python3
       inputs:
       - nums: [3, 9, 8, 4]
@@ -468,15 +469,13 @@ tree:
         - It''s guaranteed that the answer is unique.
 
         '
-      code: "function main(nums, target) {\n  function getBit(num) {\n    return (num).toString(2).split('').map(bit\
-        \ => parseInt(bit));\n  }\n\n  function getMaxLengthXor(i, target, memo =\
-        \ {}) {\n    const key = `${i},${target}`;\n    if (memo[key]) return memo[key];\n\
-        \    if (target == 0) return 0;\n    if (i == nums.length) return 0;\n   \
-        \ const option1 = getMaxLengthXor(i + 1, target, memo);\n    const option2\
-        \ = (i < nums.length && target >= nums[i]) ? getMaxLengthXor(i + 1, target\
-        \ - nums[i], memo) + nums[i] : 0;\n    return memo[key] = Math.max(option1,\
-        \ option2);\n  }\n\n  return getMaxLengthXor(0, target);\n}"
-      programming_language: javascript
+      code: "from functools import lru_cache\n\ndef main(nums, target):\n    def get_bit(num):\n\
+        \        binary = bin(num)[2:]\n        return [int(bit) for bit in binary]\n\
+        \n    @lru_cache(None)\n    def get_max_xor(i, target):\n        if target\
+        \ == 0:\n            return 0\n        if i == len(nums):\n            return\
+        \ 0\n        return max(get_max_xor(i + 1, target), get_max_xor(i + 1, target\
+        \ ^ nums[i]) + nums[i])\n\n    return get_max_xor(0, target)"
+      programming_language: python3
       inputs:
       - nums: [3, 9, 8, 4]
         target: 2
@@ -518,7 +517,8 @@ tree:
         target: 1
       - nums: [1, 2, 3, 4]
         target: 8
-      exec_results: []
+      exec_results: [21, 10, 26, 20, 10, 26, 21, 10, 26, 20, 10, 26, 24, 9, 26, 18,
+        10, 21, 24, 10]
     content:
       description: '# Maximum XOR With an Array Element
 
@@ -561,18 +561,15 @@ tree:
         - It''s guaranteed that the answer is unique.
 
         '
-      code: "let nums = [];\nlet target = 0;\nlet maxLengthXor = 0;\nlet memo = {};\n\
-        \nfunction getBit(num) {\n  return (num).toString(2).split('').map(bit =>\
-        \ parseInt(bit));\n}\n\nfunction getMaxLengthXor(i) {\n  globalThis.console.log(`i:\
-        \ ${i}`);\n  const key = `${i}`;\n  if (memo[key] !== undefined) {\n    return\
-        \ memo[key];\n  }\n  if (target == 0) {\n    return 0;\n  }\n  if (i == nums.length)\
-        \ {\n    return 0;\n  }\n  const option1 = getMaxLengthXor(i + 1);\n  if (i\
-        \ < nums.length && target >= nums[i]) {\n    const option2 = getMaxLengthXor(i\
-        \ + 1, target - nums[i]) + nums[i];\n    memo[key] = Math.max(option1, option2);\n\
-        \    globalThis.console.log(`memo[${key}]: ${memo[key]}`);\n  } else {\n \
-        \   memo[key] = option1;\n  }\n  return memo[key];\n}\n\nfunction main() {\n\
-        \  globalThis.console.log(getMaxLengthXor(0));\n}\n\nmain();"
-      programming_language: javascript
+      code: "max_xor = 0\ntarget = 0\nnums = []\n\ndef get_bit(num):\n    global max_xor,\
+        \ target, nums\n    binary = bin(num)[2:]\n    return [int(bit) for bit in\
+        \ binary]\n\ndef get_max_xor(i):\n    global max_xor, target, nums\n    global\
+        \ max_xor_result\n    if target == 0:\n        max_xor = 0\n        return\n\
+        \    if i == len(nums):\n        return\n    max_xor_result = max(get_max_xor(i\
+        \ + 1), get_max_xor(i + 1, target ^ nums[i]) + nums[i])\n\ndef main():\n \
+        \   global max_xor, target, nums\n    for num in range(0, 10):\n        nums.append(num)\n\
+        \    get_max_xor(0)\n    print(max_xor)\n\nmain()"
+      programming_language: python3
       inputs:
       - nums: [3, 9, 8, 4]
         target: 2
@@ -614,7 +611,8 @@ tree:
         target: 1
       - nums: [1, 2, 3, 4]
         target: 8
-      exec_results: []
+      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
+        null, null, null, null, null, null, null, null, null]
     children: []
   - operation: ['3. "Use a type hinting system in the ''main'' function in the ''code''
         key to specify the types of function arguments and return values, leveraging

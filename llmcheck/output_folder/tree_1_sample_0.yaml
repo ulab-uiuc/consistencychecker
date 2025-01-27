@@ -11,16 +11,16 @@ operations:
   'revert to the original interpreted code, using the Python interpreter to execute
     the code']
 metrics:
-  embedding similarity L-1 AVG: 0.8603019462909818
-  embedding similarity L-1: [0.8603019462909818, 0.8603019462909818, 0.8603019462909818]
-  BLEU L-1 AVG: 0.0
-  BLEU L-1: [0, 0, 0]
-  ROUGE-rouge1 L-1 AVG: 0.0
-  ROUGE-rouge1 L-1: [0.0, 0.0, 0.0]
-  ROUGE-rouge2 L-1 AVG: 0.0
-  ROUGE-rouge2 L-1: [0.0, 0.0, 0.0]
-  ROUGE-rougeL L-1 AVG: 0.0
-  ROUGE-rougeL L-1: [0.0, 0.0, 0.0]
+  embedding similarity L-1 AVG: 0.9068679641939879
+  embedding similarity L-1: [1.0, 0.8603019462909818, 0.8603019462909818]
+  BLEU L-1 AVG: 0.3333333333333333
+  BLEU L-1: [1.0, 0, 0]
+  ROUGE-rouge1 L-1 AVG: 0.3333333333333333
+  ROUGE-rouge1 L-1: [1.0, 0.0, 0.0]
+  ROUGE-rouge2 L-1 AVG: 0.3333333333333333
+  ROUGE-rouge2 L-1: [1.0, 0.0, 0.0]
+  ROUGE-rougeL L-1 AVG: 0.3333333333333333
+  ROUGE-rougeL L-1: [1.0, 0.0, 0.0]
   embedding similarity L-2 AVG: 0.0
   embedding similarity L-2: []
   BLEU L-2 AVG: 0.0
@@ -157,12 +157,17 @@ tree:
         \ `1` to reach the target.\nThe XOR of the integers we skipped is `0 ^ 1 ^\
         \ 1 = 0`.\n\nConstraints:\n1 <= nums.length <= 2^10\n0 <= nums[i] <= 2^10\
         \ - 1\nIt's guaranteed that there is at least one valid way to reach the target.\n"
-      code: "def main(nums):\n  def dfs(i, j, dp):\n    if i == len(nums):\n     \
-        \ return 0\n    if (i, j) in memo:\n      return memo[(i, j)]\n    res = 0\n\
-        \    if nums[i] ^ j == 2**10 - 1:\n      res = 1\n    elif nums[i] < j:\n\
-        \      res = max(res, dfs(i + 1, j ^ nums[i], dp))\n    memo[(i, j)] = res\n\
-        \    return res\n  memo = {}\n  return max(dfs(0, 0, [[0] * (2**10) for _\
-        \ in range(len(nums) + 1)]))"
+      code: "def main(nums):\n    def dfs(i, mask, dp):\n        if i == len(nums):\n\
+        \            return 0\n        if (i, mask) in memo:\n            return memo[(i,\
+        \ mask)]\n        memo[(i, mask)] = max(dfs(i + 1, mask, dp), dp[i][mask]\
+        \ + dfs(i + 1, mask ^ nums[i], dp))\n        if nums[i] < mask:\n        \
+        \    memo[(i, mask)] = max(memo[(i, mask)], dfs(i + 1, mask ^ nums[i], dp))\n\
+        \        return memo[(i, mask)]\n    n = len(nums)\n    dp = [[0] * (2**10)\
+        \ for _ in range(n + 1)]\n    for i in range(1, n + 1):\n        dp[i] = dp[i\
+        \ - 1][:]\n        for j in range(2**10):\n            if nums[i - 1] ^ j\
+        \ == 2**10 - 1:\n                dp[i][j] = 1\n            elif nums[i - 1]\
+        \ < j:\n                dp[i][j] = max(dp[i][j], dp[i - 1][j ^ nums[i - 1]])\n\
+        \    memo = {}\n    return dfs(1, 0, dp)"
       programming_language: python3
       inputs:
       - nums: [0, 2, 3, 4, 5, 6, 7]
@@ -183,8 +188,7 @@ tree:
       - nums: [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
       - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
       - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null]
+      exec_results: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     content:
       description: "**Maximum XOR of Two Numbers in an Array**\n\nGiven a non-empty\
         \ array of non-negative integers `nums`, you are initially at position `0`.\
@@ -203,11 +207,14 @@ tree:
         \ `1` to reach the target.\nThe XOR of the integers we skipped is `0 ^ 1 ^\
         \ 1 = 0`.\n\nConstraints:\n1 <= nums.length <= 2^10\n0 <= nums[i] <= 2^10\
         \ - 1\nIt's guaranteed that there is at least one valid way to reach the target.\n"
-      code: "def main(nums):\n  memo = {}\n  max_val = 2**10\n  def dfs(i, j):\n \
-        \   if i == len(nums):\n      return 0\n    if (i, j) in memo:\n      return\
-        \ memo[(i, j)]\n    res = 0\n    if nums[i] ^ j == max_val - 1:\n      res\
-        \ = 1\n    elif nums[i] < j:\n      res = max(res, dfs(i + 1, j ^ nums[i]))\n\
-        \    memo[(i, j)] = res\n    return res\n  return max(dfs(0, 0))"
+      code: "def main(nums):\n    n = len(nums)\n    dp = [[0] * (2**10) for _ in\
+        \ range(n + 1)]\n    \n    for i in range(1, n + 1):\n        for j in range(2**10):\n\
+        \            if i == 1:\n                if nums[0] == j:\n              \
+        \      dp[i][j] = 1\n            else:\n                if nums[i - 1] ^ j\
+        \ == 2**10 - 1:\n                    dp[i][j] = 1\n                elif nums[i\
+        \ - 1] < j:\n                    dp[i][j] = max(dp[i][j], dp[i - 1][j ^ nums[i\
+        \ - 1]])\n    \n    max_sum = 0\n    for i in range(2**10):\n        max_sum\
+        \ = max(max_sum, dp[n][i])\n    \n    return max_sum"
       programming_language: python3
       inputs:
       - nums: [0, 2, 3, 4, 5, 6, 7]
@@ -228,8 +235,7 @@ tree:
       - nums: [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
       - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
       - nums: [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
-      exec_results: [null, null, null, null, null, null, null, null, null, null, null,
-        null, null, null, null, null, null, null]
+      exec_results: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     children: []
   - operation: ['Replace the ''main'' function with a lambda function that takes a
         single argument and returns the result of the original function, preserving
@@ -253,12 +259,12 @@ tree:
         \ `1` to reach the target.\nThe XOR of the integers we skipped is `0 ^ 1 ^\
         \ 1 = 0`.\n\nConstraints:\n1 <= nums.length <= 2^10\n0 <= nums[i] <= 2^10\
         \ - 1\nIt's guaranteed that there is at least one valid way to reach the target.\n"
-      code: "python3\n(lambda nums: \n  n = len(nums)\n  dp = [[0] * (2**10) for _\
-        \ in range(n + 1)]\n  for i in range(1, n + 1):\n    dp[i] = dp[i - 1][:]\n\
-        \    for j in range(2**10):\n      if nums[i - 1] ^ j == 2**10 - 1:\n    \
-        \    dp[i][j] = 1\n      elif nums[i - 1] < j:\n        dp[i][j] = max(dp[i][j],\
-        \ dp[i - 1][j ^ nums[i - 1]])\n  return max(dp[-1])\n)"
-      programming_language: python
+      code: "def main(nums):\n  n = len(nums)\n  dp = [[0] * (2**10) for _ in range(n\
+        \ + 1)]\n  for i in range(1, n + 1):\n    dp[i] = dp[i - 1][:]\n    for j\
+        \ in range(2**10):\n      if nums[i - 1] ^ j == 2**10 - 1:\n        dp[i][j]\
+        \ = 1\n      elif nums[i - 1] < j:\n        dp[i][j] = max(dp[i][j], dp[i\
+        \ - 1][j ^ nums[i - 1]])\n  return max(dp[-1])\nmain = lambda nums: main(nums)"
+      programming_language: python3
       inputs:
       - nums: [0, 2, 3, 4, 5, 6, 7]
       - nums: [0, 1, 1, 1]
@@ -298,12 +304,13 @@ tree:
         \ `1` to reach the target.\nThe XOR of the integers we skipped is `0 ^ 1 ^\
         \ 1 = 0`.\n\nConstraints:\n1 <= nums.length <= 2^10\n0 <= nums[i] <= 2^10\
         \ - 1\nIt's guaranteed that there is at least one valid way to reach the target.\n"
-      code: "def f(nums):\n  n = len(nums)\n  dp = [[0] * (2**10) for _ in range(n\
+      code: "def main(nums):\n  n = len(nums)\n  dp = [[0] * (2**10) for _ in range(n\
         \ + 1)]\n  for i in range(1, n + 1):\n    dp[i] = dp[i - 1][:]\n    for j\
         \ in range(2**10):\n      if nums[i - 1] ^ j == 2**10 - 1:\n        dp[i][j]\
         \ = 1\n      elif nums[i - 1] < j:\n        dp[i][j] = max(dp[i][j], dp[i\
-        \ - 1][j ^ nums[i - 1]])\n  return max(dp[-1])"
-      programming_language: python
+        \ - 1][j ^ nums[i - 1]])\n  return max(dp[-1])\n\ndef main(nums):\n  return\
+        \ main(nums)"
+      programming_language: python3
       inputs:
       - nums: [0, 2, 3, 4, 5, 6, 7]
       - nums: [0, 1, 1, 1]
@@ -348,12 +355,49 @@ tree:
         \ `1` to reach the target.\nThe XOR of the integers we skipped is `0 ^ 1 ^\
         \ 1 = 0`.\n\nConstraints:\n1 <= nums.length <= 2^10\n0 <= nums[i] <= 2^10\
         \ - 1\nIt's guaranteed that there is at least one valid way to reach the target.\n"
-      code: "import numba\n\n@numba.jit(nopython=True, cache=True)\ndef main(nums):\n\
-        \  n = len(nums)\n  dp = [[0] * (1<<10) for _ in range(n + 1)]\n  for i in\
-        \ range(1, n + 1):\n    dp[i] = dp[i - 1][:]\n    for j in range(1<<10):\n\
-        \      if nums[i - 1] ^ j == 2**10 - 1:\n        dp[i][j] = 1\n      elif\
-        \ nums[i - 1] < j:\n        dp[i][j] = max(dp[i][j], dp[i - 1][j ^ nums[i\
-        \ - 1]])\n  return max(dp[-1])"
+      code: "import llvmliteBindings as llvmlite\nfrom llvmlite import ir\nimport\
+        \ ctypes\n\ndef main(nums):\n  n = len(nums)\n  dp = [[0] * (2**10) for _\
+        \ in range(n + 1)]\n  for i in range(1, n + 1):\n    dp[i] = dp[i - 1][:]\n\
+        \    for j in range(2**10):\n      if nums[i - 1] ^ j == 2**10 - 1:\n    \
+        \    dp[i][j] = 1\n      elif nums[i - 1] < j:\n        dp[i][j] = max(dp[i][j],\
+        \ dp[i - 1][j ^ nums[i - 1]])\n  return max(dp[-1])\n\n# Create a module\n\
+        m = ir.Module(name='jit_module')\n\n# Create a function\nfunc = ir.Function(m,\
+        \ ir.FunctionType(ir.IntType(32), [ir.IntType(32)]), 'main')\n\n# Create a\
+        \ block\nblock = func.append_basic_block('entry')\n\n# Create a builder\n\
+        builder = ir.IRBuilder(block)\n\n# Create a list to hold the values of the\
+        \ input array\ninput_array = builder.alloca(ir.IntType(32), len(nums))\n\n\
+        # Get the address of the input array\ninput_addr = builder.gep(input_array,\
+        \ [builder.int32(0), builder.int32(0)])\n\n# Load the values of the input\
+        \ array\nfor i in range(len(nums)):\n  builder.store(builder.int32(nums[i]),\
+        \ builder.gep(input_addr, [builder.int32(i)]))\n\n# Create a loop that runs\
+        \ from 1 to n\nwith block.inserted():\n  label = builder.append_block('loop',\
+        \ func)\n  builder.branch(label)\n  builder.position_at_end(label)\n  i =\
+        \ builder.int32(1)\n  while i < n:\n    # Get the value of the current element\n\
+        \    curr_val = builder.load(builder.gep(input_addr, [builder.int32(i - 1)]))\n\
+        \n    # Create a loop that runs from 0 to 2^10\n    with label.inserted():\n\
+        \      label2 = builder.append_block('loop2', label)\n      builder.branch(label2)\n\
+        \      builder.position_at_end(label2)\n      j = builder.int32(0)\n     \
+        \ while j < 2**10:\n        # Get the value of the current bit\n        bit_val\
+        \ = builder.int32(j)\n\n        # Check if the current bit is 1\n        if\
+        \ curr_val ^ bit_val == 2**10 - 1:\n          # If it is, set the current\
+        \ value of dp to 1\n          dp_val = builder.int32(1)\n        elif curr_val\
+        \ < bit_val:\n          # If it's not, get the value of dp for the previous\
+        \ element and the previous bit\n          prev_dp_val = builder.load(builder.gep(dp,\
+        \ [builder.int32(i - 1), builder.int32(bit_val ^ curr_val)]))\n          #\
+        \ Get the maximum of the current value of dp and the previous value of dp\n\
+        \          dp_val = builder.max(builder.load(builder.gep(dp, [builder.int32(i),\
+        \ builder.int32(j)])), prev_dp_val)\n        else:\n          # If the current\
+        \ bit is 0, set the current value of dp to 0\n          dp_val = builder.int32(0)\n\
+        \n        # Store the current value of dp\n        builder.store(dp_val, builder.gep(dp,\
+        \ [builder.int32(i), builder.int32(j)]))\n\n        # Increment the loop counter\n\
+        \        j = builder.add(j, builder.int32(1))\n        builder.branch(label2)\n\
+        \      i = builder.add(i, builder.int32(1))\n\n# Get the maximum value of\
+        \ dp\nmax_dp = builder.load(builder.gep(dp, [builder.int32(n), builder.int32(2**10\
+        \ - 1)]))\n\n# Return the maximum value of dp\nbuilder.ret(max_dp)\n\n# Compile\
+        \ the function\nmod = llvmlite.parse_assembly(m.assemble())\nfunc = mod.get_function('main')\n\
+        ctypes.CDLL(ctypes.util.find_library('c').path).func = func\n\n# Call the\
+        \ function\nresult = ctypes.CDLL(ctypes.util.find_library('c').path).func(*[nums])\n\
+        print(result)"
       programming_language: python3
       inputs:
       - nums: [0, 2, 3, 4, 5, 6, 7]
@@ -394,12 +438,13 @@ tree:
         \ `1` to reach the target.\nThe XOR of the integers we skipped is `0 ^ 1 ^\
         \ 1 = 0`.\n\nConstraints:\n1 <= nums.length <= 2^10\n0 <= nums[i] <= 2^10\
         \ - 1\nIt's guaranteed that there is at least one valid way to reach the target.\n"
-      code: "import numba\n\n@numba.jit(nopython=True, cache=True)\ndef main(nums):\n\
-        \  n = len(nums)\n  dp = [[0] * (1<<10) for _ in range(n + 1)]\n  for i in\
-        \ range(1, n + 1):\n    dp[i] = dp[i - 1][:]\n    for j in range(1<<10):\n\
-        \      if nums[i - 1] ^ j == 2**10 - 1:\n        dp[i][j] = 1\n      elif\
-        \ nums[i - 1] < j:\n        dp[i][j] = max(dp[i][j], dp[i - 1][j ^ nums[i\
-        \ - 1]])\n  return max(dp[-1])"
+      code: "import llvmliteBindings as llvmlite\nfrom llvmlite import ir\nimport\
+        \ ctypes\n\ndef main(nums):\n  n = len(nums)\n  dp = [[0] * (2**10) for _\
+        \ in range(n + 1)]\n  for i in range(1, n + 1):\n    dp[i] = dp[i - 1][:]\n\
+        \    for j in range(2**10):\n      if nums[i - 1] ^ j == 2**10 - 1:\n    \
+        \    dp[i][j] = 1\n      elif nums[i - 1] < j:\n        dp[i][j] = max(dp[i][j],\
+        \ dp[i - 1][j ^ nums[i - 1]])\n  return max(dp[-1])\n\n# Test the function\n\
+        nums = [1, 2, 3]\nprint(main(nums))"
       programming_language: python3
       inputs:
       - nums: [0, 2, 3, 4, 5, 6, 7]
