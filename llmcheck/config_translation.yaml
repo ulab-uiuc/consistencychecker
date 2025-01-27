@@ -1,0 +1,87 @@
+# globals
+time_limit: 2.0
+llm_max_new_tokens: 4096
+
+#      ______                 _                          _      _____            
+#      | ___ \               | |                        | |    |  __ \           
+#      | |_/ / ___ _ __   ___| |__  _ __ ___   __ _ _ __| | __ | |  \/ ___ _ __  
+#      | ___ \/ _ \ '_ \ / __| '_ \| '_ ` _ \ / _` | '__| |/ / | | __ / _ \ '_ \ 
+#      | |_/ /  __/ | | | (__| | | | | | | | | (_| | |  |   <  | |_\ \  __/ | | |
+#      \____/ \___|_| |_|\___|_| |_|_| |_| |_|\__,_|_|  |_|\_\  \____/\___|_| |_|
+                                                                        
+evaluator:
+  model_name: "fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct"
+  api_base: "https://api.fireworks.ai/inference/v1"
+  temperature: 0.6
+
+retry_max: 16
+forest_size: 10
+root_node_constraints: |
+  Write a 400 word, complicated English paragraph that might appear on a
+  news website.
+  Please do this in a function way, e.g. provide a function called "main"
+  that returns the content as a string.
+  You will have to provide this in YAML format, comprising of multiple
+  keys and values:
+  - "description": a brief description of what the paragraph is about. This is
+                   purely for debugging.
+  - "code": the code that is the solution to the problem. It should be
+           a function called "main" that returns the intended answer.
+           It should be in `python3` language.
+  - "programming_language": the programming language used in the code.
+                            In this case, it should be "python3".
+                            It is a string.
+  - "inputs": the inputs that tests its functionality. It is a list of
+              dictionaries for the kwargs of the function, the test case
+              for evaluating an solution, which will put into the "main" function
+              to obtain the output. Since the main function does not take any
+              arguments, it should be a list with one empty dictionary.
+  Please use the "|" to write multi line strings:
+  description: |
+    ...
+    ...
+  code: |
+    def main():
+        ...
+        ...
+  programming_language: "python3"
+  inputs:
+    - {}
+
+  Please start right away without any explanation. Please DO NOT put it in a code block.
+  Please follow all the instructions or it will crash.
+  You must have a "main" function in the code, or it will crash.
+operation_generation_prompt: |
+  Generate {n_operations} pairs of translation and reverse translation operations for the following code.
+  Ensure that these operations are applicable to the **main function** in the `code` key of the root code: "{root_code}".
+  Format each line as: "transform operation | reverse operation"
+  Please translate to a random language other than English, and then back to English, to ensure that the operations are clear and unambiguous.
+  For example: "translate what 'main' returns to Japanese | translate the Japanese return value in 'main' back to English"
+  These operations should NOT leak out information about the code itself.
+  Please start each line without '- ', '1. ', 'a. ', 'i. ', etc. Keep it simple and clear. Just the operation and its reverse.
+n_operations: 3
+
+#      ______                 _                          _     ______            
+#      | ___ \               | |                        | |    | ___ \           
+#      | |_/ / ___ _ __   ___| |__  _ __ ___   __ _ _ __| | __ | |_/ /   _ _ __  
+#      | ___ \/ _ \ '_ \ / __| '_ \| '_ ` _ \ / _` | '__| |/ / |    / | | | '_ \ 
+#      | |_/ /  __/ | | | (__| | | | | | | | | (_| | |  |   <  | |\ \ |_| | | | |
+#      \____/ \___|_| |_|\___|_| |_|_| |_| |_|\__,_|_|  |_|\_\ \_| \_\__,_|_| |_|                                                           
+                                                            
+evaluatee:
+  model_name: "fireworks_ai/accounts/fireworks/models/llama-v3p1-8b-instruct"
+  api_base: "https://api.fireworks.ai/inference/v1"
+  temperature: 0.6
+
+similarity_config:
+  type: "api"
+  model_name: "text-embedding-ada-002"
+  api_base: "https://api.openai.com/v1"
+num_of_samples: 1
+max_depth: 3
+operation_code_format_enforce_prompt: |
+  For the sake of parsing, please enclose your code within a code block,
+  e.g. f"```{programming_language}\n{code}\n```". Please make sure that the code is valid.
+  And programming_language is the language for the code. For python code, it should be "python3".
+  Do NOT include anything else.
+l_scores: [1, 2, 3]
