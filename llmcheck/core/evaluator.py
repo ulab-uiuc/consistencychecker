@@ -1,14 +1,12 @@
-from typing import Any, Dict, List, Tuple, Union
+# defaultdict
+from collections import defaultdict
+from copy import deepcopy
+from typing import Any, Dict, List, Union
 
 import litellm
 import yaml
 from tqdm import tqdm
-# defaultdict
-from collections import defaultdict
 
-from copy import deepcopy
-
-from llmcheck.core.generator import BenchmarkGenerator
 from llmcheck.core.tree import EvaluationTree
 from llmcheck.metrics.factory import SimilarityConfig, SimilarityFactory
 from llmcheck.nodes.node import Node
@@ -91,7 +89,7 @@ class LLMCheck:
             "tree": tree_dict
         }
 
-    def _build_tree(self, node: Node, operations: List[Tuple[str, str]], depth: int) -> Node:
+    def _build_tree(self, node: Node, operations: List[List[str]], depth: int) -> Node:
         print(f"[INFO] Building tree with depth {self.max_depth} and {len(operations)} operations")
         if depth >= self.max_depth:
             raise ValueError(f"Depth {depth} exceeds the maximum depth {self.max_depth}")
@@ -236,8 +234,8 @@ class LLMCheck:
                     metric_result[f"{metric_name} L-{dist}"] = similarities[metric_name]
             else:
                 for metric in self.similarity_metrics:
-                    metric_name: str = metric.name
-                    metric_result[f"{metric_name} L-{dist} AVG"] = 0.0
-                    metric_result[f"{metric_name} L-{dist}"] = []
+                    metric_name_iter: str = metric.name
+                    metric_result[f"{metric_name_iter} L-{dist} AVG"] = 0.0
+                    metric_result[f"{metric_name_iter} L-{dist}"] = []
 
         return metric_result

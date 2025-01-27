@@ -1,7 +1,11 @@
 from typing import List
+
 from rouge_score import rouge_scorer
 
-class ROUGEMetric:
+from llmcheck.metrics.base import BaseSimilarityMetric
+
+
+class ROUGEMetric(BaseSimilarityMetric):
     def __init__(self, metric: str):
         """
         Initialize the ROUGEMetric class with the selected ROUGE metric.
@@ -21,7 +25,8 @@ class ROUGEMetric:
         :return: The selected ROUGE score as a float.
         """
         score = self.scorer.score(reference, hypothesis)
-        return score[self.metric].fmeasure
+        fmeasure: float = score[self.metric].fmeasure
+        return fmeasure
 
     def batch_similarity(self, references: List[str], hypotheses: List[str]) -> List[float]:
         """

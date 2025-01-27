@@ -1,11 +1,11 @@
-from typing import Any, Dict, Optional, Union, List
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel
 
 from llmcheck.metrics.api import APIBasedSimilarity
 from llmcheck.metrics.base import BaseSimilarityMetric
-from llmcheck.metrics.huggingface import HuggingFaceSimilarity
 from llmcheck.metrics.bleu import BLEUMetric
+from llmcheck.metrics.huggingface import HuggingFaceSimilarity
 from llmcheck.metrics.rouge import ROUGEMetric
 
 

@@ -1,9 +1,13 @@
-from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from typing import List
 
-class BLEUMetric:
+from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
+
+from llmcheck.metrics.base import BaseSimilarityMetric
+
+
+class BLEUMetric(BaseSimilarityMetric):
     name: str = "BLEU"
-    
+
     def __init__(self, smoothing_function: bool = True):
         self.smoothing_function = SmoothingFunction().method1 if smoothing_function else None
 
@@ -17,7 +21,7 @@ class BLEUMetric:
         reference_tokens = [reference.split()]
         hypothesis_tokens = hypothesis.split()
 
-        bleu_score = sentence_bleu(
+        bleu_score: float = sentence_bleu(
             reference_tokens, hypothesis_tokens, smoothing_function=self.smoothing_function
         )
         return bleu_score

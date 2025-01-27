@@ -1,16 +1,16 @@
+import random
 from typing import List, Optional
 
 import torch
 from transformers import AutoModel, AutoTokenizer
 
 from llmcheck.metrics.base import BaseSimilarityMetric
-import random
 
 random.seed(42)
 torch.manual_seed(42)
 if torch.cuda.is_available():
     torch.cuda.manual_seed_all(42)
-    
+
 class HuggingFaceSimilarity(BaseSimilarityMetric):
     def __init__(self, model_name: str = 'sentence-transformers/all-MiniLM-L6-v2',
                  device: Optional[str] = None):

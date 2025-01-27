@@ -1,13 +1,12 @@
 import argparse
-from typing import List
-from datetime import datetime, timedelta
-import colorama
-import time
 import os
+import sys
 from collections import defaultdict
 from copy import deepcopy
-import sys
+from datetime import datetime, timedelta
+from typing import Any, Dict, List
 
+import colorama
 import yaml
 
 from llmcheck.core.evaluator import LLMCheck
@@ -57,22 +56,22 @@ def cli() -> None:
         mode = "generate_benchmark_and_evaluate"
     assert mode in modes
 
-    parameter_combination_hint: str = """Invalid parameter combination. Please use one of the following combinations:
+    parameter_combination_hint: str = f"""Invalid parameter combination. Please use one of the following combinations:
 ------------
 There are a total of 3 parameter combinations:
 1. Generate benchmark only.
-    --config <path_to_config> 
-    --benchmark_output <path_for_saving_benchmark> 
-    --benchmark_only
+    {colorama.Fore.BLUE}--config <path_to_config>{colorama.Style.RESET_ALL}
+    {colorama.Fore.BLUE}--benchmark_output <path_for_saving_benchmark>{colorama.Style.RESET_ALL}
+    {colorama.Fore.BLUE}--benchmark_only{colorama.Style.RESET_ALL}
 2. Evaluate using existing benchmark.
-    --config <path_to_config> 
-    --benchmark <path_to_benchmark> 
-    --result_output_folder <path_to_result>
+    {colorama.Fore.BLUE}--config <path_to_config>{colorama.Style.RESET_ALL}
+    {colorama.Fore.BLUE}--benchmark <path_to_benchmark>{colorama.Style.RESET_ALL}
+    {colorama.Fore_BLUE}--result_output_folder <path_for_saving_results>{colorama.Style.RESET_ALL}
 3. Generate benchmark and evaluate.
-    --config <path_to_config>
-    --benchmark_output <path_for_saving_benchmark>
+    {colorama.Fore.BLUE}--config <path_to_config>{colorama.Style.RESET_ALL}
+    {colorama.Fore_BLUE}--result_output_folder <path_for_saving_results>{colorama.Style.RESET_ALL}
     """
-    
+
     if mode == "generate_benchmark_only":
         assert args.config, parameter_combination_hint + "\n" + "config is required."
         assert not args.benchmark, parameter_combination_hint + "\n" + "benchmark should not be provided."
@@ -99,7 +98,7 @@ There are a total of 3 parameter combinations:
     step_generate_benchmark: bool = False if mode == "evaluate_only" else True
     step_evaluate: bool = False if mode == "generate_benchmark_only" else True
 
-    forest: List[dict] = []
+    forest: List[Dict[str, Any]] = []
 
     # get forest size
     forest_size = config.get("forest_size")
@@ -111,7 +110,7 @@ There are a total of 3 parameter combinations:
         # print("evaluator model api base: ", config.get("evaluator").get("api_base"))
         # print("evaluator model temperature: ", config.get("evaluator").get("temperature"))
         # print("llm max new tokens: ", config.get("llm_max_new_tokens"))
-        
+
         # print("forest size: ", config.get("forest_size", 1))
         # print("root_node_constraints: ", config.get("root_node_constraints"))
         # print("operation_generation_prompt: ", config.get("operation_generation_prompt"))
@@ -150,7 +149,7 @@ There are a total of 3 parameter combinations:
                 print(f"[ERROR] Failed to generate tree {tree_idx + 1} / {forest_size}")
                 raise Exception(f"Benchmark generation failed.\nCrank up the retry_max(now {retry_max}) would help.")
             forest.append({"operations": operations, "root": root})
-        
+
         # write to benchmark file
         with open(args.benchmark_output, "w") as file:
             yaml.dump({"forest": forest}, file, default_flow_style=None, sort_keys=False)
@@ -168,10 +167,10 @@ There are a total of 3 parameter combinations:
 
     if not step_evaluate:
         return
-    
-    timestamp_run_start: int = datetime.now()
+
+    timestamp_run_start: datetime = datetime.now()
     run_passes: int = 0
-    
+
     # if the target folder does not exist, create it
     if args.result_output_folder:
         if not os.path.exists(args.result_output_folder):
@@ -180,7 +179,7 @@ There are a total of 3 parameter combinations:
     if args.result_output_folder:
         if os.path.exists(args.result_output_folder) and os.listdir(args.result_output_folder):
             raise Exception("The target folder is not empty. To avoid overwriting, please provide an empty folder.")
-    
+
 
     # Extract parameters
     similarity_config = config.get("similarity_config")
@@ -205,7 +204,7 @@ There are a total of 3 parameter combinations:
         for sample_idx in range(num_of_samples):
             time_eta_str: str = "N/A"
             if run_passes > 0:
-                time_eta: int = (datetime.now() - timestamp_run_start) / run_passes * (forest_size * num_of_samples - run_passes)
+                time_eta: timedelta = (datetime.now() - timestamp_run_start) / run_passes * (forest_size * num_of_samples - run_passes)
                 time_eta_str = str(timedelta(seconds=int(time_eta.total_seconds())))
                 print(f"Estimated time remaining: {time_eta_str}")
             print(f"{colorama.Fore.BLUE}Evaluating tree {tree_idx + 1} / {forest_size}, {colorama.Fore.GREEN}Sample {sample_idx + 1} / {num_of_samples}, {colorama.Fore.RED}ETA {time_eta_str}{colorama.Style.RESET_ALL}")
