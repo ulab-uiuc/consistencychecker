@@ -3,6 +3,7 @@ from typing import List
 
 
 class BaseSimilarityMetric(ABC):
+    name: str = ""
     @abstractmethod
     def calculate_similarity(self, text1: str, text2: str) -> float:
         pass

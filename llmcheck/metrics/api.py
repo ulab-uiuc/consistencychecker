@@ -8,6 +8,7 @@ from llmcheck.metrics.base import BaseSimilarityMetric
 
 
 class APIBasedSimilarity(BaseSimilarityMetric):
+    name: str = "embedding similarity"
     # Common embedding models and their token limits
 
     def __init__(self,

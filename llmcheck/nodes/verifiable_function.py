@@ -41,7 +41,7 @@ class VerifiableFunction:
                     raise ValueError(f"Unsupported language: {self.programming_language}")
                 else:
                     results: List[Any] = []
-                    print(f"[ERROR] Unsupported language: {self.programming_language}")
+                    # print(f"[ERROR] Unsupported language: {self.programming_language}")
                     self.exec_results = results
                     return results
 
@@ -56,7 +56,7 @@ class VerifiableFunction:
                     raise ValueError("No 'main' function found in the provided code.")
                 else:
                     self.exec_results = [None] * len(self.inputs)
-                    print("[ERROR] No 'main' function found in the provided code.")
+                    # print("[ERROR] No 'main' function found in the provided code.")
                     return self.exec_results
             # If we have multiple inputs (a list of dicts), we'll call the function with each one
             results = []
@@ -69,14 +69,18 @@ class VerifiableFunction:
 
                 try:
                     signal.alarm(int(self.time_limit))
+                    # Disable input and print
+                    exec_globals['input'] = lambda *args, **kwargs: ""
+                    exec_globals['print'] = lambda *args, **kwargs: None
+
                     result = main_func(**input_dict)
                     results.append(result)  # Append result without converting to str
                 except TimeoutError:
-                    print(f"[ERROR] Time Limit Exceeded ({self.time_limit}s)")
+                    # print(f"[ERROR] Time Limit Exceeded ({self.time_limit}s)")
                     results.append(None)
                 except Exception as e:
                     if catch:
-                        print(f"Error: {str(e)}")
+                        # print(f"Error: {str(e)}")
                         results.append(None)
                     else:
                         raise RuntimeError(f"{str(e)}")
@@ -87,7 +91,7 @@ class VerifiableFunction:
             return results
         except Exception as e:
             if catch:
-                print(f"Error: {str(e)}")
+                # print(f"Error: {str(e)}")
                 self.exec_results = [None] * len(self.inputs)
                 return self.exec_results
             else:

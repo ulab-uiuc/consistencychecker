@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional
 @dataclass
 class Node:
     content: Dict[str, Any]
-    operation: Optional[tuple[str, str]] = None  # (transform, reverse)
+    operation: Optional[List[str]] = None  # (transform, reverse)
     middle_state: Optional[Dict[str, Any]] = None
     parent: Optional['Node'] = None
     children: List['Node'] = field(default_factory=list)
@@ -14,7 +14,7 @@ class Node:
         if self.children is None:
             self.children = []
 
-    def add_child(self, content: Dict[str, Any], middle_state: Dict[str, Any], operation: tuple[str, str]) -> 'Node':
+    def add_child(self, content: Dict[str, Any], middle_state: Dict[str, Any], operation: List[str]) -> 'Node':
         child = Node(
             content=content,
             operation=operation,

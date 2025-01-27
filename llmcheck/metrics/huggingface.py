@@ -1,3 +1,4 @@
+import random
 from typing import List, Optional
 
 import torch
@@ -5,21 +6,28 @@ from transformers import AutoModel, AutoTokenizer
 
 from llmcheck.metrics.base import BaseSimilarityMetric
 
+random.seed(42)
+torch.manual_seed(42)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed_all(42)
 
 class HuggingFaceSimilarity(BaseSimilarityMetric):
     def __init__(self, model_name: str = 'sentence-transformers/all-MiniLM-L6-v2',
                  device: Optional[str] = None):
         self.model_name = model_name
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModel.from_pretrained(model_name).to(self.device)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+        self.model = AutoModel.from_pretrained(model_name, trust_remote_code=True).to(self.device)
 
     def _get_embeddings(self, texts: List[str]) -> torch.Tensor:
         tokens = self.tokenizer(texts, padding=True, truncation=True,
                               return_tensors="pt").to(self.device)
         with torch.no_grad():
             outputs = self.model(**tokens)
-            embeddings = outputs.last_hidden_state.mean(dim=1)
+            if isinstance(outputs, dict):
+                embeddings = outputs['sentence_embeddings'].mean(dim=1)
+            else:
+                embeddings = outputs.last_hidden_state.mean(dim=1)
             assert isinstance(embeddings, torch.Tensor)
         return embeddings
 
