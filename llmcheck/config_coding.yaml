@@ -95,9 +95,10 @@ evaluatee:
   temperature: 0.6
 
 similarity_config:
-  type: "api"
-  model_name: "text-embedding-ada-002"
-  api_base: "https://api.openai.com/v1"
+  type: "huggingface"
+  model_name: "nvidia/NV-Embed-v2"
+  device: "cuda"
+
 num_of_samples: 1
 max_depth: 3
 operation_code_format_enforce_prompt: |

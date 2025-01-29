@@ -50,6 +50,14 @@ Then simply use `llmcheck` as a CLI tool. There are three parameter combinations
 
 The acceptable config file format is a little bit complicated but it is explained in the `config.yaml` file. To avoid outputs writing on top of each other, we default the result file to be tagged with the current time.
 
+Here are examples to run the 2 stages separately:
+
+```bash
+llmcheck --config config_coding.yaml --benchmark_output bench_coding.yaml --benchmark_only
+
+llmcheck --config config_coding.yaml --benchmark bench_coding.yaml --result_output_folder output_folder
+```
+
 ## LLM Options
 
 As we use`litellm` to connect to the LLM, you will have access to all the models that `litellm` supports. You should set API keys as environment variables. For example, to use OpenAI's GPT-4, you should set

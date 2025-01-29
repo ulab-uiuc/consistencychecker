@@ -18,22 +18,38 @@ class SimilarityConfig(BaseModel):
     similarity_prompt_template: Optional[str] = None
 
 class SimilarityFactory:
+    # Dictionary to cache models
+    _huggingface_cache: Dict[str, HuggingFaceSimilarity] = {}
+
     @staticmethod
     def create_metric(config: Union[Dict[str, Any], SimilarityConfig]) -> List[BaseSimilarityMetric]:
         if isinstance(config, dict):
             config = SimilarityConfig(**config)
 
+        # Check if the config type is huggingface
         if config.type == "huggingface":
-            return [
-                HuggingFaceSimilarity(
+            cache_key = f"{config.model_name}-{config.device}"
+
+            # Check if the model is already cached
+            if cache_key in SimilarityFactory._huggingface_cache:
+                huggingface_model = SimilarityFactory._huggingface_cache[cache_key]
+            else:
+                # If not cached, load the model and cache it
+                huggingface_model = HuggingFaceSimilarity(
                     model_name=config.model_name,
                     device=config.device
-                ),
+                )
+                SimilarityFactory._huggingface_cache[cache_key] = huggingface_model
+
+            # Return the list of metrics, including the cached HuggingFace model
+            return [
+                huggingface_model,
                 BLEUMetric(),
                 ROUGEMetric("rouge1"),
                 ROUGEMetric("rouge2"),
                 ROUGEMetric("rougeL"),
             ]
+
         elif config.type == "api":
             return [
                 APIBasedSimilarity(
