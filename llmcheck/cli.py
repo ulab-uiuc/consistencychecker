@@ -66,10 +66,10 @@ There are a total of 3 parameter combinations:
 2. Evaluate using existing benchmark.
     {colorama.Fore.BLUE}--config <path_to_config>{colorama.Style.RESET_ALL}
     {colorama.Fore.BLUE}--benchmark <path_to_benchmark>{colorama.Style.RESET_ALL}
-    {colorama.Fore_BLUE}--result_output_folder <path_for_saving_results>{colorama.Style.RESET_ALL}
+    {colorama.Fore.BLUE}--result_output_folder <path_for_saving_results>{colorama.Style.RESET_ALL}
 3. Generate benchmark and evaluate.
     {colorama.Fore.BLUE}--config <path_to_config>{colorama.Style.RESET_ALL}
-    {colorama.Fore_BLUE}--result_output_folder <path_for_saving_results>{colorama.Style.RESET_ALL}
+    {colorama.Fore.BLUE}--result_output_folder <path_for_saving_results>{colorama.Style.RESET_ALL}
     """
 
     if mode == "generate_benchmark_only":
