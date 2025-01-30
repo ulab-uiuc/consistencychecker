@@ -104,6 +104,10 @@ There are a total of 3 parameter combinations:
     forest_size = config.get("forest_size")
 
     if step_generate_benchmark:
+        # if benchmark file exists, raise an error
+        if os.path.exists(args.benchmark_output):
+            raise Exception("The benchmark file already exists. To avoid overwriting, please provide a different file name.")
+
         print(f"[{INFO_PLAIN}] Generating benchmark...")
 
         benchmark_generator = BenchmarkGenerator(
@@ -175,8 +179,10 @@ There are a total of 3 parameter combinations:
 
     full_avg_metrics_collect = defaultdict(list)
     for tree_idx, tree in enumerate(forest):
-        root_original = tree["root"]
+        root_original = tree["root"].copy()
+        root_original.pop("exec_results")
         operations = tree["operations"]
+
         llmcheck_instance = LLMCheck(
             evaluatee_model=config.get("evaluatee").get("model_name"),
             evaluatee_api_base=config.get("evaluatee").get("api_base"),
@@ -228,4 +234,10 @@ if __name__ == "__main__":
     colorama.init(autoreset=True)
     # for yaml dumping of arbitrarily large integers
     sys.set_int_max_str_digits(2147483647)
+    def str_presenter(dumper: yaml.Dumper, data: str) -> yaml.nodes.ScalarNode:
+        # Check if string contains newlines
+        if '\n' in data:
+            return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+        return dumper.represent_scalar('tag:yaml.org,2002:str', data)
+    yaml.add_representer(str, str_presenter)
     cli()

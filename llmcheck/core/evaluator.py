@@ -105,7 +105,7 @@ class LLMCheck:
                 if current_depth == 0: # root
                     # execute the code
                     root_vf: VerifiableFunction = VerifiableFunction(**current_node.content, time_limit=self.time_limit)
-                    current_node.content["exec_results"] = root_vf.exec(catch=True)
+                    current_node.content["exec_results"] = "\n".join([f"{result}" for result in root_vf.exec(catch=True)])
 
                 for transform, reverse in operations:
                     current_node_dict = current_node.content
@@ -121,7 +121,8 @@ class LLMCheck:
                     middle_state_dict_updated["code"] = middle_state_code_content
                     middle_state_dict_updated["programming_language"] = middle_state_code_programming_language
                     middle_state_vf: VerifiableFunction = VerifiableFunction(**middle_state_dict_updated, time_limit=self.time_limit)
-                    middle_state_dict_updated["exec_results"] = middle_state_vf.exec(catch=True)
+                    # middle_state_dict_updated["exec_results"] = middle_state_vf.exec(catch=True)
+                    middle_state_dict_updated["exec_results"] = "\n".join([f"{result}" for result in middle_state_vf.exec(catch=True)])
                     middle_state = middle_state_dict_updated
                     # Apply reverse to get final state
                     final_state_code = self._apply_operation(middle_state_code, reverse, self.operation_code_format_enforce_prompt)
@@ -134,7 +135,8 @@ class LLMCheck:
                     final_state_dict_updated["code"] = final_state_code_content
                     final_state_dict_updated["programming_language"] = final_state_code_programming_language
                     final_state_vf: VerifiableFunction = VerifiableFunction(**final_state_dict_updated, time_limit=self.time_limit)
-                    final_state_dict_updated["exec_results"] = final_state_vf.exec(catch=True)
+                    # final_state_dict_updated["exec_results"] = final_state_vf.exec(catch=True)
+                    final_state_dict_updated["exec_results"] = "\n".join([f"{result}" for result in final_state_vf.exec(catch=True)])
                     final_state = final_state_dict_updated
                     child = current_node.add_child(
                         content=final_state,
@@ -224,8 +226,8 @@ class LLMCheck:
                 with tqdm(total=len(node_pairs), desc=f"L-{dist} AVG Similarity") as pbar:
                     for a, b in node_pairs:
                         # remove JSON code block and elicit JSON string
-                        a_exec_results_str: str = f"{a.content['exec_results']}"
-                        b_exec_results_str: str = f"{b.content['exec_results']}"
+                        a_exec_results_str: str = a.content['exec_results']
+                        b_exec_results_str: str = b.content['exec_results']
                         for metric in self.similarity_metrics:
                             similarities[metric.name].append(metric.calculate_similarity(a_exec_results_str, b_exec_results_str))
                         pbar.update(1)
