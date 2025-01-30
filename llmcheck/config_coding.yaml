@@ -69,7 +69,6 @@ operation_generation_prompt: |
   Generate {n_operations} pairs of transform-reverse operations for testing language model consistency.
   Please make sure that these operations should be fit to perform on the root code: "{root_code}".
   Each operation should modify the text and its reverse should restore it.
-  Format each line as: "transform operation | reverse operation"
   Example: "split the 'main' function into multiple mini-functions, each only storing partial logic, with cryptic variable names that hide true purpose | merge all mini-functions back into one coherent 'main' function, restoring original descriptive variable names"
   Example: "Utilize advanced concurrent data pipelines within the 'main' function in the 'code' key, splitting tasks via multiprocessing and merging results seamlessly | consolidate all concurrent pipelines back into a single, sequential 'main' function while preserving the original logic"
   Example: "Replace standard control structures within the 'main' function in the 'code' key with complex generators and coroutines that lazily evaluate large datasets | revert the 'main' function to use basic loops and direct evaluations, ensuring behavior stays identical"
@@ -80,6 +79,12 @@ operation_generation_prompt: |
   Please start each line without '- ', '1. ', 'a. ', 'i. ', etc. Keep it simple and clear. Just the operation and its reverse.
   PLEASE generate EXTREMELY HARD TRANSFORMATIONS that weaker LLMs will struggle with! That is, harder than the examples given above.
   These transformations may struggle and break the edge cases or main functionality.
+  Format each line as: "transform operation | reverse operation"
+  Example:
+  ... | ...
+  ... | ...
+  ... | ...
+  (3 lines for 3 operations)
 n_operations: 3
 
 #      ______                 _                          _     ______

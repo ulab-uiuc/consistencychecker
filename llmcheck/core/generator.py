@@ -34,8 +34,11 @@ class BenchmarkGenerator:
         EvaluationTree(response_dict)
         # verify validity of the response (execution)
         root_vf: VerifiableFunction = VerifiableFunction(**response_dict, time_limit=self.time_limit)
-        root_vf.exec(catch=False)
+        exec_result: List[Any] = root_vf.exec(catch=False)
+        if None in exec_result:
+            raise ValueError("The generated root node is not executable on certain inputs.")
         # stringify each element in inputs
+        response_dict["exec_results"] = "\n".join([f"{result}" for result in exec_result])
         return response_dict
 
     def _generate_operations(self, prompt: str, n_operations: int) -> List[List[str]]:
