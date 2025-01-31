@@ -1,6 +1,7 @@
 # globals
 time_limit: 2.0
 llm_max_new_tokens: 4096
+retry_max: 16
 
 #      ______                 _                          _      _____
 #      | ___ \               | |                        | |    |  __ \
@@ -14,7 +15,6 @@ evaluator:
   api_base: "https://api.fireworks.ai/inference/v1"
   temperature: 0.6
 
-retry_max: 16
 forest_size: 10
 root_node_constraints: |
   Write a 400 word, complicated English paragraph that might appear on a
