@@ -1,7 +1,7 @@
 import re
 import threading
 from dataclasses import dataclass, field
-from typing import Any, List, Dict
+from typing import Any, Dict, List
 
 
 @dataclass
@@ -35,7 +35,7 @@ class VerifiableFunction:
     def _run_with_timeout(self, func: Any, kwargs: Dict[str, Any]) -> Any:
         """Helper method to run a function with timeout"""
         result: Dict[str, Any] = {"value": None, "exception": None}
-        
+
         def target() -> None:
             try:
                 result["value"] = func(**kwargs)
@@ -50,7 +50,7 @@ class VerifiableFunction:
 
         if thread.is_alive():
             # If thread is still alive, we hit the timeout
-            return "TIMEOUT"
+            raise TimeoutError("Function execution exceeded the time limit")
 
         if result["exception"]:
             raise result["exception"]
