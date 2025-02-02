@@ -191,7 +191,7 @@ There are a total of 3 parameter combinations:
             max_depth=config.get("max_depth"),
             operation_code_format_enforce_prompt=config.get("operation_code_format_enforce_prompt"),
             llm_max_new_tokens=config.get("llm_max_new_tokens"),
-            retry_max=16, #TODO
+            retry_max=config.get("retry_max"),
             time_limit=config.get("time_limit"),
         )
         root = deepcopy(root_original)
@@ -234,10 +234,12 @@ if __name__ == "__main__":
     colorama.init(autoreset=True)
     # for yaml dumping of arbitrarily large integers
     sys.set_int_max_str_digits(2147483647)
-    def str_presenter(dumper: yaml.Dumper, data: str) -> yaml.nodes.ScalarNode:
-        # Check if string contains newlines
-        if '\n' in data:
-            return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
-        return dumper.represent_scalar('tag:yaml.org,2002:str', data)
-    yaml.add_representer(str, str_presenter)
+    # def str_presenter(dumper: yaml.Dumper, data: str) -> yaml.nodes.ScalarNode:
+    #     # Check if string contains newlines
+    #     if '\n' in data:
+    #         return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+    #     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
+    # yaml.add_representer(str, str_presenter)
+    # TOKENIZERS_PARALLELISM = False
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
     cli()

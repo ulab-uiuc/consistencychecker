@@ -1,14 +1,14 @@
 import re
-import threading
+import signal
 from dataclasses import dataclass, field
-from typing import Any, List, Dict
+from typing import Any, List
 
 
 @dataclass
 class VerifiableFunction:
     code: str
     programming_language: str
-    inputs: List[dict[str, Any]]  # kwargs for the function
+    inputs: List[dict[str, Any]] # kwargs for the function
     description: str  # New property to store the function description
     time_limit: float  # Time limit for function execution in seconds
     exec_results: List[Any] = field(default_factory=list)  # Store the results of the function execution
@@ -22,49 +22,26 @@ class VerifiableFunction:
         self.description = description
         self.exec_results = []
         self.time_limit = time_limit
-
     def __str__(self) -> str:
         """Pretty print the function details"""
         return (
             f"Programming Language: {self.programming_language}\n"
             f"Inputs: {self.inputs}\n"
-            f"Description: {self.description}\n"
+            f"Description: {self.description}\n"  # Display the description
             f"Code:\n{self.code}"
         )
 
-    def _run_with_timeout(self, func: Any, kwargs: Dict[str, Any]) -> Any:
-        """Helper method to run a function with timeout"""
-        result: Dict[str, Any] = {"value": None, "exception": None}
-        
-        def target() -> None:
-            try:
-                result["value"] = func(**kwargs)
-            except Exception as e:
-                result["exception"] = e
-
-        thread = threading.Thread(target=target)
-        thread.daemon = True
-
-        thread.start()
-        thread.join(timeout=self.time_limit)
-
-        if thread.is_alive():
-            # If thread is still alive, we hit the timeout
-            return "TIMEOUT"
-
-        if result["exception"]:
-            raise result["exception"]
-
-        return result["value"]
-
-    def exec(self, catch: bool = False) -> List[Any]:
+    def exec(self, catch:bool=False) -> List[Any]:  # Return the results as they are without conversion to str
         """Execute the function and return outputs"""
+        # if self.exec_results:
+        #     return self.exec_results
         try:
-            if self.programming_language not in ["python", "python3", "py", "py3", "Python", "Python3"]:
+            if self.programming_language not in ["python", "python3", "py", "py3", "Python", "Python3"]: # just in case the LLM is bad at following instructions
                 if not catch:
                     raise ValueError(f"Unsupported language: {self.programming_language}")
                 else:
                     results: List[Any] = []
+                    # print(f"[ERROR] Unsupported language: {self.programming_language}")
                     self.exec_results = results
                     return results
 
@@ -73,41 +50,56 @@ class VerifiableFunction:
                 "input": lambda *args, **kwargs: "",
                 "print": lambda *args, **kwargs: None
             }
-            exec_globals_copy = exec_globals.copy()  # Copy to avoid contamination
 
             exec(
                 'input = lambda *args, **kwargs: ""\n' +
                 'print = lambda *args, **kwargs: None\n' +
-                self.code, exec_globals_copy, exec_globals_copy
+                self.code, exec_globals, exec_globals
             )
 
-            main_func = exec_globals_copy.get("main")
+            # Extract the parameter names and their values from the input dictionaries
+            main_func = exec_globals.get("main")
             if not main_func:
                 if not catch:
                     raise ValueError("No 'main' function found in the provided code.")
                 else:
                     self.exec_results = [None] * len(self.inputs)
+                    # print("[ERROR] No 'main' function found in the provided code.")
                     return self.exec_results
-
+            # If we have multiple inputs (a list of dicts), we'll call the function with each one
             results = []
             for input_dict in self.inputs:
-                try:
-                    # Disable input and print
-                    exec_globals_copy['input'] = lambda *args, **kwargs: ""
-                    exec_globals_copy['print'] = lambda *args, **kwargs: None
+                # Call the function with arguments unpacked from the dictionary
+                def handler(signum: Any, frame: Any) -> None:
+                    raise TimeoutError("Time limit exceeded")
 
-                    result = self._run_with_timeout(main_func, input_dict)
-                    results.append(result)
+                signal.signal(signal.SIGALRM, handler)
+
+                try:
+                    signal.alarm(int(self.time_limit))
+                    # Disable input and print
+                    exec_globals['input'] = lambda *args, **kwargs: ""
+                    exec_globals['print'] = lambda *args, **kwargs: None
+
+                    result = main_func(**input_dict)
+                    results.append(result)  # Append result without converting to str
+                except TimeoutError:
+                    # print(f"[ERROR] Time Limit Exceeded ({self.time_limit}s)")
+                    results.append(None)
                 except Exception as e:
                     if catch:
+                        # print(f"Error: {str(e)}")
                         results.append(None)
                     else:
                         raise RuntimeError(f"{str(e)}")
+                finally:
+                    signal.alarm(0)
 
             self.exec_results = results
             return results
         except Exception as e:
             if catch:
+                # print(f"Error: {str(e)}")
                 self.exec_results = [None] * len(self.inputs)
                 return self.exec_results
             else:
