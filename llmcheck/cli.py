@@ -240,4 +240,6 @@ if __name__ == "__main__":
     #         return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
     #     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
     # yaml.add_representer(str, str_presenter)
+    # TOKENIZERS_PARALLELISM = False
+    os.environ["TOKENIZERS_PARALLELISM"] = "false"
     cli()

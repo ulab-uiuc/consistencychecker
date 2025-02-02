@@ -17,7 +17,7 @@ class HuggingFaceSimilarity(BaseSimilarityMetric):
         self.model_name = model_name
         self.name = model_name
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True, model_max_length=8192)
         self.model = AutoModel.from_pretrained(model_name, trust_remote_code=True).to(self.device)
 
     def _get_embeddings(self, texts: List[str]) -> torch.Tensor:
