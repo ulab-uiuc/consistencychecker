@@ -1,5 +1,5 @@
+import multiprocessing
 import re
-import signal
 from dataclasses import dataclass, field
 from typing import Any, List
 
@@ -8,7 +8,7 @@ from typing import Any, List
 class VerifiableFunction:
     code: str
     programming_language: str
-    inputs: List[dict[str, Any]] # kwargs for the function
+    inputs: List[dict[str, Any]]  # kwargs for the function
     description: str  # New property to store the function description
     time_limit: float  # Time limit for function execution in seconds
     exec_results: List[Any] = field(default_factory=list)  # Store the results of the function execution
@@ -22,6 +22,7 @@ class VerifiableFunction:
         self.description = description
         self.exec_results = []
         self.time_limit = time_limit
+
     def __str__(self) -> str:
         """Pretty print the function details"""
         return (
@@ -31,75 +32,82 @@ class VerifiableFunction:
             f"Code:\n{self.code}"
         )
 
-    def exec(self, catch:bool=False) -> List[Any]:  # Return the results as they are without conversion to str
-        """Execute the function and return outputs"""
-        # if self.exec_results:
-        #     return self.exec_results
+    def _run_function(self, input_dict: dict[str, Any], queue: Any) -> None:
+        """Helper function to execute the code in a separate process."""
         try:
-            if self.programming_language not in ["python", "python3", "py", "py3", "Python", "Python3"]: # just in case the LLM is bad at following instructions
-                if not catch:
-                    raise ValueError(f"Unsupported language: {self.programming_language}")
-                else:
-                    results: List[Any] = []
-                    # print(f"[ERROR] Unsupported language: {self.programming_language}")
-                    self.exec_results = results
-                    return results
-
-            # Prepare the code for execution
+            # Create a new clean dictionary to encapsulate the function execution
             exec_globals: dict[str, Any] = {
                 "input": lambda *args, **kwargs: "",
                 "print": lambda *args, **kwargs: None
             }
 
+            # Execute the code in an isolated context
             exec(
                 'input = lambda *args, **kwargs: ""\n' +
                 'print = lambda *args, **kwargs: None\n' +
                 self.code, exec_globals, exec_globals
             )
 
-            # Extract the parameter names and their values from the input dictionaries
+            # Extract the main function
             main_func = exec_globals.get("main")
             if not main_func:
+                raise ValueError("No 'main' function found in the provided code.")
+
+            # Call the function with the input dictionary
+            result = main_func(**input_dict)
+            queue.put(result)  # Put the result in the queue
+        except Exception as e:
+            queue.put(e)  # Put the exception in the queue if something goes wrong
+
+    def exec(self, catch: bool = False) -> List[Any]:
+        """Execute the function and return outputs."""
+        try:
+            if self.programming_language not in ["python", "python3", "py", "py3", "Python", "Python3"]:
                 if not catch:
-                    raise ValueError("No 'main' function found in the provided code.")
+                    raise ValueError(f"Unsupported language: {self.programming_language}")
                 else:
-                    self.exec_results = [None] * len(self.inputs)
-                    # print("[ERROR] No 'main' function found in the provided code.")
-                    return self.exec_results
-            # If we have multiple inputs (a list of dicts), we'll call the function with each one
+                    results: List[Any] = []
+                    self.exec_results = results
+                    return results
+
             results = []
             for input_dict in self.inputs:
-                # Call the function with arguments unpacked from the dictionary
-                def handler(signum: Any, frame: Any) -> None:
-                    raise TimeoutError("Time limit exceeded")
+                # Use a multiprocessing Queue to communicate results between processes
+                queue:Any = multiprocessing.Queue()
 
-                signal.signal(signal.SIGALRM, handler)
+                # Create and start the process
+                process = multiprocessing.Process(
+                    target=self._run_function,
+                    args=(input_dict, queue)
+                )
+                process.start()
 
-                try:
-                    signal.alarm(int(self.time_limit))
-                    # Disable input and print
-                    exec_globals['input'] = lambda *args, **kwargs: ""
-                    exec_globals['print'] = lambda *args, **kwargs: None
+                # Wait for the process to complete or timeout
+                process.join(timeout=self.time_limit)
 
-                    result = main_func(**input_dict)
-                    results.append(result)  # Append result without converting to str
-                except TimeoutError:
-                    # print(f"[ERROR] Time Limit Exceeded ({self.time_limit}s)")
-                    results.append(None)
-                except Exception as e:
-                    if catch:
-                        # print(f"Error: {str(e)}")
-                        results.append(None)
+                if process.is_alive():
+                    # If the process is still alive, it exceeded the time limit
+                    process.terminate()  # Terminate the process
+                    process.join()  # Ensure the process is cleaned up
+                    results.append(None)  # Append None to indicate a timeout
+                else:
+                    # Process completed within the time limit
+                    if not queue.empty():
+                        result = queue.get()
+                        if isinstance(result, Exception):
+                            if catch:
+                                results.append(None)
+                            else:
+                                raise result
+                        else:
+                            results.append(result)
                     else:
-                        raise RuntimeError(f"{str(e)}")
-                finally:
-                    signal.alarm(0)
+                        results.append(None)  # No result was produced
 
             self.exec_results = results
             return results
         except Exception as e:
             if catch:
-                # print(f"Error: {str(e)}")
                 self.exec_results = [None] * len(self.inputs)
                 return self.exec_results
             else:
