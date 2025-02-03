@@ -12,6 +12,7 @@ import yaml
 from llmcheck.core.evaluator import LLMCheck
 from llmcheck.core.generator import BenchmarkGenerator
 
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 INFO_PLAIN: str = "INFO"
 INFO_GREEN: str = colorama.Fore.GREEN + "INFO" + colorama.Style.RESET_ALL
 
@@ -234,12 +235,4 @@ if __name__ == "__main__":
     colorama.init(autoreset=True)
     # for yaml dumping of arbitrarily large integers
     sys.set_int_max_str_digits(2147483647)
-    # def str_presenter(dumper: yaml.Dumper, data: str) -> yaml.nodes.ScalarNode:
-    #     # Check if string contains newlines
-    #     if '\n' in data:
-    #         return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
-    #     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
-    # yaml.add_representer(str, str_presenter)
-    # TOKENIZERS_PARALLELISM = False
-    os.environ["TOKENIZERS_PARALLELISM"] = "false"
     cli()

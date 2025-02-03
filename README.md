@@ -20,8 +20,6 @@ LLMCheck is a Python package that evaluates Large Language Models (LLMs) through
 
 ## Usage
 
-> Due to the way program exection timeouts are handled, windows is not supported (Unix-like systems only).
-
 The dependencies are managed by `poetry`. First, install poetry by running:
 
 ```bash
