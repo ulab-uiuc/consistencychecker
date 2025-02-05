@@ -13,6 +13,7 @@ from llmcheck.core.evaluator import LLMCheck
 from llmcheck.core.generator import BenchmarkGenerator
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
+sys.set_int_max_str_digits(2147483647)
 INFO_PLAIN: str = "INFO"
 INFO_GREEN: str = colorama.Fore.GREEN + "INFO" + colorama.Style.RESET_ALL
 
@@ -234,5 +235,4 @@ if __name__ == "__main__":
     # colorama init
     colorama.init(autoreset=True)
     # for yaml dumping of arbitrarily large integers
-    sys.set_int_max_str_digits(2147483647)
     cli()
