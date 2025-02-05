@@ -1,19 +1,19 @@
+import asyncio
+import inspect
 import multiprocessing
 import re
 from dataclasses import dataclass, field
 from typing import Any, Dict, List
 
-# Set up logging
-# logging.basicConfig(level=logging.DEBUG)
 
 @dataclass
 class VerifiableFunction:
     code: str
     programming_language: str
-    inputs: List[dict[str, Any]]  # kwargs for the function
-    description: str  # New property to store the function description
-    time_limit: float  # Time limit for function execution in seconds
-    exec_results: List[Any] = field(default_factory=list)  # Store the results of the function execution
+    inputs: List[dict[str, Any]]
+    description: str
+    time_limit: float
+    exec_results: List[Any] = field(default_factory=list)
 
     def __init__(self, code: str, programming_language: str, inputs: List[dict[str, Any]], description: str, time_limit: float = 2.0) -> None:
         pattern = r'```(\w+)?'
@@ -26,19 +26,30 @@ class VerifiableFunction:
         self.time_limit = time_limit
 
     def __str__(self) -> str:
-        """Pretty print the function details"""
         return (
             f"Programming Language: {self.programming_language}\n"
             f"Inputs: {self.inputs}\n"
-            f"Description: {self.description}\n"  # Display the description
+            f"Description: {self.description}\n"
             f"Code:\n{self.code}"
         )
+
+    async def _run_async_function(self, main_func: Any, input_dict: dict[str, Any]) -> Any:
+        """Helper function to execute async functions."""
+        try:
+            return await main_func(**input_dict)
+        except Exception:
+            return None
 
     def _run_function(self, input_dict: dict[str, Any]) -> Any:
         """Helper function to execute the code in a separate process."""
         def worker(code: str, input_dict: Dict[str, Any], queue: Any) -> None:
             try:
+                # Create a new event loop for this process
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+
                 exec_globals: dict[str, Any] = {
+                    "asyncio": asyncio,
                     "input": lambda *args, **kwargs: "",
                     "print": lambda *args, **kwargs: None
                 }
@@ -53,11 +64,20 @@ class VerifiableFunction:
                 if not main_func:
                     raise ValueError("No 'main' function found in the provided code.")
 
-                result = main_func(**input_dict)
+                if inspect.iscoroutinefunction(main_func):
+                    # Run async function
+                    result = loop.run_until_complete(self._run_async_function(main_func, input_dict))
+                else:
+                    # Run synchronous function
+                    result = main_func(**input_dict)
+
                 queue.put(result)
+                loop.close()
             except Exception:
-                # queue.put(e)
-                queue.put(None) # Return None if an exception occurs
+                queue.put(None)
+            finally:
+                if 'loop' in locals() and not loop.is_closed():
+                    loop.close()
 
         queue: Any = multiprocessing.Queue()
         process = multiprocessing.Process(target=worker, args=(self.code, input_dict, queue))
@@ -67,9 +87,9 @@ class VerifiableFunction:
         if process.is_alive():
             process.terminate()
             process.join()
-            return None  # Timeout occurred
+            return None
         elif queue.empty():
-            return None  # No result from the queue
+            return None
         else:
             return queue.get()
 
