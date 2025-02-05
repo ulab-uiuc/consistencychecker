@@ -1,8 +1,10 @@
 import multiprocessing
 import re
 from dataclasses import dataclass, field
-from typing import Any, List
+from typing import Any, Dict, List
 
+# Set up logging
+# logging.basicConfig(level=logging.DEBUG)
 
 @dataclass
 class VerifiableFunction:
@@ -32,32 +34,44 @@ class VerifiableFunction:
             f"Code:\n{self.code}"
         )
 
-    def _run_function(self, input_dict: dict[str, Any], queue: Any) -> None:
+    def _run_function(self, input_dict: dict[str, Any]) -> Any:
         """Helper function to execute the code in a separate process."""
-        try:
-            # Create a new clean dictionary to encapsulate the function execution
-            exec_globals: dict[str, Any] = {
-                "input": lambda *args, **kwargs: "",
-                "print": lambda *args, **kwargs: None
-            }
+        def worker(code: str, input_dict: Dict[str, Any], queue: Any) -> None:
+            try:
+                exec_globals: dict[str, Any] = {
+                    "input": lambda *args, **kwargs: "",
+                    "print": lambda *args, **kwargs: None
+                }
 
-            # Execute the code in an isolated context
-            exec(
-                'input = lambda *args, **kwargs: ""\n' +
-                'print = lambda *args, **kwargs: None\n' +
-                self.code, exec_globals, exec_globals
-            )
+                exec(
+                    'input = lambda *args, **kwargs: ""\n' +
+                    'print = lambda *args, **kwargs: None\n' +
+                    code, exec_globals, exec_globals
+                )
 
-            # Extract the main function
-            main_func = exec_globals.get("main")
-            if not main_func:
-                raise ValueError("No 'main' function found in the provided code.")
+                main_func = exec_globals.get("main")
+                if not main_func:
+                    raise ValueError("No 'main' function found in the provided code.")
 
-            # Call the function with the input dictionary
-            result = main_func(**input_dict)
-            queue.put(result)  # Put the result in the queue
-        except Exception as e:
-            queue.put(e)  # Put the exception in the queue if something goes wrong
+                result = main_func(**input_dict)
+                queue.put(result)
+            except Exception:
+                # queue.put(e)
+                queue.put(None) # Return None if an exception occurs
+
+        queue: Any = multiprocessing.Queue()
+        process = multiprocessing.Process(target=worker, args=(self.code, input_dict, queue))
+        process.start()
+        process.join(timeout=self.time_limit)
+
+        if process.is_alive():
+            process.terminate()
+            process.join()
+            return None  # Timeout occurred
+        elif queue.empty():
+            return None  # No result from the queue
+        else:
+            return queue.get()
 
     def exec(self, catch: bool = False) -> List[Any]:
         """Execute the function and return outputs."""
@@ -72,37 +86,14 @@ class VerifiableFunction:
 
             results = []
             for input_dict in self.inputs:
-                # Use a multiprocessing Queue to communicate results between processes
-                queue:Any = multiprocessing.Queue()
-
-                # Create and start the process
-                process = multiprocessing.Process(
-                    target=self._run_function,
-                    args=(input_dict, queue)
-                )
-                process.start()
-
-                # Wait for the process to complete or timeout
-                process.join(timeout=self.time_limit)
-
-                if process.is_alive():
-                    # If the process is still alive, it exceeded the time limit
-                    process.terminate()  # Terminate the process
-                    process.join()  # Ensure the process is cleaned up
-                    results.append(None)  # Append None to indicate a timeout
-                else:
-                    # Process completed within the time limit
-                    if not queue.empty():
-                        result = queue.get()
-                        if isinstance(result, Exception):
-                            if catch:
-                                results.append(None)
-                            else:
-                                raise result
-                        else:
-                            results.append(result)
+                result = self._run_function(input_dict)
+                if isinstance(result, Exception):
+                    if catch:
+                        results.append(None)
                     else:
-                        results.append(None)  # No result was produced
+                        raise result
+                else:
+                    results.append(result)
 
             self.exec_results = results
             return results
