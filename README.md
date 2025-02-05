@@ -20,6 +20,8 @@ LLMCheck is a Python package that evaluates Large Language Models (LLMs) through
 
 ## Usage
 
+> Local embedding model is set to 4096 token truncation.
+
 The dependencies are managed by `poetry`. First, install poetry by running:
 
 ```bash
