@@ -35,14 +35,11 @@ class VerifiableFunction:
 
     async def _run_async_function(self, main_func: Any, input_dict: dict[str, Any]) -> Any:
         """Helper function to execute async functions."""
-        try:
-            return await main_func(**input_dict)
-        except Exception:
-            return None
+        return await main_func(**input_dict)
 
     def _run_function(self, input_dict: dict[str, Any]) -> Any:
         """Helper function to execute the code in a separate process."""
-        def worker(code: str, input_dict: Dict[str, Any], queue: Any) -> None:
+        def worker(code: str, input_dict: Dict[str, Any], result_queue: Any, error_queue: Any) -> None:
             try:
                 # Create a new event loop for this process
                 loop = asyncio.new_event_loop()
@@ -71,55 +68,60 @@ class VerifiableFunction:
                     # Run synchronous function
                     result = main_func(**input_dict)
 
-                queue.put(result)
-                loop.close()
-            except Exception:
-                queue.put(None)
+                result_queue.put(result)
+
+            except Exception as e:
+                error_queue.put((type(e), str(e)))
             finally:
                 if 'loop' in locals() and not loop.is_closed():
                     loop.close()
 
-        queue: Any = multiprocessing.Queue()
-        process = multiprocessing.Process(target=worker, args=(self.code, input_dict, queue))
+        result_queue: Any = multiprocessing.Queue()
+        error_queue: Any = multiprocessing.Queue()
+        process = multiprocessing.Process(
+            target=worker,
+            args=(self.code, input_dict, result_queue, error_queue)
+        )
+
         process.start()
         process.join(timeout=self.time_limit)
 
         if process.is_alive():
             process.terminate()
             process.join()
-            return None
-        elif queue.empty():
-            return None
-        else:
-            return queue.get()
+            raise TimeoutError(f"Function execution exceeded time limit of {self.time_limit} seconds")
+
+        if not error_queue.empty():
+            error_type, error_message = error_queue.get()
+            if error_type == SyntaxError:
+                raise SyntaxError(error_message)
+            elif error_type == ValueError:
+                raise ValueError(error_message)
+            else:
+                raise RuntimeError(error_message)
+
+        if result_queue.empty():
+            raise RuntimeError("Function execution failed without returning a result")
+
+        return result_queue.get()
 
     def exec(self, catch: bool = False) -> List[Any]:
         """Execute the function and return outputs."""
-        try:
-            if self.programming_language not in ["python", "python3", "py", "py3", "Python", "Python3"]:
-                if not catch:
-                    raise ValueError(f"Unsupported language: {self.programming_language}")
-                else:
-                    results: List[Any] = []
-                    self.exec_results = results
-                    return results
+        if self.programming_language not in ["python", "python3", "py", "py3", "Python", "Python3"]:
+            if not catch:
+                raise ValueError(f"Unsupported language: {self.programming_language}")
+            return []
 
-            results = []
-            for input_dict in self.inputs:
+        results = []
+        for input_dict in self.inputs:
+            try:
                 result = self._run_function(input_dict)
-                if isinstance(result, Exception):
-                    if catch:
-                        results.append(None)
-                    else:
-                        raise result
+                results.append(result)
+            except Exception:
+                if catch:
+                    results.append(None)
                 else:
-                    results.append(result)
+                    raise
 
-            self.exec_results = results
-            return results
-        except Exception as e:
-            if catch:
-                self.exec_results = [None] * len(self.inputs)
-                return self.exec_results
-            else:
-                raise RuntimeError(f"Execution error: {str(e)}")
+        self.exec_results = results
+        return results
