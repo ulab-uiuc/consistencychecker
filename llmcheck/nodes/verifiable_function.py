@@ -93,9 +93,9 @@ class VerifiableFunction:
 
         if not error_queue.empty():
             error_type, error_message = error_queue.get()
-            if error_type == SyntaxError:
+            if error_type is SyntaxError:
                 raise SyntaxError(error_message)
-            elif error_type == ValueError:
+            elif error_type is ValueError:
                 raise ValueError(error_message)
             else:
                 raise RuntimeError(error_message)
