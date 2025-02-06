@@ -1,6 +1,7 @@
+from typing import Any, List
+
 import pytest
-import asyncio
-from typing import List, Any
+
 from llmcheck.nodes.verifiable_function import VerifiableFunction
 
 # Import your VerifiableFunction class here

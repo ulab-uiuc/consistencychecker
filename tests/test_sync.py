@@ -1,8 +1,8 @@
-import pytest
-import time
-from typing import List, Any
-from llmcheck.nodes.verifiable_function import VerifiableFunction
+from typing import Any, List
 
+import pytest
+
+from llmcheck.nodes.verifiable_function import VerifiableFunction
 
 # Import your VerifiableFunction class here
 # from verifiable_function import VerifiableFunction
