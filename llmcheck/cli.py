@@ -1,4 +1,5 @@
 import argparse
+import multiprocessing
 import os
 import sys
 from collections import defaultdict
@@ -14,6 +15,7 @@ from llmcheck.core.generator import BenchmarkGenerator
 
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 sys.set_int_max_str_digits(2147483647)
+multiprocessing.set_start_method('fork')
 INFO_PLAIN: str = "INFO"
 INFO_GREEN: str = colorama.Fore.GREEN + "INFO" + colorama.Style.RESET_ALL
 
