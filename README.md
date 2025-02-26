@@ -1,4 +1,6 @@
-<h1 align="center">ConsistencyChecker</h1>
+![llmcheck](./llmcheck.png)
+
+<h1 align="center">LLMCheck</h1>
 
 ![Python Versions](https://img.shields.io/badge/Supported%20Python-3.8--3.11-blue)
 ![Mypy Checked](https://img.shields.io/badge/Mypy-Checked-brightgreen)
@@ -7,7 +9,7 @@
 
 ## Introduction
 
-ConsistencyChecker is a Python package that evaluates Large Language Models (LLMs) through a novel tree-based approach. It tests an LLM's consistency by applying a series of transform-reverse operations (like translation) and measuring how well the model maintains semantic consistency across these transformations.
+LLMCheck is a Python package that evaluates Large Language Models (LLMs) through a novel tree-based approach. It tests an LLM's consistency by applying a series of transform-reverse operations (like translation) and measuring how well the model maintains semantic consistency across these transformations.
 
 ## Features
 
@@ -31,21 +33,21 @@ To install the dependencies, run:
 ```bash
 poetry install
 ```
-Then simply use `ConsistencyChecker` as a CLI tool. There are three parameter combinations:
+Then simply use `llmcheck` as a CLI tool. There are three parameter combinations:
 
 1. Generate benchmark only:
     ```bash
-    ConsistencyChecker --config <path_to_config> --benchmark_output <path_for_saving_benchmark> --benchmark_only
+    llmcheck --config <path_to_config> --benchmark_output <path_for_saving_benchmark> --benchmark_only
     ```
 
 2. Evaluate using existing benchmark:
     ```bash
-    ConsistencyChecker --config <path_to_config> --benchmark <path_to_benchmark> --result_output_folder <path_for_saving_results>
+    llmcheck --config <path_to_config> --benchmark <path_to_benchmark> --result_output_folder <path_for_saving_results>
     ```
 
 3. Generate benchmark and evaluate:
     ```bash
-    ConsistencyChecker --config <path_to_config> --result_output_folder <path_for_saving_results>
+    llmcheck --config <path_to_config> --result_output_folder <path_for_saving_results>
     ```
 
 The acceptable config file format is a little bit complicated but it is explained in the `config.yaml` file. To avoid outputs writing on top of each other, we default the result file to be tagged with the current time.
@@ -53,9 +55,9 @@ The acceptable config file format is a little bit complicated but it is explaine
 Here are examples to run the 2 stages separately:
 
 ```bash
-ConsistencyChecker --config config_coding.yaml --benchmark_output bench_coding.yaml --benchmark_only
+llmcheck --config config_coding.yaml --benchmark_output bench_coding.yaml --benchmark_only
 
-ConsistencyChecker --config config_coding.yaml --benchmark bench_coding.yaml --result_output_folder output_folder
+llmcheck --config config_coding.yaml --benchmark bench_coding.yaml --result_output_folder output_folder
 ```
 
 ## LLM Options
