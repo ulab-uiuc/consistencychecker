@@ -1,4 +1,6 @@
-![ConsistencyChecker](./logo.png)
+![llmcheck](./llmcheck.png)
+
+<h1 align="center">LLMCheck</h1>
 
 ![Python Versions](https://img.shields.io/badge/Supported%20Python-3.8--3.11-blue)
 ![Mypy Checked](https://img.shields.io/badge/Mypy-Checked-brightgreen)
@@ -7,7 +9,7 @@
 
 ## Introduction
 
-ConsistencyChecker is a Python package that evaluates Large Language Models (LLMs) through a novel tree-based approach. It tests an LLM's consistency by applying a series of transform-reverse operations (like translation) and measuring how well the model maintains semantic consistency across these transformations.
+LLMCheck is a Python package that evaluates Large Language Models (LLMs) through a novel tree-based approach. It tests an LLM's consistency by applying a series of transform-reverse operations (like translation) and measuring how well the model maintains semantic consistency across these transformations.
 
 ## Features
 
@@ -31,7 +33,7 @@ To install the dependencies, run:
 ```bash
 poetry install
 ```
-Then simply use `ConsistencyChecker` as a CLI tool. There are three parameter combinations:
+Then simply use `llmcheck` as a CLI tool. There are three parameter combinations:
 
 1. Generate benchmark only:
     ```bash
@@ -93,6 +95,3 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 vllm serve \
 ### ollama
 
 Ollama comes as a installable package. If you do not have permission to install software on your machine, you can download a pre-compiled version of 'ollama' from the [releases page](https://github.com/ollama/ollama/releases).
-
-<hr>
-<a href="https://www.flaticon.com/free-icons/wrench" title="wrench icons">Wrench icons created by flatart_icons - Flaticon</a>
