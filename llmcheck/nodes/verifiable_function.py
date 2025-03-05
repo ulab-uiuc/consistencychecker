@@ -15,7 +15,7 @@ class VerifiableFunction:
     time_limit: float
     exec_results: List[Any] = field(default_factory=list)
 
-    def __init__(self, code: str, programming_language: str, inputs: List[dict[str, Any]], description: str, time_limit: float = 2.0) -> None:
+    def __init__(self, code: str, programming_language: str, inputs: List[dict[str, Any]], description: str, time_limit: float = 2.0, exec_results: List[Any]=[]) -> None:
         pattern = r'```(\w+)?'
         cleaned_code = re.sub(pattern, '', code).replace('```', '').strip()
         self.code = cleaned_code
@@ -35,7 +35,11 @@ class VerifiableFunction:
 
     async def _run_async_function(self, main_func: Any, input_dict: dict[str, Any]) -> Any:
         """Helper function to execute async functions."""
-        return await main_func(**input_dict)
+        result = await main_func(**input_dict)
+        # Handle async generators
+        if inspect.isasyncgen(result):
+            result = [item async for item in result]
+        return result
 
     def _run_function(self, input_dict: dict[str, Any]) -> Any:
         """Helper function to execute the code in a separate process."""
@@ -67,6 +71,12 @@ class VerifiableFunction:
                 else:
                     # Run synchronous function
                     result = main_func(**input_dict)
+                    # Convert generator to list if necessary
+                    if inspect.isgenerator(result):
+                        result = list(result)
+                    # Handle nested generators in lists/tuples
+                    elif isinstance(result, (list, tuple)):
+                        result = [list(x) if inspect.isgenerator(x) else x for x in result]
 
                 result_queue.put(result)
 

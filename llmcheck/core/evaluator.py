@@ -108,36 +108,48 @@ class LLMCheck:
                     current_node.content["exec_results"] = "\n".join([f"{result}" for result in root_vf.exec(catch=True)])
 
                 for transform, reverse in operations:
+
                     current_node_dict = current_node.content
                     current_node_code = current_node_dict["code"]
-                    # Apply transform to get middle state
-                    middle_state_code = self._apply_operation(current_node_code, transform, self.operation_code_format_enforce_prompt)
-                    middle_state_code_programming_language = middle_state_code.split("\n")[0].strip('```').strip().lower()
-                    # remove code block
-                    middle_state_code_content = middle_state_code.split("\n", 1)[1].rsplit("```", 1)[0].strip("\n")
-                    middle_state_dict_updated = current_node_dict.copy()
-                    # drop exec_results
-                    middle_state_dict_updated.pop("exec_results", None)
-                    middle_state_dict_updated["code"] = middle_state_code_content
-                    middle_state_dict_updated["programming_language"] = middle_state_code_programming_language
-                    middle_state_vf: VerifiableFunction = VerifiableFunction(**middle_state_dict_updated, time_limit=self.time_limit)
-                    # middle_state_dict_updated["exec_results"] = middle_state_vf.exec(catch=True)
-                    middle_state_dict_updated["exec_results"] = "\n".join([f"{result}" for result in middle_state_vf.exec(catch=True)])
-                    middle_state = middle_state_dict_updated
-                    # Apply reverse to get final state
-                    final_state_code = self._apply_operation(middle_state_code, reverse, self.operation_code_format_enforce_prompt)
-                    final_state_code_programming_language = final_state_code.split("\n")[0].strip('```').strip().lower()
-                    # remove code block
-                    final_state_code_content = final_state_code.split("\n", 1)[1].rsplit("```", 1)[0].strip("\n")
-                    final_state_dict_updated = current_node_dict.copy()
-                    # drop exec_results
-                    final_state_dict_updated.pop("exec_results", None)
-                    final_state_dict_updated["code"] = final_state_code_content
-                    final_state_dict_updated["programming_language"] = final_state_code_programming_language
-                    final_state_vf: VerifiableFunction = VerifiableFunction(**final_state_dict_updated, time_limit=self.time_limit)
-                    # final_state_dict_updated["exec_results"] = final_state_vf.exec(catch=True)
-                    final_state_dict_updated["exec_results"] = "\n".join([f"{result}" for result in final_state_vf.exec(catch=True)])
-                    final_state = final_state_dict_updated
+                    while True:
+                        try:
+                            # Apply transform to get middle state
+                            middle_state_code = self._apply_operation(current_node_code, transform, self.operation_code_format_enforce_prompt)
+                            middle_state_code_programming_language = middle_state_code.split("\n")[0].strip('```').strip().lower()
+                            # remove code block
+                            middle_state_code_content = middle_state_code.split("\n", 1)[1].rsplit("```", 1)[0].strip("\n")
+                            middle_state_dict_updated = current_node_dict.copy()
+                            # drop exec_results
+                            middle_state_dict_updated.pop("exec_results", None)
+                            middle_state_dict_updated["code"] = middle_state_code_content
+                            middle_state_dict_updated["programming_language"] = middle_state_code_programming_language
+                            middle_state_vf: VerifiableFunction = VerifiableFunction(**middle_state_dict_updated, time_limit=self.time_limit)
+                            middle_state_dict_updated["exec_results"] = "\n".join([f"{result}" for result in middle_state_vf.exec(catch=True)])
+                            middle_state = middle_state_dict_updated
+                            break
+                        except Exception as e:
+                            import pdb; pdb.set_trace()
+                            print(f"[ERROR] Error during middle state transformation: {e}. Retrying...")
+
+                    while True:
+                        try:
+                            # Apply reverse to get final state
+                            final_state_code = self._apply_operation(middle_state_code, reverse, self.operation_code_format_enforce_prompt)
+                            final_state_code_programming_language = final_state_code.split("\n")[0].strip('```').strip().lower()
+                            # remove code block
+                            final_state_code_content = final_state_code.split("\n", 1)[1].rsplit("```", 1)[0].strip("\n")
+                            final_state_dict_updated = current_node_dict.copy()
+                            # drop exec_results
+                            final_state_dict_updated.pop("exec_results", None)
+                            final_state_dict_updated["code"] = final_state_code_content
+                            final_state_dict_updated["programming_language"] = final_state_code_programming_language
+                            final_state_vf: VerifiableFunction = VerifiableFunction(**final_state_dict_updated, time_limit=self.time_limit)
+                            final_state_dict_updated["exec_results"] = "\n".join([f"{result}" for result in final_state_vf.exec(catch=True)])
+                            final_state = final_state_dict_updated
+                            break
+                        except Exception as e:
+                            print(f"[ERROR] Error during final state transformation: {e}. Retrying...")
+
                     child = current_node.add_child(
                         content=final_state,
                         middle_state=middle_state,
@@ -154,10 +166,11 @@ class LLMCheck:
                 model=self.evaluatee_model,
                 messages=[
                     {"role": "user", "content": (
-                        "Please apply the following operation to the text:\n"
-                        f"Operation: {operation}\n{tail_prompt}\n"
-                        f"Text: {content}\n"
-                        f"Please do not include anything other than the transformed text."
+                        "Please apply the following operation to the program code:\n"
+                        f"Operation: {operation}\n"
+                        f"Program code: {content}\n"
+                        f"Please do not include anything other than the transformed text.\n"
+                        f"{tail_prompt}\n"
                     )}
                 ],
                 api_base=self.evaluatee_api_base,
@@ -169,10 +182,11 @@ class LLMCheck:
                 model=self.evaluatee_model,
                 messages=[
                     {"role": "user", "content": (
-                        "Please apply the following operation to the text:\n"
+                        "Please apply the following operation to the program code:\n"
                         f"Operation: {operation}\n"
-                        f"Text: {content}\n"
-                        f"Please do not include anything other than the transformed text."
+                        f"Program code: {content}\n"
+                        f"Please do not include anything other than the transformed text.\n"
+                        f"{tail_prompt}\n"
                     )}
                 ],
                 temperature=self.evaluatee_model_temperature,
