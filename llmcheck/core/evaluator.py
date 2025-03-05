@@ -128,7 +128,6 @@ class LLMCheck:
                             middle_state = middle_state_dict_updated
                             break
                         except Exception as e:
-                            import pdb; pdb.set_trace()
                             print(f"[ERROR] Error during middle state transformation: {e}. Retrying...")
 
                     while True:
