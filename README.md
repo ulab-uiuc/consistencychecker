@@ -1,4 +1,4 @@
-<h1 align="center">ConsistencyChecker</h1>
+![ConsistencyChecker](./logo.png)
 
 ![Python Versions](https://img.shields.io/badge/Supported%20Python-3.8--3.11-blue)
 ![Mypy Checked](https://img.shields.io/badge/Mypy-Checked-brightgreen)
@@ -93,3 +93,6 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 vllm serve \
 ### ollama
 
 Ollama comes as a installable package. If you do not have permission to install software on your machine, you can download a pre-compiled version of 'ollama' from the [releases page](https://github.com/ollama/ollama/releases).
+
+<hr>
+<a href="https://www.flaticon.com/free-icons/wrench" title="wrench icons">Wrench icons created by flatart_icons - Flaticon</a>
