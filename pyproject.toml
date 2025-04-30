@@ -8,7 +8,7 @@ readme = "README.md"
 
 
 [tool.poetry.dependencies]
-python = ">=3.8, <3.12"
+python = ">=3.9, <3.12"
 mypy = "^1.8.0"
 beartype = "*"
 numpy = "<2.0.0"
@@ -19,6 +19,8 @@ pyyaml = "^6.0.2"
 colorama = "^0.4.6"
 nltk = "^3.9.1"
 rouge-score = "^0.1.2"
+datasets = "^3.5.1"
+einops = "^0.8.1"
 
 
 [tool.poetry.group.dev.dependencies]

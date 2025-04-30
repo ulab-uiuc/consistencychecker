@@ -1,6 +1,6 @@
 ![ConsistencyChecker](./logo.png)
 
-![Python Versions](https://img.shields.io/badge/Supported%20Python-3.8--3.11-blue)
+![Python Versions](https://img.shields.io/badge/Supported%20Python-3.9--3.11-blue)
 ![Mypy Checked](https://img.shields.io/badge/Mypy-Checked-brightgreen)
 ![isort Checked](https://img.shields.io/badge/isort-Checked-brightgreen)
 ![ruff Checked](https://img.shields.io/badge/ruff-Checked-brightgreen)
