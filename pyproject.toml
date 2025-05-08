@@ -21,6 +21,7 @@ nltk = "^3.9.1"
 rouge-score = "^0.1.2"
 datasets = "^3.5.1"
 einops = "^0.8.1"
+accelerate = "^1.6.0"
 
 
 [tool.poetry.group.dev.dependencies]

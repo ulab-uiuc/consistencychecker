@@ -1,10 +1,15 @@
 import random
 from typing import List, Optional
+import os
 
 import torch
 from transformers import AutoModel, AutoTokenizer
 
 from llmcheck.metrics.base import BaseSimilarityMetric
+
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+torch.set_num_threads(1)
 
 random.seed(42)
 torch.manual_seed(42)
@@ -18,7 +23,7 @@ class HuggingFaceSimilarity(BaseSimilarityMetric):
         self.name = model_name
         self.device = device or ('cuda' if torch.cuda.is_available() else 'cpu')
         self.tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-        self.model = AutoModel.from_pretrained(model_name, trust_remote_code=True).to(self.device)
+        self.model = AutoModel.from_pretrained(model_name, trust_remote_code=True, low_cpu_mem_usage=True).to(self.device)
 
     def _get_embeddings(self, texts: List[str]) -> torch.Tensor:
         tokens = self.tokenizer(texts, padding=True, truncation=True,
