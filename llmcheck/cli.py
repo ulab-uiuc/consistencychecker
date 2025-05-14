@@ -124,17 +124,25 @@ There are a total of 3 parameter combinations:
 
         retry_max: int = config.get("retry_max")
 
+        generated_root_nodes: List[Any] = []
         for tree_idx in range(forest_size):
             print(f"[{INFO_PLAIN}] Generating tree {tree_idx + 1} / {forest_size}")
             # Generate benchmark
             retry_times: int = 0
             while retry_times < retry_max:
                 try:
+                    constraints:str = config.get("root_node_constraints")
+                    if generated_root_nodes:
+                        for idx, (description, code) in enumerate(generated_root_nodes):
+                            description = description.strip()
+                            code = code.strip()
+                            constraints += f"\n\n# Previously generated root node {idx + 1}:\nDescription: {description}\nCode:\n```python\n{code}\n```\n"
                     root, operations = benchmark_generator.generate_benchmark(
-                        constraints=config.get("root_node_constraints"),
+                        constraints=constraints,
                         prompt=config.get("operation_generation_prompt"),
                         n_operations=config.get("n_operations")
                     )
+                    generated_root_nodes.append((root["description"], root["code"]))
                     break
                 except Exception as e:
                     print(e)

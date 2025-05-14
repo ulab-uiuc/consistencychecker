@@ -23,6 +23,7 @@ class HuggingFaceSimilarity(BaseSimilarityMetric):
     def _get_embeddings(self, texts: List[str]) -> torch.Tensor:
         tokens = self.tokenizer(texts, padding=True, truncation=True,
                               return_tensors="pt", max_length=4096).to(self.device)
+        # import pdb; pdb.set_trace()
         with torch.no_grad():
             outputs = self.model(**tokens)
             if isinstance(outputs, dict):
