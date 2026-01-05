@@ -94,5 +94,21 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 vllm serve \
 
 Ollama comes as a installable package. If you do not have permission to install software on your machine, you can download a pre-compiled version of 'ollama' from the [releases page](https://github.com/ollama/ollama/releases).
 
+## Cite
+
+If you use ConsistencyChecker in your work, please cite:
+
+```bibtex
+@misc{hong2025consistencycheckertreebasedevaluationllm,
+      title={ConsistencyChecker: Tree-based Evaluation of LLM Generalization Capabilities},
+      author={Zhaochen Hong and Haofei Yu and Jiaxuan You},
+      year={2025},
+      eprint={2506.12376},
+      archivePrefix={arXiv},
+      primaryClass={cs.AI},
+      url={https://arxiv.org/abs/2506.12376},
+}
+```
+
 <hr>
 <a href="https://www.flaticon.com/free-icons/wrench" title="wrench icons">Wrench icons created by flatart_icons - Flaticon</a>
